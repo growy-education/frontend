@@ -21,7 +21,7 @@ steps:
       - "deploy"
       - "$_SERVICE_NAME"
       - "--image"
-      - "gcr.io/$PROJECT_ID/frontend:$COMMIT_SHA"
+      - "${_GCR_HOSTNAME}/$PROJECT_ID/$REPO_NAME/${_SERVICE_NAME}:$COMMIT_SHA"
       - "--platform=managed"
       - "--region=${_DEPLOY_REGION}"
       - "--allow-unauthenticated"
