@@ -9,9 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import { GoogleCredentialResponse, GoogleLogin } from "@react-oauth/google";
-import axios from "axios";
-import { GoogleLoginButton } from "./components/GoogleLoginButton";
-import { Link } from "react-router-dom";
 
 type LoginScreenProps = {
   handleEmailPasswordLogin: (email: string, password: string) => void;
@@ -139,7 +136,7 @@ export const LoginScreen = ({
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Typography variant="h5" align="center">
-                Growyにサインアップ
+                Growyに登録する
               </Typography>
             </Grid>
             <Grid item xs={12}>
