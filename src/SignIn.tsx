@@ -136,7 +136,7 @@ export const LoginScreen = ({
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Typography variant="h5" align="center">
-                Growyに登録する
+                Growyにサインアップ
               </Typography>
             </Grid>
             <Grid item xs={12}>
