@@ -5,12 +5,7 @@ import {
   Typography,
   IconButton,
   Drawer,
-  List,
-  ListItem,
-  ListItemText,
   Box,
-  ListItemButton,
-  ListItemIcon,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -19,15 +14,16 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { QuestionNew } from "./components/QuestionNew";
 import { QuestionList } from "./components/QuestionList";
 import { AuthContext } from "./AuthContextProvider";
-import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
 import { Information } from "./Information";
-import { Quiz, Send } from "@mui/icons-material";
 import QuestionDetail from "./components/QuestionDetail";
+import { Studyroom } from "./components/Studyroom";
+import { DrawerListItem } from "./tools/DrawerListItem";
+import { Preservation } from "./components/StudyroomPreservation";
 
 export const General: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { handleLogout } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   const handleToggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -69,24 +65,7 @@ export const General: React.FC = () => {
             {isSidebarOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </Toolbar>
-        <List>
-          <ListItem onClick={() => navigate("questions")}>
-            <ListItemButton>
-              <ListItemIcon>
-                <Quiz />
-              </ListItemIcon>
-              <ListItemText primary="今までの質問" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem onClick={() => navigate("questions/new")}>
-            <ListItemButton>
-              <ListItemIcon>
-                <Send />
-              </ListItemIcon>
-              <ListItemText primary="質問する" />
-            </ListItemButton>
-          </ListItem>
-        </List>
+        <DrawerListItem />
       </Drawer>
 
       <Box
@@ -102,6 +81,8 @@ export const General: React.FC = () => {
           <Route path="/questions" element={<QuestionList />} />
           <Route path="/questions/new" element={<QuestionNew />} />
           <Route path="/questions/:questionId" element={<QuestionDetail />} />
+          <Route path="/studyroom" element={<Studyroom />} />
+          <Route path="/studyroom/preservation" element={<Preservation />} />
         </Routes>
       </Box>
     </Box>
