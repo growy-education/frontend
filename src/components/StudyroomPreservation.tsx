@@ -37,7 +37,7 @@ export const Preservation = () => {
                 const end = start+2
                 const str = `${year}/${month}/${date} (${days[day]}) ${start}:00 ~ ${end}:00`;
                 return(
-                <ListItem key={date} disablePadding>
+                <ListItem key={date} disablePadding sx={{ml: '35%'}}>
                     <ListItemIcon> <Checkbox /> </ListItemIcon>
                     <ListItemText primary={str} />
                 </ListItem>
