@@ -3,6 +3,14 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { getJoiScheme } from "./config.scheme";
+
+// 環境変数の検証
+console.log(process.env);
+const { error } = getJoiScheme().validate(process.env, { allowUnknown: true });
+if (error) {
+  throw new Error(`Environment variables validation error: ${error.message}`);
+}
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

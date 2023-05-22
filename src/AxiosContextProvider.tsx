@@ -9,7 +9,7 @@ interface AxiosContextType {
 
 export const AxiosContext = createContext<AxiosContextType>({
   axiosConfig: {
-    baseURL: "http://localhost:3000",
+    baseURL: process.env.BACKEND_BASE_URL as string,
     headers: {
       "Content-Type": "application/json",
     },
@@ -38,7 +38,7 @@ const AxiosProvider: React.FC<AxiosProviderProps> = ({ children }) => {
   useEffect(() => {
     console.log("bearer token\n", `Bearer ${bearerToken}`);
     setAxiosConfig({
-      baseURL: "http://localhost:3000/",
+      baseURL: process.env.REACT_APP_BACKEND_BASE_URL as string,
       headers: {
         Authorization: `Bearer ${bearerToken}`,
         "Content-Type": "application/json",
