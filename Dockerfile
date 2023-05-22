@@ -6,10 +6,6 @@
 FROM --platform=linux/amd64 node:18 as build
 WORKDIR /app
 
-ENV REACT_APP_STAGE=${REACT_APP_STAGE}
-ENV REACT_APP_BACKEND_BASE_URL=${REACT_APP_STAGE}
-ENV REACT_APP_GOOGLE_OAUTH_CLIENT_ID=${REACT_APP_GOOGLE_OAUTH_CLIENT_ID}
-
 # Copy package.json and yarn.lock files
 COPY package.json yarn.lock ./
 
@@ -18,6 +14,17 @@ RUN yarn --frozen-lockfile
 
 # Copy the rest of the application files
 COPY . ./
+
+# Set the environment variables to React app
+ARG REACT_APP_STAGE
+ARG REACT_APP_BACKEND_BASE_UR
+ARG REACT_APP_GOOGLE_OAUTH_CLIENT_ID
+
+# Pass the environment variables to React app
+# This is 
+ENV REACT_APP_STAGE=${REACT_APP_STAGE}
+ENV REACT_APP_BACKEND_BASE_URL=${REACT_APP_BACKEND_BASE_UR}
+ENV REACT_APP_GOOGLE_OAUTH_CLIENT_ID=${REACT_APP_GOOGLE_OAUTH_CLIENT_ID}
 
 # Build the application
 RUN yarn build
