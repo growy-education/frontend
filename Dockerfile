@@ -6,6 +6,10 @@
 FROM --platform=linux/amd64 node:18 as build
 WORKDIR /app
 
+ENV REACT_APP_STAGE=${REACT_APP_STAGE}
+ENV REACT_APP_BACKEND_BASE_URL=${REACT_APP_STAGE}
+ENV REACT_APP_GOOGLE_OAUTH_CLIENT_ID=${REACT_APP_GOOGLE_OAUTH_CLIENT_ID}
+
 # Copy package.json and yarn.lock files
 COPY package.json yarn.lock ./
 
