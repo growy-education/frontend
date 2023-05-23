@@ -5,11 +5,10 @@ steps:
       - "--no-cache"
       - "-t"
       - "${_GCR_HOSTNAME}/$PROJECT_ID/$REPO_NAME/${_SERVICE_NAME}:$COMMIT_SHA"
-      - "-e"
-      - "${REACT_APP_STAGE}"
+      - "--build-arg=REACT_APP_STAGE=prod"
+      - "--build-arg=REACT_APP_BACKEND_BASE_URL=https://growychatapp-imvbs5m4uq-an.a.run.app"
+      - "--build-arg=REACT_APP_GOOGLE_OAUTH_CLIENT_ID=892433517348-ldkieko7692c89ud3mut1q7mu7k2q1qr.apps.googleusercontent.com"
       - "."
-    env:
-      - "REACT_APP_STAGE=${REACT_APP_STAGE}"
     id: Build
 
   - name: "gcr.io/cloud-builders/docker"
