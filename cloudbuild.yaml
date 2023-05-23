@@ -5,7 +5,11 @@ steps:
       - "--no-cache"
       - "-t"
       - "${_GCR_HOSTNAME}/$PROJECT_ID/$REPO_NAME/${_SERVICE_NAME}:$COMMIT_SHA"
+      - "-e"
+      - "${REACT_APP_STAGE}"
       - "."
+    env:
+      - "REACT_APP_STAGE=${REACT_APP_STAGE}"
     id: Build
 
   - name: "gcr.io/cloud-builders/docker"
