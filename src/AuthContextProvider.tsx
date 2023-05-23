@@ -39,7 +39,7 @@ export const AuthContextProvider = ({ children }: Props) => {
   const handleLogin = (email: string, password: string) => {
     console.log("email:", email, "password:", password);
     axios
-      .post("http://localhost:3000/auth/signin", {
+      .post(`${process.env.REACT_APP_BACKEND_BASE_URL}/auth/signin`, {
         email,
         password,
       })
@@ -56,7 +56,7 @@ export const AuthContextProvider = ({ children }: Props) => {
   const handleGoogleLogin = (response: GoogleCredentialResponse) => {
     console.log("Googleログインで得られたデータ", response);
     axios
-      .post("http://localhost:3000/auth/signin", {
+      .post(`${process.env.REACT_APP_BACKEND_BASE_URL}/auth/signin`, {
         token: response.credential,
       })
       .then((response) => {
@@ -72,7 +72,7 @@ export const AuthContextProvider = ({ children }: Props) => {
   const handleSignup = (username: string, email: string, password: string) => {
     console.log(email, password);
     axios
-      .post("http://localhost:3000/auth/signup", {
+      .post(`${process.env.REACT_APP_BACKEND_BASE_URL}/auth/signup`, {
         username,
         email,
         password,
