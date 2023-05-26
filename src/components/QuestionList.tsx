@@ -18,8 +18,8 @@ export const QuestionList = () => {
 
   const navigate = useNavigate();
   const handleRowClick = (params: GridRowParams) => {
-    const rowId = params.id as number;
-    navigate("/rowId");
+    const rowId = params.id as string;
+    navigate(`./${rowId}`);
   };
 
   useEffect(() => {
@@ -45,22 +45,20 @@ export const QuestionList = () => {
       flex: 1,
       renderCell: (params: GridRenderCellParams): React.ReactNode => {
         const isAvailable = params.value as boolean;
-        return isAvailable ? (
-          <Link to="" target="_blank">
-            <CircleOutlined />
-          </Link>
-        ) : (
-          <Close />
-        );
+        return isAvailable ? <CircleOutlined /> : <Close />;
       },
     },
   ];
 
   return (
     <Box sx={{ width: "100%" }}>
-      {/* <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
-      </Stack> */}
-      <DataGrid autoHeight rows={questions} columns={columns} />
+      <DataGrid
+        onRowClick={handleRowClick}
+        autoHeight
+        hideFooter
+        rows={questions}
+        columns={columns}
+      />
     </Box>
   );
 };

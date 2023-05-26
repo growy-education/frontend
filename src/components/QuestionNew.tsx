@@ -55,7 +55,11 @@ export const QuestionNew = () => {
         formData.append("file", problem);
         return axios
           .create(axiosConfig)
-          .post("google/upload", formData)
+          .post("google/upload", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
           .then((response) => {
             console.log(response.data);
             return response.data.id as unknown as string;
@@ -63,8 +67,7 @@ export const QuestionNew = () => {
           .catch((error) => console.log(error));
       })
     );
-
-    console.log(problems);
+    console.log(problemIds);
 
     const solutionIds = await Promise.all(
       solutions.map(async (solution) => {
@@ -72,7 +75,11 @@ export const QuestionNew = () => {
         formData.append("file", solution);
         return axios
           .create(axiosConfig)
-          .post("google/upload", formData)
+          .post("google/upload", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
           .then((response) => {
             console.log(response.data);
             return response.data.id as unknown as string;
@@ -80,8 +87,7 @@ export const QuestionNew = () => {
           .catch((error) => console.log(error));
       })
     );
-
-    console.log(solutions);
+    console.log(solutionIds);
 
     axios
       .create(axiosConfig)
