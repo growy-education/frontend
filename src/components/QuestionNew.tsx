@@ -57,6 +57,7 @@ export const QuestionNew = () => {
           .create(axiosConfig)
           .post("google/upload", formData, {
             headers: {
+              //Content-Type is needed for interceptor of backend
               "Content-Type": "multipart/form-data",
             },
           })
@@ -77,6 +78,7 @@ export const QuestionNew = () => {
           .create(axiosConfig)
           .post("google/upload", formData, {
             headers: {
+              //Content-Type is needed for interceptor of backend
               "Content-Type": "multipart/form-data",
             },
           })

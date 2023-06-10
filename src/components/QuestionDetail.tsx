@@ -64,6 +64,7 @@ const QuestionDetail = () => {
       if (url.includes("https://youtu.be/")) {
         const id = url.split("https://youtu.be/")[1];
         if (id) {
+          // This embed phrase is needed for embedding
           return `https://www.youtube.com/embed/${id}`;
         }
       }
@@ -93,7 +94,6 @@ const QuestionDetail = () => {
             <CardMedia
               component="img"
               height="100%"
-              crossOrigin="anonymous"
               image={image}
               alt={`Solution Image ${index + 1}`}
             />
@@ -107,7 +107,6 @@ const QuestionDetail = () => {
             <CardMedia
               component="img"
               height="100%"
-              crossOrigin="anonymous"
               image={image}
               alt={`Answer Image ${index + 1}`}
             />
