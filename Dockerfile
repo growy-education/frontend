@@ -15,15 +15,15 @@ RUN yarn --frozen-lockfile
 # Copy the rest of the application files
 COPY . ./
 
-# Set the environment variables to React app
-ARG REACT_APP_STAGE
-ARG REACT_APP_BACKEND_BASE_URL
-ARG REACT_APP_GOOGLE_OAUTH_CLIENT_ID
+# # Set the environment variables to React app
+# ARG REACT_APP_STAGE
+# ARG REACT_APP_BACKEND_BASE_URL
+# ARG REACT_APP_GOOGLE_OAUTH_CLIENT_ID
 
-# Pass the environment variables to React app
-ENV REACT_APP_STAGE=${REACT_APP_STAGE}
-ENV REACT_APP_BACKEND_BASE_URL=${REACT_APP_BACKEND_BASE_URL}
-ENV REACT_APP_GOOGLE_OAUTH_CLIENT_ID=${REACT_APP_GOOGLE_OAUTH_CLIENT_ID}
+# # Pass the environment variables to React app
+# ENV REACT_APP_STAGE=${REACT_APP_STAGE}
+# ENV REACT_APP_BACKEND_BASE_URL=${REACT_APP_BACKEND_BASE_URL}
+# ENV REACT_APP_GOOGLE_OAUTH_CLIENT_ID=${REACT_APP_GOOGLE_OAUTH_CLIENT_ID}
 
 # Build the application
 RUN yarn build
