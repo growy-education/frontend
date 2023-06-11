@@ -5,11 +5,12 @@ steps:
       - "--no-cache"
       - "-t"
       - "${_GCR_HOSTNAME}/$PROJECT_ID/$REPO_NAME/${_SERVICE_NAME}:$COMMIT_SHA"
-      # These variables should be updated
-      - "--build-arg=REACT_APP_STAGE=prod"
-      - "--build-arg=REACT_APP_BACKEND_BASE_URL=https://api.growy.education"
-      - "--build-arg=REACT_APP_GOOGLE_OAUTH_CLIENT_ID=892433517348-ldkieko7692c89ud3mut1q7mu7k2q1qr.apps.googleusercontent.com"
       - "."
+    # These environment variables should be updated
+    # env:
+    #   - "REACT_APP_STAGE=${_REACT_APP_STAGE}"
+    #   - "REACT_APP_BACKEND_BASE_URL=${_REACT_APP_BACKEND_BASE_URL}"
+    #   - "REACT_APP_GOOGLE_OAUTH_CLIENT_ID=${_REACT_APP_GOOGLE_OAUTH_CLIENT_ID}"
     id: Build
 
   - name: "gcr.io/cloud-builders/docker"
