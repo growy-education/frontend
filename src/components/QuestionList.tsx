@@ -8,9 +8,8 @@ import {
   GridRowParams,
 } from "@mui/x-data-grid";
 import { AxiosContext } from "../AxiosContextProvider";
-import { CircleOutlined, Close, Link } from "@mui/icons-material";
+import { CircleOutlined, Close } from "@mui/icons-material";
 import axios from "axios";
-import { TablePagination } from "@mui/material";
 
 export const QuestionList = () => {
   const [questions, setQuestions] = useState([]);

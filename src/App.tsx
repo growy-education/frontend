@@ -5,6 +5,7 @@ import { AuthContextProvider } from "./AuthContextProvider";
 import { General } from "./General";
 import AxiosContextProvider from "./AxiosContextProvider";
 import { BrowserRouter } from "react-router-dom";
+import { UserContextProvider } from "./UserContextProvider";
 
 function App() {
   return (
@@ -14,9 +15,11 @@ function App() {
       >
         <AuthContextProvider>
           <AxiosContextProvider>
-            <BrowserRouter>
-              <General />
-            </BrowserRouter>
+            <UserContextProvider>
+              <BrowserRouter>
+                <General />
+              </BrowserRouter>
+            </UserContextProvider>
           </AxiosContextProvider>
         </AuthContextProvider>
       </GoogleOAuthProvider>

@@ -20,10 +20,25 @@ import QuestionDetail from "./components/QuestionDetail";
 import { Studyroom } from "./components/Studyroom";
 import { DrawerListItem } from "./tools/DrawerListItem";
 import { Preservation } from "./components/StudyroomPreservation";
+import { UserContext } from "./UserContextProvider";
+import { Role } from "./types/role.type";
+import { UsersList } from "./components/UsersList";
+import { UserNew } from "./components/CreateUser";
+import { UpdateUser } from "./components/UpdateUser";
+import { CustomerNew } from "./components/CreateCustomer";
+import { CustomerDetail } from "./components/CustomerDetail";
+import { UserDetail } from "./components/UserDetail";
+import { TeacherDetail } from "./components/TeacherDetail";
+import { UpdateCustomer } from "./components/UpdateCustomer";
+import { CustomersList } from "./components/CustomersList";
+import { TeachersList } from "./components/TeachersList";
+import { TeacherNew } from "./components/CreateTeacher";
+import { UpdateTeacher } from "./components/UpdateTeacher";
 
 export const General: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { handleLogout } = useContext(AuthContext);
+  const { user } = useContext(UserContext);
 
   const handleToggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -42,7 +57,7 @@ export const General: React.FC = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Growy
+            Growy（現在：{user.role}モードです）
           </Typography>
           <IconButton onClick={handleLogout} color="inherit">
             <LogoutIcon />
@@ -83,6 +98,31 @@ export const General: React.FC = () => {
           <Route path="/questions/:questionId" element={<QuestionDetail />} />
           <Route path="/studyroom" element={<Studyroom />} />
           <Route path="/studyroom/preservation" element={<Preservation />} />
+          {user.role === Role.ADMIN && (
+            <>
+              <Route path="/users" element={<UsersList />} />
+              <Route path="/users/create" element={<UserNew />} />
+              <Route path="/users/:userId/" element={<UserDetail />} />
+              <Route path="/users/:userId/update" element={<UpdateUser />} />
+              <Route path="/customers" element={<CustomersList />} />
+              <Route path="/customers/create" element={<CustomerNew />} />
+              <Route
+                path="/customers/:customerId"
+                element={<CustomerDetail />}
+              />
+              <Route
+                path="/customers/:customerId/update"
+                element={<UpdateCustomer />}
+              />
+              <Route path="/teachers" element={<TeachersList />} />
+              <Route path="/teachers/create" element={<TeacherNew />} />
+              <Route path="/teachers/:teacherId/" element={<TeacherDetail />} />
+              <Route
+                path="/teachers/:teacherId/update"
+                element={<UpdateTeacher />}
+              />
+            </>
+          )}
         </Routes>
       </Box>
     </Box>
