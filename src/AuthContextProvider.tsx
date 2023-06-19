@@ -1,8 +1,9 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
-import { GoogleCredentialResponse, GoogleLogin } from "@react-oauth/google";
+import { GoogleCredentialResponse } from "@react-oauth/google";
 import axios from "axios";
-import { LoginScreen } from "./SignIn";
 import { CircularProgress } from "@mui/material";
+
+import { LoginScreen } from "./SignIn";
 
 interface AuthContextProps {
   isLoggedIn: boolean;
@@ -36,6 +37,16 @@ export const AuthContextProvider = ({ children }: Props) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [bearerToken, setBearerToken] = useState<string>("");
 
+  useEffect(() => {
+    // ページが読み込まれた際に保存されたBearer Tokenを取得
+    const savedToken = localStorage.getItem("bearerToken");
+
+    if (savedToken) {
+      setBearerToken(savedToken);
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   const handleLogin = (email: string, password: string) => {
     console.log("email:", email, "password:", password);
     axios
@@ -45,8 +56,11 @@ export const AuthContextProvider = ({ children }: Props) => {
       })
       .then((response) => {
         console.log("Backendから得られたデータ", response.data);
-        setBearerToken(response.data.accessToken);
+        const token = response.data.accessToken;
+        setBearerToken(token);
         setIsLoggedIn(true);
+        // Bearer Tokenを保存
+        localStorage.setItem("bearerToken", token);
       })
       .catch((error) => {
         console.log("AuthContextProviderのエラー:", error);
@@ -61,8 +75,11 @@ export const AuthContextProvider = ({ children }: Props) => {
       })
       .then((response) => {
         console.log("Backendから得られたデータ", response.data);
-        setBearerToken(response.data.accessToken);
+        const token = response.data.accessToken;
+        setBearerToken(token);
         setIsLoggedIn(true);
+        // Bearer Tokenを保存
+        localStorage.setItem("bearerToken", token);
       })
       .catch((error) => {
         console.log("AuthContextProviderのエラー:", error);
@@ -88,6 +105,8 @@ export const AuthContextProvider = ({ children }: Props) => {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setBearerToken("");
+    // Bearer Tokenを削除
+    localStorage.removeItem("bearerToken");
   };
 
   return (

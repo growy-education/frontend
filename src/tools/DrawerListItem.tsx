@@ -1,36 +1,29 @@
-import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material"
-import { Quiz, Send, Tv } from "@mui/icons-material"
-import { useNavigate } from "react-router-dom"
+import { useContext } from "react";
+import { List } from "@mui/material";
+import { UserContext } from "../UserContextProvider";
+import { Role } from "../types/role.type";
+import { ListItemQuestion } from "../components/ListItemQuestion";
+import { ListItemRoom } from "../components/ListItemRoom";
+import { ListItemUser } from "../components/ListItemUser";
+import { ListItemTeacher } from "../components/ListItemTeacher";
+import { ListItemCustomer } from "../components/ListItemCustomer";
 
 export const DrawerListItem = () => {
-    const navigate = useNavigate();
-    return(
-        <List>
-        <ListItem onClick={() => navigate("questions")}>
-          <ListItemButton>
-            <ListItemIcon>
-              <Quiz />
-            </ListItemIcon>
-            <ListItemText primary="今までの質問" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem onClick={() => navigate("questions/new")}>
-          <ListItemButton>
-            <ListItemIcon>
-              <Send />
-            </ListItemIcon>
-            <ListItemText primary="質問する" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem onClick={() => navigate("studyroom")}>
-          <ListItemButton>
-            <ListItemIcon>
-              <Tv />
-            </ListItemIcon>
-            <ListItemText primary="オンライン自習室" />
-          </ListItemButton>
-        </ListItem>
-      </List>
+  const { user } = useContext(UserContext);
 
-    )
-}
+  return (
+    <List>
+      <ListItemQuestion />
+      <ListItemRoom />
+      {user.role === Role.ADMIN && (
+        <>
+          <ListItemUser />
+          <ListItemCustomer />
+          <ListItemTeacher />
+        </>
+      )}
+      {user.role === Role.CUSTOMER && <></>}
+      {user.role === Role.TEACHER && <></>}
+    </List>
+  );
+};

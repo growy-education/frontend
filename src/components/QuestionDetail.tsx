@@ -10,9 +10,10 @@ import {
 } from "@mui/material";
 import { AxiosContext } from "../AxiosContextProvider";
 import { useParams } from "react-router-dom";
-import { Question } from "../types/question.type";
+import { Question } from "../types/question.class";
 import axios from "axios";
 import { QuestionTitle } from "./QuestionTitle";
+import { plainToInstance } from "class-transformer";
 
 const QuestionDetail = () => {
   const [question, setQuestion] = useState<null | Question>(null);
@@ -26,12 +27,13 @@ const QuestionDetail = () => {
       .create(axiosConfig)
       .get(`/questions/${questionId}`)
       .then((response) => {
-        setQuestion(response.data);
+        const question = plainToInstance(Question, response.data);
+        setQuestion(question);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [questionId]);
+  }, [axiosConfig, questionId]);
 
   if (!questionId) {
     return <p>だめだこりゃ！</p>;
@@ -41,11 +43,19 @@ const QuestionDetail = () => {
     return <p>ローディングなう！</p>;
   }
 
-  const { id, createdAt, title, content, memo, problems, solutions, answers } =
-    question;
+  const {
+    id,
+    createdAt,
+    updatedAt,
+    title,
+    content,
+    memo,
+    problems,
+    solutions,
+    answer,
+  } = question;
 
-  const getImagePaths = (drivePaths: string) => {
-    const urls = drivePaths.split(", ");
+  const getImagePaths = (urls: string[]) => {
     const ids = urls.map((url) => {
       if (url.includes("https://drive.google.com/open?id=")) {
         const id = url.split("https://drive.google.com/open?id=")[1];
@@ -58,19 +68,13 @@ const QuestionDetail = () => {
     return filteredIds;
   };
 
-  const getYouTubePaths = (youtubePaths: string) => {
-    const urls = youtubePaths.split(", ");
-    const ids = urls.map((url) => {
-      if (url.includes("https://youtu.be/")) {
-        const id = url.split("https://youtu.be/")[1];
-        if (id) {
-          // This embed phrase is needed for embedding
-          return `https://www.youtube.com/embed/${id}`;
-        }
+  const getYouTubePath = (url: string) => {
+    if (url.includes("https://youtu.be/")) {
+      const id = url.split("https://youtu.be/")[1];
+      if (id) {
+        return `https://www.youtube.com/embed/${id}`;
       }
-    });
-    const filteredIds = ids.filter((id) => !!!!id);
-    return filteredIds;
+    }
   };
 
   return (
@@ -78,8 +82,10 @@ const QuestionDetail = () => {
       <Box my={3}>
         <QuestionTitle title="ID" />
         <Typography>{id}</Typography>
-        <QuestionTitle title="日時" />
-        <Typography>{createdAt}</Typography>
+        <QuestionTitle title="作成日時" />
+        <Typography>{createdAt.toDateString()}</Typography>
+        <QuestionTitle title="作成日時" />
+        <Typography>{updatedAt.toDateString()}</Typography>
         <QuestionTitle title="タイトル" />
         <Typography>{title}</Typography>
         <QuestionTitle title="質問内容" />
@@ -113,26 +119,25 @@ const QuestionDetail = () => {
           </Card>
         </Grid>
       ))}
-      {answers &&
-        getYouTubePaths(answers).map((url, index) => (
-          <Grid item xs={12}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6">回答動画</Typography>
-                <Box mt={2} pb="56.25%" position="relative">
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src={url}
-                    title="Answer YouTube Video"
-                    allowFullScreen
-                    style={{ position: "absolute", top: 0, left: 0 }}
-                  ></iframe>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
+      {answer && (
+        <Grid item xs={12}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6">回答動画</Typography>
+              <Box mt={2} pb="56.25%" position="relative">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src={getYouTubePath(answer)}
+                  title="回答動画"
+                  allowFullScreen
+                  style={{ position: "absolute", top: 0, left: 0 }}
+                ></iframe>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+      )}
     </Container>
   );
 };

@@ -10,38 +10,40 @@ import {
 import { TextField } from "@mui/material";
 import { AxiosContext } from "../AxiosContextProvider";
 import { QuestionTitle } from "./QuestionTitle";
-import { Role } from "../types/role.type";
 import SendIcon from "@mui/icons-material/Send";
 import { Relationship } from "../types/relationship.enum";
+import { TeacherStatus } from "../types/teacher-status.enum";
 
-export const UpdateCustomer = () => {
+export const TeacherEdit = () => {
   const [firstName, setFirstName] = useState("");
   const [firstNameKana, setFirstNameKana] = useState("");
   const [lastName, setLastName] = useState("");
   const [lastNameKana, setLastNameKana] = useState("");
-  const [relationship, setRelationship] = useState<Relationship>(
-    Relationship.FATHER
+  const [status, setStatus] = useState<TeacherStatus.INACTIVE>(
+    TeacherStatus.INACTIVE
   );
+  const [chatworkAccountId, setChatworkAccountId] = useState("");
 
   const { axiosConfig } = useContext(AxiosContext);
 
   return (
     <>
-      <Typography variant="h4">ユーザーを更新する</Typography>
-      <QuestionTitle title="お名前" />
+      <Typography variant="h4">講師を新規作成する</Typography>
+
+      <QuestionTitle title="名前" />
       <TextField
         fullWidth
         id="firstName"
-        label="お名前"
-        helperText=""
+        label="ユーザー名"
+        helperText="4文字以上20文字以下で設定する。"
         onChange={(event) => setFirstName(event.target.value)}
       />
 
-      <QuestionTitle title="お名前（読み仮名）" />
+      <QuestionTitle title="名前（読み仮名）" />
       <TextField
         fullWidth
         id="firstNameKana"
-        label="お名前（読み仮名）"
+        label="名前（読み仮名）"
         helperText="@growy.educationが望ましい。"
         onChange={(event) => setFirstNameKana(event.target.value)}
       />
@@ -64,30 +66,33 @@ export const UpdateCustomer = () => {
         onChange={(event) => setLastNameKana(event.target.value)}
       />
 
-      <QuestionTitle title="続柄" />
+      <QuestionTitle title="ChatworkID" />
+      <TextField
+        fullWidth
+        id="chatworkId"
+        label="パスワード"
+        helperText="英数小文字・大文字、そして記号を含む8文字以上。"
+        onChange={(event) => setChatworkAccountId(event.target.value)}
+      />
+
+      <QuestionTitle title="ステータス" />
       <RadioGroup
         row
         aria-labelledby="demo-radio-buttons-group-label"
-        defaultValue={relationship}
+        defaultValue={TeacherStatus.INACTIVE}
         name="radio-buttons-group"
       >
         <FormControlLabel
           value={Relationship.FATHER}
           control={<Radio />}
-          label="父親"
+          label="現在対応不可能"
         />
         <FormControlLabel
           value={Relationship.MOTHER}
           control={<Radio />}
-          label="母親"
-        />
-        <FormControlLabel
-          value={Relationship.OTHER}
-          control={<Radio />}
-          label="その他"
+          label="現在対応可能"
         />
       </RadioGroup>
-
       <Box margin="0.5em">
         <Button
           color="primary"

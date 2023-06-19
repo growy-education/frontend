@@ -13,7 +13,7 @@ import { QuestionTitle } from "./QuestionTitle";
 import { Role } from "../types/role.type";
 import SendIcon from "@mui/icons-material/Send";
 
-export const UpdateUser = () => {
+export const UserEdit = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setMemo] = useState("");

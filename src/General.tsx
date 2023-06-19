@@ -11,29 +11,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { QuestionNew } from "./components/QuestionNew";
-import { QuestionList } from "./components/QuestionList";
+
 import { AuthContext } from "./AuthContextProvider";
-import { Outlet, Route, Routes } from "react-router-dom";
-import { Information } from "./Information";
-import QuestionDetail from "./components/QuestionDetail";
-import { Studyroom } from "./components/Studyroom";
 import { DrawerListItem } from "./tools/DrawerListItem";
-import { Preservation } from "./components/StudyroomPreservation";
 import { UserContext } from "./UserContextProvider";
-import { Role } from "./types/role.type";
-import { UsersList } from "./components/UsersList";
-import { UserNew } from "./components/CreateUser";
-import { UpdateUser } from "./components/UpdateUser";
-import { CustomerNew } from "./components/CreateCustomer";
-import { CustomerDetail } from "./components/CustomerDetail";
-import { UserDetail } from "./components/UserDetail";
-import { TeacherDetail } from "./components/TeacherDetail";
-import { UpdateCustomer } from "./components/UpdateCustomer";
-import { CustomersList } from "./components/CustomersList";
-import { TeachersList } from "./components/TeachersList";
-import { TeacherNew } from "./components/CreateTeacher";
-import { UpdateTeacher } from "./components/UpdateTeacher";
+import { RolesRouter } from "./Router";
 
 export const General: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -91,39 +73,7 @@ export const General: React.FC = () => {
           marginTop: "64px",
         }}
       >
-        <Routes>
-          <Route path="/" element={<Information />} />
-          <Route path="/questions" element={<QuestionList />} />
-          <Route path="/questions/new" element={<QuestionNew />} />
-          <Route path="/questions/:questionId" element={<QuestionDetail />} />
-          <Route path="/studyroom" element={<Studyroom />} />
-          <Route path="/studyroom/preservation" element={<Preservation />} />
-          {user.role === Role.ADMIN && (
-            <>
-              <Route path="/users" element={<UsersList />} />
-              <Route path="/users/create" element={<UserNew />} />
-              <Route path="/users/:userId/" element={<UserDetail />} />
-              <Route path="/users/:userId/update" element={<UpdateUser />} />
-              <Route path="/customers" element={<CustomersList />} />
-              <Route path="/customers/create" element={<CustomerNew />} />
-              <Route
-                path="/customers/:customerId"
-                element={<CustomerDetail />}
-              />
-              <Route
-                path="/customers/:customerId/update"
-                element={<UpdateCustomer />}
-              />
-              <Route path="/teachers" element={<TeachersList />} />
-              <Route path="/teachers/create" element={<TeacherNew />} />
-              <Route path="/teachers/:teacherId/" element={<TeacherDetail />} />
-              <Route
-                path="/teachers/:teacherId/update"
-                element={<UpdateTeacher />}
-              />
-            </>
-          )}
-        </Routes>
+        <RolesRouter />
       </Box>
     </Box>
   );
