@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import { UserContext } from "./UserContextProvider";
-import { Role } from "./types/role.type";
+import { Role } from "./types/role.enum";
 import { NotFound } from "./components/NotFound";
 import { Information } from "./Information";
 import { QuestionList } from "./components/QuestionList";

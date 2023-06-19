@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import {
   Box,
   Button,
+  CircularProgress,
   FormControlLabel,
   Grid,
   Radio,
@@ -43,6 +44,10 @@ export const QuestionEdit = () => {
         console.log(error);
       });
   }, [axiosConfig, questionId]);
+
+  if (!!!question) {
+    return <CircularProgress />;
+  }
 
   return (
     <>

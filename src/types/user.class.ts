@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { Role } from "./role.type";
+import { Role } from "./role.enum";
 
 export class User {
   id: string;

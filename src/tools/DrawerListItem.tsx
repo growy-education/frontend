@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { List } from "@mui/material";
 import { UserContext } from "../UserContextProvider";
-import { Role } from "../types/role.type";
+import { Role } from "../types/role.enum";
 import { ListItemQuestion } from "../components/ListItemQuestion";
 import { ListItemRoom } from "../components/ListItemRoom";
 import { ListItemUser } from "../components/ListItemUser";
