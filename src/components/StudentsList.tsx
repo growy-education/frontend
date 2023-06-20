@@ -20,7 +20,7 @@ export const StudentsList = () => {
   useEffect(() => {
     axios
       .create(axiosConfig)
-      .get("customers")
+      .get("students")
       .then((response) => {
         console.log(response.data);
         const customers = response.data.map((customerJson: string) =>
@@ -29,7 +29,7 @@ export const StudentsList = () => {
         setCustomers(customers);
       })
       .catch((error) =>
-        console.log("error occurred at CustomersList.tsx", error)
+        console.log("error occurred at StudentsList.tsx", error)
       );
   }, [axiosConfig]);
 
@@ -40,7 +40,7 @@ export const StudentsList = () => {
     { field: "firstName", headerName: "お名前", flex: 1 },
     { field: "firstNameKana", headerName: "お名前（読み仮名）", flex: 1 },
     { field: "lastName", headerName: "苗字", flex: 1 },
-    { field: "lastName", headerName: "苗字（読み仮名）", flex: 1 },
+    { field: "lastNameKana", headerName: "苗字（読み仮名）", flex: 1 },
   ];
 
   return (
