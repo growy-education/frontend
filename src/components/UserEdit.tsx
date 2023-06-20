@@ -10,15 +10,17 @@ import {
 import { TextField } from "@mui/material";
 import { AxiosContext } from "../AxiosContextProvider";
 import { QuestionTitle } from "./QuestionTitle";
-import { Role } from "../types/role.enum";
 import SendIcon from "@mui/icons-material/Send";
+import { Role } from "../types/role.enum";
 
 export const UserEdit = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setMemo] = useState("");
   const [phone, setPhone] = useState("");
-  const [role, setRole] = useState<Role.CUSTOMER | Role.ADMIN>(Role.CUSTOMER);
+  const [role, setRole] = useState<(typeof Role)[keyof typeof Role]>(
+    Role.CUSTOMER
+  );
 
   const { axiosConfig } = useContext(AxiosContext);
 

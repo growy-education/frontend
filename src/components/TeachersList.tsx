@@ -40,7 +40,7 @@ export const TeachersList = () => {
     { field: "firstName", headerName: "お名前", flex: 1 },
     { field: "firstNameKana", headerName: "お名前（読み仮名）", flex: 1 },
     { field: "lastName", headerName: "苗字", flex: 1 },
-    { field: "lastName", headerName: "苗字（読み仮名）", flex: 1 },
+    { field: "lastNameKana", headerName: "苗字（読み仮名）", flex: 1 },
     { field: "status", headerName: "ステータス", flex: 1 },
     { field: "assignedQuestionsNumber", headerName: "質問数", flex: 1 },
   ];

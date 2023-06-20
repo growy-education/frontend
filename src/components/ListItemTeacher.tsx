@@ -35,7 +35,7 @@ export const ListItemTeacher = () => {
       </ListItemButton>
       <Collapse in={teacherListOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem onClick={() => navigate("teachers")}>
+          <ListItem onClick={() => navigate("/teachers")}>
             <ListItemButton>
               <ListItemIcon>
                 <ListAlt />
@@ -43,7 +43,7 @@ export const ListItemTeacher = () => {
               <ListItemText primary="講師リスト" />
             </ListItemButton>
           </ListItem>
-          <ListItem onClick={() => navigate("teachers/create")}>
+          <ListItem onClick={() => navigate("/teachers/new")}>
             <ListItemButton>
               <ListItemIcon>
                 <AddCircle />

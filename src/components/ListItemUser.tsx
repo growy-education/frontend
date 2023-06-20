@@ -35,7 +35,7 @@ export const ListItemUser = () => {
       </ListItemButton>
       <Collapse in={userListOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem onClick={() => navigate("users")}>
+          <ListItem onClick={() => navigate("/users")}>
             <ListItemButton>
               <ListItemIcon>
                 <ListAlt />
@@ -43,7 +43,7 @@ export const ListItemUser = () => {
               <ListItemText primary="ユーザーリスト" />
             </ListItemButton>
           </ListItem>
-          <ListItem onClick={() => navigate("users/create")}>
+          <ListItem onClick={() => navigate("/users/new")}>
             <ListItemButton>
               <ListItemIcon>
                 <AddCircle />

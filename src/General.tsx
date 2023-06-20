@@ -15,7 +15,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { AuthContext } from "./AuthContextProvider";
 import { DrawerListItem } from "./tools/DrawerListItem";
 import { UserContext } from "./UserContextProvider";
-import { RolesRouter } from "./Router";
+import { Outlet } from "react-router-dom";
 
 export const General: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -73,7 +73,7 @@ export const General: React.FC = () => {
           marginTop: "64px",
         }}
       >
-        <RolesRouter />
+        <Outlet />
       </Box>
     </Box>
   );

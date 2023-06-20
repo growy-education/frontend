@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import {
   IsEmail,
@@ -25,6 +25,8 @@ import {
 
 import { AxiosContext } from "../AxiosContextProvider";
 import { QuestionTitle } from "./QuestionTitle";
+import { SigninWithPasswordDto } from "../SignIn";
+import axios from "axios";
 
 class CreateUserDto {
   @IsString()
@@ -58,9 +60,18 @@ export const UserNew = () => {
     formState: { errors },
   } = useForm<CreateUserDto>({ resolver });
 
-  const onSubmit = (data) => {
+  const onSubmit: SubmitHandler<CreateUserDto> = (data) => {
     console.log(data);
-    setOpen(true);
+    axios
+      .create(axiosConfig)
+      .post("users", {
+        ...data,
+      })
+      .then((response) => {
+        console.log(response.status);
+        setOpen(true);
+      })
+      .catch((error) => console.log(error));
   };
 
   // 確認ダイアログ
@@ -75,7 +86,7 @@ export const UserNew = () => {
   return (
     <>
       <Typography variant="h4">ユーザーを新規作成する</Typography>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <Box component="form" onSubmit={handleSubmit(onSubmit)}>
         <QuestionTitle title="ユーザー名" />
         <TextField
           fullWidth
@@ -108,7 +119,7 @@ export const UserNew = () => {
         <QuestionTitle title="パスワード" />
         <TextField
           fullWidth
-          id="user"
+          id="password"
           label="パスワード"
           error={!!errors.password}
           helperText={
@@ -117,6 +128,19 @@ export const UserNew = () => {
               : "英数小文字・大文字、そして記号を含む8文字以上。"
           }
           {...register("password")}
+        />
+        <QuestionTitle title="電話番号" />
+        <TextField
+          fullWidth
+          id="phone"
+          label="電話番号"
+          error={!!errors.phone}
+          helperText={
+            errors.phone
+              ? errors.phone.message
+              : "電話番号を半角英数字で入力してください。"
+          }
+          {...register("phone")}
         />
         <Box margin="0.5em">
           <Button
@@ -128,7 +152,7 @@ export const UserNew = () => {
             送信
           </Button>
         </Box>
-      </form>
+      </Box>
       {/* ダイアログ */}
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>ユーザーが作成されました</DialogTitle>

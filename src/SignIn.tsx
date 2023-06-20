@@ -10,186 +10,114 @@ import {
 } from "@mui/material";
 import { GoogleCredentialResponse, GoogleLogin } from "@react-oauth/google";
 
+import { IsEmail, Matches, MaxLength, MinLength } from "class-validator";
+import { classValidatorResolver } from "@hookform/resolvers/class-validator";
+import { SubmitHandler, useForm } from "react-hook-form";
+
 type LoginScreenProps = {
   handleEmailPasswordLogin: (email: string, password: string) => void;
   handleGoogleLogin: (response: GoogleCredentialResponse) => void;
   handleSignup: (username: string, email: string, password: string) => void;
 };
 
-type ScreenType = "signin" | "signup";
+export class SigninWithPasswordDto {
+  @IsEmail({}, { message: "正しいメールアドレスを入力してください" })
+  email: string;
+
+  @MinLength(8, { message: "パスワードは8文字以上です" })
+  @MaxLength(32, { message: "パスワードは32文字以下です" })
+  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+    message: "パスワードは英数小文字・大文字・記号を含む8文字以上です",
+  })
+  password: string;
+}
 
 export const LoginScreen = ({
   handleEmailPasswordLogin,
   handleGoogleLogin,
   handleSignup,
 }: LoginScreenProps) => {
-  const [screenType, setScreenType] = useState<ScreenType>("signin");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [googleLoginError, setGoogleLoginError] = useState("");
 
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
-  };
+  const resolver = classValidatorResolver(SigninWithPasswordDto);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SigninWithPasswordDto>({ resolver });
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
-
-  const handleLogin = () => {
-    handleEmailPasswordLogin(email, password);
+  const onSubmit: SubmitHandler<SigninWithPasswordDto> = (data) => {
+    console.log(data);
+    handleEmailPasswordLogin(data.email, data.password);
   };
 
   const handleGoogleLoginError = () => {
-    setErrorMessage("Googleログインに失敗しました。");
+    setGoogleLoginError("GoogleLoginに失敗しました。");
   };
 
-  if (screenType === "signin") {
-    return (
-      <Container
-        maxWidth="sm"
-        style={{
-          height: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Paper elevation={3} style={{ padding: "24px" }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography variant="h5" align="center">
-                Growyにログイン
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <form
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "16px",
-                }}
-              >
-                <TextField
-                  type="email"
-                  label="Email"
-                  variant="outlined"
-                  value={email}
-                  onChange={handleEmailChange}
-                />
-                <TextField
-                  type="password"
-                  label="パスワード"
-                  variant="outlined"
-                  value={password}
-                  onChange={handlePasswordChange}
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  style={{ marginTop: "16px" }}
-                  onClick={handleLogin}
-                >
-                  ログイン
-                </Button>
-                <Box alignContent={"center"}>
-                  <GoogleLogin
-                    onSuccess={handleGoogleLogin}
-                    onError={handleGoogleLoginError}
-                  />
-                </Box>
-                {errorMessage && (
-                  <Typography variant="body2" color="error">
-                    {errorMessage}
-                  </Typography>
-                )}
-                <Typography variant="body2">
-                  アカウントがない場合は、
-                  <Button onClick={() => setScreenType("signup")}>
-                    アカウント登録
-                  </Button>
-                  してください。
-                </Typography>
-              </form>
-            </Grid>
+  return (
+    <Container
+      maxWidth="sm"
+      style={{
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Paper elevation={3} style={{ padding: "24px" }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Typography variant="h5" align="center">
+              Growyにログイン
+            </Typography>
           </Grid>
-        </Paper>
-      </Container>
-    );
-  } else {
-    return (
-      <Container
-        maxWidth="sm"
-        style={{
-          height: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Paper elevation={3} style={{ padding: "24px" }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography variant="h5" align="center">
-                Growyにサインアップ
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <form
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "16px",
-                }}
+          <Grid item xs={12}>
+            <Box
+              component="form"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "16px",
+              }}
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <TextField
+                type="email"
+                label="メールアドレス"
+                variant="outlined"
+                id="email"
+                autoComplete="email"
+                error={!!errors.email}
+                helperText={errors.email ? errors.email.message : ""}
+                {...register("email")}
+              />
+              <TextField
+                fullWidth
+                id="password"
+                label="パスワード"
+                error={!!errors.password}
+                helperText={errors.password ? errors.password.message : ""}
+                {...register("password")}
+              />
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                style={{ marginTop: "16px" }}
               >
-                <TextField
-                  type="text"
-                  label="ユーザー名"
-                  variant="outlined"
-                  value={username}
-                  onChange={handleUsernameChange}
+                ログイン
+              </Button>
+              <Box alignContent={"center"}>
+                <GoogleLogin
+                  onSuccess={handleGoogleLogin}
+                  onError={handleGoogleLoginError}
                 />
-                <TextField
-                  type="email"
-                  label="Email"
-                  variant="outlined"
-                  value={email}
-                  onChange={handleEmailChange}
-                />
-                <TextField
-                  type="password"
-                  label="パスワード"
-                  variant="outlined"
-                  value={password}
-                  onChange={handlePasswordChange}
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  style={{ marginTop: "16px" }}
-                  onClick={() => handleSignup(username, email, password)}
-                >
-                  アカウント登録
-                </Button>
-                <Box alignContent={"center"}>
-                  <Typography variant="body2">
-                    既にアカウントをお持ちの場合は、
-                    <Button onClick={() => setScreenType("signin")}>
-                      サインイン
-                    </Button>
-                    してください。
-                  </Typography>
-                </Box>
-              </form>
-            </Grid>
+              </Box>
+            </Box>
           </Grid>
-        </Paper>
-      </Container>
-    );
-  }
+        </Grid>
+      </Paper>
+    </Container>
+  );
 };

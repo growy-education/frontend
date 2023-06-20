@@ -1,10 +1,17 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Box,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   FormControlLabel,
+  MenuItem,
   Radio,
   RadioGroup,
+  Select,
   Typography,
 } from "@mui/material";
 import { TextField } from "@mui/material";
@@ -13,96 +20,219 @@ import { QuestionTitle } from "./QuestionTitle";
 import SendIcon from "@mui/icons-material/Send";
 import { Relationship } from "../types/relationship.enum";
 import { TeacherStatus } from "../types/teacher-status.enum";
+import { IsNotEmpty, IsNumberString, IsString, Matches } from "class-validator";
+import { useNavigate } from "react-router-dom";
+import { classValidatorResolver } from "@hookform/resolvers/class-validator";
+import { SubmitHandler, useForm } from "react-hook-form";
+import axios from "axios";
+import { plainToInstance } from "class-transformer";
+import { User } from "../types/user.class";
+import { Role } from "../types/role.enum";
+
+class CreateTeacherDto {
+  @IsString()
+  @IsNotEmpty({ message: "ユーザーを選択してください" })
+  userId: string;
+
+  @IsString()
+  @IsNotEmpty({ message: "お名前を入力してください" })
+  @Matches(/^[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}ー－]+$/u, {
+    message: "日本語で入力してください",
+  })
+  firstName: string;
+
+  @IsString()
+  @IsNotEmpty({ message: "お名前（読み仮名）を入力してください" })
+  @Matches(/^[ァ-ヶー]*$/, { message: "カタカナで入力してください" })
+  firstNameKana: string;
+
+  @IsString()
+  @IsNotEmpty({ message: "苗字を入力してください" })
+  @Matches(/^[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}ー－]+$/u, {
+    message: "日本語で入力してください",
+  })
+  lastName: string;
+
+  @IsString()
+  @IsNotEmpty({ message: "苗字（読み仮名）を入力してください" })
+  @Matches(/^[ァ-ヶー]*$/, { message: "カタカナで入力してください" })
+  lastNameKana: string;
+
+  @IsNumberString()
+  @IsNotEmpty({ message: "ChatworkIDを入力してください" })
+  chatworkAccountId: string;
+}
 
 export const TeacherNew = () => {
-  const [firstName, setFirstName] = useState("");
-  const [firstNameKana, setFirstNameKana] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [lastNameKana, setLastNameKana] = useState("");
-  const [status, setStatus] = useState<TeacherStatus.INACTIVE>(
-    TeacherStatus.INACTIVE
-  );
-  const [chatworkAccountId, setChatworkAccountId] = useState("");
-
   const { axiosConfig } = useContext(AxiosContext);
+  const navigate = useNavigate();
+
+  const resolver = classValidatorResolver(CreateTeacherDto);
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<CreateTeacherDto>({ resolver });
+
+  const [users, setUsers] = useState<User[]>([]);
+
+  console.log(errors);
+
+  useEffect(() => {
+    axios
+      .create(axiosConfig)
+      .get("users", {
+        params: {
+          role: Role.PENDING,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        const users = response.data.map((userJson: string) =>
+          plainToInstance(User, userJson)
+        );
+        setUsers(users);
+      })
+      .catch((error) => console.log("error occurred at UsersList.tsx", error));
+  }, [axiosConfig]);
+
+  const onSubmit: SubmitHandler<CreateTeacherDto> = (data) => {
+    console.log("呼ばれた!");
+    console.log(data);
+    axios
+      .create(axiosConfig)
+      .post("teachers", {
+        ...data,
+      })
+      .then((response) => {
+        console.log(response.status);
+        setOpen(true);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  // 確認ダイアログ
+  const [open, setOpen] = useState(false);
+  // ダイアログの確認ボタンを押すと、ユーザーの一覧画面へと遷移する
+  const handleConfirm = () => {
+    setOpen(false);
+    navigate("/teachers"); // 詳細画面への遷移
+  };
 
   return (
     <>
       <Typography variant="h4">講師を新規作成する</Typography>
 
-      <QuestionTitle title="名前" />
-      <TextField
-        fullWidth
-        id="firstName"
-        label="ユーザー名"
-        helperText="4文字以上20文字以下で設定する。"
-        onChange={(event) => setFirstName(event.target.value)}
-      />
-
-      <QuestionTitle title="名前（読み仮名）" />
-      <TextField
-        fullWidth
-        id="firstNameKana"
-        label="名前（読み仮名）"
-        helperText="@growy.educationが望ましい。"
-        onChange={(event) => setFirstNameKana(event.target.value)}
-      />
-
-      <QuestionTitle title="苗字" />
-      <TextField
-        id="lastName"
-        fullWidth
-        label="苗字"
-        helperText="英数小文字・大文字、そして記号を含む8文字以上。"
-        onChange={(event) => setLastName(event.target.value)}
-      />
-
-      <QuestionTitle title="苗字（読み仮名）" />
-      <TextField
-        fullWidth
-        id="lastNameKana"
-        label="パスワード"
-        helperText="英数小文字・大文字、そして記号を含む8文字以上。"
-        onChange={(event) => setLastNameKana(event.target.value)}
-      />
-
-      <QuestionTitle title="ChatworkID" />
-      <TextField
-        fullWidth
-        id="chatworkId"
-        label="パスワード"
-        helperText="英数小文字・大文字、そして記号を含む8文字以上。"
-        onChange={(event) => setChatworkAccountId(event.target.value)}
-      />
-
-      <QuestionTitle title="ステータス" />
-      <RadioGroup
-        row
-        aria-labelledby="demo-radio-buttons-group-label"
-        defaultValue={TeacherStatus.INACTIVE}
-        name="radio-buttons-group"
-      >
-        <FormControlLabel
-          value={Relationship.FATHER}
-          control={<Radio />}
-          label="現在対応不可能"
-        />
-        <FormControlLabel
-          value={Relationship.MOTHER}
-          control={<Radio />}
-          label="現在対応可能"
-        />
-      </RadioGroup>
-      <Box margin="0.5em">
-        <Button
-          color="primary"
-          variant="contained"
-          endIcon={<SendIcon />}
-          onClick={() => console.log("送信しちゃうよ")}
+      <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+        <QuestionTitle title="連携ユーザー" />
+        <Select
+          required
+          fullWidth
+          id="userId"
+          error={!!errors.userId}
+          {...register("userId")}
         >
-          送信
-        </Button>
+          {users.map((user) => (
+            <MenuItem key={user.id} value={user.id}>
+              {user.email}
+            </MenuItem>
+          ))}
+        </Select>
+        <QuestionTitle title="名前" />
+        <TextField
+          fullWidth
+          id="firstName"
+          label="名前"
+          error={!!errors.firstName}
+          helperText={!!errors.firstName ? errors.firstName.message : ""}
+          {...register("firstName")}
+        />
+
+        <QuestionTitle title="名前（読み仮名）" />
+        <TextField
+          fullWidth
+          id="firstNameKana"
+          label="名前（読み仮名）"
+          error={!!errors.firstNameKana}
+          helperText={
+            !!errors.firstNameKana
+              ? errors.firstNameKana.message
+              : "カタカナで入力してください"
+          }
+          {...register("firstNameKana")}
+        />
+
+        <QuestionTitle title="苗字" />
+        <TextField
+          id="lastName"
+          fullWidth
+          label="苗字"
+          error={!!errors.lastName}
+          helperText={
+            !!errors.lastName
+              ? errors.lastName.message
+              : "苗字を入力してください"
+          }
+          {...register("lastName")}
+        />
+
+        <QuestionTitle title="苗字（読み仮名）" />
+        <TextField
+          fullWidth
+          id="lastNameKana"
+          label="苗字（読み仮名）"
+          error={!!errors.lastName}
+          helperText={
+            !!errors.lastNameKana
+              ? errors.lastNameKana.message
+              : "カタカナで入力してください"
+          }
+          {...register("lastNameKana")}
+        />
+
+        <QuestionTitle title="ChatworkAccountID" />
+        <TextField
+          fullWidth
+          id="chatworkAccountId"
+          label="ChatworkAccountID"
+          error={!!errors.chatworkAccountId}
+          helperText={
+            !!errors.chatworkAccountId
+              ? errors.chatworkAccountId.message
+              : "ChatworkAccountIDを入力してください"
+          }
+          {...register("chatworkAccountId")}
+        />
+
+        <Box margin="0.5em">
+          <Button
+            type="submit"
+            color="primary"
+            variant="contained"
+            endIcon={<SendIcon />}
+          >
+            送信
+          </Button>
+        </Box>
       </Box>
+      {/* ダイアログ */}
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>講師が作成されました</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            講師の一覧画面へと遷移しますか？
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleConfirm} color="primary">
+            確認
+          </Button>
+          <Button onClick={() => setOpen(false)} color="primary">
+            キャンセル
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

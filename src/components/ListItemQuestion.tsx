@@ -28,7 +28,7 @@ export const ListItemQuestion = () => {
       </ListItemButton>
       <Collapse in={questionListOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem onClick={() => navigate("questions")}>
+          <ListItem onClick={() => navigate("/questions")}>
             <ListItemButton>
               <ListItemIcon>
                 <ListAlt />
@@ -36,7 +36,7 @@ export const ListItemQuestion = () => {
               <ListItemText primary="質問リスト" />
             </ListItemButton>
           </ListItem>
-          <ListItem onClick={() => navigate("questions/create")}>
+          <ListItem onClick={() => navigate("/questions/new")}>
             <ListItemButton>
               <ListItemIcon>
                 <Add />

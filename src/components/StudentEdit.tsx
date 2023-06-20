@@ -10,7 +10,6 @@ import {
 import { TextField } from "@mui/material";
 import { AxiosContext } from "../AxiosContextProvider";
 import { QuestionTitle } from "./QuestionTitle";
-import { Role } from "../types/role.enum";
 import SendIcon from "@mui/icons-material/Send";
 import { Relationship } from "../types/relationship.enum";
 

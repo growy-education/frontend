@@ -6,6 +6,7 @@ import { General } from "./General";
 import AxiosContextProvider from "./AxiosContextProvider";
 import { BrowserRouter } from "react-router-dom";
 import { UserContextProvider } from "./UserContextProvider";
+import { RolesRouter } from "./Router";
 
 function App() {
   return (
@@ -16,9 +17,7 @@ function App() {
         <AuthContextProvider>
           <AxiosContextProvider>
             <UserContextProvider>
-              <BrowserRouter>
-                <General />
-              </BrowserRouter>
+              <RolesRouter />
             </UserContextProvider>
           </AxiosContextProvider>
         </AuthContextProvider>

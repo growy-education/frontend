@@ -28,7 +28,7 @@ export const ListItemCustomer = () => {
       </ListItemButton>
       <Collapse in={customerListOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem onClick={() => navigate("customers")}>
+          <ListItem onClick={() => navigate("/customers")}>
             <ListItemButton>
               <ListItemIcon>
                 <Group />
@@ -36,7 +36,7 @@ export const ListItemCustomer = () => {
               <ListItemText primary="保護者リスト" />
             </ListItemButton>
           </ListItem>
-          <ListItem onClick={() => navigate("customers/create")}>
+          <ListItem onClick={() => navigate("/customers/new")}>
             <ListItemButton>
               <ListItemIcon>
                 <PersonAdd />

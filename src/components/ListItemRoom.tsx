@@ -28,7 +28,7 @@ export const ListItemRoom = () => {
       </ListItemButton>
       <Collapse in={roomListOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem onClick={() => navigate("rooms")}>
+          <ListItem onClick={() => navigate("/rooms")}>
             <ListItemButton>
               <ListItemIcon>
                 <ListAlt />
@@ -36,7 +36,7 @@ export const ListItemRoom = () => {
               <ListItemText primary="オンライン自習室リスト" />
             </ListItemButton>
           </ListItem>
-          <ListItem onClick={() => navigate("rooms/create")}>
+          <ListItem onClick={() => navigate("/rooms/new")}>
             <ListItemButton>
               <ListItemIcon>
                 <Add />

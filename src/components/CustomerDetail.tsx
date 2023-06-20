@@ -1,18 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Typography,
-  Box,
-  Container,
-  Grid,
-  Card,
-  CardMedia,
-  CardContent,
-} from "@mui/material";
+import { Typography, Box, Container } from "@mui/material";
 import { AxiosContext } from "../AxiosContextProvider";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { QuestionTitle } from "./QuestionTitle";
 import { Customer } from "../types/customer.class";
+import { plainToInstance } from "class-transformer";
 
 export const CustomerDetail = () => {
   const [customer, setCustomer] = useState<null | Customer>(null);
@@ -26,7 +19,8 @@ export const CustomerDetail = () => {
       .create(axiosConfig)
       .get(`/customers/${customerId}`)
       .then((response) => {
-        setCustomer(response.data);
+        const customer = plainToInstance(Customer, response.data);
+        setCustomer(customer);
       })
       .catch((error) => {
         console.log(error);
