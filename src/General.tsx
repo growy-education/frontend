@@ -39,7 +39,7 @@ export const General: React.FC = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Growy（現在：{user.role}モードです）
+            Growy（{user.role}モード）
           </Typography>
           <IconButton onClick={handleLogout} color="inherit">
             <LogoutIcon />

@@ -12,6 +12,7 @@ import { QuestionEdit } from "./components/QuestionEdit";
 import { CustomerEdit } from "./components/CustomerEdit";
 import { Studyroom } from "./components/Room";
 import { Preservation } from "./components/StudyroomPreservation";
+import { UserActivate } from "./components/UserActivate";
 import { UsersList } from "./components/UsersList";
 import { UserNew } from "./components/UserNew";
 import { UserDetail } from "./components/UserDetail";
@@ -55,6 +56,10 @@ export const RolesRouter: React.FC = () => {
               <Route path="/users" element={<UsersList />} />
               <Route path="/users/new" element={<UserNew />} />
               <Route path="/users/:userId/" element={<UserDetail />} />
+              <Route
+                path="/users/:userId/activate"
+                element={<UserActivate />}
+              />
               <Route path="/users/:userId/edit" element={<UserEdit />} />
 
               <Route path="/customers" element={<CustomersList />} />

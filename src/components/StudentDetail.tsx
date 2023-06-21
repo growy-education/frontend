@@ -1,43 +1,35 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Typography,
-  Box,
-  Container,
-  Grid,
-  Card,
-  CardMedia,
-  CardContent,
-} from "@mui/material";
+import { Typography, Box, Container } from "@mui/material";
 import { AxiosContext } from "../AxiosContextProvider";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { QuestionTitle } from "./QuestionTitle";
-import { Customer } from "../types/customer.class";
+import { Student } from "../types/student.class";
 
 export const StudentDetail = () => {
-  const [customer, setCustomer] = useState<null | Customer>(null);
+  const [student, setStudent] = useState<null | Student>(null);
   const { axiosConfig } = useContext(AxiosContext);
 
-  const { customerId } = useParams();
-  console.log(customer);
+  const { studentId } = useParams();
+  console.log(student);
   useEffect(() => {
-    console.log("param customerId:", customerId);
+    console.log("param studentId:", studentId);
     axios
       .create(axiosConfig)
-      .get(`/customers/${customerId}`)
+      .get(`/students/${studentId}`)
       .then((response) => {
-        setCustomer(response.data);
+        setStudent(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [axiosConfig, customerId]);
+  }, [axiosConfig, studentId]);
 
-  if (!customerId) {
+  if (!studentId) {
     return <p>だめだこりゃ！</p>;
   }
 
-  if (!!!customer) {
+  if (!!!student) {
     return <p>ローディングなう！</p>;
   }
 
@@ -49,8 +41,8 @@ export const StudentDetail = () => {
     firstNameKana,
     lastName,
     lastNameKana,
-    relationship,
-  } = customer;
+    gender,
+  } = student;
 
   return (
     <Container maxWidth="md">
@@ -69,8 +61,8 @@ export const StudentDetail = () => {
         <Typography>{lastName}</Typography>
         <QuestionTitle title="苗字（読み仮名）" />
         <Typography>{lastNameKana}</Typography>
-        <QuestionTitle title="続柄" />
-        <Typography>{relationship}</Typography>
+        <QuestionTitle title="性別" />
+        <Typography>{gender}</Typography>
       </Box>
     </Container>
   );

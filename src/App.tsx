@@ -2,9 +2,7 @@ import React from "react";
 import "./App.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthContextProvider } from "./AuthContextProvider";
-import { General } from "./General";
 import AxiosContextProvider from "./AxiosContextProvider";
-import { BrowserRouter } from "react-router-dom";
 import { UserContextProvider } from "./UserContextProvider";
 import { RolesRouter } from "./Router";
 

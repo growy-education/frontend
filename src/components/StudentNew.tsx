@@ -332,7 +332,7 @@ export const StudentNew = () => {
             helperText={
               !!errors.grade
                 ? errors.grade.message
-                : "現在の学年を半角英数字で入力してください"
+                : "学年を半角英数字で入力してください"
             }
             {...register("grade")}
           />

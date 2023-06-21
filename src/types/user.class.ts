@@ -1,5 +1,8 @@
 import { Type } from "class-transformer";
 import { Role } from "./role.enum";
+import { Teacher } from "./teacher.class";
+import { Student } from "./student.class";
+import { Customer } from "./customer.class";
 
 export class User {
   id: string;
@@ -14,4 +17,13 @@ export class User {
   email: string;
   phone: string;
   role: Role;
+
+  @Type(() => Customer)
+  customer?: Customer;
+
+  @Type(() => Teacher)
+  teacher?: Teacher;
+
+  @Type(() => Student)
+  student?: Student;
 }
