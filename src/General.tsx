@@ -6,21 +6,27 @@ import {
   IconButton,
   Drawer,
   Box,
+  Badge,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
-import { AuthContext } from "./AuthContextProvider";
+import { AuthContext } from "./contexts/AuthContextProvider";
 import { DrawerListItem } from "./tools/DrawerListItem";
-import { UserContext } from "./UserContextProvider";
-import { Outlet } from "react-router-dom";
+import { UserContext } from "./contexts/UserContextProvider";
+import { Outlet, useNavigate } from "react-router-dom";
+import { NotificationContext } from "./contexts/NotificationContextProvider";
+import { NotificationPanel } from "./components/NotificationPanel";
+import { AccountCircle, Notifications } from "@mui/icons-material";
 
 export const General: React.FC = () => {
+  const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { handleLogout } = useContext(AuthContext);
   const { user } = useContext(UserContext);
+  const { notification } = useContext(NotificationContext);
 
   const handleToggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -41,6 +47,14 @@ export const General: React.FC = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Growy（{user.role}モード）
           </Typography>
+          <IconButton onClick={() => navigate("/profile")} color="inherit">
+            <AccountCircle />
+          </IconButton>
+          {/* <IconButton onClick={() => console.log("押されたよ")} color="inherit">
+            <Badge badgeContent={4} color={"secondary"}>
+              <Notifications />
+            </Badge>
+          </IconButton> */}
           <IconButton onClick={handleLogout} color="inherit">
             <LogoutIcon />
           </IconButton>
@@ -48,7 +62,6 @@ export const General: React.FC = () => {
       </AppBar>
 
       <Drawer
-        variant="persistent"
         anchor="left"
         open={isSidebarOpen}
         onClose={handleToggleSidebar}
@@ -73,6 +86,8 @@ export const General: React.FC = () => {
           marginTop: "64px",
         }}
       >
+        {notification && notification.type === "Modal" && <NotificationPanel />}
+        {notification && notification.type === "Panel" && <NotificationPanel />}
         <Outlet />
       </Box>
     </Box>

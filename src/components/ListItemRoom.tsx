@@ -8,7 +8,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const ListItemRoom = () => {
   const navigate = useNavigate();
@@ -18,9 +18,14 @@ export const ListItemRoom = () => {
     setRoomListOpen(!roomListOpen);
   };
 
+  const location = useLocation();
+
   return (
     <>
-      <ListItemButton onClick={handleRoomListToggle}>
+      <ListItemButton
+        onClick={handleRoomListToggle}
+        selected={location.pathname.includes("rooms")}
+      >
         <ListItemIcon>
           <Tv />
         </ListItemIcon>

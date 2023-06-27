@@ -3,7 +3,7 @@ import { GoogleCredentialResponse } from "@react-oauth/google";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
 
-import { LoginScreen } from "./SignIn";
+import { LoginScreen } from "../SignIn";
 
 interface AuthContextProps {
   isLoggedIn: boolean;
@@ -107,6 +107,8 @@ export const AuthContextProvider = ({ children }: Props) => {
     setBearerToken("");
     // Bearer Tokenを削除
     localStorage.removeItem("bearerToken");
+    // ログアウト時のリダイレクト先URLを指定
+    window.location.href = "/";
   };
 
   return (

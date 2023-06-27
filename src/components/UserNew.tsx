@@ -1,17 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Typography,
-} from "@mui/material";
+import { Alert, Box, Snackbar, Typography } from "@mui/material";
 import { TextField } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import {
@@ -23,10 +13,11 @@ import {
   MinLength,
 } from "class-validator";
 
-import { AxiosContext } from "../AxiosContextProvider";
-import { QuestionTitle } from "./QuestionTitle";
-import { SigninWithPasswordDto } from "../SignIn";
-import axios from "axios";
+import { AxiosContext } from "../contexts/AxiosContextProvider";
+import { Title } from "./QuestionTitle";
+import axios, { isAxiosError } from "axios";
+import { SubmitButton } from "./SubmitButton";
+import { ConfirmationDialog } from "./ConfirmationDialog";
 
 class CreateUserDto {
   @IsString()
@@ -57,37 +48,93 @@ export const UserNew = () => {
   const {
     register,
     handleSubmit,
+    trigger,
+    setError,
     formState: { errors },
   } = useForm<CreateUserDto>({ resolver });
 
+  // 結果を示すオブジェクトを作成する
+  const [result, setResult] = useState({
+    open: false,
+    success: false,
+    title: "",
+    message: "",
+  });
+
   const onSubmit: SubmitHandler<CreateUserDto> = (data) => {
-    console.log(data);
     axios
       .create(axiosConfig)
       .post("users", {
         ...data,
       })
       .then((response) => {
-        console.log(response.status);
-        setOpen(true);
+        setResult({
+          open: true,
+          success: true,
+          title: "ユーザーの作成が完了しました",
+          message: "ユーザーの一覧画面へ遷移しますか？",
+        });
       })
-      .catch((error) => console.log(error));
-  };
+      .catch((error: unknown) => {
+        if (isAxiosError(error)) {
+          // サーバーからの返答がある
+          if (error.response) {
+            if (error.response.status === 409) {
+              console.log(error.message);
+              setError("email", {
+                message: "メールアドレスが既に登録されています",
+              });
+              return setResult({
+                open: true,
+                success: false,
+                title: "",
+                message: "メールアドレスが既に登録されています",
+              });
+            }
+            return setResult({
+              open: true,
+              success: false,
+              title: "",
+              message: "ユーザーのデータに誤りがあります",
+            });
+          }
+          // サーバーからの返答がない
+          if (error.request) {
+            return setResult({
+              open: true,
+              success: false,
+              title: "",
+              message:
+                "サーバーからの返答がありません。ネットワーク接続を確認してください",
+            });
+          }
+        }
 
-  // 確認ダイアログ
-  const [open, setOpen] = useState(false);
+        // よくわからんエラーのとき
+        return setResult({
+          open: true,
+          success: false,
+          title: "",
+          message: "予期せぬエラーが発生しました",
+        });
+      });
+  };
 
   // ダイアログの確認ボタンを押すと、ユーザーの一覧画面へと遷移する
   const handleConfirm = () => {
-    setOpen(false);
+    setResult({ open: false, success: false, title: "", message: "" });
     navigate("/users"); // 詳細画面への遷移
+  };
+
+  const handleCancel = () => {
+    setResult({ open: false, success: false, title: "", message: "" });
   };
 
   return (
     <>
       <Typography variant="h4">ユーザーを新規作成する</Typography>
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        <QuestionTitle title="ユーザー名" />
+        <Title title="ユーザー名" />
         <TextField
           fullWidth
           id="username"
@@ -101,7 +148,7 @@ export const UserNew = () => {
           {...register("username")}
         />
 
-        <QuestionTitle title="メールアドレス" />
+        <Title title="メールアドレス" />
         <TextField
           fullWidth
           id="email"
@@ -116,7 +163,7 @@ export const UserNew = () => {
           {...register("email")}
         />
 
-        <QuestionTitle title="パスワード" />
+        <Title title="パスワード" />
         <TextField
           fullWidth
           id="password"
@@ -129,7 +176,7 @@ export const UserNew = () => {
           }
           {...register("password")}
         />
-        <QuestionTitle title="電話番号" />
+        <Title title="電話番号" />
         <TextField
           fullWidth
           id="phone"
@@ -143,33 +190,50 @@ export const UserNew = () => {
           {...register("phone")}
         />
         <Box margin="0.5em">
-          <Button
-            type="submit"
-            color="primary"
-            variant="contained"
-            endIcon={<SendIcon />}
-          >
-            送信
-          </Button>
+          <SubmitButton onClick={handleSubmit(onSubmit)} trigger={trigger} />
         </Box>
       </Box>
-      {/* ダイアログ */}
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>ユーザーが作成されました</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            ユーザーの一覧画面へと遷移しますか？
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleConfirm} color="primary">
-            確認
-          </Button>
-          <Button onClick={() => setOpen(false)} color="primary">
-            キャンセル
-          </Button>
-        </DialogActions>
-      </Dialog>
+
+      {result.open && result.success && (
+        <ConfirmationDialog
+          title={result.title}
+          message={result.message}
+          open={result.open}
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+        />
+      )}
+
+      {result.open && !result.success && (
+        <Snackbar
+          open={result.open && !result.success}
+          autoHideDuration={6000}
+          onClose={() =>
+            setResult({
+              open: false,
+              success: false,
+              title: "",
+              message: "",
+            })
+          }
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Alert
+            onClose={() =>
+              setResult({
+                open: false,
+                success: false,
+                title: "",
+                message: "",
+              })
+            }
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            {result.message}
+          </Alert>
+        </Snackbar>
+      )}
     </>
   );
 };

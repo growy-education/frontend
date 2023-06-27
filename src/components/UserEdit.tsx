@@ -1,114 +1,236 @@
 import { useContext, useEffect, useState } from "react";
 import {
+  Alert,
   Box,
   Button,
   CircularProgress,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
+  Snackbar,
   Typography,
 } from "@mui/material";
 import { TextField } from "@mui/material";
-import { AxiosContext } from "../AxiosContextProvider";
-import { QuestionTitle } from "./QuestionTitle";
-import SendIcon from "@mui/icons-material/Send";
-import { Role } from "../types/role.enum";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import { AxiosContext } from "../contexts/AxiosContextProvider";
+import { Title } from "./QuestionTitle";
+import { useNavigate, useParams } from "react-router-dom";
+import axios, { isAxiosError } from "axios";
 import { plainToInstance } from "class-transformer";
 import { User } from "../types/user.class";
+import {
+  IsEmail,
+  IsOptional,
+  IsPhoneNumber,
+  IsString,
+  MaxLength,
+  MinLength,
+} from "class-validator";
+import { classValidatorResolver } from "@hookform/resolvers/class-validator";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitButton } from "./SubmitButton";
+
+class UpdateUserDto {
+  @IsOptional()
+  @IsString()
+  @MinLength(4, { message: "ユーザー名は4文字以上にしてください。" })
+  @MaxLength(20, { message: "ユーザー名は20文字以下にしてください。" })
+  username?: string;
+
+  @IsOptional()
+  @IsEmail({}, { message: "有効なメールアドレスを入力してください。" })
+  email?: string;
+
+  @IsOptional()
+  @IsPhoneNumber("JP", { message: "電話番号を入力してください" })
+  phone?: string;
+}
 
 export const UserEdit = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [screenType, setScreenType] = useState<"edit" | "check">("edit");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setMemo] = useState("");
-  const [phone, setPhone] = useState("");
-  const [role, setRole] = useState<(typeof Role)[keyof typeof Role]>(
-    Role.CUSTOMER
-  );
-
   const { axiosConfig } = useContext(AxiosContext);
-
   const { userId } = useParams();
+
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState<User | null>(null);
+
+  // 結果を示すオブジェクトを作成する
+  const [result, setResult] = useState({
+    open: false,
+    success: false,
+    title: "",
+    message: "",
+  });
+
+  const resolver = classValidatorResolver(UpdateUserDto);
+  const {
+    register,
+    handleSubmit,
+    trigger,
+    setValue,
+    setError,
+    formState: { errors },
+  } = useForm<UpdateUserDto>({
+    resolver,
+    defaultValues: {
+      username: user?.username || "",
+      email: user?.email || "",
+      phone: user?.phone || "",
+    },
+  });
+
   useEffect(() => {
-    console.log("param userId:", userId);
     axios
       .create(axiosConfig)
       .get(`/users/${userId}`)
       .then((response) => {
         const user = plainToInstance(User, response.data);
         setUser(user);
+        setValue("username", user.username);
+        setValue("email", user.email);
+        setValue("phone", user.phone);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [axiosConfig, userId]);
 
-  if (!!!user) {
+  const onSubmit: SubmitHandler<UpdateUserDto> = (data) => {
+    console.log(data);
+    let updatedData: UpdateUserDto = {};
+    for (const key in data) {
+      if (data[key] !== user[key]) {
+        updatedData[key] = data[key];
+      }
+    }
+    console.log(updatedData);
+    axios
+      .create(axiosConfig)
+      .put(`users/${userId}`, {
+        ...updatedData,
+      })
+      .then((response) => {
+        navigate(`/users/${userId}`);
+      })
+      .catch((error: unknown) => {
+        if (isAxiosError(error)) {
+          // サーバーからの返答がある
+          if (error.response) {
+            if (error.response.status === 409) {
+              console.log(error.message);
+              setError("email", {
+                message: "メールアドレスが既に登録されています",
+              });
+              return setResult({
+                open: true,
+                success: false,
+                title: "",
+                message: "メールアドレスが既に登録されています",
+              });
+            }
+            return setResult({
+              open: true,
+              success: false,
+              title: "",
+              message: "ユーザーのデータに誤りがあります",
+            });
+          }
+          // サーバーからの返答がない
+          if (error.request) {
+            return setResult({
+              open: true,
+              success: false,
+              title: "",
+              message:
+                "サーバーからの返答がありません。ネットワーク接続を確認してください",
+            });
+          }
+        }
+
+        // よくわからんエラーのとき
+        return setResult({
+          open: true,
+          success: false,
+          title: "",
+          message: "予期せぬエラーが発生しました",
+        });
+      });
+  };
+
+  if (!user) {
     return <CircularProgress />;
   }
 
   return (
     <>
       <Typography variant="h4">ユーザー情報を編集する</Typography>
-      <QuestionTitle title="ユーザー名" />
-      <Typography>現在のユーザー名：{user.username}</Typography>
+
+      <Title title="ユーザー名" />
       <TextField
         fullWidth
         id="username"
         label="ユーザー名"
-        helperText="4文字以上20文字以下で設定する。"
-        onChange={(event) => setUsername(event.target.value)}
+        error={!!errors.username}
+        helperText={!!errors.username ? errors.username.message : ""}
+        {...register("username")}
       />
 
-      <QuestionTitle title="メールアドレス" />
+      <Title title="メールアドレス" />
       <TextField
         fullWidth
         id="email"
-        autoComplete="email"
         label="メールアドレス"
-        helperText="@growy.educationが望ましい。"
-        onChange={(event) => setEmail(event.target.value)}
+        error={!!errors.email}
+        helperText={errors.email ? errors.email.message : ""}
+        {...register("email")}
       />
 
-      <QuestionTitle title="パスワード" />
+      <Title title="電話番号" />
       <TextField
         fullWidth
-        id="user"
-        label="パスワード"
-        helperText="英数小文字・大文字、そして記号を含む8文字以上。"
-        onChange={(event) => setMemo(event.target.value)}
+        id="phone"
+        label="電話番号"
+        error={!!errors.phone}
+        helperText={errors.phone ? errors.phone.message : ""}
+        {...register("phone")}
       />
-      <QuestionTitle title="ロール" />
-      <RadioGroup
-        row
-        aria-labelledby="demo-radio-buttons-group-label"
-        defaultValue={role}
-        name="radio-buttons-group"
-      >
-        <FormControlLabel
-          value={Role.CUSTOMER}
-          control={<Radio />}
-          label="生徒"
-        />
-        <FormControlLabel
-          value={Role.TEACHER}
-          control={<Radio />}
-          label="講師"
-        />
-      </RadioGroup>
       <Box margin="0.5em">
+        <SubmitButton onClick={handleSubmit(onSubmit)} trigger={trigger} />
         <Button
-          color="primary"
+          type="submit"
+          color="inherit"
           variant="contained"
-          endIcon={<SendIcon />}
-          onClick={() => console.log("送信しちゃうよ")}
+          onClick={() => navigate(`/users/${userId}`)}
         >
-          更新する
+          キャンセル
         </Button>
       </Box>
+      {result.open && !result.success && (
+        <Snackbar
+          open={result.open && !result.success}
+          autoHideDuration={6000}
+          onClose={() =>
+            setResult({
+              open: false,
+              success: false,
+              title: "",
+              message: "",
+            })
+          }
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Alert
+            onClose={() =>
+              setResult({
+                open: false,
+                success: false,
+                title: "",
+                message: "",
+              })
+            }
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            {result.message}
+          </Alert>
+        </Snackbar>
+      )}
     </>
   );
 };

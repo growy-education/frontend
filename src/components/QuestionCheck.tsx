@@ -7,6 +7,8 @@ import {
   Card,
   CardMedia,
   CardContent,
+  Button,
+  CircularProgress,
 } from "@mui/material";
 import { AxiosContext } from "../contexts/AxiosContextProvider";
 import { useParams } from "react-router-dom";
@@ -14,15 +16,15 @@ import { Question } from "../types/question.class";
 import axios from "axios";
 import { Title } from "./QuestionTitle";
 import { plainToInstance } from "class-transformer";
+import { LockOpen } from "@mui/icons-material";
 
-const QuestionDetail = () => {
-  const [question, setQuestion] = useState<null | Question>(null);
-  const { axiosConfig } = useContext(AxiosContext);
-
+export const QuestionCheck = () => {
   const { questionId } = useParams();
-  console.log(question);
+  const { axiosConfig } = useContext(AxiosContext);
+  const [question, setQuestion] = useState<null | Question>(null);
+  const [open, setOpen] = useState(false);
+
   useEffect(() => {
-    console.log("きたquestion id:", questionId);
     axios
       .create(axiosConfig)
       .get(`/questions/${questionId}`)
@@ -35,12 +37,13 @@ const QuestionDetail = () => {
       });
   }, [axiosConfig, questionId]);
 
-  if (!questionId) {
-    return <p>だめだこりゃ！</p>;
-  }
-
   if (!!!question) {
-    return <p>ローディングなう！</p>;
+    return (
+      <>
+        <CircularProgress />
+        <Typography>質問を取得中です</Typography>
+      </>
+    );
   }
 
   const {
@@ -77,8 +80,24 @@ const QuestionDetail = () => {
     }
   };
 
+  const checkQuestion = () => {};
+
   return (
     <Container maxWidth="md">
+      <Box
+        display="flex"
+        alignItems={"center"}
+        justifyContent={"center"}
+        margin={1}
+      >
+        <Button
+          variant="contained"
+          endIcon={<LockOpen />}
+          onClick={() => checkQuestion()}
+        >
+          動画のチェックを完了する
+        </Button>
+      </Box>
       <Box my={3}>
         <Title title="ID" />
         <Typography>{id}</Typography>
@@ -141,5 +160,3 @@ const QuestionDetail = () => {
     </Container>
   );
 };
-
-export default QuestionDetail;

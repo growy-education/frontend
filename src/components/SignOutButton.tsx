@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { AuthContext } from "../AuthContextProvider";
+import { AuthContext } from "../contexts/AuthContextProvider";
 import { Button } from "@mui/material";
 
 export const SignOutButton = () => {

@@ -9,7 +9,6 @@ import {
   Matches,
   MaxDate,
   MinDate,
-  NotEquals,
 } from "class-validator";
 import { Type, plainToInstance } from "class-transformer";
 import {
@@ -26,7 +25,6 @@ import {
   RadioGroup,
   Select,
   Typography,
-  RadioGroupProps,
 } from "@mui/material";
 import { TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
@@ -36,8 +34,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-import { AxiosContext } from "../AxiosContextProvider";
-import { QuestionTitle } from "./QuestionTitle";
+import { AxiosContext } from "../contexts/AxiosContextProvider";
+import { Title } from "./QuestionTitle";
 import { Gender } from "../types/gender.enum";
 import { User } from "../types/user.class";
 import axios from "axios";
@@ -46,7 +44,7 @@ import { Role } from "../types/role.enum";
 const getMinDate = (): Date => {
   const currentDate = new Date();
   const minDate = new Date(
-    currentDate.getFullYear() - 12,
+    currentDate.getFullYear() - 13,
     currentDate.getMonth(),
     currentDate.getDate()
   );
@@ -56,7 +54,7 @@ const getMinDate = (): Date => {
 const getMaxDate = (): Date => {
   const currentDate = new Date();
   const maxDate = new Date(
-    currentDate.getFullYear() - 6,
+    currentDate.getFullYear() - 9,
     currentDate.getMonth(),
     currentDate.getDate()
   );
@@ -96,7 +94,7 @@ class CreateStudentDto {
   gender: Gender;
 
   @IsString()
-  @IsNotEmpty({ message: "学校名を入力してください" })
+  @IsNotEmpty({ message: "小学校名を入力してください" })
   school: string;
 
   @IsString()
@@ -108,7 +106,7 @@ class CreateStudentDto {
   jukuBuilding: string;
 
   @IsNotEmpty({ message: "学年を入力してください" })
-  @IsIn(["1", "2", "3", "4", "5", "6"], {
+  @IsIn(["4", "5", "6"], {
     message: "学年は半角英数字で入力してください",
   })
   grade: string;
@@ -131,16 +129,10 @@ export const StudentNew = () => {
     handleSubmit,
     control,
     formState: { errors },
-    watch,
-    setValue,
   } = useForm<CreateStudentDto>({
     resolver,
     defaultValues: { gender: Gender.MALE },
   });
-  const juku = watch("juku");
-  const handleJukuChange: RadioGroupProps["onChange"] = (event) => {
-    setValue("juku", event.target.value);
-  };
 
   const [users, setUsers] = useState<User[]>([]);
   useEffect(() => {
@@ -152,7 +144,6 @@ export const StudentNew = () => {
         },
       })
       .then((response) => {
-        console.log(response.data);
         const users = response.data.map((userJson: string) =>
           plainToInstance(User, userJson)
         );
@@ -160,8 +151,6 @@ export const StudentNew = () => {
       })
       .catch((error) => console.log("error occurred at UsersList.tsx", error));
   }, [axiosConfig]);
-
-  console.log(errors);
 
   const onSubmit: SubmitHandler<CreateStudentDto> = (data) => {
     console.log(data);
@@ -182,213 +171,212 @@ export const StudentNew = () => {
   // ダイアログの確認ボタンを押すと、ユーザーの一覧画面へと遷移する
   const handleConfirm = () => {
     setOpen(false);
-    navigate("/teachers"); // 詳細画面への遷移
+    navigate("/students"); // 詳細画面への遷移
   };
 
   return (
     <>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Typography variant="h4">生徒を新規作成する</Typography>
-        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-          <QuestionTitle title="連携ユーザー" />
-          <Select
-            fullWidth
-            id="userId"
-            error={!!errors.userId}
-            defaultValue={""}
-            {...register("userId")}
-          >
-            {users.map((user) => (
-              <MenuItem key={user.id} value={user.id}>
-                {user.email}
-              </MenuItem>
-            ))}
-          </Select>
-          <QuestionTitle title="名前" />
-          <TextField
-            fullWidth
-            id="firstName"
-            label="名前"
-            error={!!errors.firstName}
-            helperText={!!errors.firstName ? errors.firstName.message : ""}
-            {...register("firstName")}
-          />
+      <Typography variant="h4">生徒を新規作成する</Typography>
+      <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+        <Title title="連携ユーザー" />
+        <Select
+          fullWidth
+          id="userId"
+          error={!!errors.userId}
+          defaultValue={""}
+          {...register("userId")}
+        >
+          {users.map((user) => (
+            <MenuItem key={user.id} value={user.id}>
+              {user.email}
+            </MenuItem>
+          ))}
+        </Select>
 
-          <QuestionTitle title="名前（読み仮名）" />
-          <TextField
-            fullWidth
-            id="firstNameKana"
-            label="名前（読み仮名）"
-            error={!!errors.firstNameKana}
-            helperText={
-              !!errors.firstNameKana
-                ? errors.firstNameKana.message
-                : "カタカナで入力してください"
-            }
-            {...register("firstNameKana")}
-          />
+        <Title title="名前" />
+        <TextField
+          fullWidth
+          id="firstName"
+          label="名前"
+          error={!!errors.firstName}
+          helperText={!!errors.firstName ? errors.firstName.message : ""}
+          {...register("firstName")}
+        />
 
-          <QuestionTitle title="苗字" />
-          <TextField
-            id="lastName"
-            fullWidth
-            label="苗字"
-            error={!!errors.lastName}
-            helperText={
-              !!errors.lastName
-                ? errors.lastName.message
-                : "苗字を入力してください"
-            }
-            {...register("lastName")}
-          />
+        <Title title="名前（読み仮名）" />
+        <TextField
+          fullWidth
+          id="firstNameKana"
+          label="名前（読み仮名）"
+          error={!!errors.firstNameKana}
+          helperText={
+            !!errors.firstNameKana
+              ? errors.firstNameKana.message
+              : "カタカナで入力してください"
+          }
+          {...register("firstNameKana")}
+        />
 
-          <QuestionTitle title="苗字（読み仮名）" />
-          <TextField
-            fullWidth
-            id="lastNameKana"
-            label="苗字（読み仮名）"
-            error={!!errors.lastName}
-            helperText={
-              !!errors.lastNameKana
-                ? errors.lastNameKana.message
-                : "カタカナで入力してください"
-            }
-            {...register("lastNameKana")}
-          />
+        <Title title="苗字" />
+        <TextField
+          id="lastName"
+          fullWidth
+          label="苗字"
+          error={!!errors.lastName}
+          helperText={
+            !!errors.lastName
+              ? errors.lastName.message
+              : "苗字を入力してください"
+          }
+          {...register("lastName")}
+        />
 
-          <QuestionTitle title="性別" />
-          <Controller
-            name="gender"
-            control={control}
-            render={({ field }) => (
-              <RadioGroup row name="radio-buttons-group" {...field}>
-                <FormControlLabel
-                  value={Gender.MALE}
-                  control={<Radio />}
-                  label="男の子"
-                />
-                <FormControlLabel
-                  value={Gender.FEMALE}
-                  control={<Radio />}
-                  label="女の子"
-                />
-                <FormControlLabel
-                  value={Gender.OTHER}
-                  control={<Radio />}
-                  label="その他"
-                />
-              </RadioGroup>
-            )}
-          />
+        <Title title="苗字（読み仮名）" />
+        <TextField
+          fullWidth
+          id="lastNameKana"
+          label="苗字（読み仮名）"
+          error={!!errors.lastName}
+          helperText={
+            !!errors.lastNameKana
+              ? errors.lastNameKana.message
+              : "カタカナで入力してください"
+          }
+          {...register("lastNameKana")}
+        />
 
-          <QuestionTitle title="学校名" />
-          <TextField
-            fullWidth
-            id="school"
-            label="学校名"
-            error={!!errors.school}
-            helperText={
-              !!errors.school
-                ? errors.school.message
-                : "通っている学校の名前を入力してください"
-            }
-            {...register("school")}
-          />
-
-          <QuestionTitle title="塾" />
-          <TextField
-            fullWidth
-            id="juku"
-            label="塾名"
-            error={!!errors.juku}
-            helperText={
-              !!errors.juku
-                ? errors.juku.message
-                : "通っている塾の名前を入力してください"
-            }
-            {...register("juku")}
-          />
-
-          <QuestionTitle title="塾の校舎" />
-          <TextField
-            fullWidth
-            id="jukuBuilding"
-            label="塾の校舎"
-            error={!!errors.jukuBuilding}
-            helperText={
-              !!errors.jukuBuilding
-                ? errors.jukuBuilding.message
-                : "通っている校舎名を入力してください"
-            }
-            {...register("jukuBuilding")}
-          />
-
-          <QuestionTitle title="学年" />
-          <TextField
-            fullWidth
-            id="grade"
-            label="学年"
-            error={!!errors.grade}
-            helperText={
-              !!errors.grade
-                ? errors.grade.message
-                : "学年を半角英数字で入力してください"
-            }
-            {...register("grade")}
-          />
-
-          <QuestionTitle title="誕生日" />
-          <Controller
-            name="birthday"
-            control={control}
-            defaultValue={null}
-            {...register("birthday")}
-            render={({ field }) => (
-              <DatePicker
-                {...field}
-                format="YYYY/MM/DD"
-                label="誕生日"
-                slotProps={{
-                  textField: {
-                    fullWidth: true,
-                    variant: "outlined",
-                    error: !!errors.birthday,
-                    helperText: !!errors.birthday && errors.birthday.message,
-                  },
-                }}
+        <Title title="性別" />
+        <Controller
+          name="gender"
+          control={control}
+          render={({ field }) => (
+            <RadioGroup row name="radio-buttons-group" {...field}>
+              <FormControlLabel
+                value={Gender.MALE}
+                control={<Radio />}
+                label="男の子"
               />
-            )}
-          />
+              <FormControlLabel
+                value={Gender.FEMALE}
+                control={<Radio />}
+                label="女の子"
+              />
+              <FormControlLabel
+                value={Gender.OTHER}
+                control={<Radio />}
+                label="その他"
+              />
+            </RadioGroup>
+          )}
+        />
 
-          <Box margin="0.5em">
-            <Button
-              type="submit"
-              color="primary"
-              variant="contained"
-              endIcon={<SendIcon />}
-            >
-              送信
-            </Button>
-          </Box>
+        <Title title="小学校名" />
+        <TextField
+          fullWidth
+          id="school"
+          label="小学校名"
+          error={!!errors.school}
+          helperText={
+            !!errors.school
+              ? errors.school.message
+              : "通っている学校の名前を入力してください"
+          }
+          {...register("school")}
+        />
+
+        <Title title="塾" />
+        <TextField
+          fullWidth
+          id="juku"
+          label="塾名"
+          error={!!errors.juku}
+          helperText={
+            !!errors.juku
+              ? errors.juku.message
+              : "通っている塾の名前を入力してください"
+          }
+          {...register("juku")}
+        />
+
+        <Title title="塾の校舎" />
+        <TextField
+          fullWidth
+          id="jukuBuilding"
+          label="塾の校舎"
+          error={!!errors.jukuBuilding}
+          helperText={
+            !!errors.jukuBuilding
+              ? errors.jukuBuilding.message
+              : "通っている校舎名を入力してください"
+          }
+          {...register("jukuBuilding")}
+        />
+
+        <Title title="学年" />
+        <TextField
+          fullWidth
+          id="grade"
+          label="学年"
+          error={!!errors.grade}
+          helperText={
+            !!errors.grade
+              ? errors.grade.message
+              : "学年を半角英数字で入力してください"
+          }
+          {...register("grade")}
+        />
+
+        <Title title="誕生日" />
+        <Controller
+          name="birthday"
+          control={control}
+          defaultValue={null}
+          {...register("birthday")}
+          render={({ field }) => (
+            <DatePicker
+              {...field}
+              format="YYYY/MM/DD"
+              label="誕生日"
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  variant: "outlined",
+                  error: !!errors.birthday,
+                  helperText: !!errors.birthday && errors.birthday.message,
+                },
+              }}
+            />
+          )}
+        />
+
+        <Box margin="0.5em">
+          <Button
+            type="submit"
+            color="primary"
+            variant="contained"
+            endIcon={<SendIcon />}
+          >
+            送信
+          </Button>
         </Box>
-        {/* ダイアログ */}
-        <Dialog open={open} onClose={() => setOpen(false)}>
-          <DialogTitle>生徒情報が作成されました</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              生徒情報の一覧画面へと遷移しますか？
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleConfirm} color="primary">
-              確認
-            </Button>
-            <Button onClick={() => setOpen(false)} color="primary">
-              キャンセル
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </LocalizationProvider>
+      </Box>
+      {/* ダイアログ */}
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>生徒情報が作成されました</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            生徒情報の一覧画面へと遷移しますか？
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleConfirm} color="primary">
+            確認
+          </Button>
+          <Button onClick={() => setOpen(false)} color="primary">
+            キャンセル
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

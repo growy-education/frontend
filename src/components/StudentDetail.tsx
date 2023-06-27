@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Typography, Box, Container } from "@mui/material";
-import { AxiosContext } from "../AxiosContextProvider";
+import { AxiosContext } from "../contexts/AxiosContextProvider";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { QuestionTitle } from "./QuestionTitle";
+import { Title } from "./QuestionTitle";
 import { Student } from "../types/student.class";
+import { plainToInstance } from "class-transformer";
 
 export const StudentDetail = () => {
   const [student, setStudent] = useState<null | Student>(null);
@@ -18,16 +19,13 @@ export const StudentDetail = () => {
       .create(axiosConfig)
       .get(`/students/${studentId}`)
       .then((response) => {
-        setStudent(response.data);
+        const student = plainToInstance(Student, response.data);
+        setStudent(student);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [axiosConfig, studentId]);
-
-  if (!studentId) {
-    return <p>だめだこりゃ！</p>;
-  }
 
   if (!!!student) {
     return <p>ローディングなう！</p>;
@@ -47,21 +45,21 @@ export const StudentDetail = () => {
   return (
     <Container maxWidth="md">
       <Box my={3}>
-        <QuestionTitle title="ID" />
+        <Title title="ID" />
         <Typography>{id}</Typography>
-        <QuestionTitle title="作成日時" />
+        <Title title="作成日時" />
         <Typography>{createdAt.toDateString()}</Typography>
-        <QuestionTitle title="更新日時" />
+        <Title title="更新日時" />
         <Typography>{updatedAt.toDateString()}</Typography>
-        <QuestionTitle title="名前" />
+        <Title title="名前" />
         <Typography>{firstName}</Typography>
-        <QuestionTitle title="名前（読み仮名）" />
+        <Title title="名前（読み仮名）" />
         <Typography>{firstNameKana}</Typography>
-        <QuestionTitle title="苗字" />
+        <Title title="苗字" />
         <Typography>{lastName}</Typography>
-        <QuestionTitle title="苗字（読み仮名）" />
+        <Title title="苗字（読み仮名）" />
         <Typography>{lastNameKana}</Typography>
-        <QuestionTitle title="性別" />
+        <Title title="性別" />
         <Typography>{gender}</Typography>
       </Box>
     </Container>

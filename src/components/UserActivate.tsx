@@ -10,7 +10,6 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
-  FormControl,
   FormLabel,
   Button,
   Dialog,
@@ -18,51 +17,50 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  FormHelperText,
 } from "@mui/material";
-import { AxiosContext } from "../AxiosContextProvider";
+import { AxiosContext } from "../contexts/AxiosContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import { User } from "../types/user.class";
 import axios from "axios";
-import { QuestionTitle } from "./QuestionTitle";
+import { Title } from "./QuestionTitle";
 import { plainToInstance } from "class-transformer";
 import { ExpandMore, Lock } from "@mui/icons-material";
 import { Role } from "../types/role.enum";
+import { IsEnum, IsNotEmpty } from "class-validator";
+import { classValidatorResolver } from "@hookform/resolvers/class-validator";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { NotificationContext } from "../contexts/NotificationContextProvider";
+import { error } from "console";
+import { ConfirmationDialog } from "./ConfirmationDialog";
+
+class ActivateUserDto {
+  @IsNotEmpty()
+  @IsEnum(Role)
+  role: Role;
+}
 
 export const UserActivate = () => {
-  const [userRole, setUserRole] = useState<Role.CUSTOMER | Role.TEACHER>(
-    Role.CUSTOMER
-  );
   const [user, setUser] = useState<null | User>(null);
   const [open, setOpen] = useState(false);
 
+  const resolver = classValidatorResolver(ActivateUserDto);
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    getValues,
+  } = useForm<ActivateUserDto>({
+    resolver,
+    defaultValues: {
+      role: Role.CUSTOMER,
+    },
+  });
+
   const { axiosConfig } = useContext(AxiosContext);
+  const { handleNotification } = useContext(NotificationContext);
   const { userId } = useParams();
   const navigate = useNavigate();
-
-  const checkUserData = () => {
-    if (userRole === Role.CUSTOMER) {
-      if (!!user?.customer && !!user?.student) {
-        setOpen(true);
-      }
-    }
-    if (userRole === Role.TEACHER) {
-      if (!!user?.teacher) {
-        setOpen(true);
-      }
-    }
-  };
-
-  const handleConfirm = () => {
-    axios
-      .create(axiosConfig)
-      .put(`/users/${userId}/activation`, {
-        role: userRole,
-      })
-      .then((response) => {
-        setOpen(false);
-        navigate("/users");
-      });
-  };
 
   useEffect(() => {
     console.log("param userId:", userId);
@@ -79,6 +77,34 @@ export const UserActivate = () => {
       });
   }, [axiosConfig, userId]);
 
+  const handleConfirm = () => {
+    console.log(error);
+    axios
+      .create(axiosConfig)
+      .put(`/users/${userId}/activation`, {
+        role: getValues("role"),
+      })
+      .then((response) => {
+        setOpen(false);
+        navigate("/users");
+      })
+      .catch((error) => {
+        setOpen(false);
+        handleNotification({
+          type: "Panel",
+          severity: "error",
+          title: "エラー",
+          message:
+            "ユーザーの有効化に失敗しました。ネットワーク環境を確認の上、もう一度お試しください。",
+        });
+      });
+  };
+
+  const onSubmit: SubmitHandler<ActivateUserDto> = (data) => {
+    console.log(data);
+    setOpen(true);
+  };
+
   if (!!!user) {
     return <CircularProgress />;
   }
@@ -87,65 +113,61 @@ export const UserActivate = () => {
 
   return (
     <Container maxWidth="md">
-      <Box display="flex" justifyContent={"space-around"} margin={2}>
-        <Box
-          display="flex"
-          alignItems={"center"}
-          justifyContent={"center"}
-          margin={1}
-        >
-          <Button
-            variant="contained"
-            endIcon={<Lock />}
-            onClick={() => checkUserData()}
+      <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+        <Box display="flex" justifyContent={"space-around"} margin={2}>
+          <Box
+            display="flex"
+            alignItems={"center"}
+            justifyContent={"center"}
+            margin={1}
           >
-            ユーザーを有効化する
-          </Button>
+            <Button type="submit" variant="contained" endIcon={<Lock />}>
+              ユーザーを有効化する
+            </Button>
+          </Box>
+          <Box>
+            <Controller
+              name="role"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <FormLabel>アカウントタイプ</FormLabel>
+                  <RadioGroup row name="radio-buttons-group" {...field}>
+                    <FormControlLabel
+                      value={Role.CUSTOMER}
+                      control={<Radio />}
+                      label="保護者"
+                    />
+                    <FormControlLabel
+                      value={Role.TEACHER}
+                      control={<Radio />}
+                      label="講師"
+                    />
+                    <FormHelperText error={!!errors.role}>
+                      {errors.role?.message}
+                    </FormHelperText>
+                  </RadioGroup>
+                </>
+              )}
+            />
+          </Box>
         </Box>
-        <Box>
-          <FormControl>
-            <FormLabel>アカウントタイプ</FormLabel>
-            <RadioGroup
-              row
-              defaultValue={userRole}
-              onChange={(event) => {
-                if (event.target.value === Role.CUSTOMER) {
-                  setUserRole(event.target.value);
-                }
-                if (event.target.value === Role.TEACHER) {
-                  setUserRole(event.target.value);
-                }
-              }}
-            >
-              <FormControlLabel
-                value={Role.CUSTOMER}
-                control={<Radio />}
-                label="保護者"
-              />
-              <FormControlLabel
-                value={Role.TEACHER}
-                control={<Radio />}
-                label="講師"
-              />
-            </RadioGroup>
-          </FormControl>
+        <Box my={3}>
+          <Title title="ID" />
+          <Typography>{id}</Typography>
+          <Title title="作成日時" />
+          <Typography>{createdAt.toDateString()}</Typography>
+          <Title title="更新日時" />
+          <Typography>{updatedAt.toDateString()}</Typography>
+          <Title title="ユーザー名" />
+          <Typography>{username}</Typography>
+          <Title title="メールアドレス" />
+          <Typography>{email}</Typography>
+          <Title title="電話番号" />
+          <Typography>{phone}</Typography>
+          <Title title="ロール" />
+          <Typography>{role}</Typography>
         </Box>
-      </Box>
-      <Box my={3}>
-        <QuestionTitle title="ID" />
-        <Typography>{id}</Typography>
-        <QuestionTitle title="作成日時" />
-        <Typography>{createdAt.toDateString()}</Typography>
-        <QuestionTitle title="更新日時" />
-        <Typography>{updatedAt.toDateString()}</Typography>
-        <QuestionTitle title="ユーザー名" />
-        <Typography>{username}</Typography>
-        <QuestionTitle title="メールアドレス" />
-        <Typography>{email}</Typography>
-        <QuestionTitle title="電話番号" />
-        <Typography>{phone}</Typography>
-        <QuestionTitle title="ロール" />
-        <Typography>{role}</Typography>
       </Box>
       <Box>
         <Accordion>
@@ -156,25 +178,25 @@ export const UserActivate = () => {
             {user ? (
               user?.customer ? (
                 <>
-                  <QuestionTitle title="ID" />
+                  <Title title="ID" />
                   <Typography>{user.customer.id}</Typography>
-                  <QuestionTitle title="作成日時" />
+                  <Title title="作成日時" />
                   <Typography>
                     {user.customer.createdAt.toDateString()}
                   </Typography>
-                  <QuestionTitle title="更新日時" />
+                  <Title title="更新日時" />
                   <Typography>
                     {user.customer.updatedAt.toDateString()}
                   </Typography>
-                  <QuestionTitle title="名前" />
+                  <Title title="名前" />
                   <Typography>{user.customer.firstName}</Typography>
-                  <QuestionTitle title="名前（読み仮名）" />
+                  <Title title="名前（読み仮名）" />
                   <Typography>{user.customer.firstNameKana}</Typography>
-                  <QuestionTitle title="苗字" />
+                  <Title title="苗字" />
                   <Typography>{user.customer.lastName}</Typography>
-                  <QuestionTitle title="苗字（読み仮名）" />
+                  <Title title="苗字（読み仮名）" />
                   <Typography>{user.customer.lastNameKana}</Typography>
-                  <QuestionTitle title="続柄" />
+                  <Title title="続柄" />
                   <Typography>{user.customer.relationship}</Typography>
                 </>
               ) : (
@@ -193,25 +215,25 @@ export const UserActivate = () => {
             {user ? (
               user?.student ? (
                 <>
-                  <QuestionTitle title="ID" />
+                  <Title title="ID" />
                   <Typography>{user.student.id}</Typography>
-                  <QuestionTitle title="作成日時" />
+                  <Title title="作成日時" />
                   <Typography>
                     {user.student.createdAt.toDateString()}
                   </Typography>
-                  <QuestionTitle title="更新日時" />
+                  <Title title="更新日時" />
                   <Typography>
                     {user.student.updatedAt.toDateString()}
                   </Typography>
-                  <QuestionTitle title="名前" />
+                  <Title title="名前" />
                   <Typography>{user.student.firstName}</Typography>
-                  <QuestionTitle title="名前（読み仮名）" />
+                  <Title title="名前（読み仮名）" />
                   <Typography>{user.student.firstNameKana}</Typography>
-                  <QuestionTitle title="苗字" />
+                  <Title title="苗字" />
                   <Typography>{user.student.lastName}</Typography>
-                  <QuestionTitle title="苗字（読み仮名）" />
+                  <Title title="苗字（読み仮名）" />
                   <Typography>{user.student.lastNameKana}</Typography>
-                  <QuestionTitle title="性別" />
+                  <Title title="性別" />
                   <Typography>{user.student.gender}</Typography>
                 </>
               ) : (
@@ -230,25 +252,25 @@ export const UserActivate = () => {
             {user ? (
               user?.teacher ? (
                 <>
-                  <QuestionTitle title="ID" />
+                  <Title title="ID" />
                   <Typography>{user.teacher.id}</Typography>
-                  <QuestionTitle title="作成日時" />
+                  <Title title="作成日時" />
                   <Typography>
                     {user.teacher.createdAt.toDateString()}
                   </Typography>
-                  <QuestionTitle title="更新日時" />
+                  <Title title="更新日時" />
                   <Typography>
                     {user.teacher.updatedAt.toDateString()}
                   </Typography>
-                  <QuestionTitle title="名前" />
+                  <Title title="名前" />
                   <Typography>{user.teacher.firstName}</Typography>
-                  <QuestionTitle title="名前（読み仮名）" />
+                  <Title title="名前（読み仮名）" />
                   <Typography>{user.teacher.firstNameKana}</Typography>
-                  <QuestionTitle title="苗字" />
+                  <Title title="苗字" />
                   <Typography>{user.teacher.lastName}</Typography>
-                  <QuestionTitle title="苗字（読み仮名）" />
+                  <Title title="苗字（読み仮名）" />
                   <Typography>{user.teacher.lastNameKana}</Typography>
-                  <QuestionTitle title="ChatworkAccountID" />
+                  <Title title="ChatworkAccountID" />
                   <Typography>{user.teacher.chatworkAccountId}</Typography>
                 </>
               ) : (
@@ -261,22 +283,13 @@ export const UserActivate = () => {
         </Accordion>
       </Box>
       {/* ダイアログ */}
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>アカウントを有効化しますか？</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {userRole}アカウントが作成されます
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleConfirm} color="primary">
-            確認
-          </Button>
-          <Button onClick={() => setOpen(false)} color="primary">
-            キャンセル
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <ConfirmationDialog
+        title="アカウントを有効化しますか？"
+        message={`${getValues("role")}アカウントが作成されます`}
+        open={open}
+        onConfirm={handleConfirm}
+        onCancel={() => setOpen(false)}
+      />
     </Container>
   );
 };

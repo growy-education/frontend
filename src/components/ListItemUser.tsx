@@ -15,7 +15,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const ListItemUser = () => {
   const navigate = useNavigate();
@@ -25,9 +25,14 @@ export const ListItemUser = () => {
     setUserListOpen(!userListOpen);
   };
 
+  const location = useLocation();
+
   return (
     <>
-      <ListItemButton onClick={handleUserListToggle}>
+      <ListItemButton
+        onClick={handleUserListToggle}
+        selected={location.pathname.includes("users")}
+      >
         <ListItemIcon>
           <VpnKey />
         </ListItemIcon>

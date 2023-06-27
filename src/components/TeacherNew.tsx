@@ -15,8 +15,8 @@ import {
   Typography,
 } from "@mui/material";
 import { TextField } from "@mui/material";
-import { AxiosContext } from "../AxiosContextProvider";
-import { QuestionTitle } from "./QuestionTitle";
+import { AxiosContext } from "../contexts/AxiosContextProvider";
+import { Title } from "./QuestionTitle";
 import SendIcon from "@mui/icons-material/Send";
 import { Relationship } from "../types/relationship.enum";
 import { TeacherStatus } from "../types/teacher-status.enum";
@@ -125,7 +125,7 @@ export const TeacherNew = () => {
       <Typography variant="h4">講師を新規作成する</Typography>
 
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        <QuestionTitle title="連携ユーザー" />
+        <Title title="連携ユーザー" />
         <Select
           required
           fullWidth
@@ -139,7 +139,7 @@ export const TeacherNew = () => {
             </MenuItem>
           ))}
         </Select>
-        <QuestionTitle title="名前" />
+        <Title title="名前" />
         <TextField
           fullWidth
           id="firstName"
@@ -149,7 +149,7 @@ export const TeacherNew = () => {
           {...register("firstName")}
         />
 
-        <QuestionTitle title="名前（読み仮名）" />
+        <Title title="名前（読み仮名）" />
         <TextField
           fullWidth
           id="firstNameKana"
@@ -163,7 +163,7 @@ export const TeacherNew = () => {
           {...register("firstNameKana")}
         />
 
-        <QuestionTitle title="苗字" />
+        <Title title="苗字" />
         <TextField
           id="lastName"
           fullWidth
@@ -177,7 +177,7 @@ export const TeacherNew = () => {
           {...register("lastName")}
         />
 
-        <QuestionTitle title="苗字（読み仮名）" />
+        <Title title="苗字（読み仮名）" />
         <TextField
           fullWidth
           id="lastNameKana"
@@ -191,7 +191,7 @@ export const TeacherNew = () => {
           {...register("lastNameKana")}
         />
 
-        <QuestionTitle title="ChatworkAccountID" />
+        <Title title="ChatworkAccountID" />
         <TextField
           fullWidth
           id="chatworkAccountId"

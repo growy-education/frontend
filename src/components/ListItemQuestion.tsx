@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Add, ListAlt, Quiz } from "@mui/icons-material";
 import {
   Collapse,
@@ -8,11 +8,16 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { UserContext } from "../contexts/UserContextProvider";
+import { Role } from "../types/role.enum";
 
 export const ListItemQuestion = () => {
-  const navigate = useNavigate();
   const [questionListOpen, setQuestionListOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const { user } = useContext(UserContext);
 
   const handleQuestionListToggle = () => {
     setQuestionListOpen(!questionListOpen);
@@ -20,7 +25,10 @@ export const ListItemQuestion = () => {
 
   return (
     <>
-      <ListItemButton onClick={handleQuestionListToggle}>
+      <ListItemButton
+        onClick={handleQuestionListToggle}
+        selected={location.pathname.includes("questions")}
+      >
         <ListItemIcon>
           <Quiz />
         </ListItemIcon>
@@ -36,14 +44,16 @@ export const ListItemQuestion = () => {
               <ListItemText primary="質問リスト" />
             </ListItemButton>
           </ListItem>
-          <ListItem onClick={() => navigate("/questions/new")}>
-            <ListItemButton>
-              <ListItemIcon>
-                <Add />
-              </ListItemIcon>
-              <ListItemText primary="質問を作成" />
-            </ListItemButton>
-          </ListItem>
+          {user.role === Role.CUSTOMER && (
+            <ListItem onClick={() => navigate("/questions/new")}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <Add />
+                </ListItemIcon>
+                <ListItemText primary="質問を作成" />
+              </ListItemButton>
+            </ListItem>
+          )}
         </List>
       </Collapse>
     </>

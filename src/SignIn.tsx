@@ -10,7 +10,13 @@ import {
 } from "@mui/material";
 import { GoogleCredentialResponse, GoogleLogin } from "@react-oauth/google";
 
-import { IsEmail, Matches, MaxLength, MinLength } from "class-validator";
+import {
+  IsEmail,
+  IsNotEmpty,
+  Matches,
+  MaxLength,
+  MinLength,
+} from "class-validator";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -21,6 +27,7 @@ type LoginScreenProps = {
 };
 
 export class SigninWithPasswordDto {
+  @IsNotEmpty({ message: "メールアドレスを入力してください" })
   @IsEmail({}, { message: "正しいメールアドレスを入力してください" })
   email: string;
 
@@ -73,13 +80,22 @@ export const LoginScreen = ({
             </Typography>
           </Grid>
           <Grid item xs={12}>
+            <Box display="flex" justifyContent="center">
+              <GoogleLogin
+                onSuccess={handleGoogleLogin}
+                onError={handleGoogleLoginError}
+                size="large"
+              />
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
             <Box
               component="form"
               style={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "16px",
               }}
+              gap={2}
               onSubmit={handleSubmit(onSubmit)}
             >
               <TextField
@@ -93,7 +109,6 @@ export const LoginScreen = ({
                 {...register("email")}
               />
               <TextField
-                fullWidth
                 id="password"
                 label="パスワード"
                 error={!!errors.password}
@@ -108,12 +123,6 @@ export const LoginScreen = ({
               >
                 ログイン
               </Button>
-              <Box alignContent={"center"}>
-                <GoogleLogin
-                  onSuccess={handleGoogleLogin}
-                  onError={handleGoogleLoginError}
-                />
-              </Box>
             </Box>
           </Grid>
         </Grid>

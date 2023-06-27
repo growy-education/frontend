@@ -1,20 +1,48 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
-import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
-import { AxiosContext } from "../AxiosContextProvider";
+import { GridColDef, GridRowParams } from "@mui/x-data-grid";
+import { AxiosContext } from "../contexts/AxiosContextProvider";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";
 import { Customer } from "../types/customer.class";
+import { CustomDataGrid } from "./CustomDataGrid";
+import { EditDataGrid } from "./EditDataGrid";
+import { SearchDataGrid } from "./SearchDataGrid";
+
+type CustomGridColDef = GridColDef & { order: number };
+
+const CustomerColumns: CustomGridColDef[] = [
+  { field: "id", headerName: "ID", flex: 1, order: 1 },
+  { field: "createdAt", headerName: "作成日時", flex: 1, order: 2 },
+  { field: "updatedAt", headerName: "更新日時", flex: 1, order: 3 },
+  { field: "firstName", headerName: "名前", flex: 1, order: 4 },
+  { field: "firstNameKana", headerName: "名前（読み仮名）", order: 5 },
+  { field: "lastName", headerName: "苗字", flex: 1, order: 6 },
+  { field: "lastNameKana", headerName: "苗字（読み仮名）", flex: 1, order: 7 },
+  { field: "relationship", headerName: "続柄", flex: 1, order: 8 },
+];
 
 export const CustomersList = () => {
-  const [customers, setCustomers] = useState<Customer[]>([]);
+  const navigate = useNavigate();
   const { axiosConfig } = useContext(AxiosContext);
 
-  const navigate = useNavigate();
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [columns, setColumns] = useState(CustomerColumns);
+  const [selectedColumn, setSelectedColumn] = useState<string>("");
+  const [searchText, setSearchText] = useState<string>("");
+
   const handleRowClick = (params: GridRowParams) => {
     const rowId = params.id as string;
     navigate(`./${rowId}`);
+  };
+
+  const handleSearch = () => {
+    // Search logic
+    // Implement your search logic based on the selectedColumn and searchText
+    // For example, filter the users array based on the selected column and search text
+    // Update the filtered users in state
+    console.log("いま!");
   };
 
   useEffect(() => {
@@ -33,25 +61,30 @@ export const CustomersList = () => {
       );
   }, [axiosConfig]);
 
-  const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", flex: 1 },
-    { field: "createdAt", headerName: "作成日時", flex: 1 },
-    { field: "updatedAt", headerName: "更新日時", flex: 1 },
-    { field: "firstName", headerName: "お名前", flex: 1 },
-    { field: "firstNameKana", headerName: "お名前（読み仮名）", flex: 1 },
-    { field: "lastName", headerName: "苗字", flex: 1 },
-    { field: "lastNameKana", headerName: "苗字（読み仮名）", flex: 1 },
-  ];
-
   return (
     <Box sx={{ width: "100%" }}>
-      <DataGrid
-        onRowClick={handleRowClick}
-        autoHeight
-        hideFooter
-        rows={customers}
+      <EditDataGrid
+        defaultColumns={CustomerColumns}
         columns={columns}
+        setColumns={setColumns}
       />
+
+      <SearchDataGrid
+        defaultColumns={CustomerColumns}
+        selectedColumn={selectedColumn}
+        setSelectedColumn={setSelectedColumn}
+        searchText={searchText}
+        setSearchText={setSearchText}
+        handleSearch={handleSearch}
+      />
+
+      <Box mt={2}>
+        <CustomDataGrid
+          onRowClick={handleRowClick}
+          rows={customers}
+          columns={columns}
+        />
+      </Box>
     </Box>
   );
 };

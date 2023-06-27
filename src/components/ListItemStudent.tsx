@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import {
   AddCircle,
+  EscalatorWarning,
   Group,
   ListAlt,
   Person,
   PersonAdd,
-  School,
+  VpnKey,
 } from "@mui/icons-material";
 import {
   Collapse,
@@ -17,12 +18,12 @@ import {
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export const ListItemTeacher = () => {
+export const ListItemStudent = () => {
   const navigate = useNavigate();
-  const [teacherListOpen, setTeacherListOpen] = useState(false);
+  const [studentListOpen, setStudentListOpen] = useState(false);
 
-  const handleTeacherListToggle = () => {
-    setTeacherListOpen(!teacherListOpen);
+  const handleStudentListToggle = () => {
+    setStudentListOpen(!studentListOpen);
   };
 
   const location = useLocation();
@@ -30,30 +31,30 @@ export const ListItemTeacher = () => {
   return (
     <>
       <ListItemButton
-        onClick={handleTeacherListToggle}
-        selected={location.pathname.includes("teachers")}
+        onClick={handleStudentListToggle}
+        selected={location.pathname.includes("students")}
       >
         <ListItemIcon>
-          <School />
+          <EscalatorWarning />
         </ListItemIcon>
-        <ListItemText primary="講師" />
+        <ListItemText primary="生徒" />
       </ListItemButton>
-      <Collapse in={teacherListOpen} timeout="auto" unmountOnExit>
+      <Collapse in={studentListOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem onClick={() => navigate("/teachers")}>
+          <ListItem onClick={() => navigate("/students")}>
             <ListItemButton>
               <ListItemIcon>
                 <ListAlt />
               </ListItemIcon>
-              <ListItemText primary="講師リスト" />
+              <ListItemText primary="生徒リスト" />
             </ListItemButton>
           </ListItem>
-          <ListItem onClick={() => navigate("/teachers/new")}>
+          <ListItem onClick={() => navigate("/students/new")}>
             <ListItemButton>
               <ListItemIcon>
                 <AddCircle />
               </ListItemIcon>
-              <ListItemText primary="講師を作成" />
+              <ListItemText primary="生徒を作成" />
             </ListItemButton>
           </ListItem>
         </List>

@@ -25,6 +25,7 @@
     "env-cmd": "^10.1.0",
     "joi": "^17.9.2",
     "react": "^18.2.0",
+    "react-calendar": "^4.3.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.0",
     "react-router-dom": "^6.11.1",

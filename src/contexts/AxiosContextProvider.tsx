@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { AuthContext } from "./AuthContextProvider";
 import { CircularProgress } from "@mui/material";
 
 interface AxiosContextType {
-  axiosConfig: CreateAxiosDefaults<any>;
+  axiosConfig: AxiosRequestConfig;
 }
 
 export const AxiosContext = createContext<AxiosContextType>({
@@ -28,11 +28,13 @@ interface AxiosProviderProps {
   children: React.ReactNode;
 }
 
-const AxiosProvider: React.FC<AxiosProviderProps> = ({ children }) => {
+export const AxiosContextProvider: React.FC<AxiosProviderProps> = ({
+  children,
+}) => {
   const { bearerToken, handleLogout } = useContext(AuthContext);
 
   const [axiosConfig, setAxiosConfig] = useState<
-    null | AxiosContextType["axiosConfig"]
+    AxiosContextType["axiosConfig"] | null
   >(null);
 
   useEffect(() => {
@@ -46,7 +48,7 @@ const AxiosProvider: React.FC<AxiosProviderProps> = ({ children }) => {
     });
   }, [bearerToken]);
 
-  if (!!!axiosConfig) {
+  if (!axiosConfig) {
     return <CircularProgress />;
   }
 
@@ -56,5 +58,3 @@ const AxiosProvider: React.FC<AxiosProviderProps> = ({ children }) => {
     </AxiosContext.Provider>
   );
 };
-
-export default AxiosProvider;

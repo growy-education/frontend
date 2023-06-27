@@ -10,8 +10,8 @@ import {
   Typography,
 } from "@mui/material";
 import { TextField } from "@mui/material";
-import { AxiosContext } from "../AxiosContextProvider";
-import { QuestionTitle } from "./QuestionTitle";
+import { AxiosContext } from "../contexts/AxiosContextProvider";
+import { Title } from "./QuestionTitle";
 import SendIcon from "@mui/icons-material/Send";
 import { Relationship } from "../types/relationship.enum";
 import { TeacherStatus } from "../types/teacher-status.enum";
@@ -52,10 +52,10 @@ export const QuestionEdit = () => {
   return (
     <>
       <Typography variant="h4">講師情報を更新する</Typography>
-      <QuestionTitle title="ID" />
+      <Title title="ID" />
       <Typography>{question.id}</Typography>
 
-      <QuestionTitle title="質問タイトル" />
+      <Title title="質問タイトル" />
       <Typography>{question.title}</Typography>
       <TextField
         fullWidth
@@ -65,7 +65,7 @@ export const QuestionEdit = () => {
         onChange={(event) => setTitle(event.target.value)}
       />
 
-      <QuestionTitle title="質問内容" />
+      <Title title="質問内容" />
       <Typography>{question.content}</Typography>
       <TextField
         fullWidth
@@ -77,7 +77,7 @@ export const QuestionEdit = () => {
         onChange={(event) => setContent(event.target.value)}
       />
 
-      <QuestionTitle title="備考" />
+      <Title title="備考" />
       <Typography>{question.memo}</Typography>
       <TextField
         fullWidth
@@ -88,7 +88,7 @@ export const QuestionEdit = () => {
         onChange={(event) => setMemo(event.target.value)}
       />
 
-      <QuestionTitle title="問題の画像" />
+      <Title title="問題の画像" />
       {question.problems.length > 0 && (
         <Box sx={{ mt: 2, overflowX: "auto" }}>
           <Grid container spacing={2} sx={{ pr: 2 }}>
@@ -105,7 +105,7 @@ export const QuestionEdit = () => {
         </Box>
       )}
 
-      <QuestionTitle title="解答の画像" />
+      <Title title="解答の画像" />
       {question.solutions.length > 0 && (
         <Box sx={{ mt: 2, overflowX: "auto" }}>
           <Grid container spacing={2} sx={{ pr: 2 }}>

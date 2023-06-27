@@ -1,0 +1,5 @@
+export enum RoomStatus {
+  COMPLETED = "COMPLETED",
+  SCHEDULED = "SCHEDULED",
+  CANCELLED = "CANCELLED",
+}

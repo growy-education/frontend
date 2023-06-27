@@ -1,18 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
-import {
-  Typography,
-  Box,
-  Container,
-  Grid,
-  Card,
-  CardMedia,
-  CardContent,
-} from "@mui/material";
-import { AxiosContext } from "../AxiosContextProvider";
+import { useContext, useEffect, useState } from "react";
+import { Typography, Box, Container } from "@mui/material";
+import { AxiosContext } from "../contexts/AxiosContextProvider";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { QuestionTitle } from "./QuestionTitle";
+import { Title } from "./QuestionTitle";
 import { Teacher } from "../types/teacher.class";
+import { plainToInstance } from "class-transformer";
 
 export const TeacherDetail = () => {
   const [teacher, setTeacher] = useState<null | Teacher>(null);
@@ -26,7 +19,7 @@ export const TeacherDetail = () => {
       .create(axiosConfig)
       .get(`/teachers/${teacherId}`)
       .then((response) => {
-        setTeacher(response.data);
+        setTeacher(plainToInstance(Teacher, response.data));
       })
       .catch((error) => {
         console.log(error);
@@ -57,25 +50,25 @@ export const TeacherDetail = () => {
   return (
     <Container maxWidth="md">
       <Box my={3}>
-        <QuestionTitle title="ID" />
+        <Title title="ID" />
         <Typography>{id}</Typography>
-        <QuestionTitle title="作成日時" />
+        <Title title="作成日時" />
         <Typography>{createdAt.toDateString()}</Typography>
-        <QuestionTitle title="更新日時" />
+        <Title title="更新日時" />
         <Typography>{updatedAt.toDateString()}</Typography>
-        <QuestionTitle title="名前" />
+        <Title title="名前" />
         <Typography>{firstName}</Typography>
-        <QuestionTitle title="名前（読み仮名）" />
+        <Title title="名前（読み仮名）" />
         <Typography>{firstNameKana}</Typography>
-        <QuestionTitle title="苗字" />
+        <Title title="苗字" />
         <Typography>{lastName}</Typography>
-        <QuestionTitle title="苗字（読み仮名）" />
+        <Title title="苗字（読み仮名）" />
         <Typography>{lastNameKana}</Typography>
-        <QuestionTitle title="ステータス" />
+        <Title title="ステータス" />
         <Typography>{status}</Typography>
-        <QuestionTitle title="Chatwork アカウントID" />
+        <Title title="Chatwork アカウントID" />
         <Typography>{chatworkAccountId}</Typography>
-        <QuestionTitle title="残り質問タスク数" />
+        <Title title="残り質問タスク数" />
         <Typography>{assignedQuestionsNumber}</Typography>
       </Box>
     </Container>

@@ -1,16 +1,16 @@
 import React, { useContext } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import { UserContext } from "./UserContextProvider";
+import { UserContext } from "./contexts/UserContextProvider";
 import { Role } from "./types/role.enum";
 import { NotFound } from "./components/NotFound";
 import { Information } from "./Information";
 import { QuestionList } from "./components/QuestionList";
 import { QuestionNew } from "./components/QuestionNew";
-import QuestionDetail from "./components/QuestionDetail";
+import { QuestionCheck } from "./components/QuestionCheck";
 import { QuestionEdit } from "./components/QuestionEdit";
 import { CustomerEdit } from "./components/CustomerEdit";
-import { Studyroom } from "./components/Room";
+import { RoomList } from "./components/RoomList";
 import { Preservation } from "./components/StudyroomPreservation";
 import { UserActivate } from "./components/UserActivate";
 import { UsersList } from "./components/UsersList";
@@ -29,6 +29,10 @@ import { StudentNew } from "./components/StudentNew";
 import { StudentDetail } from "./components/StudentDetail";
 import { StudentEdit } from "./components/StudentEdit";
 import { General } from "./General";
+import QuestionDetail from "./components/QuestionDetail";
+import { Profile } from "./components/Profile";
+import { RoomDetail } from "./components/RoomDetail";
+import { RoomNew } from "./components/RoomNew";
 
 export const RolesRouter: React.FC = () => {
   const { user } = useContext(UserContext);
@@ -37,6 +41,7 @@ export const RolesRouter: React.FC = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<General />}>
+          <Route path="/profile" element={<Profile />} />
           {user.role === Role.ADMIN && (
             <>
               <Route path="/" element={<Information />} />
@@ -50,8 +55,13 @@ export const RolesRouter: React.FC = () => {
                 path="/questions/:questionId/edit"
                 element={<QuestionEdit />}
               />
-              <Route path="/rooms" element={<Studyroom />} />
-              <Route path="/rooms/new" element={<Preservation />} />
+              <Route
+                path="/questions/:questionId/check"
+                element={<QuestionCheck />}
+              />
+              <Route path="/rooms" element={<RoomList />} />
+              <Route path="/rooms/new" element={<RoomNew />} />
+              <Route path="/rooms/:roomId" element={<RoomDetail />} />
 
               <Route path="/users" element={<UsersList />} />
               <Route path="/users/new" element={<UserNew />} />
@@ -103,7 +113,7 @@ export const RolesRouter: React.FC = () => {
                 path="/questions/:questionId/edit"
                 element={<QuestionEdit />}
               />
-              <Route path="/rooms/" element={<Studyroom />} />
+              <Route path="/rooms/" element={<RoomList />} />
               <Route path="/studyroom/new" element={<Preservation />} />
               <Route
                 path="/customers/:customerId"
@@ -118,7 +128,7 @@ export const RolesRouter: React.FC = () => {
           {user.role === Role.TEACHER && (
             <>
               <Route path="/" element={<Information />} />
-              <Route path="/rooms" element={<Studyroom />} />
+              <Route path="/rooms" element={<RoomList />} />
               <Route path="/rooms/new" element={<Preservation />} />
               <Route path="/teachers/:teacherId/" element={<TeacherDetail />} />
               <Route

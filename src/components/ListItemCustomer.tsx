@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Group, Person, PersonAdd } from "@mui/icons-material";
+import { AddCircle, Contacts, ListAlt } from "@mui/icons-material";
 import {
   Collapse,
   List,
@@ -8,7 +8,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const ListItemCustomer = () => {
   const navigate = useNavigate();
@@ -18,20 +18,25 @@ export const ListItemCustomer = () => {
     setCustomerListOpen(!customerListOpen);
   };
 
+  const location = useLocation();
+
   return (
     <>
-      <ListItemButton onClick={handleCustomerListToggle}>
+      <ListItemButton
+        onClick={handleCustomerListToggle}
+        selected={location.pathname.includes("customers")}
+      >
         <ListItemIcon>
-          <Person />
+          <Contacts />
         </ListItemIcon>
-        <ListItemText primary="保護者情報" />
+        <ListItemText primary="保護者" />
       </ListItemButton>
       <Collapse in={customerListOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <ListItem onClick={() => navigate("/customers")}>
             <ListItemButton>
               <ListItemIcon>
-                <Group />
+                <ListAlt />
               </ListItemIcon>
               <ListItemText primary="保護者リスト" />
             </ListItemButton>
@@ -39,7 +44,7 @@ export const ListItemCustomer = () => {
           <ListItem onClick={() => navigate("/customers/new")}>
             <ListItemButton>
               <ListItemIcon>
-                <PersonAdd />
+                <AddCircle />
               </ListItemIcon>
               <ListItemText primary="保護者を作成" />
             </ListItemButton>

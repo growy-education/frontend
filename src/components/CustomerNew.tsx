@@ -8,6 +8,7 @@ import {
   DialogContentText,
   DialogTitle,
   FormControlLabel,
+  FormHelperText,
   MenuItem,
   Radio,
   RadioGroup,
@@ -15,8 +16,8 @@ import {
   Typography,
 } from "@mui/material";
 import { TextField } from "@mui/material";
-import { AxiosContext } from "../AxiosContextProvider";
-import { QuestionTitle } from "./QuestionTitle";
+import { AxiosContext } from "../contexts/AxiosContextProvider";
+import { Title } from "./QuestionTitle";
 import SendIcon from "@mui/icons-material/Send";
 import { Relationship } from "../types/relationship.enum";
 import { IsEnum, IsNotEmpty, IsString, Matches } from "class-validator";
@@ -71,7 +72,12 @@ export const CustomerNew = () => {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<CreateCustomerDto>({ resolver });
+  } = useForm<CreateCustomerDto>({
+    resolver,
+    defaultValues: {
+      relationship: Relationship.FATHER,
+    },
+  });
 
   const [users, setUsers] = useState<User[]>([]);
 
@@ -86,13 +92,12 @@ export const CustomerNew = () => {
         },
       })
       .then((response) => {
-        console.log(response.data);
         const users = response.data.map((userJson: string) =>
           plainToInstance(User, userJson)
         );
         setUsers(users);
       })
-      .catch((error) => console.log("error occurred at UsersList.tsx", error));
+      .catch((error) => console.log(`error occured at ${__dirname}, ${error}`));
   }, [axiosConfig]);
 
   const onSubmit: SubmitHandler<CreateCustomerDto> = (data) => {
@@ -122,7 +127,7 @@ export const CustomerNew = () => {
     <>
       <Typography variant="h4">保護者を新規作成する</Typography>
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        <QuestionTitle title="連携ユーザー" />
+        <Title title="連携ユーザー" />
         <Select
           required
           fullWidth
@@ -136,7 +141,7 @@ export const CustomerNew = () => {
             </MenuItem>
           ))}
         </Select>
-        <QuestionTitle title="名前" />
+        <Title title="名前" />
         <TextField
           fullWidth
           id="firstName"
@@ -146,7 +151,7 @@ export const CustomerNew = () => {
           {...register("firstName")}
         />
 
-        <QuestionTitle title="名前（読み仮名）" />
+        <Title title="名前（読み仮名）" />
         <TextField
           fullWidth
           id="firstNameKana"
@@ -160,7 +165,7 @@ export const CustomerNew = () => {
           {...register("firstNameKana")}
         />
 
-        <QuestionTitle title="苗字" />
+        <Title title="苗字" />
         <TextField
           id="lastName"
           fullWidth
@@ -174,7 +179,7 @@ export const CustomerNew = () => {
           {...register("lastName")}
         />
 
-        <QuestionTitle title="苗字（読み仮名）" />
+        <Title title="苗字（読み仮名）" />
         <TextField
           fullWidth
           id="lastNameKana"
@@ -188,17 +193,12 @@ export const CustomerNew = () => {
           {...register("lastNameKana")}
         />
 
-        <QuestionTitle title="続柄" />
+        <Title title="続柄" />
         <Controller
           name="relationship"
           control={control}
           render={({ field }) => (
-            <RadioGroup
-              row
-              name="radio-buttons-group"
-              {...field}
-              defaultValue={Relationship.FATHER}
-            >
+            <RadioGroup row name="radio-buttons-group" {...field}>
               <FormControlLabel
                 value={Relationship.FATHER}
                 control={<Radio />}
@@ -214,6 +214,9 @@ export const CustomerNew = () => {
                 control={<Radio />}
                 label="その他"
               />
+              <FormHelperText error={!!errors.relationship}>
+                {errors.relationship?.message}
+              </FormHelperText>
             </RadioGroup>
           )}
         />

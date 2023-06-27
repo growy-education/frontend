@@ -1,10 +1,10 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
 import axios from "axios";
-import { LoginScreen } from "./SignIn";
-import { CircularProgress, Typography } from "@mui/material";
-import { User } from "./types/user.class";
+import { Box, CircularProgress, Typography } from "@mui/material";
+import { User } from "../types/user.class";
 import { AxiosContext } from "./AxiosContextProvider";
-import { plainToClass, plainToInstance } from "class-transformer";
+import { plainToInstance } from "class-transformer";
+import { Role } from "../types/role.enum";
 
 interface UserContextProps {
   user: User;
@@ -42,7 +42,16 @@ export const UserContextProvider = ({ children }: Props) => {
   }, [axiosConfig]);
 
   if (!!!user) {
-    return <Typography>"ユーザー情報を取得中"</Typography>;
+    return (
+      <Box alignItems={"center"} justifyContent={"center"}>
+        <Typography>ユーザー情報を取得中</Typography>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (user.role === Role.PENDING) {
+    return <Typography>ADMINユーザーからの承認を待機中です。</Typography>;
   }
 
   return (

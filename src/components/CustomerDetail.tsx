@@ -1,15 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Typography, Box, Container } from "@mui/material";
-import { AxiosContext } from "../AxiosContextProvider";
-import { useParams } from "react-router-dom";
+import { Typography, Box, Container, Button } from "@mui/material";
+import { AxiosContext } from "../contexts/AxiosContextProvider";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { QuestionTitle } from "./QuestionTitle";
+import { Title } from "./QuestionTitle";
 import { Customer } from "../types/customer.class";
 import { plainToInstance } from "class-transformer";
+import { Edit } from "@mui/icons-material";
 
 export const CustomerDetail = () => {
   const [customer, setCustomer] = useState<null | Customer>(null);
   const { axiosConfig } = useContext(AxiosContext);
+  const navigate = useNavigate();
 
   const { customerId } = useParams();
   console.log(customer);
@@ -48,22 +50,31 @@ export const CustomerDetail = () => {
 
   return (
     <Container maxWidth="md">
+      <Box display="flex" justifyContent={"flex-end"} mb={2}>
+        <Button
+          variant="outlined"
+          endIcon={<Edit />}
+          onClick={() => navigate("edit")}
+        >
+          保護者情報を編集
+        </Button>
+      </Box>
       <Box my={3}>
-        <QuestionTitle title="ID" />
+        <Title title="ID" />
         <Typography>{id}</Typography>
-        <QuestionTitle title="作成日時" />
+        <Title title="作成日時" />
         <Typography>{createdAt.toDateString()}</Typography>
-        <QuestionTitle title="更新日時" />
+        <Title title="更新日時" />
         <Typography>{updatedAt.toDateString()}</Typography>
-        <QuestionTitle title="名前" />
+        <Title title="名前" />
         <Typography>{firstName}</Typography>
-        <QuestionTitle title="名前（読み仮名）" />
+        <Title title="名前（読み仮名）" />
         <Typography>{firstNameKana}</Typography>
-        <QuestionTitle title="苗字" />
+        <Title title="苗字" />
         <Typography>{lastName}</Typography>
-        <QuestionTitle title="苗字（読み仮名）" />
+        <Title title="苗字（読み仮名）" />
         <Typography>{lastNameKana}</Typography>
-        <QuestionTitle title="続柄" />
+        <Title title="続柄" />
         <Typography>{relationship}</Typography>
       </Box>
     </Container>

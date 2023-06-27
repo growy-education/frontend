@@ -7,12 +7,14 @@ import {
   GridRenderCellParams,
   GridRowParams,
 } from "@mui/x-data-grid";
-import { AxiosContext } from "../AxiosContextProvider";
+import { AxiosContext } from "../contexts/AxiosContextProvider";
 import { CircleOutlined, Close } from "@mui/icons-material";
 import axios from "axios";
+import { plainToInstance } from "class-transformer";
+import { Question } from "../types/question.class";
 
 export const QuestionList = () => {
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState<Question[]>([]);
   const { axiosConfig } = useContext(AxiosContext);
 
   const navigate = useNavigate();
@@ -26,8 +28,13 @@ export const QuestionList = () => {
       .create(axiosConfig)
       .get("questions")
       .then((response) => {
-        console.log(response.data);
-        setQuestions(response.data);
+        if (!Array.isArray(response.data)) {
+          throw new Error("ネットワークエラー");
+        }
+        const questions = response.data.map((userJson: string) => {
+          return plainToInstance(Question, userJson);
+        });
+        setQuestions(questions);
       })
       .catch((error) =>
         console.log("error occurred at QuestionList.tsx", error)
