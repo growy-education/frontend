@@ -17,16 +17,16 @@ import { AuthContext } from "./contexts/AuthContextProvider";
 import { DrawerListItem } from "./tools/DrawerListItem";
 import { UserContext } from "./contexts/UserContextProvider";
 import { Outlet, useNavigate } from "react-router-dom";
-import { NotificationContext } from "./contexts/NotificationContextProvider";
-import { NotificationPanel } from "./components/NotificationPanel";
-import { AccountCircle, Notifications } from "@mui/icons-material";
+import { AccountCircle } from "@mui/icons-material";
+import { AlertPanelContext } from "./contexts/AlertPanelContextProvider";
+import { AlertPanel } from "./components/AlertPanel";
 
 export const General: React.FC = () => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { handleLogout } = useContext(AuthContext);
   const { user } = useContext(UserContext);
-  const { notification } = useContext(NotificationContext);
+  const { alert } = useContext(AlertPanelContext);
 
   const handleToggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -86,9 +86,8 @@ export const General: React.FC = () => {
           marginTop: "64px",
         }}
       >
-        {notification && notification.type === "Modal" && <NotificationPanel />}
-        {notification && notification.type === "Panel" && <NotificationPanel />}
         <Outlet />
+        {alert && <AlertPanel />}
       </Box>
     </Box>
   );

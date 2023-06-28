@@ -73,8 +73,16 @@ export const RoomNew = () => {
   } = useForm<CreateRoomDto>({
     resolver,
     defaultValues: {
-      startAt: dayjs(new Date(searchParams.get("startAt"))),
-      endAt: dayjs(new Date(searchParams.get("endAt"))),
+      startAt: dayjs(new Date(searchParams.get("startAt")))
+        .hour(17)
+        .minute(0)
+        .second(0)
+        .millisecond(0),
+      endAt: dayjs(new Date(searchParams.get("endAt")))
+        .hour(19)
+        .minute(0)
+        .second(0)
+        .millisecond(0),
       teacherId: "",
     },
   });
@@ -163,12 +171,13 @@ export const RoomNew = () => {
   return (
     <>
       <Typography variant="h4">オンライン自習室を新規作成する</Typography>
+      <Title title="時間帯" />
       <Select fullWidth defaultValue="weekday" onChange={handleSwitchChange}>
         <MenuItem key="weekday" value="weekday">
-          平日
+          平日（17:00〜19:00）
         </MenuItem>
         <MenuItem key="holiday" value="holiday">
-          休日
+          休日（10:00〜12:00）
         </MenuItem>
       </Select>
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
@@ -180,6 +189,7 @@ export const RoomNew = () => {
             <DateTimePicker
               {...field}
               label="開始時刻"
+              ampm={false}
               slotProps={{
                 textField: {
                   fullWidth: true,
@@ -200,6 +210,7 @@ export const RoomNew = () => {
             <DateTimePicker
               {...field}
               label="終了時刻"
+              ampm={false}
               slotProps={{
                 textField: {
                   fullWidth: true,

@@ -33,6 +33,7 @@ import QuestionDetail from "./components/QuestionDetail";
 import { Profile } from "./components/Profile";
 import { RoomDetail } from "./components/RoomDetail";
 import { RoomNew } from "./components/RoomNew";
+import { ImageList } from "./components/ImageList";
 
 export const RolesRouter: React.FC = () => {
   const { user } = useContext(UserContext);
@@ -42,6 +43,7 @@ export const RolesRouter: React.FC = () => {
       <Routes>
         <Route path="/" element={<General />}>
           <Route path="/profile" element={<Profile />} />
+          <Route path="/images" element={<ImageList />} />
           {user.role === Role.ADMIN && (
             <>
               <Route path="/" element={<Information />} />
