@@ -8,6 +8,7 @@ import {
   CircularProgress,
   Typography,
 } from "@mui/material";
+import { LoadingData } from "./LoadingData";
 
 type CustomImageProps = Exclude<React.HTMLProps<HTMLImageElement>, "src"> & {
   id: string;
@@ -53,7 +54,7 @@ export const CustomImage = ({ id, ...props }: CustomImageProps) => {
   }, [axiosConfig, id]);
 
   if (!imageUrl) {
-    return <CircularProgress />;
+    return <LoadingData message="画像データの取得中です" />;
   }
 
   if (error) {

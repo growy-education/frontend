@@ -23,8 +23,8 @@ const UserColumns: CustomGridColDef[] = [
 ];
 
 export const UsersList = () => {
-  const navigate = useNavigate();
   const { axiosConfig } = useAxiosConfig();
+  const navigate = useNavigate();
 
   const [users, setUsers] = useState<User[]>([]);
   const [columns, setColumns] = useState(UserColumns);

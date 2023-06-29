@@ -31,6 +31,7 @@ import { useNavigate } from "react-router-dom";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { Student } from "../../types/student.class";
 import { DatePicker } from "@mui/x-date-pickers";
+import { LoadingData } from "../../components/LoadingData";
 
 const getMinDate = (): Date => {
   const currentDate = new Date();
@@ -140,7 +141,7 @@ export const StudentEdit = () => {
   });
 
   if (!student) {
-    return <CircularProgress />;
+    return <LoadingData message="生徒情報を取得中です" />;
   }
 
   return (

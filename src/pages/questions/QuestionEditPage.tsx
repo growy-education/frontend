@@ -20,6 +20,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";
 import { PhotoLibraryOutlined } from "@mui/icons-material";
+import { LoadingData } from "../../components/LoadingData";
 
 export const QuestionEdit = () => {
   const { questionId } = useParams();
@@ -46,7 +47,7 @@ export const QuestionEdit = () => {
   }, [axiosConfig, questionId]);
 
   if (!!!question) {
-    return <CircularProgress />;
+    return <LoadingData message="質問情報を取得中です" />;
   }
 
   return (

@@ -26,6 +26,10 @@ import { IsEnum, IsNotEmpty } from "class-validator";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ResultSnackbar } from "../../components/ResultSnackbar";
+import { CustomerDetail } from "../../components/customers/CustomerDetail";
+import { StudentDetail } from "../../components/students/StudentDetail";
+import { TeacherDetail } from "../../components/teachers/TeacherDetail";
+import { LoadingData } from "../../components/LoadingData";
 
 class ActivateUserDto {
   @IsNotEmpty()
@@ -128,7 +132,7 @@ export const UserActivate = () => {
   };
 
   if (!!!user) {
-    return <CircularProgress />;
+    return <LoadingData message="ユーザー情報を取得中です" />;
   }
 
   const { id, createdAt, updatedAt, username, email, phone, role } = user;
@@ -200,32 +204,13 @@ export const UserActivate = () => {
             {user ? (
               user?.customer ? (
                 <>
-                  <Title title="ID" />
-                  <Typography>{user.customer.id}</Typography>
-                  <Title title="作成日時" />
-                  <Typography>
-                    {user.customer.createdAt.toDateString()}
-                  </Typography>
-                  <Title title="更新日時" />
-                  <Typography>
-                    {user.customer.updatedAt.toDateString()}
-                  </Typography>
-                  <Title title="名前" />
-                  <Typography>{user.customer.firstName}</Typography>
-                  <Title title="名前（読み仮名）" />
-                  <Typography>{user.customer.firstNameKana}</Typography>
-                  <Title title="苗字" />
-                  <Typography>{user.customer.lastName}</Typography>
-                  <Title title="苗字（読み仮名）" />
-                  <Typography>{user.customer.lastNameKana}</Typography>
-                  <Title title="続柄" />
-                  <Typography>{user.customer.relationship}</Typography>
+                  <CustomerDetail customer={user.customer} />
                 </>
               ) : (
-                <Typography>カスタマー情報がありません</Typography>
+                <Typography>保護者情報がありません</Typography>
               )
             ) : (
-              <CircularProgress />
+              <LoadingData message="保護者情報を取得中です" />
             )}
           </AccordionDetails>
         </Accordion>
@@ -236,28 +221,7 @@ export const UserActivate = () => {
           <AccordionDetails>
             {user ? (
               user?.student ? (
-                <>
-                  <Title title="ID" />
-                  <Typography>{user.student.id}</Typography>
-                  <Title title="作成日時" />
-                  <Typography>
-                    {user.student.createdAt.toDateString()}
-                  </Typography>
-                  <Title title="更新日時" />
-                  <Typography>
-                    {user.student.updatedAt.toDateString()}
-                  </Typography>
-                  <Title title="名前" />
-                  <Typography>{user.student.firstName}</Typography>
-                  <Title title="名前（読み仮名）" />
-                  <Typography>{user.student.firstNameKana}</Typography>
-                  <Title title="苗字" />
-                  <Typography>{user.student.lastName}</Typography>
-                  <Title title="苗字（読み仮名）" />
-                  <Typography>{user.student.lastNameKana}</Typography>
-                  <Title title="性別" />
-                  <Typography>{user.student.gender}</Typography>
-                </>
+                <StudentDetail student={user.student} />
               ) : (
                 <Typography>生徒情報がありません</Typography>
               )
@@ -273,33 +237,12 @@ export const UserActivate = () => {
           <AccordionDetails>
             {user ? (
               user?.teacher ? (
-                <>
-                  <Title title="ID" />
-                  <Typography>{user.teacher.id}</Typography>
-                  <Title title="作成日時" />
-                  <Typography>
-                    {user.teacher.createdAt.toDateString()}
-                  </Typography>
-                  <Title title="更新日時" />
-                  <Typography>
-                    {user.teacher.updatedAt.toDateString()}
-                  </Typography>
-                  <Title title="名前" />
-                  <Typography>{user.teacher.firstName}</Typography>
-                  <Title title="名前（読み仮名）" />
-                  <Typography>{user.teacher.firstNameKana}</Typography>
-                  <Title title="苗字" />
-                  <Typography>{user.teacher.lastName}</Typography>
-                  <Title title="苗字（読み仮名）" />
-                  <Typography>{user.teacher.lastNameKana}</Typography>
-                  <Title title="ChatworkAccountID" />
-                  <Typography>{user.teacher.chatworkAccountId}</Typography>
-                </>
+                <TeacherDetail teacher={user.teacher} />
               ) : (
                 <Typography>講師情報がありません</Typography>
               )
             ) : (
-              <CircularProgress />
+              <LoadingData message="講師情報を取得中です" />
             )}
           </AccordionDetails>
         </Accordion>

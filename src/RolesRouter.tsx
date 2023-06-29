@@ -30,11 +30,11 @@ import { RoomDetail } from "./pages/rooms/RoomDetailPage";
 
 import { Preservation } from "./pages/rooms/StudyroomPreservationPage";
 
-import { UsersList } from "./pages/users/UsersList";
-import { UserNew } from "./pages/users/UserNew";
-import { UserDetail } from "./pages/users/UserDetail";
-import { UserEdit } from "./pages/users/UserEdit";
-import { UserActivate } from "./pages/users/UserActivate";
+import { UsersList } from "./pages/users/UsersListPage";
+import { UserNew } from "./pages/users/UserNewPage";
+import { UserDetailPage } from "./pages/users/UserDetailPage";
+import { UserEdit } from "./pages/users/UserEditPage";
+import { UserActivate } from "./pages/users/UserActivatePage";
 
 import { TeachersList } from "./pages/teachers/TeachersListPage";
 import { TeacherNew } from "./pages/teachers/TeacherNewPage";
@@ -79,7 +79,7 @@ export const RolesRouter: React.FC = () => {
 
               <Route path="/users" element={<UsersList />} />
               <Route path="/users/new" element={<UserNew />} />
-              <Route path="/users/:userId/" element={<UserDetail />} />
+              <Route path="/users/:userId/" element={<UserDetailPage />} />
               <Route
                 path="/users/:userId/activate"
                 element={<UserActivate />}

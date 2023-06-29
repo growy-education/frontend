@@ -17,6 +17,7 @@ import axios from "axios";
 import { Title } from "../../components/QuestionTitle";
 import { plainToInstance } from "class-transformer";
 import { LockOpen } from "@mui/icons-material";
+import { LoadingData } from "../../components/LoadingData";
 
 export const QuestionCheck = () => {
   const { questionId } = useParams();
@@ -38,12 +39,7 @@ export const QuestionCheck = () => {
   }, [axiosConfig, questionId]);
 
   if (!!!question) {
-    return (
-      <>
-        <CircularProgress />
-        <Typography>質問を取得中です</Typography>
-      </>
-    );
+    return <LoadingData message="質問情報を取得中です" />;
   }
 
   const {

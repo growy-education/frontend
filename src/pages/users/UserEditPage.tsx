@@ -25,6 +25,7 @@ import {
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { SubmitButton } from "../../components/SubmitButton";
+import { LoadingData } from "../../components/LoadingData";
 
 class UpdateUserDto {
   @IsOptional()
@@ -154,7 +155,7 @@ export const UserEdit = () => {
   };
 
   if (!user) {
-    return <CircularProgress />;
+    return <LoadingData message="ユーザー情報を取得中です" />;
   }
 
   return (

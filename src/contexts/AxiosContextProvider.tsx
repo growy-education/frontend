@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { AuthContext } from "./AuthContextProvider";
 import { CircularProgress } from "@mui/material";
+import { LoadingData } from "../components/LoadingData";
 
 interface AxiosContextType {
   axiosConfig: AxiosRequestConfig;
@@ -49,7 +50,7 @@ export const AxiosContextProvider: React.FC<AxiosProviderProps> = ({
   }, [bearerToken]);
 
   if (!axiosConfig) {
-    return <CircularProgress />;
+    return <LoadingData message="ログイン情報を取得中です" />;
   }
 
   return (

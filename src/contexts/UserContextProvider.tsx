@@ -5,6 +5,7 @@ import { User } from "../types/user.class";
 import { AxiosContext } from "./AxiosContextProvider";
 import { plainToInstance } from "class-transformer";
 import { Role } from "../types/role.enum";
+import { LoadingData } from "../components/LoadingData";
 
 interface UserContextProps {
   user: User;
@@ -42,12 +43,7 @@ export const UserContextProvider = ({ children }: Props) => {
   }, [axiosConfig]);
 
   if (!!!user) {
-    return (
-      <Box alignItems={"center"} justifyContent={"center"}>
-        <Typography>ユーザー情報を取得中</Typography>
-        <CircularProgress />
-      </Box>
-    );
+    return <LoadingData message="ユーザー情報を取得中" />;
   }
 
   if (user.role === Role.PENDING) {

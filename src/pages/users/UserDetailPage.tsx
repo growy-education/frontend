@@ -1,15 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Typography, Box, Container, Button } from "@mui/material";
+import { Box, Container, Button } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import { User } from "../../types/user.class";
 import axios from "axios";
-import { Title } from "../../components/QuestionTitle";
 import { plainToInstance } from "class-transformer";
 import { Edit, LockOpen } from "@mui/icons-material";
 import { Role } from "../../types/role.enum";
+import { UserDetail } from "../../components/users/UserDetail";
+import { LinkedUserInformation } from "../../components/users/LinkedUserInformation";
 
-export const UserDetail = () => {
+export const UserDetailPage = () => {
   const [user, setUser] = useState<null | User>(null);
   const { axiosConfig } = useContext(AxiosContext);
   const navigate = useNavigate();
@@ -33,8 +34,6 @@ export const UserDetail = () => {
     return <p>ローディングなう！</p>;
   }
 
-  const { id, createdAt, updatedAt, username, email, phone, role } = user;
-
   return (
     <Container maxWidth="md">
       <Box display="flex" justifyContent={"flex-end"} mb={2}>
@@ -57,20 +56,12 @@ export const UserDetail = () => {
         </Button>
       </Box>
       <Box my={3}>
-        <Title title="ID" />
-        <Typography>{id}</Typography>
-        <Title title="作成日時" />
-        <Typography>{createdAt.toDateString()}</Typography>
-        <Title title="更新日時" />
-        <Typography>{updatedAt.toDateString()}</Typography>
-        <Title title="ユーザー名" />
-        <Typography>{username}</Typography>
-        <Title title="メールアドレス" />
-        <Typography>{email}</Typography>
-        <Title title="電話番号" />
-        <Typography>{phone}</Typography>
-        <Title title="ロール" />
-        <Typography>{role}</Typography>
+        <Box mb={2}>
+          <UserDetail user={user} />
+        </Box>
+        <Box>
+          <LinkedUserInformation user={user} />
+        </Box>
       </Box>
     </Container>
   );

@@ -22,6 +22,7 @@ import {
   OpenInNew,
 } from "@mui/icons-material";
 import { mockRooms } from "./RoomListPage";
+import { LoadingData } from "../../components/LoadingData";
 
 export const RoomDetail = () => {
   const [room, setRoom] = useState<null | Room>();
@@ -45,7 +46,7 @@ export const RoomDetail = () => {
   }, [axiosConfig, roomId]);
 
   if (!room) {
-    return <CircularProgress />;
+    return <LoadingData message="オンライン自習室の情報を取得中です" />;
   }
 
   return (
