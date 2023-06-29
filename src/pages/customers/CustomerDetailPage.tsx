@@ -7,6 +7,7 @@ import { Title } from "../../components/QuestionTitle";
 import { Customer } from "../../types/customer.class";
 import { plainToInstance } from "class-transformer";
 import { Edit } from "@mui/icons-material";
+import { CustomerDetail } from "../../components/customers/CustomerDetail";
 
 export const CustomerDetailPage = () => {
   const [customer, setCustomer] = useState<null | Customer>(null);
@@ -37,17 +38,6 @@ export const CustomerDetailPage = () => {
     return <p>ローディングなう！</p>;
   }
 
-  const {
-    id,
-    createdAt,
-    updatedAt,
-    firstName,
-    firstNameKana,
-    lastName,
-    lastNameKana,
-    relationship,
-  } = customer;
-
   return (
     <Container maxWidth="md">
       <Box display="flex" justifyContent={"flex-end"} mb={2}>
@@ -60,22 +50,7 @@ export const CustomerDetailPage = () => {
         </Button>
       </Box>
       <Box my={3}>
-        <Title title="ID" />
-        <Typography>{id}</Typography>
-        <Title title="作成日時" />
-        <Typography>{createdAt.toDateString()}</Typography>
-        <Title title="更新日時" />
-        <Typography>{updatedAt.toDateString()}</Typography>
-        <Title title="名前" />
-        <Typography>{firstName}</Typography>
-        <Title title="名前（読み仮名）" />
-        <Typography>{firstNameKana}</Typography>
-        <Title title="苗字" />
-        <Typography>{lastName}</Typography>
-        <Title title="苗字（読み仮名）" />
-        <Typography>{lastNameKana}</Typography>
-        <Title title="続柄" />
-        <Typography>{relationship}</Typography>
+        <CustomerDetail customer={customer} />
         {!!customer?.user && (
           <>
             <Title title="ユーザー" />

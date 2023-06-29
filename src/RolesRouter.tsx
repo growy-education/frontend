@@ -13,22 +13,22 @@ import { Profile } from "./components/Profile";
 import { ImageList } from "./components/ImageList";
 import { ImageNew } from "./components/ImageNew";
 
-import { QuestionList } from "./pages/questions/QuestionList";
-import { QuestionNew } from "./pages/questions/QuestionNew";
-import { QuestionCheck } from "./pages/questions/QuestionCheck";
-import { QuestionDetail } from "./pages/questions/QuestionDetail";
-import { QuestionEdit } from "./pages/questions/QuestionEdit";
+import { QuestionList } from "./pages/questions/QuestionListPage";
+import { QuestionNew } from "./pages/questions/QuestionNewPage";
+import { QuestionCheck } from "./pages/questions/QuestionCheckPage";
+import { QuestionDetail } from "./pages/questions/QuestionDetailPage";
+import { QuestionEdit } from "./pages/questions/QuestionEditPage";
 
-import { CustomersListPage } from "./pages/customers/CustomersList";
-import { CustomerNewPage } from "./pages/customers/CustomerNew";
-import { CustomerEditPage } from "./pages/customers/CustomerEdit";
-import { CustomerDetailPage } from "./pages/customers/CustomerDetail";
+import { CustomersListPage } from "./pages/customers/CustomersListPage";
+import { CustomerNewPage } from "./pages/customers/CustomerNewPage";
+import { CustomerEditPage } from "./pages/customers/CustomerEditPage";
+import { CustomerDetailPage } from "./pages/customers/CustomerDetailPage";
 
-import { RoomList } from "./pages/rooms/RoomList";
-import { RoomNew } from "./pages/rooms/RoomNew";
-import { RoomDetail } from "./pages/rooms/RoomDetail";
+import { RoomList } from "./pages/rooms/RoomListPage";
+import { RoomNew } from "./pages/rooms/RoomNewPage";
+import { RoomDetail } from "./pages/rooms/RoomDetailPage";
 
-import { Preservation } from "./pages/rooms/StudyroomPreservation";
+import { Preservation } from "./pages/rooms/StudyroomPreservationPage";
 
 import { UsersList } from "./pages/users/UsersList";
 import { UserNew } from "./pages/users/UserNew";
@@ -36,15 +36,15 @@ import { UserDetail } from "./pages/users/UserDetail";
 import { UserEdit } from "./pages/users/UserEdit";
 import { UserActivate } from "./pages/users/UserActivate";
 
-import { TeachersList } from "./pages/teachers/TeachersList";
-import { TeacherNew } from "./pages/teachers/TeacherNew";
-import { TeacherDetail } from "./pages/teachers/TeacherDetail";
-import { TeacherEdit } from "./pages/teachers/TeacherEdit";
+import { TeachersList } from "./pages/teachers/TeachersListPage";
+import { TeacherNew } from "./pages/teachers/TeacherNewPage";
+import { TeacherDetailProps } from "./pages/teachers/TeacherDetailPage";
+import { TeacherEdit } from "./pages/teachers/TeacherEditPage";
 
-import { StudentsList } from "./pages/students/StudentsList";
-import { StudentNew } from "./pages/students/StudentNew";
-import { StudentDetail } from "./pages/students/StudentDetail";
-import { StudentEdit } from "./pages/students/StudentEdit";
+import { StudentsList } from "./pages/students/StudentsListPage";
+import { StudentNew } from "./pages/students/StudentNewPage";
+import { StudentDetailProps } from "./pages/students/StudentDetailPage";
+import { StudentEdit } from "./pages/students/StudentEditPage";
 
 export const RolesRouter: React.FC = () => {
   const { user } = useContext(UserContext);
@@ -99,7 +99,10 @@ export const RolesRouter: React.FC = () => {
 
               <Route path="/teachers" element={<TeachersList />} />
               <Route path="/teachers/new" element={<TeacherNew />} />
-              <Route path="/teachers/:teacherId/" element={<TeacherDetail />} />
+              <Route
+                path="/teachers/:teacherId/"
+                element={<TeacherDetailProps />}
+              />
               <Route
                 path="/teachers/:teacherId/edit"
                 element={<TeacherEdit />}
@@ -107,7 +110,10 @@ export const RolesRouter: React.FC = () => {
 
               <Route path="/students/" element={<StudentsList />} />
               <Route path="/students/new" element={<StudentNew />} />
-              <Route path="/students/:studentId" element={<StudentDetail />} />
+              <Route
+                path="/students/:studentId"
+                element={<StudentDetailProps />}
+              />
               <Route
                 path="/students/:studentId/edit"
                 element={<StudentEdit />}
@@ -144,7 +150,10 @@ export const RolesRouter: React.FC = () => {
               <Route path="/" element={<Information />} />
               <Route path="/rooms" element={<RoomList />} />
               <Route path="/rooms/new" element={<Preservation />} />
-              <Route path="/teachers/:teacherId/" element={<TeacherDetail />} />
+              <Route
+                path="/teachers/:teacherId/"
+                element={<TeacherDetailProps />}
+              />
               <Route
                 path="/teachers/:teacherId/edit"
                 element={<TeacherEdit />}

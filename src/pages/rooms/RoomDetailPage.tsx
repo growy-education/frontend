@@ -21,7 +21,7 @@ import {
   EventAvailable,
   OpenInNew,
 } from "@mui/icons-material";
-import { mockRooms } from "./RoomList";
+import { mockRooms } from "./RoomListPage";
 
 export const RoomDetail = () => {
   const [room, setRoom] = useState<null | Room>();
