@@ -9,10 +9,10 @@ import {
   Typography,
 } from "@mui/material";
 import { TextField } from "@mui/material";
-import { AxiosContext } from "../contexts/AxiosContextProvider";
-import { Title } from "./QuestionTitle";
+import { AxiosContext } from "../../contexts/AxiosContextProvider";
+import { Title } from "../../components/QuestionTitle";
 import SendIcon from "@mui/icons-material/Send";
-import { Relationship } from "../types/relationship.enum";
+import { Relationship } from "../../types/relationship.enum";
 import {
   IsDate,
   IsEnum,
@@ -24,12 +24,12 @@ import {
   MaxDate,
   MinDate,
 } from "class-validator";
-import { Gender } from "../types/gender.enum";
+import { Gender } from "../../types/gender.enum";
 import { Type } from "class-transformer";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
-import { Student } from "../types/student.class";
+import { Student } from "../../types/student.class";
 import { DatePicker } from "@mui/x-date-pickers";
 
 const getMinDate = (): Date => {

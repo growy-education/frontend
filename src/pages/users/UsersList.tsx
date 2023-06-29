@@ -1,34 +1,33 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { GridColDef, GridRowParams } from "@mui/x-data-grid";
-import { AxiosContext } from "../contexts/AxiosContextProvider";
+import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";
-import { Customer } from "../types/customer.class";
-import { CustomDataGrid } from "./CustomDataGrid";
-import { EditDataGrid } from "./EditDataGrid";
-import { SearchDataGrid } from "./SearchDataGrid";
+import { User } from "../../types/user.class";
+import { CustomDataGrid } from "../../components/CustomDataGrid";
+import { SearchDataGrid } from "../../components/SearchDataGrid";
+import { EditDataGrid } from "../../components/EditDataGrid";
 
 type CustomGridColDef = GridColDef & { order: number };
 
-const CustomerColumns: CustomGridColDef[] = [
+const UserColumns: CustomGridColDef[] = [
   { field: "id", headerName: "ID", flex: 1, order: 1 },
   { field: "createdAt", headerName: "作成日時", flex: 1, order: 2 },
   { field: "updatedAt", headerName: "更新日時", flex: 1, order: 3 },
-  { field: "firstName", headerName: "名前", flex: 1, order: 4 },
-  { field: "firstNameKana", headerName: "名前（読み仮名）", order: 5 },
-  { field: "lastName", headerName: "苗字", flex: 1, order: 6 },
-  { field: "lastNameKana", headerName: "苗字（読み仮名）", flex: 1, order: 7 },
-  { field: "relationship", headerName: "続柄", flex: 1, order: 8 },
+  { field: "role", headerName: "アカウントタイプ", flex: 1, order: 4 },
+  { field: "username", headerName: "ユーザー名", flex: 1, order: 5 },
+  { field: "email", headerName: "メールアドレス", flex: 1, order: 6 },
+  { field: "phone", headerName: "電話番号", flex: 1, order: 7 },
 ];
 
-export const CustomersList = () => {
+export const UsersList = () => {
   const navigate = useNavigate();
-  const { axiosConfig } = useContext(AxiosContext);
+  const { axiosConfig } = useAxiosConfig();
 
-  const [customers, setCustomers] = useState<Customer[]>([]);
-  const [columns, setColumns] = useState(CustomerColumns);
+  const [users, setUsers] = useState<User[]>([]);
+  const [columns, setColumns] = useState(UserColumns);
   const [selectedColumn, setSelectedColumn] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
 
@@ -48,29 +47,29 @@ export const CustomersList = () => {
   useEffect(() => {
     axios
       .create(axiosConfig)
-      .get("customers")
+      .get("users")
       .then((response) => {
         console.log(response.data);
-        const customers = response.data.map((customerJson: string) =>
-          plainToInstance(Customer, customerJson)
+        const users = response.data.map((userJson: string) =>
+          plainToInstance(User, userJson)
         );
-        setCustomers(customers);
+        setUsers(users);
       })
-      .catch((error) =>
-        console.log("error occurred at CustomersList.tsx", error)
-      );
+      .catch((error) => {
+        console.log("error occurred at UsersList.tsx", error);
+      });
   }, [axiosConfig]);
 
   return (
     <Box sx={{ width: "100%" }}>
       <EditDataGrid
-        defaultColumns={CustomerColumns}
+        defaultColumns={UserColumns}
         columns={columns}
         setColumns={setColumns}
       />
 
       <SearchDataGrid
-        defaultColumns={CustomerColumns}
+        defaultColumns={UserColumns}
         selectedColumn={selectedColumn}
         setSelectedColumn={setSelectedColumn}
         searchText={searchText}
@@ -81,7 +80,7 @@ export const CustomersList = () => {
       <Box mt={2}>
         <CustomDataGrid
           onRowClick={handleRowClick}
-          rows={customers}
+          rows={users}
           columns={columns}
         />
       </Box>

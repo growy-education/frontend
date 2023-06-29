@@ -7,24 +7,22 @@ import {
   Card,
   CardMedia,
   CardContent,
-  Button,
-  CircularProgress,
 } from "@mui/material";
-import { AxiosContext } from "../contexts/AxiosContextProvider";
+import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { useParams } from "react-router-dom";
-import { Question } from "../types/question.class";
+import { Question } from "../../types/question.class";
 import axios from "axios";
-import { Title } from "./QuestionTitle";
+import { Title } from "../../components/QuestionTitle";
 import { plainToInstance } from "class-transformer";
-import { LockOpen } from "@mui/icons-material";
 
-export const QuestionCheck = () => {
-  const { questionId } = useParams();
-  const { axiosConfig } = useContext(AxiosContext);
+export const QuestionDetail = () => {
   const [question, setQuestion] = useState<null | Question>(null);
-  const [open, setOpen] = useState(false);
+  const { axiosConfig } = useContext(AxiosContext);
 
+  const { questionId } = useParams();
+  console.log(question);
   useEffect(() => {
+    console.log("きたquestion id:", questionId);
     axios
       .create(axiosConfig)
       .get(`/questions/${questionId}`)
@@ -37,13 +35,12 @@ export const QuestionCheck = () => {
       });
   }, [axiosConfig, questionId]);
 
+  if (!questionId) {
+    return <p>だめだこりゃ！</p>;
+  }
+
   if (!!!question) {
-    return (
-      <>
-        <CircularProgress />
-        <Typography>質問を取得中です</Typography>
-      </>
-    );
+    return <p>ローディングなう！</p>;
   }
 
   const {
@@ -80,24 +77,8 @@ export const QuestionCheck = () => {
     }
   };
 
-  const checkQuestion = () => {};
-
   return (
     <Container maxWidth="md">
-      <Box
-        display="flex"
-        alignItems={"center"}
-        justifyContent={"center"}
-        margin={1}
-      >
-        <Button
-          variant="contained"
-          endIcon={<LockOpen />}
-          onClick={() => checkQuestion()}
-        >
-          動画のチェックを完了する
-        </Button>
-      </Box>
       <Box my={3}>
         <Title title="ID" />
         <Typography>{id}</Typography>

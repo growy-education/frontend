@@ -7,29 +7,24 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  FormControlLabel,
-  FormHelperText,
   MenuItem,
-  Radio,
-  RadioGroup,
   Select,
   Typography,
 } from "@mui/material";
 import { TextField } from "@mui/material";
-import { AxiosContext } from "../contexts/AxiosContextProvider";
-import { Title } from "./QuestionTitle";
+import { AxiosContext } from "../../contexts/AxiosContextProvider";
+import { Title } from "../../components/QuestionTitle";
 import SendIcon from "@mui/icons-material/Send";
-import { Relationship } from "../types/relationship.enum";
-import { IsEnum, IsNotEmpty, IsString, Matches } from "class-validator";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { classValidatorResolver } from "@hookform/resolvers/class-validator";
+import { IsNotEmpty, IsNumberString, IsString, Matches } from "class-validator";
 import { useNavigate } from "react-router-dom";
-import { User } from "../types/user.class";
-import { plainToInstance } from "class-transformer";
+import { classValidatorResolver } from "@hookform/resolvers/class-validator";
+import { SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
-import { Role } from "../types/role.enum";
+import { plainToInstance } from "class-transformer";
+import { User } from "../../types/user.class";
+import { Role } from "../../types/role.enum";
 
-class CreateCustomerDto {
+class CreateTeacherDto {
   @IsString()
   @IsNotEmpty({ message: "ユーザーを選択してください" })
   userId: string;
@@ -58,26 +53,22 @@ class CreateCustomerDto {
   @Matches(/^[ァ-ヶー]*$/, { message: "カタカナで入力してください" })
   lastNameKana: string;
 
-  @IsEnum(Relationship)
-  relationship: Relationship;
+  @IsNotEmpty({ message: "ChatworkIDを入力してください" })
+  @IsNumberString({}, { message: "ChatworkIDは数字で入力してください" })
+  chatworkAccountId: string;
 }
 
-export const CustomerNew = () => {
+export const TeacherNew = () => {
   const { axiosConfig } = useContext(AxiosContext);
   const navigate = useNavigate();
 
-  const resolver = classValidatorResolver(CreateCustomerDto);
+  const resolver = classValidatorResolver(CreateTeacherDto);
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<CreateCustomerDto>({
-    resolver,
-    defaultValues: {
-      relationship: Relationship.FATHER,
-    },
-  });
+  } = useForm<CreateTeacherDto>({ resolver });
 
   const [users, setUsers] = useState<User[]>([]);
 
@@ -92,20 +83,21 @@ export const CustomerNew = () => {
         },
       })
       .then((response) => {
+        console.log(response.data);
         const users = response.data.map((userJson: string) =>
           plainToInstance(User, userJson)
         );
         setUsers(users);
       })
-      .catch((error) => console.log(`error occured at ${__dirname}, ${error}`));
+      .catch((error) => console.log("error occurred at UsersList.tsx", error));
   }, [axiosConfig]);
 
-  const onSubmit: SubmitHandler<CreateCustomerDto> = (data) => {
+  const onSubmit: SubmitHandler<CreateTeacherDto> = (data) => {
     console.log("呼ばれた!");
     console.log(data);
     axios
       .create(axiosConfig)
-      .post("customers", {
+      .post("teachers", {
         ...data,
       })
       .then((response) => {
@@ -120,12 +112,13 @@ export const CustomerNew = () => {
   // ダイアログの確認ボタンを押すと、ユーザーの一覧画面へと遷移する
   const handleConfirm = () => {
     setOpen(false);
-    navigate("/customers"); // 詳細画面への遷移
+    navigate("/teachers"); // 詳細画面への遷移
   };
 
   return (
     <>
-      <Typography variant="h4">保護者を新規作成する</Typography>
+      <Typography variant="h4">講師を新規作成する</Typography>
+
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
         <Title title="連携ユーザー" />
         <Select
@@ -193,32 +186,18 @@ export const CustomerNew = () => {
           {...register("lastNameKana")}
         />
 
-        <Title title="続柄" />
-        <Controller
-          name="relationship"
-          control={control}
-          render={({ field }) => (
-            <RadioGroup row name="radio-buttons-group" {...field}>
-              <FormControlLabel
-                value={Relationship.FATHER}
-                control={<Radio />}
-                label="父親"
-              />
-              <FormControlLabel
-                value={Relationship.MOTHER}
-                control={<Radio />}
-                label="母親"
-              />
-              <FormControlLabel
-                value={Relationship.OTHER}
-                control={<Radio />}
-                label="その他"
-              />
-              <FormHelperText error={!!errors.relationship}>
-                {errors.relationship?.message}
-              </FormHelperText>
-            </RadioGroup>
-          )}
+        <Title title="ChatworkAccountID" />
+        <TextField
+          fullWidth
+          id="chatworkAccountId"
+          label="ChatworkAccountID"
+          error={!!errors.chatworkAccountId}
+          helperText={
+            !!errors.chatworkAccountId
+              ? errors.chatworkAccountId.message
+              : "ChatworkAccountIDを入力してください"
+          }
+          {...register("chatworkAccountId")}
         />
 
         <Box margin="0.5em">
@@ -234,10 +213,10 @@ export const CustomerNew = () => {
       </Box>
       {/* ダイアログ */}
       <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>カスタマーが作成されました</DialogTitle>
+        <DialogTitle>講師が作成されました</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            カスタマーの一覧画面へと遷移しますか？
+            講師の一覧画面へと遷移しますか？
           </DialogContentText>
         </DialogContent>
         <DialogActions>

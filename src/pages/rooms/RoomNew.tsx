@@ -9,10 +9,10 @@ import dayjs from "dayjs";
 import axios, { isAxiosError } from "axios";
 import SendIcon from "@mui/icons-material/Send";
 
-import { useAxiosConfig } from "../contexts/AxiosContextProvider";
+import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 import { Box, Button, MenuItem, Select, Typography } from "@mui/material";
-import { Title } from "./QuestionTitle";
-import { Teacher } from "../types/teacher.class";
+import { Title } from "../../components/QuestionTitle";
+import { Teacher } from "../../types/teacher.class";
 
 class CreateRoomDto {
   @IsNotEmpty()

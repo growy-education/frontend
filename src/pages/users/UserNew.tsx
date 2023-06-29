@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Alert, Box, Snackbar, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { TextField } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
@@ -13,11 +13,12 @@ import {
   MinLength,
 } from "class-validator";
 
-import { AxiosContext } from "../contexts/AxiosContextProvider";
-import { Title } from "./QuestionTitle";
+import { AxiosContext } from "../../contexts/AxiosContextProvider";
+import { Title } from "../../components/QuestionTitle";
 import axios, { isAxiosError } from "axios";
-import { SubmitButton } from "./SubmitButton";
-import { ConfirmationDialog } from "./ConfirmationDialog";
+import { SubmitButton } from "../../components/SubmitButton";
+import { ConfirmationDialog } from "../../components/ConfirmationDialog";
+import { ResultSnackbar } from "../../components/ResultSnackbar";
 
 class CreateUserDto {
   @IsString()
@@ -87,14 +88,14 @@ export const UserNew = () => {
               return setResult({
                 open: true,
                 success: false,
-                title: "",
+                title: "ユーザーの作成に失敗しました",
                 message: "メールアドレスが既に登録されています",
               });
             }
             return setResult({
               open: true,
               success: false,
-              title: "",
+              title: "ユーザーの作成に失敗しました",
               message: "ユーザーのデータに誤りがあります",
             });
           }
@@ -103,9 +104,9 @@ export const UserNew = () => {
             return setResult({
               open: true,
               success: false,
-              title: "",
+              title: "ユーザーの作成に失敗しました",
               message:
-                "サーバーからの返答がありません。ネットワーク接続を確認してください",
+                "サーバーからの返答がありません。ネットワーク接続を確認してください。",
             });
           }
         }
@@ -114,7 +115,7 @@ export const UserNew = () => {
         return setResult({
           open: true,
           success: false,
-          title: "",
+          title: "ユーザーの作成に失敗しました",
           message: "予期せぬエラーが発生しました",
         });
       });
@@ -205,9 +206,11 @@ export const UserNew = () => {
       )}
 
       {result.open && !result.success && (
-        <Snackbar
-          open={result.open && !result.success}
-          autoHideDuration={6000}
+        <ResultSnackbar
+          severity="error"
+          open={result.open}
+          title={result.title}
+          message={result.message}
           onClose={() =>
             setResult({
               open: false,
@@ -216,23 +219,7 @@ export const UserNew = () => {
               message: "",
             })
           }
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        >
-          <Alert
-            onClose={() =>
-              setResult({
-                open: false,
-                success: false,
-                title: "",
-                message: "",
-              })
-            }
-            severity="error"
-            sx={{ width: "100%" }}
-          >
-            {result.message}
-          </Alert>
-        </Snackbar>
+        />
       )}
     </>
   );

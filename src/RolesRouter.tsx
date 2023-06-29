@@ -3,37 +3,48 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { UserContext } from "./contexts/UserContextProvider";
 import { Role } from "./types/role.enum";
+
+import { General } from "./General";
+
 import { NotFound } from "./components/NotFound";
 import { Information } from "./Information";
-import { QuestionList } from "./components/QuestionList";
-import { QuestionNew } from "./components/QuestionNew";
-import { QuestionCheck } from "./components/QuestionCheck";
-import { QuestionEdit } from "./components/QuestionEdit";
-import { CustomerEdit } from "./components/CustomerEdit";
-import { RoomList } from "./components/RoomList";
-import { Preservation } from "./components/StudyroomPreservation";
-import { UserActivate } from "./components/UserActivate";
-import { UsersList } from "./components/UsersList";
-import { UserNew } from "./components/UserNew";
-import { UserDetail } from "./components/UserDetail";
-import { UserEdit } from "./components/UserEdit";
-import { CustomersList } from "./components/CustomersList";
-import { CustomerNew } from "./components/CustomerNew";
-import { CustomerDetail } from "./components/CustomerDetail";
-import { TeachersList } from "./components/TeachersList";
-import { TeacherNew } from "./components/TeacherNew";
-import { TeacherDetail } from "./components/TeacherDetail";
-import { TeacherEdit } from "./components/TeacherEdit";
-import { StudentsList } from "./components/StudentsList";
-import { StudentNew } from "./components/StudentNew";
-import { StudentDetail } from "./components/StudentDetail";
-import { StudentEdit } from "./components/StudentEdit";
-import { General } from "./General";
-import QuestionDetail from "./components/QuestionDetail";
 import { Profile } from "./components/Profile";
-import { RoomDetail } from "./components/RoomDetail";
-import { RoomNew } from "./components/RoomNew";
+
 import { ImageList } from "./components/ImageList";
+import { ImageNew } from "./components/ImageNew";
+
+import { QuestionList } from "./pages/questions/QuestionList";
+import { QuestionNew } from "./pages/questions/QuestionNew";
+import { QuestionCheck } from "./pages/questions/QuestionCheck";
+import { QuestionDetail } from "./pages/questions/QuestionDetail";
+import { QuestionEdit } from "./pages/questions/QuestionEdit";
+
+import { CustomersListPage } from "./pages/customers/CustomersList";
+import { CustomerNewPage } from "./pages/customers/CustomerNew";
+import { CustomerEditPage } from "./pages/customers/CustomerEdit";
+import { CustomerDetailPage } from "./pages/customers/CustomerDetail";
+
+import { RoomList } from "./pages/rooms/RoomList";
+import { RoomNew } from "./pages/rooms/RoomNew";
+import { RoomDetail } from "./pages/rooms/RoomDetail";
+
+import { Preservation } from "./pages/rooms/StudyroomPreservation";
+
+import { UsersList } from "./pages/users/UsersList";
+import { UserNew } from "./pages/users/UserNew";
+import { UserDetail } from "./pages/users/UserDetail";
+import { UserEdit } from "./pages/users/UserEdit";
+import { UserActivate } from "./pages/users/UserActivate";
+
+import { TeachersList } from "./pages/teachers/TeachersList";
+import { TeacherNew } from "./pages/teachers/TeacherNew";
+import { TeacherDetail } from "./pages/teachers/TeacherDetail";
+import { TeacherEdit } from "./pages/teachers/TeacherEdit";
+
+import { StudentsList } from "./pages/students/StudentsList";
+import { StudentNew } from "./pages/students/StudentNew";
+import { StudentDetail } from "./pages/students/StudentDetail";
+import { StudentEdit } from "./pages/students/StudentEdit";
 
 export const RolesRouter: React.FC = () => {
   const { user } = useContext(UserContext);
@@ -44,6 +55,7 @@ export const RolesRouter: React.FC = () => {
         <Route path="/" element={<General />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/images" element={<ImageList />} />
+          <Route path="/images/new" element={<ImageNew />} />
           {user.role === Role.ADMIN && (
             <>
               <Route path="/" element={<Information />} />
@@ -74,15 +86,15 @@ export const RolesRouter: React.FC = () => {
               />
               <Route path="/users/:userId/edit" element={<UserEdit />} />
 
-              <Route path="/customers" element={<CustomersList />} />
-              <Route path="/customers/new" element={<CustomerNew />} />
+              <Route path="/customers" element={<CustomersListPage />} />
+              <Route path="/customers/new" element={<CustomerNewPage />} />
               <Route
                 path="/customers/:customerId"
-                element={<CustomerDetail />}
+                element={<CustomerDetailPage />}
               />
               <Route
                 path="/customers/:customerId/edit"
-                element={<CustomerEdit />}
+                element={<CustomerEditPage />}
               />
 
               <Route path="/teachers" element={<TeachersList />} />
@@ -119,11 +131,11 @@ export const RolesRouter: React.FC = () => {
               <Route path="/studyroom/new" element={<Preservation />} />
               <Route
                 path="/customers/:customerId"
-                element={<CustomerDetail />}
+                element={<CustomerDetailPage />}
               />
               <Route
                 path="/customers/:customerId/edit"
-                element={<CustomerEdit />}
+                element={<CustomerEditPage />}
               />
             </>
           )}

@@ -8,11 +8,11 @@ import {
   Typography,
 } from "@mui/material";
 import { TextField } from "@mui/material";
-import { AxiosContext } from "../contexts/AxiosContextProvider";
-import { Title } from "./QuestionTitle";
+import { AxiosContext } from "../../contexts/AxiosContextProvider";
+import { Title } from "../../components/QuestionTitle";
 import SendIcon from "@mui/icons-material/Send";
-import { Relationship } from "../types/relationship.enum";
-import { TeacherStatus } from "../types/teacher-status.enum";
+import { Relationship } from "../../types/relationship.enum";
+import { TeacherStatus } from "../../types/teacher-status.enum";
 
 export const TeacherEdit = () => {
   const [firstName, setFirstName] = useState("");

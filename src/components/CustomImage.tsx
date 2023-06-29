@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { useAxiosConfig } from "../contexts/AxiosContextProvider";
 import axios from "axios";
-import { Alert, AlertTitle, CircularProgress, Typography } from "@mui/material";
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  CircularProgress,
+  Typography,
+} from "@mui/material";
 
 type CustomImageProps = Exclude<React.HTMLProps<HTMLImageElement>, "src"> & {
   id: string;
@@ -63,13 +69,17 @@ export const CustomImage = ({ id, ...props }: CustomImageProps) => {
   }
 
   return (
-    <div>
-      <img src={imageUrl} alt="取得した画像〜〜" />
-      {imageSize && (
-        <p>
-          Width: {imageSize.width}px, Height: {imageSize.height}px
-        </p>
-      )}
-    </div>
+    <Box mb={2}>
+      <img
+        src={imageUrl}
+        alt="取得した画像〜〜"
+        style={{
+          maxWidth: "100%",
+          maxHeight: "50vh",
+          aspectRatio:
+            imageSize.height !== 0 && imageSize.width / imageSize.height,
+        }}
+      />
+    </Box>
   );
 };

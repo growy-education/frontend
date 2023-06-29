@@ -1,5 +1,6 @@
 import { Type } from "class-transformer";
 import { Gender } from "./gender.enum";
+import { User } from "./user.class";
 
 export class Student {
   id: string;
@@ -29,4 +30,7 @@ export class Student {
   grade: string;
 
   birthday: Date;
+
+  @Type(() => User)
+  user?: User;
 }

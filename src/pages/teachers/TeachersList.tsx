@@ -2,35 +2,47 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { GridColDef, GridRowParams } from "@mui/x-data-grid";
-import { useAxiosConfig } from "../contexts/AxiosContextProvider";
+import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";
-import { User } from "../types/user.class";
-import { CustomDataGrid } from "./CustomDataGrid";
-import { SearchDataGrid } from "./SearchDataGrid";
-import { EditDataGrid } from "./EditDataGrid";
+import { Teacher } from "../../types/teacher.class";
+import { EditDataGrid } from "../../components/EditDataGrid";
+import { CustomDataGrid } from "../../components/CustomDataGrid";
+import { SearchDataGrid } from "../../components/SearchDataGrid";
 
 type CustomGridColDef = GridColDef & { order: number };
 
-const UserColumns: CustomGridColDef[] = [
+const TeacherColumns: CustomGridColDef[] = [
   { field: "id", headerName: "ID", flex: 1, order: 1 },
   { field: "createdAt", headerName: "作成日時", flex: 1, order: 2 },
   { field: "updatedAt", headerName: "更新日時", flex: 1, order: 3 },
-  { field: "role", headerName: "アカウントタイプ", flex: 1, order: 4 },
-  { field: "username", headerName: "ユーザー名", flex: 1, order: 5 },
-  { field: "email", headerName: "メールアドレス", flex: 1, order: 6 },
-  { field: "phone", headerName: "電話番号", flex: 1, order: 7 },
+  { field: "firstName", headerName: "お名前", flex: 1, order: 4 },
+  {
+    field: "firstNameKana",
+    headerName: "お名前（読み仮名）",
+    flex: 1,
+    order: 5,
+  },
+  { field: "lastName", headerName: "苗字", flex: 1, order: 6 },
+  { field: "lastNameKana", headerName: "苗字（読み仮名）", flex: 1, order: 7 },
+  { field: "status", headerName: "ステータス", flex: 1, order: 8 },
+  {
+    field: "assignedQuestionsNumber",
+    headerName: "質問タスク数",
+    flex: 1,
+    order: 9,
+  },
 ];
 
-export const UsersList = () => {
-  const navigate = useNavigate();
-  const { axiosConfig } = useAxiosConfig();
-
-  const [users, setUsers] = useState<User[]>([]);
-  const [columns, setColumns] = useState(UserColumns);
+export const TeachersList = () => {
+  const [columns, setColumns] = useState<CustomGridColDef[]>(TeacherColumns);
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [selectedColumn, setSelectedColumn] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
 
+  const { axiosConfig } = useContext(AxiosContext);
+
+  const navigate = useNavigate();
   const handleRowClick = (params: GridRowParams) => {
     const rowId = params.id as string;
     navigate(`./${rowId}`);
@@ -47,29 +59,29 @@ export const UsersList = () => {
   useEffect(() => {
     axios
       .create(axiosConfig)
-      .get("users")
+      .get("teachers")
       .then((response) => {
         console.log(response.data);
-        const users = response.data.map((userJson: string) =>
-          plainToInstance(User, userJson)
+        const teachers = response.data.map((teacherJson: string) =>
+          plainToInstance(Teacher, teacherJson)
         );
-        setUsers(users);
+        setTeachers(teachers);
       })
-      .catch((error) => {
-        console.log("error occurred at UsersList.tsx", error);
-      });
+      .catch((error) =>
+        console.log("error occurred at TeachersList.tsx", error)
+      );
   }, [axiosConfig]);
 
   return (
     <Box sx={{ width: "100%" }}>
       <EditDataGrid
-        defaultColumns={UserColumns}
+        defaultColumns={TeacherColumns}
         columns={columns}
         setColumns={setColumns}
       />
 
       <SearchDataGrid
-        defaultColumns={UserColumns}
+        defaultColumns={TeacherColumns}
         selectedColumn={selectedColumn}
         setSelectedColumn={setSelectedColumn}
         searchText={searchText}
@@ -80,7 +92,7 @@ export const UsersList = () => {
       <Box mt={2}>
         <CustomDataGrid
           onRowClick={handleRowClick}
-          rows={users}
+          rows={teachers}
           columns={columns}
         />
       </Box>

@@ -14,20 +14,18 @@ import {
   Button,
   FormHelperText,
 } from "@mui/material";
-import { AxiosContext } from "../contexts/AxiosContextProvider";
+import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
-import { User } from "../types/user.class";
-import axios from "axios";
-import { Title } from "./QuestionTitle";
+import { User } from "../../types/user.class";
+import axios, { isAxiosError } from "axios";
+import { Title } from "../../components/QuestionTitle";
 import { plainToInstance } from "class-transformer";
 import { ExpandMore, Lock } from "@mui/icons-material";
-import { Role } from "../types/role.enum";
+import { Role } from "../../types/role.enum";
 import { IsEnum, IsNotEmpty } from "class-validator";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { NotificationContext } from "../contexts/NotificationContextProvider";
-import { error } from "console";
-import { ConfirmationDialog } from "./ConfirmationDialog";
+import { ResultSnackbar } from "../../components/ResultSnackbar";
 
 class ActivateUserDto {
   @IsNotEmpty()
@@ -37,7 +35,12 @@ class ActivateUserDto {
 
 export const UserActivate = () => {
   const [user, setUser] = useState<null | User>(null);
-  const [open, setOpen] = useState(false);
+  const [result, setResult] = useState({
+    open: false,
+    success: false,
+    title: "",
+    message: "",
+  });
 
   const resolver = classValidatorResolver(ActivateUserDto);
   const {
@@ -53,7 +56,6 @@ export const UserActivate = () => {
   });
 
   const { axiosConfig } = useContext(AxiosContext);
-  const { handleNotification } = useContext(NotificationContext);
   const { userId } = useParams();
   const navigate = useNavigate();
 
@@ -72,32 +74,57 @@ export const UserActivate = () => {
       });
   }, [axiosConfig, userId]);
 
-  const handleConfirm = () => {
-    console.log(error);
+  const onSubmit: SubmitHandler<ActivateUserDto> = (data) => {
     axios
       .create(axiosConfig)
       .put(`/users/${userId}/activation`, {
         role: getValues("role"),
       })
       .then((response) => {
-        setOpen(false);
-        navigate("/users");
+        navigate(`/users/${userId}`);
       })
       .catch((error) => {
-        setOpen(false);
-        handleNotification({
-          type: "Panel",
-          severity: "error",
-          title: "エラー",
-          message:
-            "ユーザーの有効化に失敗しました。ネットワーク環境を確認の上、もう一度お試しください。",
+        if (isAxiosError(error)) {
+          // サーバーからの返答がある
+          if (error.response) {
+            // CustomerデータやStudentデータ、もしくはTeacherデータに不備がある
+            if (error.response.status === 412) {
+              console.log(error.message);
+              return setResult({
+                open: true,
+                success: false,
+                title: "ユーザーの有効化に失敗しました",
+                message:
+                  "保護者情報や講師情報など、ユーザー情報の登録が完了していません。",
+              });
+            }
+            return setResult({
+              open: true,
+              success: false,
+              title: "ユーザーの有効化に失敗しました",
+              message: "ユーザーのデータに誤りがあります",
+            });
+          }
+          // サーバーからの返答がない
+          if (error.request) {
+            return setResult({
+              open: true,
+              success: false,
+              title: "ユーザーの有効化に失敗しました",
+              message:
+                "サーバーからの返答がありません。ネットワーク接続を確認してください",
+            });
+          }
+        }
+
+        // よくわからんエラーのとき
+        return setResult({
+          open: true,
+          success: false,
+          title: "ユーザーの有効化に失敗しました",
+          message: "予期せぬエラーが発生しました。",
         });
       });
-  };
-
-  const onSubmit: SubmitHandler<ActivateUserDto> = (data) => {
-    console.log(data);
-    setOpen(true);
   };
 
   if (!!!user) {
@@ -277,14 +304,22 @@ export const UserActivate = () => {
           </AccordionDetails>
         </Accordion>
       </Box>
-      {/* ダイアログ */}
-      <ConfirmationDialog
-        title="アカウントを有効化しますか？"
-        message={`${getValues("role")}アカウントが作成されます`}
-        open={open}
-        onConfirm={handleConfirm}
-        onCancel={() => setOpen(false)}
-      />
+      {result.open && !result.success && (
+        <ResultSnackbar
+          severity="error"
+          open={result.open}
+          title={result.title}
+          message={result.message}
+          onClose={() =>
+            setResult({
+              open: false,
+              success: false,
+              title: "",
+              message: "",
+            })
+          }
+        />
+      )}
     </Container>
   );
 };

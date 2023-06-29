@@ -3,15 +3,15 @@ import SendIcon from "@mui/icons-material/Send";
 import { Box, FormHelperText, Grid, Typography } from "@mui/material";
 import { TextField } from "@mui/material";
 import { Button } from "@mui/material";
-import { AxiosContext } from "../contexts/AxiosContextProvider";
-import { Title } from "./QuestionTitle";
+import { AxiosContext } from "../../contexts/AxiosContextProvider";
+import { Title } from "../../components/QuestionTitle";
 import { PhotoLibraryOutlined } from "@mui/icons-material";
 import axios from "axios";
 import { IsNotEmpty, IsString } from "class-validator";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { useForm } from "react-hook-form";
-import { ConfirmationDialog } from "./ConfirmationDialog";
-import { NotificationContext } from "../contexts/NotificationContextProvider";
+import { ConfirmationDialog } from "../../components/ConfirmationDialog";
+import { NotificationContext } from "../../contexts/NotificationContextProvider";
 import { Exclude } from "class-transformer";
 
 class CreateQuestionDto {
@@ -133,7 +133,8 @@ export const QuestionNew = () => {
     }
 
     axios
-      .post("questions", requestData, axiosConfig)
+      .create(axiosConfig)
+      .post("questions", requestData)
       .then((response) => console.log(response.data))
       .catch((error) => {
         console.log(error);

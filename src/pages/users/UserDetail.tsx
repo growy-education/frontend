@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Typography, Box, Container, Button } from "@mui/material";
-import { AxiosContext } from "../contexts/AxiosContextProvider";
+import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
-import { User } from "../types/user.class";
+import { User } from "../../types/user.class";
 import axios from "axios";
-import { Title } from "./QuestionTitle";
+import { Title } from "../../components/QuestionTitle";
 import { plainToInstance } from "class-transformer";
 import { Edit, LockOpen } from "@mui/icons-material";
-import { Role } from "../types/role.enum";
+import { Role } from "../../types/role.enum";
 
 export const UserDetail = () => {
   const [user, setUser] = useState<null | User>(null);

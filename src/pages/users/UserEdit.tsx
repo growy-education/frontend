@@ -8,12 +8,12 @@ import {
   Typography,
 } from "@mui/material";
 import { TextField } from "@mui/material";
-import { AxiosContext } from "../contexts/AxiosContextProvider";
-import { Title } from "./QuestionTitle";
+import { AxiosContext } from "../../contexts/AxiosContextProvider";
+import { Title } from "../../components/QuestionTitle";
 import { useNavigate, useParams } from "react-router-dom";
 import axios, { isAxiosError } from "axios";
 import { plainToInstance } from "class-transformer";
-import { User } from "../types/user.class";
+import { User } from "../../types/user.class";
 import {
   IsEmail,
   IsOptional,
@@ -24,7 +24,7 @@ import {
 } from "class-validator";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { SubmitButton } from "./SubmitButton";
+import { SubmitButton } from "../../components/SubmitButton";
 
 class UpdateUserDto {
   @IsOptional()

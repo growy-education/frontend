@@ -12,9 +12,9 @@ import {
   Typography,
 } from "@mui/material";
 import { TextField } from "@mui/material";
-import { useAxiosConfig } from "../contexts/AxiosContextProvider";
-import { Title } from "./QuestionTitle";
-import { Relationship } from "../types/relationship.enum";
+import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
+import { Title } from "../../components/QuestionTitle";
+import { Relationship } from "../../types/relationship.enum";
 import {
   IsEnum,
   IsNotEmpty,
@@ -25,10 +25,10 @@ import {
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { Customer } from "../types/customer.class";
+import { Customer } from "../../types/customer.class";
 import axios, { isAxiosError } from "axios";
 import { plainToInstance } from "class-transformer";
-import { SubmitButton } from "./SubmitButton";
+import { SubmitButton } from "../../components/SubmitButton";
 
 class UpdateCustomerDto {
   @IsOptional()
@@ -64,7 +64,7 @@ class UpdateCustomerDto {
   relationship?: Relationship;
 }
 
-export const CustomerEdit = () => {
+export const CustomerEditPage = () => {
   const { axiosConfig } = useAxiosConfig();
   const { customerId } = useParams();
 

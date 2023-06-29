@@ -7,11 +7,11 @@ import {
   GridRenderCellParams,
   GridRowParams,
 } from "@mui/x-data-grid";
-import { AxiosContext } from "../contexts/AxiosContextProvider";
+import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { CircleOutlined, Close } from "@mui/icons-material";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";
-import { Question } from "../types/question.class";
+import { Question } from "../../types/question.class";
 
 export const QuestionList = () => {
   const [questions, setQuestions] = useState<Question[]>([]);

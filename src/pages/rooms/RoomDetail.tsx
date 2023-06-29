@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
-import { Room } from "../types/room.class";
-import { useAxiosConfig } from "../contexts/AxiosContextProvider";
+import { Room } from "../../types/room.class";
+import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 import { plainToInstance } from "class-transformer";
 import {
   Box,
@@ -13,7 +13,7 @@ import {
   Link,
   Typography,
 } from "@mui/material";
-import { Title } from "./QuestionTitle";
+import { Title } from "../../components/QuestionTitle";
 import {
   Add,
   AddCircle,

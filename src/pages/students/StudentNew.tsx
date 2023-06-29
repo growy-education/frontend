@@ -34,12 +34,12 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-import { AxiosContext } from "../contexts/AxiosContextProvider";
-import { Title } from "./QuestionTitle";
-import { Gender } from "../types/gender.enum";
-import { User } from "../types/user.class";
+import { AxiosContext } from "../../contexts/AxiosContextProvider";
+import { Title } from "../../components/QuestionTitle";
+import { Gender } from "../../types/gender.enum";
+import { User } from "../../types/user.class";
 import axios from "axios";
-import { Role } from "../types/role.enum";
+import { Role } from "../../types/role.enum";
 
 const getMinDate = (): Date => {
   const currentDate = new Date();

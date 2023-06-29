@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
-import { AxiosContext } from "../contexts/AxiosContextProvider";
+import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";
-import { Student } from "../types/student.class";
+import { Student } from "../../types/student.class";
 
 export const StudentsList = () => {
   const [students, setStudents] = useState<Student[]>([]);

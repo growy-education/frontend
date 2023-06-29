@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Typography, Box, Container, Button } from "@mui/material";
-import { AxiosContext } from "../contexts/AxiosContextProvider";
+import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { Title } from "./QuestionTitle";
-import { Customer } from "../types/customer.class";
+import { Title } from "../../components/QuestionTitle";
+import { Customer } from "../../types/customer.class";
 import { plainToInstance } from "class-transformer";
 import { Edit } from "@mui/icons-material";
 
-export const CustomerDetail = () => {
+export const CustomerDetailPage = () => {
   const [customer, setCustomer] = useState<null | Customer>(null);
   const { axiosConfig } = useContext(AxiosContext);
   const navigate = useNavigate();
@@ -76,6 +76,14 @@ export const CustomerDetail = () => {
         <Typography>{lastNameKana}</Typography>
         <Title title="続柄" />
         <Typography>{relationship}</Typography>
+        {!!customer?.user && (
+          <>
+            <Title title="ユーザー" />
+            <Button onClick={() => navigate(`/users/${customer.user.id}`)}>
+              ユーザー詳細ページへ
+            </Button>
+          </>
+        )}
       </Box>
     </Container>
   );

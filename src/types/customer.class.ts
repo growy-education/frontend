@@ -1,5 +1,6 @@
 import { Type } from "class-transformer";
 import { Relationship } from "./relationship.enum";
+import { User } from "./user.class";
 
 export class Customer {
   id: string;
@@ -19,4 +20,7 @@ export class Customer {
   lastNameKana: string;
 
   relationship: Relationship;
+
+  @Type(() => User)
+  user?: User;
 }

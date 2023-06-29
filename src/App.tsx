@@ -2,7 +2,6 @@ import React from "react";
 import "./App.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthContextProvider } from "./contexts/AuthContextProvider";
-import { AxiosContextProvider } from "./contexts/AxiosContextProvider";
 import { UserContextProvider } from "./contexts/UserContextProvider";
 import { RolesRouter } from "./RolesRouter";
 import { NotificationContextProvider } from "./contexts/NotificationContextProvider";
@@ -12,6 +11,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { jaJP as dataGridJaJp } from "@mui/x-data-grid";
 import { jaJP as coreJaJP } from "@mui/material/locale";
 import { jaJP } from "@mui/x-date-pickers/locales";
+import { AlertPanelContextProvider } from "./contexts/AlertPanelContextProvider";
+import { AxiosContextProvider } from "./contexts/AxiosContextProvider";
 
 const theme = createTheme(
   {
@@ -39,15 +40,17 @@ function App() {
           <GoogleOAuthProvider
             clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID as string}
           >
-            <NotificationContextProvider>
-              <AuthContextProvider>
-                <AxiosContextProvider>
-                  <UserContextProvider>
-                    <RolesRouter />
-                  </UserContextProvider>
-                </AxiosContextProvider>
-              </AuthContextProvider>
-            </NotificationContextProvider>
+            <AlertPanelContextProvider>
+              <NotificationContextProvider>
+                <AuthContextProvider>
+                  <AxiosContextProvider>
+                    <UserContextProvider>
+                      <RolesRouter />
+                    </UserContextProvider>
+                  </AxiosContextProvider>
+                </AuthContextProvider>
+              </NotificationContextProvider>
+            </AlertPanelContextProvider>
           </GoogleOAuthProvider>
         </LocalizationProvider>
       </ThemeProvider>

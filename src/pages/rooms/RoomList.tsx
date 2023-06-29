@@ -2,15 +2,15 @@ import { Box, Typography } from "@mui/material";
 import { GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CustomCalendar } from "./CustomCalendar";
-import { Room } from "../types/room.class";
-import { useAxiosConfig } from "../contexts/AxiosContextProvider";
+import { CustomCalendar } from "../../components/CustomCalendar";
+import { Room } from "../../types/room.class";
+import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";
-import { EditDataGrid } from "./EditDataGrid";
-import { SearchDataGrid } from "./SearchDataGrid";
-import { CustomDataGrid } from "./CustomDataGrid";
-import { RoomStatus } from "../types/room-status.enum";
+import { EditDataGrid } from "../../components/EditDataGrid";
+import { SearchDataGrid } from "../../components/SearchDataGrid";
+import { CustomDataGrid } from "../../components/CustomDataGrid";
+import { RoomStatus } from "../../types/room-status.enum";
 
 type CustomGridColDef = GridColDef & { order: number };
 
