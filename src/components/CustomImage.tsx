@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
-import { useAxiosConfig } from "../contexts/AxiosContextProvider";
 import axios from "axios";
-import {
-  Alert,
-  AlertTitle,
-  Box,
-  CircularProgress,
-  Typography,
-} from "@mui/material";
-import { LoadingData } from "./LoadingData";
 
-type CustomImageProps = Exclude<React.HTMLProps<HTMLImageElement>, "src"> & {
+import { AlertBox } from "./AlertBox";
+import { LoadingData } from "./LoadingData";
+import { useAxiosConfig } from "../contexts/AxiosContextProvider";
+
+type CustomImageProps = Exclude<
+  React.DetailedHTMLProps<
+    React.ImgHTMLAttributes<HTMLImageElement>,
+    HTMLImageElement
+  >,
+  "src"
+> & {
   id: string;
 };
 
-export const CustomImage = ({ id, ...props }: CustomImageProps) => {
+export const CustomImage = ({ id, style, ...props }: CustomImageProps) => {
   const { axiosConfig } = useAxiosConfig();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
@@ -59,28 +60,26 @@ export const CustomImage = ({ id, ...props }: CustomImageProps) => {
 
   if (error) {
     return (
-      <Alert severity="error">
-        <AlertTitle>エラー</AlertTitle>
-        画像データの取得に失敗しました。
-        <Typography fontWeight="bold">
-          ネットワーク環境を確認してください。
-        </Typography>
-      </Alert>
+      <AlertBox
+        severity="error"
+        title="エラー"
+        description="画像データの取得に失敗しました。ネットワーク環境を確認してください。"
+      />
     );
   }
 
   return (
-    <Box mb={2}>
-      <img
-        src={imageUrl}
-        alt="取得した画像〜〜"
-        style={{
-          maxWidth: "100%",
-          maxHeight: "50vh",
-          aspectRatio:
-            imageSize.height !== 0 && imageSize.width / imageSize.height,
-        }}
-      />
-    </Box>
+    <img
+      src={imageUrl}
+      alt={id}
+      style={{
+        maxWidth: "100%",
+        maxHeight: "50vh",
+        aspectRatio:
+          imageSize.height !== 0 && imageSize.width / imageSize.height,
+        ...style,
+      }}
+      {...props}
+    />
   );
 };

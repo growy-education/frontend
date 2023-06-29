@@ -8,6 +8,7 @@ import { useAxiosConfig } from "../contexts/AxiosContextProvider";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";
+import dayjs from "dayjs";
 
 export const ImageList = () => {
   const { axiosConfig } = useAxiosConfig();
@@ -47,11 +48,14 @@ export const ImageList = () => {
             alignItems: "center",
             alignContent: "center",
           }}
+          onClick={() => navigate(`/images/${image.id}`)}
         >
-          <CustomImage id={image.id} />
-          <ImageListItemBar title={image.createdAt.toLocaleString("ja-JP")}>
-            <Info />
-          </ImageListItemBar>
+          <CustomImage id={image.id} loading="lazy" />
+          <ImageListItemBar
+            title={dayjs(image.createdAt).format(
+              "アップロード日：YYYY年MM月DD日"
+            )}
+          />
         </ImageListItem>
       ))}
     </MuiImageList>

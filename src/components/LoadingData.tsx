@@ -1,10 +1,10 @@
 import { Box, BoxProps, CircularProgress, Typography } from "@mui/material";
 
-type LoadingPageProps = BoxProps & {
+type LoadingDataProps = BoxProps & {
   message: string;
 };
 
-export const LoadingData = ({ message, ...props }: LoadingPageProps) => {
+export const LoadingData = ({ message, ...props }: LoadingDataProps) => {
   return (
     <Box alignItems={"center"} justifyContent={"center"} {...props}>
       <Typography>{message}</Typography>
