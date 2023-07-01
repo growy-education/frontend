@@ -1,49 +1,34 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 import { Room } from "../../types/room.class";
 import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 import { plainToInstance } from "class-transformer";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Container,
-  Link,
-  Typography,
-} from "@mui/material";
-import { Title } from "../../components/QuestionTitle";
-import {
-  Add,
-  AddCircle,
-  Cancel,
-  EventAvailable,
-  OpenInNew,
-} from "@mui/icons-material";
-import { mockRooms } from "./RoomListPage";
+import { Box, Button, Container } from "@mui/material";
+import { Cancel, EventAvailable } from "@mui/icons-material";
 import { LoadingData } from "../../components/LoadingData";
-import { JaDateTime } from "../../components/JaDateTime";
+import { UserContext } from "../../contexts/UserContextProvider";
 
 export const RoomDetail = () => {
-  const [room, setRoom] = useState<null | Room>();
   const { axiosConfig } = useAxiosConfig();
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
+  const [room, setRoom] = useState<null | Room>();
   const { roomId } = useParams();
+
   useEffect(() => {
-    // axios
-    //   .create(axiosConfig)
-    //   .get(`/rooms/${roomId}`)
-    //   .then((response) => {
-    //     const room = plainToInstance(Room, response.data);
-    //     setRoom(room);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-    const rooms = mockRooms.filter((value) => value.id === roomId);
-    setRoom(rooms[0]);
+    axios
+      .create(axiosConfig)
+      .get(`/rooms/${roomId}`)
+      .then((response) => {
+        const room = plainToInstance(Room, response.data);
+        setRoom(room);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [axiosConfig, roomId]);
 
   if (!room) {
@@ -53,7 +38,7 @@ export const RoomDetail = () => {
   return (
     <Container maxWidth="md">
       <Box display="flex" justifyContent={"flex-end"} mb={2}>
-        {room.reserved ? (
+        {room.students.some((student) => student.user.id === user.id) ? (
           <Button variant="outlined" endIcon={<Cancel />}>
             この予約をキャンセルする
           </Button>
@@ -67,25 +52,7 @@ export const RoomDetail = () => {
           </Button>
         )}
       </Box>
-      <Box my={3}>
-        <Title title="ID" />
-        <Typography>{room.id}</Typography>
-        <Title title="開始日時" />
-        <JaDateTime date={room.createdAt} />
-        <Title title="更新日時" />
-        <JaDateTime date={room.updatedAt} />
-        <Title title="GoogleMeet URL" />
-        <Typography>
-          <Button
-            endIcon={<OpenInNew />}
-            onClick={() => window.open(room.url, "_blank")}
-          >
-            自習室に参加する
-          </Button>
-        </Typography>
-        <Title title="ステータス" />
-        <Typography>{room.status}</Typography>
-      </Box>
+      <Box my={3}></Box>
     </Container>
   );
 };

@@ -10,7 +10,6 @@ import { plainToInstance } from "class-transformer";
 import { EditDataGrid } from "../../components/EditDataGrid";
 import { SearchDataGrid } from "../../components/SearchDataGrid";
 import { CustomDataGrid } from "../../components/CustomDataGrid";
-import { RoomStatus } from "../../types/room-status.enum";
 
 type CustomGridColDef = GridColDef & { order: number };
 
@@ -22,39 +21,6 @@ const RoomColumns: CustomGridColDef[] = [
   { field: "endAt", headerName: "終了時間", flex: 1, order: 5 },
   { field: "url", headerName: "URL", flex: 1, order: 6 },
   { field: "status", headerName: "ステータス", flex: 1, order: 7 },
-];
-
-export const mockRooms: Room[] = [
-  {
-    id: "1",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    startAt: new Date("2023-06-27T08:00:00.000Z"),
-    endAt: new Date("2023-06-27T10:00:00.000Z"),
-    url: "https://meet.google.com/hig-qmky-pxx",
-    status: RoomStatus.SCHEDULED,
-    reserved: true,
-  },
-  {
-    id: "2",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    startAt: new Date("2023-06-28T08:00:00.000Z"),
-    endAt: new Date("2023-06-28T10:00:00.000Z"),
-    url: "https://meet.google.com/hig-qmky-pxx",
-    status: RoomStatus.SCHEDULED,
-    reserved: false,
-  },
-  {
-    id: "3",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    startAt: new Date("2023-06-29T08:00:00.000Z"),
-    endAt: new Date("2023-06-29T10:00:00.000Z"),
-    url: "https://meet.google.com/hig-qmky-pxx",
-    status: RoomStatus.SCHEDULED,
-    reserved: true,
-  },
 ];
 
 export const RoomList = () => {
@@ -102,7 +68,7 @@ export const RoomList = () => {
           <Typography>
             日付をクリックすると、詳細画面へと遷移します。
           </Typography>
-          <CustomCalendar events={mockRooms} />
+          <CustomCalendar events={rooms} />
         </Box>
 
         <Box sx={{ m: 2 }}>

@@ -7,7 +7,7 @@ import { Role } from "./types/role.enum";
 import { General } from "./General";
 
 import { NotFound } from "./components/NotFound";
-import { Information } from "./Information";
+import { Information } from "./pages/InformationPage";
 
 // Profiles
 import { ProfilePage } from "./pages/profiles/ProfilePage";

@@ -22,8 +22,6 @@ export class Room {
 
   status: RoomStatus;
 
-  reserved: boolean;
-
   @Type(() => Student)
   students?: Student[];
 

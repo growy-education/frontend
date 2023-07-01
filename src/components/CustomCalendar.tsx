@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Calendar, { CalendarProps } from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import dayjs from "dayjs";
@@ -9,9 +9,11 @@ import { Room } from "../types/room.class";
 import {
   NavigationLabelFunc,
   OnChangeFunc,
+  TileContentFunc,
   TileDisabledFunc,
 } from "react-calendar/dist/cjs/shared/types";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../contexts/UserContextProvider";
 
 dayjs.locale("ja"); // 日本語ロケールを設定
 
@@ -25,7 +27,6 @@ type CustomCalendarProps = CalendarProps & {
 
 // カスタムのカレンダーコンポーネント
 export const CustomCalendar = ({ events, ...props }: CustomCalendarProps) => {
-  const navigate = useNavigate();
   const theme = useTheme();
   const StyledCalendar = styled(Calendar)`
     width: 100%;
@@ -51,6 +52,9 @@ export const CustomCalendar = ({ events, ...props }: CustomCalendarProps) => {
     }
   `;
 
+  const navigate = useNavigate();
+  const { user } = useContext(UserContext);
+
   let scheduledEvents: ScheduledEvents = {};
   for (const event of events) {
     // プロパティがなければ、配列をプロパティに追加する
@@ -70,45 +74,51 @@ export const CustomCalendar = ({ events, ...props }: CustomCalendarProps) => {
   };
 
   // カレンダータイル（日付）のレンダリングをカスタマイズ
-  const tileContent = ({ date }) => {
-    const formattedDate = dayjs(date).format("YYYY-MM-DD");
-    let sortedScheduleEvents: Room[] = [];
-    if (scheduledEvents[formattedDate]) {
-      // その日のeventsを、開始時間でsortして取得する
-      sortedScheduleEvents = scheduledEvents[formattedDate].sort(
-        (a, b) => a.startAt.getTime() - b.startAt.getTime()
+  const tileContent: React.ReactNode | TileContentFunc = ({ date, view }) => {
+    if (view === "month") {
+      const formattedDate = dayjs(date).format("YYYY-MM-DD");
+      let sortedScheduleEvents: Room[] = [];
+      if (scheduledEvents[formattedDate]) {
+        // その日のeventsを、開始時間でsortして取得する
+        sortedScheduleEvents = scheduledEvents[formattedDate].sort(
+          (a, b) => a.startAt.getTime() - b.startAt.getTime()
+        );
+      }
+
+      return (
+        <Box
+          width="100%"
+          overflow="hidden"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+        >
+          <Typography fontWeight={"bold"}>{date.getDate()}</Typography>
+          {Array.isArray(sortedScheduleEvents) &&
+            sortedScheduleEvents.length !== 0 &&
+            sortedScheduleEvents.map(
+              (event) =>
+                event.students.some(
+                  (student) => student.user.id === user.id
+                ) && (
+                  <Box key={event.id} textAlign="left">
+                    <Typography variant="caption">
+                      {`${dayjs(event.startAt).format("HH:mm")}`}
+                    </Typography>
+                    <br />
+                    <Typography variant="caption">オンライン自習室</Typography>
+                  </Box>
+                )
+            )}
+        </Box>
       );
     }
-    console.log(sortedScheduleEvents);
-
-    return (
-      <Box
-        width="100%"
-        overflow="hidden"
-        textOverflow="ellipsis"
-        whiteSpace="nowrap"
-      >
-        <Typography fontWeight={"bold"}>{date.getDate()}</Typography>
-        {Array.isArray(sortedScheduleEvents) &&
-          sortedScheduleEvents.length !== 0 &&
-          sortedScheduleEvents.map(
-            (event) =>
-              event.reserved && (
-                <Box key={event.id} textAlign="left">
-                  <Typography variant="caption">
-                    {`${dayjs(event.startAt).format("HH:mm")}`}
-                  </Typography>
-                  <br />
-                  <Typography variant="caption">オンライン自習室</Typography>
-                </Box>
-              )
-          )}
-      </Box>
-    );
   };
 
   // オンライン自習室が開催されない日は押せない
-  const tileDisabled: TileDisabledFunc = ({ date }) => {
+  const tileDisabled: TileDisabledFunc = ({ date, view }) => {
+    if (view !== "month") {
+      return false;
+    }
     const formattedDate = dayjs(date).format("YYYY-MM-DD");
     return !(
       formattedDate in scheduledEvents &&
@@ -141,7 +151,7 @@ export const CustomCalendar = ({ events, ...props }: CustomCalendarProps) => {
         tileContent={tileContent}
         navigationLabel={navigationLabel}
         // 日付はtileContentで描画しているので不要
-        formatDay={(locale, date) => ""}
+        formatDay={() => ""}
         tileDisabled={tileDisabled}
         onClickDay={onClickDay}
         {...props}

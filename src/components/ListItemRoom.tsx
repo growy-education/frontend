@@ -7,12 +7,16 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { UserContext } from "../contexts/UserContextProvider";
+import { Role } from "../types/role.enum";
 
 export const ListItemRoom = () => {
   const navigate = useNavigate();
   const [roomListOpen, setRoomListOpen] = useState(false);
+
+  const { user } = useContext(UserContext);
 
   const handleRoomListToggle = () => {
     setRoomListOpen(!roomListOpen);
@@ -41,14 +45,16 @@ export const ListItemRoom = () => {
               <ListItemText primary="オンライン自習室リスト" />
             </ListItemButton>
           </ListItem>
-          <ListItem onClick={() => navigate("/rooms/new")}>
-            <ListItemButton>
-              <ListItemIcon>
-                <Add />
-              </ListItemIcon>
-              <ListItemText primary="オンライン自習室を作成" />
-            </ListItemButton>
-          </ListItem>
+          {user.role === Role.ADMIN && (
+            <ListItem onClick={() => navigate("/rooms/new")}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <Add />
+                </ListItemIcon>
+                <ListItemText primary="オンライン自習室を作成" />
+              </ListItemButton>
+            </ListItem>
+          )}
         </List>
       </Collapse>
     </>
