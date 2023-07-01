@@ -23,6 +23,7 @@ import {
 } from "@mui/icons-material";
 import { mockRooms } from "./RoomListPage";
 import { LoadingData } from "../../components/LoadingData";
+import { JaDateTime } from "../../components/JaDateTime";
 
 export const RoomDetail = () => {
   const [room, setRoom] = useState<null | Room>();
@@ -70,9 +71,9 @@ export const RoomDetail = () => {
         <Title title="ID" />
         <Typography>{room.id}</Typography>
         <Title title="開始日時" />
-        <Typography>{room.startAt.toDateString()}</Typography>
+        <JaDateTime date={room.createdAt} />
         <Title title="更新日時" />
-        <Typography>{room.endAt.toDateString()}</Typography>
+        <JaDateTime date={room.updatedAt} />
         <Title title="GoogleMeet URL" />
         <Typography>
           <Button

@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { Info, RotateLeft } from "@mui/icons-material";
-import { Box, Button, ImageListItem, ImageListItemBar } from "@mui/material";
+import {
+  Box,
+  Button,
+  ImageListItem,
+  ImageListItemBar,
+  Typography,
+} from "@mui/material";
 import { ImageList as MuiImageList } from "@mui/material";
 import { ImageEntity } from "../types/image.class";
 import { CustomImage } from "./CustomImage";
@@ -21,6 +27,7 @@ export const ImageList = () => {
       .create(axiosConfig)
       .get("images")
       .then((response) => {
+        console.log(response.data);
         const images = response.data.map((responseJson) =>
           plainToInstance(ImageEntity, responseJson)
         );
@@ -39,6 +46,9 @@ export const ImageList = () => {
       }}
       cols={1}
     >
+      {images.length === 0 && (
+        <Typography>まだ画像がアップロードされていません。</Typography>
+      )}
       {images.map((image) => (
         <ImageListItem
           key={`${image.id}-item`}

@@ -1,6 +1,7 @@
 import { Customer } from "../../types/customer.class";
 import { Typography } from "@mui/material";
 import { Title } from "../QuestionTitle";
+import { JaDateTime } from "../JaDateTime";
 
 type CustomerDetailProps = {
   customer: Customer;
@@ -22,9 +23,9 @@ export const CustomerDetail = ({ customer }: CustomerDetailProps) => {
       <Title title="ID" />
       <Typography>{id}</Typography>
       <Title title="作成日時" />
-      <Typography>{createdAt.toDateString()}</Typography>
+      <JaDateTime date={createdAt} />
       <Title title="更新日時" />
-      <Typography>{updatedAt.toDateString()}</Typography>
+      <JaDateTime date={updatedAt} />
       <Title title="名前" />
       <Typography>{firstName}</Typography>
       <Title title="名前（読み仮名）" />

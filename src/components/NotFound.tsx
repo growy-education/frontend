@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Typography, Button, Container } from "@mui/material";
+import { Typography, Button, Container, Box } from "@mui/material";
+import { Home } from "@mui/icons-material";
 
 export const NotFound = () => {
   return (
@@ -8,12 +9,22 @@ export const NotFound = () => {
       <Typography variant="h1" align="center" gutterBottom>
         404 Not Found
       </Typography>
-      <Typography variant="h4" align="center" gutterBottom>
-        ページが見つかりませんでした。
-      </Typography>
-      <Button component={Link} to="/" variant="contained" color="primary">
-        ホームに戻る
-      </Button>
+      <Box display="flex" flexDirection="column" alignItems="center">
+        <img
+          src="/notfound.png"
+          alt="NotFound"
+          style={{ width: "90%", maxWidth: "640px" }}
+        />
+        <Button
+          component={Link}
+          to="/"
+          variant="contained"
+          color="primary"
+          startIcon={<Home />}
+        >
+          ホームに戻る
+        </Button>
+      </Box>
     </Container>
   );
 };

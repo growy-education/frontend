@@ -14,6 +14,8 @@ import { ExpandMore } from "@mui/icons-material";
 import { StudentDetail } from "../students/StudentDetail";
 import { TeacherDetail } from "../teachers/TeacherDetail";
 import { useNavigate } from "react-router-dom";
+import { StudentAccordion } from "../students/StudentAccordion";
+import { TeacherAccordion } from "../teachers/TeacherAccordion";
 
 type LinkedUserInformationProps = {
   user: User;
@@ -56,48 +58,11 @@ export const LinkedUserInformation = ({ user }: LinkedUserInformationProps) => {
               <CustomerDetail customer={user.customer} />
             </AccordionDetails>
           </Accordion>
-          <Accordion>
-            <AccordionSummary
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-              expandIcon={<ExpandMore />}
-              id="student"
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  width: "100%",
-                }}
-              >
-                <Typography>生徒情報</Typography>
-                <Button
-                  onClick={() => navigate(`/students/${user.student.id}`)}
-                >
-                  生徒情報の詳細ページへ
-                </Button>
-              </Box>
-            </AccordionSummary>
-            <AccordionDetails>
-              <StudentDetail student={user.student} />
-            </AccordionDetails>
-          </Accordion>
+          <StudentAccordion student={user.student} />
         </>
       );
     case Role.TEACHER:
-      return (
-        <Accordion>
-          <AccordionSummary expandIcon={<ExpandMore />} id="teacher">
-            <Typography>Teacher情報</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <TeacherDetail teacher={user.teacher} />
-          </AccordionDetails>
-        </Accordion>
-      );
+      return <TeacherAccordion teacher={user.teacher} />;
     case Role.PENDING:
       return <></>;
   }

@@ -42,6 +42,17 @@ export const RotatableImage = ({ id, ...props }: RotatableImageProps) => {
         setRotation(newRotation);
         setMargin({});
       }
+    } else {
+      if (rotation % 180 === 0) {
+        setRotation(newRotation);
+        setMargin({
+          marginLeft: (imageSize.height - imageSize.width) / 2,
+          marginRight: (imageSize.height - imageSize.width) / 2,
+        });
+      } else {
+        setRotation(newRotation);
+        setMargin({});
+      }
     }
   };
 

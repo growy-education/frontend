@@ -14,6 +14,11 @@ import { jaJP } from "@mui/x-date-pickers/locales";
 import { AlertPanelContextProvider } from "./contexts/AlertPanelContextProvider";
 import { AxiosContextProvider } from "./contexts/AxiosContextProvider";
 
+// dayjsの日本語化
+import dayjs from "dayjs";
+import "dayjs/locale/ja";
+dayjs.locale("ja");
+
 const theme = createTheme(
   {
     palette: {

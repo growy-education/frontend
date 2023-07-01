@@ -30,6 +30,7 @@ import { CustomerDetail } from "../../components/customers/CustomerDetail";
 import { StudentDetail } from "../../components/students/StudentDetail";
 import { TeacherDetail } from "../../components/teachers/TeacherDetail";
 import { LoadingData } from "../../components/LoadingData";
+import { JaDateTime } from "../../components/JaDateTime";
 
 class ActivateUserDto {
   @IsNotEmpty()
@@ -182,9 +183,9 @@ export const UserActivate = () => {
           <Title title="ID" />
           <Typography>{id}</Typography>
           <Title title="作成日時" />
-          <Typography>{createdAt.toDateString()}</Typography>
+          <JaDateTime date={createdAt} />
           <Title title="更新日時" />
-          <Typography>{updatedAt.toDateString()}</Typography>
+          <JaDateTime date={updatedAt} />
           <Title title="ユーザー名" />
           <Typography>{username}</Typography>
           <Title title="メールアドレス" />

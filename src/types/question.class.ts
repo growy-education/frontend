@@ -23,19 +23,19 @@ export class Question {
   status: QuestionStatus;
 
   @Type(() => ImageEntity)
-  problems: string[];
+  problems: ImageEntity[];
 
   @Type(() => ImageEntity)
-  solutions: string[];
+  solutions: ImageEntity[];
 
-  answer: string;
+  answer?: string;
 
   @Type(() => Student)
-  student: Student;
+  student?: Student;
 
   @Type(() => Customer)
-  customer: Customer;
+  customer?: Customer;
 
   @Type(() => Teacher)
-  teacher: Teacher;
+  teacher?: Teacher;
 }

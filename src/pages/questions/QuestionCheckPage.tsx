@@ -18,6 +18,8 @@ import { Title } from "../../components/QuestionTitle";
 import { plainToInstance } from "class-transformer";
 import { LockOpen } from "@mui/icons-material";
 import { LoadingData } from "../../components/LoadingData";
+import { CustomImage } from "../../components/CustomImage";
+import { JaDateTime } from "../../components/JaDateTime";
 
 export const QuestionCheck = () => {
   const { questionId } = useParams();
@@ -98,9 +100,9 @@ export const QuestionCheck = () => {
         <Title title="ID" />
         <Typography>{id}</Typography>
         <Title title="作成日時" />
-        <Typography>{createdAt.toDateString()}</Typography>
-        <Title title="作成日時" />
-        <Typography>{updatedAt.toDateString()}</Typography>
+        <JaDateTime date={createdAt} />
+        <Title title="更新日時" />
+        <JaDateTime date={updatedAt} />
         <Title title="タイトル" />
         <Typography>{title}</Typography>
         <Title title="質問内容" />
@@ -109,30 +111,12 @@ export const QuestionCheck = () => {
         <Typography>{memo || "なし"}</Typography>
       </Box>
       <Title title="問題画像" />
-      {getImagePaths(problems).map((image, index) => (
-        <Grid item xs={12} key={`question-image-${id}`}>
-          <Card>
-            <CardMedia
-              component="img"
-              height="100%"
-              image={image}
-              alt={`Solution Image ${index + 1}`}
-            />
-          </Card>
-        </Grid>
+      {problems.map((image, index) => (
+        <CustomImage id={image.id} key={`problems-${index}`} />
       ))}
       <Title title="解答画像" />
-      {getImagePaths(solutions).map((image, index) => (
-        <Grid item xs={12} key={`answer-image-${id}`}>
-          <Card>
-            <CardMedia
-              component="img"
-              height="100%"
-              image={image}
-              alt={`Answer Image ${index + 1}`}
-            />
-          </Card>
-        </Grid>
+      {solutions.map((image, index) => (
+        <CustomImage id={image.id} key={`solution-${index}`} />
       ))}
       {answer && (
         <Grid item xs={12}>

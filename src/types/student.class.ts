@@ -21,15 +21,15 @@ export class Student {
 
   gender: Gender;
 
+  grade: string;
+
+  birthday: Date;
+
   school: string;
 
   juku: string;
 
   jukuBuilding: string;
-
-  grade: string;
-
-  birthday: Date;
 
   @Type(() => User)
   user?: User;

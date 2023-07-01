@@ -7,12 +7,12 @@ import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { Title } from "../../components/QuestionTitle";
 import { PhotoLibraryOutlined } from "@mui/icons-material";
 import axios from "axios";
-import { IsNotEmpty, IsString } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsNotEmpty, IsString } from "class-validator";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { useForm } from "react-hook-form";
 import { ConfirmationDialog } from "../../components/ConfirmationDialog";
 import { NotificationContext } from "../../contexts/NotificationContextProvider";
-import { Exclude } from "class-transformer";
+import { UploadingImage } from "../../components/UploadingImage";
 
 class CreateQuestionDto {
   @IsNotEmpty({ message: "タイトルを入力してください" })
@@ -27,12 +27,17 @@ class CreateQuestionDto {
   @IsString()
   memo: string;
 
-  // This property cannot be validated becauseof File type...
-  @Exclude()
-  problems: File[];
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsString({ each: true })
+  @IsNotEmpty({ each: true })
+  problemIds: string[];
 
-  @Exclude()
-  solutions: File[];
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsString({ each: true })
+  @IsNotEmpty({ each: true })
+  solutionIds: string[];
 }
 
 export const QuestionNew = () => {
@@ -50,18 +55,23 @@ export const QuestionNew = () => {
   } = useForm<CreateQuestionDto>({
     resolver: classValidatorResolver(CreateQuestionDto),
     defaultValues: {
-      problems: [],
-      solutions: [],
+      title: "",
+      content: "",
+      memo: "",
+      problemIds: [],
+      solutionIds: [],
     },
   });
+
+  const [problems, setProblems] = useState<File[]>([]);
+  const [solutions, setSolutions] = useState<File[]>([]);
 
   const handleProblemImageSelect = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (event.target.files) {
       const filesArray = Array.from(event.target.files);
-      setValue("problems", filesArray);
-      trigger("problems");
+      setProblems(filesArray);
     }
   };
 
@@ -70,71 +80,22 @@ export const QuestionNew = () => {
   ) => {
     if (event.target.files) {
       const filesArray = Array.from(event.target.files);
-      setValue("solutions", filesArray);
-      trigger("solutions");
+      setSolutions(filesArray);
     }
   };
 
+  const handleProblemImageId = (id: string) => {
+    setValue("problemIds", [...getValues("problemIds"), id]);
+  };
+
+  const handleSolutionImageId = (id: string) => {
+    setValue("solutionIds", [...getValues("solutionIds"), id]);
+  };
+
   const handleImageUpload = async (data: CreateQuestionDto) => {
-    let requestData;
-    try {
-      const problemIds = await Promise.all(
-        data.problems.map(async (problem) => {
-          const formData = new FormData();
-          formData.append("file", problem);
-          return axios
-            .create(axiosConfig)
-            .post("google/upload", formData, {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            })
-            .then((response) => response.data.id as string)
-            .catch((error) => {
-              console.log(error);
-              throw new Error("Failed to upload problem image");
-            });
-        })
-      );
-
-      const solutionIds = await Promise.all(
-        data.solutions.map(async (solution) => {
-          const formData = new FormData();
-          formData.append("file", solution);
-          return axios
-            .create(axiosConfig)
-            .post("google/upload", formData, {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            })
-            .then((response) => response.data.id as string)
-            .catch((error) => {
-              console.log(error);
-              throw new Error("Failed to upload solution image");
-            });
-        })
-      );
-
-      requestData = {
-        title: data.title,
-        content: data.content,
-        memo: data.memo,
-        problems: problemIds,
-        solutions: solutionIds,
-      };
-    } catch (error) {
-      handleError({
-        type: "Modal",
-        title: "ネットワークエラー",
-        message: "画像のアップロードに失敗しました。",
-      });
-      return;
-    }
-
     axios
       .create(axiosConfig)
-      .post("questions", requestData)
+      .post("questions", data)
       .then((response) => console.log(response.data))
       .catch((error) => {
         console.log(error);
@@ -160,19 +121,7 @@ export const QuestionNew = () => {
       <Typography variant="h4">質問入力画面</Typography>
       <Box
         component="form"
-        onSubmit={handleSubmit(() => {
-          if (!(getValues("problems").length > 0)) {
-            return setError("problems", {
-              message: "問題の画像を選択してください",
-            });
-          }
-          if (!(getValues("solutions").length > 0)) {
-            return setError("solutions", {
-              message: "解答の画像を選択してください",
-            });
-          }
-          setShowConfirmation(true);
-        })}
+        onSubmit={handleSubmit(() => setShowConfirmation(true))}
       >
         <Title title="質問タイトル" />
         <TextField
@@ -227,7 +176,7 @@ export const QuestionNew = () => {
             overflowX: "auto",
           }}
         >
-          {getValues("problems").map((file, index) => (
+          {problems.map((file, index) => (
             <Box
               key={`problem-box-${index}`}
               sx={{
@@ -238,21 +187,16 @@ export const QuestionNew = () => {
                 objectFit: "cover",
               }}
             >
-              <img
-                src={URL.createObjectURL(file)}
-                alt={`Problem ${index}`}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
+              <UploadingImage
+                file={file}
+                handleImageId={handleProblemImageId}
               />
             </Box>
           ))}
         </Box>
 
-        {!!errors.problems && (
-          <FormHelperText error>{errors.problems.message}</FormHelperText>
+        {!!errors.problemIds && (
+          <FormHelperText error>{errors.problemIds.message}</FormHelperText>
         )}
         <input
           type="file"
@@ -281,7 +225,7 @@ export const QuestionNew = () => {
             overflowX: "auto",
           }}
         >
-          {getValues("solutions").map((file, index) => (
+          {solutions.map((file, index) => (
             <Box
               key={`solution-box-${index}`}
               sx={{
@@ -292,20 +236,15 @@ export const QuestionNew = () => {
                 objectFit: "cover",
               }}
             >
-              <img
-                src={URL.createObjectURL(file)}
-                alt={`Solution ${index}`}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
+              <UploadingImage
+                file={file}
+                handleImageId={handleSolutionImageId}
               />
             </Box>
           ))}
         </Box>
-        {!!errors.solutions && (
-          <FormHelperText error>{errors.solutions.message}</FormHelperText>
+        {!!errors.solutionIds && (
+          <FormHelperText error>{errors.solutionIds.message}</FormHelperText>
         )}
         <input
           type="file"

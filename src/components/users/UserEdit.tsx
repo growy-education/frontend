@@ -1,11 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { Alert, Box, Button, Snackbar, Typography } from "@mui/material";
-import { TextField } from "@mui/material";
-import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import { Title } from "../../components/QuestionTitle";
-import { useNavigate, useParams } from "react-router-dom";
-import axios, { isAxiosError } from "axios";
-import { plainToInstance } from "class-transformer";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { User } from "../../types/user.class";
 import {
   IsEmail,
@@ -15,10 +9,13 @@ import {
   MaxLength,
   MinLength,
 } from "class-validator";
-import { classValidatorResolver } from "@hookform/resolvers/class-validator";
+import { Title } from "../QuestionTitle";
+import { Alert, Box, Button, Snackbar, TextField } from "@mui/material";
+import { SubmitButton } from "../SubmitButton";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { LoadingData } from "../../components/LoadingData";
-import { UserEdit } from "../../components/users/UserEdit";
+import axios, { isAxiosError } from "axios";
+import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
+import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 
 class UpdateUserDto {
   @IsOptional()
@@ -36,13 +33,15 @@ class UpdateUserDto {
   phone?: string;
 }
 
-export const UserEditPage = () => {
-  const { axiosConfig } = useContext(AxiosContext);
+type UserEditProps = {
+  user: User;
+  onCancel: React.MouseEventHandler<HTMLButtonElement>;
+  onSuccess: () => void;
+};
+
+export const UserEdit = ({ user, onCancel, onSuccess }: UserEditProps) => {
+  const { axiosConfig } = useAxiosConfig();
   const { userId } = useParams();
-
-  const navigate = useNavigate();
-
-  const [user, setUser] = useState<User | null>(null);
 
   // 結果を示すオブジェクトを作成する
   const [result, setResult] = useState({
@@ -54,7 +53,9 @@ export const UserEditPage = () => {
 
   const resolver = classValidatorResolver(UpdateUserDto);
   const {
-    setValue,
+    register,
+    handleSubmit,
+    trigger,
     setError,
     formState: { errors },
   } = useForm<UpdateUserDto>({
@@ -66,24 +67,7 @@ export const UserEditPage = () => {
     },
   });
 
-  useEffect(() => {
-    axios
-      .create(axiosConfig)
-      .get(`/users/${userId}`)
-      .then((response) => {
-        const user = plainToInstance(User, response.data);
-        setUser(user);
-        setValue("username", user.username);
-        setValue("email", user.email);
-        setValue("phone", user.phone);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [axiosConfig, userId]);
-
   const onSubmit: SubmitHandler<UpdateUserDto> = (data) => {
-    console.log(data);
     let updatedData: UpdateUserDto = {};
     for (const key in data) {
       if (data[key] !== user[key]) {
@@ -97,7 +81,7 @@ export const UserEditPage = () => {
         ...updatedData,
       })
       .then((response) => {
-        navigate(`/users/${userId}`);
+        onSuccess();
       })
       .catch((error: unknown) => {
         if (isAxiosError(error)) {
@@ -144,19 +128,78 @@ export const UserEditPage = () => {
       });
   };
 
-  if (!user) {
-    return <LoadingData message="ユーザー情報を取得中です" />;
-  }
-
   return (
     <>
-      <Typography variant="h4">ユーザー情報を編集する</Typography>
-      {!!user && (
-        <UserEdit
-          user={user}
-          onCancel={() => navigate(`/users/${userId}`)}
-          onSuccess={() => navigate(`/users/${userId}`)}
-        />
+      <Title title="ユーザー名" />
+      <TextField
+        fullWidth
+        id="username"
+        label="ユーザー名"
+        error={!!errors.username}
+        helperText={!!errors.username ? errors.username.message : ""}
+        {...register("username")}
+      />
+
+      <Title title="メールアドレス" />
+      <TextField
+        fullWidth
+        id="email"
+        label="メールアドレス"
+        error={!!errors.email}
+        helperText={errors.email ? errors.email.message : ""}
+        {...register("email")}
+      />
+
+      <Title title="電話番号" />
+      <TextField
+        fullWidth
+        id="phone"
+        label="電話番号"
+        error={!!errors.phone}
+        helperText={errors.phone ? errors.phone.message : ""}
+        {...register("phone")}
+      />
+
+      <Box margin="0.5em">
+        <SubmitButton onClick={handleSubmit(onSubmit)} trigger={trigger} />
+        <Button
+          type="submit"
+          color="inherit"
+          variant="contained"
+          onClick={onCancel}
+        >
+          キャンセル
+        </Button>
+      </Box>
+      {result.open && !result.success && (
+        <Snackbar
+          open={result.open && !result.success}
+          autoHideDuration={6000}
+          onClose={() =>
+            setResult({
+              open: false,
+              success: false,
+              title: "",
+              message: "",
+            })
+          }
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Alert
+            onClose={() =>
+              setResult({
+                open: false,
+                success: false,
+                title: "",
+                message: "",
+              })
+            }
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            {result.message}
+          </Alert>
+        </Snackbar>
       )}
     </>
   );

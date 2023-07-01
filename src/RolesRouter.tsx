@@ -8,43 +8,52 @@ import { General } from "./General";
 
 import { NotFound } from "./components/NotFound";
 import { Information } from "./Information";
-import { Profile } from "./components/Profile";
 
+// Profiles
+import { ProfilePage } from "./pages/profiles/ProfilePage";
+import { ProfileEditPage } from "./pages/profiles/ProfileEditPage";
+
+// Images
 import { ImageList } from "./components/ImageList";
 import { ImageNew } from "./components/ImageNew";
 
+// Questions
 import { QuestionList } from "./pages/questions/QuestionListPage";
 import { QuestionNew } from "./pages/questions/QuestionNewPage";
 import { QuestionCheck } from "./pages/questions/QuestionCheckPage";
-import { QuestionDetail } from "./pages/questions/QuestionDetailPage";
+import { QuestionDetailPage } from "./pages/questions/QuestionDetailPage";
 import { QuestionEdit } from "./pages/questions/QuestionEditPage";
 
+// Customers
 import { CustomersListPage } from "./pages/customers/CustomersListPage";
 import { CustomerNewPage } from "./pages/customers/CustomerNewPage";
 import { CustomerEditPage } from "./pages/customers/CustomerEditPage";
 import { CustomerDetailPage } from "./pages/customers/CustomerDetailPage";
 
+// Rooms
 import { RoomList } from "./pages/rooms/RoomListPage";
 import { RoomNew } from "./pages/rooms/RoomNewPage";
 import { RoomDetail } from "./pages/rooms/RoomDetailPage";
 
-import { Preservation } from "./pages/rooms/StudyroomPreservationPage";
-
+// Users
 import { UsersList } from "./pages/users/UsersListPage";
 import { UserNew } from "./pages/users/UserNewPage";
 import { UserDetailPage } from "./pages/users/UserDetailPage";
-import { UserEdit } from "./pages/users/UserEditPage";
+import { UserEditPage } from "./pages/users/UserEditPage";
 import { UserActivate } from "./pages/users/UserActivatePage";
 
+// Teachers
 import { TeachersList } from "./pages/teachers/TeachersListPage";
 import { TeacherNew } from "./pages/teachers/TeacherNewPage";
 import { TeacherDetailProps } from "./pages/teachers/TeacherDetailPage";
 import { TeacherEdit } from "./pages/teachers/TeacherEditPage";
 
+// Students
 import { StudentsList } from "./pages/students/StudentsListPage";
 import { StudentNew } from "./pages/students/StudentNewPage";
 import { StudentDetailProps } from "./pages/students/StudentDetailPage";
 import { StudentEdit } from "./pages/students/StudentEditPage";
+import { QuestionAssignedPage } from "./pages/questions/QuestionAssignedPage";
 
 export const RolesRouter: React.FC = () => {
   const { user } = useContext(UserContext);
@@ -53,9 +62,11 @@ export const RolesRouter: React.FC = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<General />}>
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile/edit" element={<ProfileEditPage />} />
           <Route path="/images" element={<ImageList />} />
           <Route path="/images/new" element={<ImageNew />} />
+
           {user.role === Role.ADMIN && (
             <>
               <Route path="/" element={<Information />} />
@@ -63,7 +74,7 @@ export const RolesRouter: React.FC = () => {
               <Route path="/questions/new" element={<QuestionNew />} />
               <Route
                 path="/questions/:questionId"
-                element={<QuestionDetail />}
+                element={<QuestionDetailPage />}
               />
               <Route
                 path="/questions/:questionId/edit"
@@ -84,7 +95,7 @@ export const RolesRouter: React.FC = () => {
                 path="/users/:userId/activate"
                 element={<UserActivate />}
               />
-              <Route path="/users/:userId/edit" element={<UserEdit />} />
+              <Route path="/users/:userId/edit" element={<UserEditPage />} />
 
               <Route path="/customers" element={<CustomersListPage />} />
               <Route path="/customers/new" element={<CustomerNewPage />} />
@@ -127,37 +138,29 @@ export const RolesRouter: React.FC = () => {
               <Route path="/questions/new" element={<QuestionNew />} />
               <Route
                 path="/questions/:questionId"
-                element={<QuestionDetail />}
+                element={<QuestionDetailPage />}
               />
               <Route
                 path="/questions/:questionId/edit"
                 element={<QuestionEdit />}
               />
               <Route path="/rooms/" element={<RoomList />} />
-              <Route path="/studyroom/new" element={<Preservation />} />
-              <Route
-                path="/customers/:customerId"
-                element={<CustomerDetailPage />}
-              />
-              <Route
-                path="/customers/:customerId/edit"
-                element={<CustomerEditPage />}
-              />
+              <Route path="/rooms/:roomId" element={<RoomDetail />} />
             </>
           )}
           {user.role === Role.TEACHER && (
             <>
+              <Route path="/questions" element={<QuestionList />} />
+              <Route
+                path="/questions/:questionId"
+                element={<QuestionDetailPage />}
+              />
+              <Route
+                path="/questions/:questionId/assigned"
+                element={<QuestionAssignedPage />}
+              />
               <Route path="/" element={<Information />} />
               <Route path="/rooms" element={<RoomList />} />
-              <Route path="/rooms/new" element={<Preservation />} />
-              <Route
-                path="/teachers/:teacherId/"
-                element={<TeacherDetailProps />}
-              />
-              <Route
-                path="/teachers/:teacherId/edit"
-                element={<TeacherEdit />}
-              />
             </>
           )}
           <Route path="*" element={<NotFound />} />

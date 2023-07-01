@@ -21,6 +21,7 @@ import axios from "axios";
 import { plainToInstance } from "class-transformer";
 import { PhotoLibraryOutlined } from "@mui/icons-material";
 import { LoadingData } from "../../components/LoadingData";
+import { CustomImage } from "../../components/CustomImage";
 
 export const QuestionEdit = () => {
   const { questionId } = useParams();
@@ -93,14 +94,8 @@ export const QuestionEdit = () => {
       {question.problems.length > 0 && (
         <Box sx={{ mt: 2, overflowX: "auto" }}>
           <Grid container spacing={2} sx={{ pr: 2 }}>
-            {question.problems.map((preview, index) => (
-              <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-                <img
-                  src={preview}
-                  alt={`Image ${index}`}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-              </Grid>
+            {question.problems.map((image, index) => (
+              <CustomImage id={image.id} key={`solution-${index}`} />
             ))}
           </Grid>
         </Box>
@@ -110,14 +105,8 @@ export const QuestionEdit = () => {
       {question.solutions.length > 0 && (
         <Box sx={{ mt: 2, overflowX: "auto" }}>
           <Grid container spacing={2} sx={{ pr: 2 }}>
-            {question.solutions.map((preview, index) => (
-              <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-                <img
-                  src={preview}
-                  alt={`Image ${index}`}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-              </Grid>
+            {question.solutions.map((image, index) => (
+              <CustomImage id={image.id} key={`solution-${index}`} />
             ))}
           </Grid>
         </Box>
