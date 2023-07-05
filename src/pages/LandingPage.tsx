@@ -1069,7 +1069,7 @@ export const LandingPage = () => {
           <div className="faq-wrapper bg-note">
             <details className="accordion-faq-1">
               <summary>
-                <h1>　コーチングについて　　　　▼</h1>
+                <h1>　コーチングについて　　　　　▼</h1>
               </summary>
               <div className="faq-1-container">
                 <details className="accordion-faq-2">
