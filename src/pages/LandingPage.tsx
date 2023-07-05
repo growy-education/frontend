@@ -46,7 +46,7 @@ export const LandingPage = () => {
             <div className="header-nav-flex-forbtn">
               <div className="header-nav-flex">
                 <li className="nav-item nav-link">
-                  <a href="./index.html">TOP</a>
+                  <a href="/">TOP</a>
                 </li>
                 <li className="nav-item nav-link">
                   <a href="#message">メッセージ</a>
@@ -78,7 +78,7 @@ export const LandingPage = () => {
                   <a href="#faq">FAQ</a>
                 </li>
                 <li className="nav-item nav-link">
-                  <a href="#message-2">学長より</a>
+                  <a href="#message-2">代表より</a>
                 </li>
               </div>
             </div>
@@ -115,23 +115,24 @@ export const LandingPage = () => {
           </ul>
         </div>
       </header>
+
       <main>
         <section id="kv" className="kv-wrapper">
           <div className="movie-wrapper">
             <div className="kv-movie">
               <video
-                src="/img/growy-lp-sp.mp4"
+                src="/videos/growy-lp-sp.mp4"
+                poster="/img/growy-kv-sp.jpg"
                 autoPlay
                 muted
                 loop
                 playsInline
-                poster="/img/growy-kv-sp.jpg"
-              ></video>
+                style={{ width: "100%", maxHeight: "100vh" }}
+              />
             </div>
           </div>
 
           <div className="btn-fix-wrapper">
-            <p className="padding-bug">A</p>
             <figure className="btn btn-fix">
               <a href="https://line.me/R/ti/p/@208okwey">
                 <img
@@ -146,7 +147,17 @@ export const LandingPage = () => {
         <section id="message" className="top-message">
           <div className="message-wrapper bg-note">
             <div className="message-movie">
-              <video src=""></video>
+              <iframe
+                src={"https://www.youtube.com/embed/sLh_Gxz98jk"}
+                title="回答動画"
+                allowFullScreen
+                style={{
+                  border: "none",
+                  width: "100%",
+                  maxHeight: "100vh",
+                  aspectRatio: 16 / 9,
+                }}
+              ></iframe>
             </div>
 
             <details className="accordion-btn">
@@ -861,87 +872,20 @@ export const LandingPage = () => {
               </div>
             </div>
 
-            {/* アコーディオンメニュー */}
+            {/* アコーディオンメニュー
             <details className="accordion-btn-2">
               <summary>
                 <div className="accordion-ttl-2">
                   　その他の講師を見る　　　　▼
                 </div>
               </summary>
-              <div className="accordion-teachers">
-                <div className="teacher-container">
-                  <div className="teacher-flex">
-                    <figure className="img-teacher">
-                      <img src="/img/img-teacher-1-min.jpg" alt="講師写真" />
-                    </figure>
-                    <div className="info-teacher">
-                      <h2 className="teachers-name">田中 太郎</h2>
-                      <h4 className="teachers-class">国語</h4>
-                      <h4 className="teachers-schools">
-                        ●●中学卒業
-                        <br />
-                        ●●高等学校卒業
-                        <br />
-                        ●●大学●●学部卒業
-                      </h4>
-                    </div>
-                  </div>
-                  <div className="teachers-message">
-                    <h3 className="teachers-message-text">
-                      （数行のメッセージ）メッセージが入りますメッセージが入りますメッセージが入りますメッセージが入りますメッセージが入りますメッセージが入りますメッ
-                    </h3>
-                  </div>
-                </div>
+            </details> */}
 
-                <div className="teacher-container">
-                  <div className="teacher-flex">
-                    <figure className="img-teacher">
-                      <img src="/img/img-teacher-1-min.jpg" alt="講師写真" />
-                    </figure>
-                    <div className="info-teacher">
-                      <h2 className="teachers-name">佐藤 次郎</h2>
-                      <h4 className="teachers-class">算数・理科</h4>
-                      <h4 className="teachers-schools">
-                        ●●中学卒業
-                        <br />
-                        ●●高等学校卒業
-                        <br />
-                        ●●大学●●学部卒業
-                      </h4>
-                    </div>
-                  </div>
-                  <div className="teachers-message">
-                    <h3 className="teachers-message-text">
-                      （数行のメッセージ）メッセージが入りますメッセージが入りますメッセージが入りますメッセージが入りますメッセージが入りますメッセージが入りますメッ
-                    </h3>
-                  </div>
-                </div>
-
-                <div className="teacher-container">
-                  <div className="teacher-flex">
-                    <figure className="img-teacher">
-                      <img src="/img/img-teacher-1-min.jpg" alt="講師写真" />
-                    </figure>
-                    <div className="info-teacher">
-                      <h2 className="teachers-name">山田 三郎</h2>
-                      <h4 className="teachers-class">社会</h4>
-                      <h4 className="teachers-schools">
-                        ●●中学卒業
-                        <br />
-                        ●●高等学校卒業
-                        <br />
-                        ●●大学●●学部卒業
-                      </h4>
-                    </div>
-                  </div>
-                  <div className="teachers-message">
-                    <h3 className="teachers-message-text">
-                      （数行のメッセージ）メッセージが入りますメッセージが入りますメッセージが入りますメッセージが入りますメッセージが入りますメッセージが入りますメッ
-                    </h3>
-                  </div>
-                </div>
-              </div>
-            </details>
+            <div>
+              <p>
+                他にも厳正な研修を終えた講師が、生徒の皆様をお待ちしております。
+              </p>
+            </div>
           </div>
         </section>
 
@@ -1105,9 +1049,118 @@ export const LandingPage = () => {
               <div className="faq-1-container">
                 <details className="accordion-faq-2">
                   <summary>校舎はありませんか？</summary>
-                  <p>現在は校舎を設けておりません。</p>
+                  <p>
+                    現在は校舎を設けておりません。
+                    <br />
+                    すべてのサービスをオンラインで提供できます。
+                  </p>
                 </details>
-                {/* 他の項目も同様に続く */}
+                <details className="accordion-faq-2">
+                  <summary>地方在住ですが、大丈夫ですか？</summary>
+                  <p>
+                    Growyはオンラインで完結できるサービスのため、地方の方も問題なくご利用になれます。
+                  </p>
+                </details>
+                <details className="accordion-faq-2">
+                  <summary>子どもが勉強嫌いなのですが</summary>
+                  <p>
+                    大丈夫です。Growyはそんなご家庭のために作られたサービスです。
+                    <br />
+                    生徒様のレベルに合わせて、最高の学習環境を用意します。
+                    <br />
+                    小さな成功体験から始めていきましょう。
+                  </p>
+                </details>
+                <details className="accordion-faq-2">
+                  <summary>他塾との併用はどうでしょうか？</summary>
+                  <p>
+                    問題ありません。むしろ私たちのサービスは、集団塾と併用することで最大限効果を発揮します。
+                  </p>
+                </details>
+                <details className="accordion-faq-2">
+                  <summary>解約はどう行うのでしょうか？</summary>
+                  <p>
+                    解約手続きはチャットにその旨をお伝えいただけましたら、即刻手続きをさせていただきます。
+                  </p>
+                </details>
+              </div>
+            </details>
+          </div>
+
+          <div className="faq-wrapper bg-note">
+            <details className="accordion-faq-1">
+              <summary>
+                <h1>　コーチングについて　　　　▼</h1>
+              </summary>
+              <div className="faq-1-container">
+                <details className="accordion-faq-2">
+                  <summary>相談のチャットはいつでも大丈夫でしょうか？</summary>
+                  <p>
+                    早朝や深夜でも、いつ相談していただいても大丈夫です。
+                    <br />
+                    時間帯によりますが可能な限り早く誠実に対応いたします。
+                  </p>
+                </details>
+                <details className="accordion-faq-2">
+                  <summary>チャットは何を使うのですか？</summary>
+                  <p>Googleアカウントを発行して、GoogleChatで行います。</p>
+                </details>
+                <details className="accordion-faq-2">
+                  <summary>学習スケジュールの共有はどう行うのですか？</summary>
+                  <p>現在はGoogleDriveのスプレッドシートで行っています。</p>
+                </details>
+              </div>
+            </details>
+
+            {/* 他の項目も同様に続く */}
+          </div>
+
+          <div className="faq-wrapper bg-note">
+            <details className="accordion-faq-1">
+              <summary>
+                <h1>　ティーチングについて　　　　▼</h1>
+              </summary>
+              <div className="faq-1-container">
+                <details className="accordion-faq-2">
+                  <summary>共働きで夕方は家に子どもしかいません</summary>
+                  <p>
+                    ティーチングはオンラインですので、パソコンとネット環境があれば大丈夫です。
+                  </p>
+                </details>
+                <details className="accordion-faq-2">
+                  <summary>オンライン指導ではパソコンが必要ですが？</summary>
+                  <p>
+                    タブレットやスマートフォンでも指導は可能です。
+                    <br />
+                    ただ指導の品質やお子様の視力への悪影響を考慮して、可能な限り大きな画面で受けていただきたいです。
+                  </p>
+                </details>
+                <details className="accordion-faq-2">
+                  <summary>週に何日ほどティーチングをするのですか？</summary>
+                  <p>
+                    ご家庭の事情に合わせて、何日でも対応いたします。他の習い事があっても問題ありません。
+                  </p>
+                </details>
+                <details className="accordion-faq-2">
+                  <summary>講師は変わりますか？</summary>
+                  <p>
+                    毎週の固定授業は、原則同じ講師が担当します。
+                    <br />
+                    もちろん講師の事情により別の講師が担当することもございますが、引き継ぎを行いますのでご安心ください。
+                  </p>
+                </details>
+                <details className="accordion-faq-2">
+                  <summary>
+                    オンライン指導の科目を毎週変えることはできますか？
+                  </summary>
+                  <p>
+                    申し訳ございませんができません。
+                    <br />
+                    月に4回の指導は同じ科目で受講いただきます。
+                    <br />
+                    もし、複数科目の受講をされたい場合は、別でコマをお取りいただく形になります。
+                  </p>
+                </details>
               </div>
             </details>
 
@@ -1115,22 +1168,22 @@ export const LandingPage = () => {
           </div>
         </section>
 
-        {/* 学長からのメッセージ */}
+        {/* 代表からのメッセージ */}
         <section id="message-2">
           <div className="message-2-ttl">
             <img
               src="/img/ttl-message-sp-min.jpg"
-              alt="学長からあなたへのメッセージ"
+              alt="代表からあなたへのメッセージ"
             />
           </div>
 
           <div className="message-2-wrapper bg-note">
             <figure className="img-message-2">
-              <img src="/img/img-teacher-yushin.jpg" alt="学長写真" />
+              <img src="/img/img-teacher-yushin.jpg" alt="代表写真" />
             </figure>
 
             <div className="message-2-border">
-              <h4 className="message-2-text-1">個別指導塾 Growy 学長</h4>
+              <h4 className="message-2-text-1">個別指導塾 Growy 代表</h4>
               <h2 className="message-2-text-2">ユウシン</h2>
               <div className="message-2-text-3">
                 <h4 className="message-2-text-3-child">
@@ -1173,7 +1226,9 @@ export const LandingPage = () => {
         <div className="footer-wrapper">
           <nav className="footer-nav-sp">
             <p className="p-footer">
-              <a href="">特定商取引法に基づく表記</a>
+              <a href="https://honnedechuju.com/%e7%89%b9%e5%ae%9a%e5%95%86%e5%8f%96%e5%bc%95%e6%b3%95%e3%81%ab%e5%9f%ba%e3%81%a5%e3%81%8f%e8%a1%a8%e8%a8%98%e3%81%ab%e3%81%a4%e3%81%84%e3%81%a6">
+                特定商取引法に基づく表記
+              </a>
             </p>
             <p className="p-footer">
               <a href="https://honnedechuju.com/%e5%80%8b%e5%88%a5%e6%8c%87%e5%b0%8e%e5%a1%begrowy-%e3%83%97%e3%83%a9%e3%82%a4%e3%83%90%e3%82%b7%e3%83%bc%e3%83%9d%e3%83%aa%e3%82%b7%e3%83%bc">
