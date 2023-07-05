@@ -772,38 +772,11 @@ export const LandingPage = () => {
               <div className="teacher-container">
                 <div className="teacher-flex">
                   <figure className="img-teacher">
-                    <img src="/img/img-teacher-hamataku.jpg" alt="講師写真" />
-                  </figure>
-                  <div className="info-teacher">
-                    <h2 className="teachers-name">濱野 拓哉</h2>
-                    <h4 className="teachers-class">国語、社会</h4>
-                    <h4 className="teachers-schools">
-                      巣鴨高等学校卒業
-                      <br />
-                      明治大学経済学部在籍
-                    </h4>
-                  </div>
-                </div>
-                <div className="teachers-message">
-                  <h3 className="teachers-message-text">
-                    中学受験の勉強には様々な困難があります。そんな中で、少しでも僕との時間を楽しいと感じてもらえるように寄り添っていきます。中学受験をより実りのあるのものにしていきましょう。
-                  </h3>
-                </div>
-              </div>
-
-              <div className="teacher-container">
-                <div className="teacher-flex">
-                  <figure className="img-teacher">
                     <img src="/img/img-teacher-hirokuma.jpg" alt="講師写真" />
                   </figure>
                   <div className="info-teacher">
-                    <h2 className="teachers-name">竹熊 宏輝</h2>
+                    <h2 className="teachers-name">ヒロクマ</h2>
                     <h4 className="teachers-class">算数、理科</h4>
-                    <h4 className="teachers-schools">
-                      巣鴨高等学校卒業
-                      <br />
-                      東京大学応用化学科卒業
-                    </h4>
                   </div>
                 </div>
                 <div className="teachers-message">
@@ -826,21 +799,30 @@ export const LandingPage = () => {
                     <img src="/img/img-teacher-yoshimon.jpg" alt="講師写真" />
                   </figure>
                   <div className="info-teacher">
-                    <h2 className="teachers-name">吉本 龍一</h2>
+                    <h2 className="teachers-name">よしもん</h2>
                     <h4 className="teachers-class">算数、理科</h4>
-                    <h4 className="teachers-schools">
-                      巣鴨高等学校卒業
-                      <br />
-                      千葉大学理学部卒業
-                      <br />
-                      千葉大学大学院融合理工学部卒業
-                    </h4>
                   </div>
                 </div>
                 <div className="teachers-message">
                   <h3 className="teachers-message-text">
                     私の周りには中学受験をする友達がほとんどいませんでした。そんな中、抵抗なく勉強することができていたのは、おそらく出会った講師がよかったからです。
                     私自身も生徒に「分かることの楽しさ」「勉強の楽しさ」を感じてもらえるように、サポートしていきます。
+                  </h3>
+                </div>
+              </div>
+              <div className="teacher-container">
+                <div className="teacher-flex">
+                  <figure className="img-teacher">
+                    <img src="/img/img-teacher-hamataku.jpg" alt="講師写真" />
+                  </figure>
+                  <div className="info-teacher">
+                    <h2 className="teachers-name">ハマタク</h2>
+                    <h4 className="teachers-class">国語、社会</h4>
+                  </div>
+                </div>
+                <div className="teachers-message">
+                  <h3 className="teachers-message-text">
+                    中学受験の勉強には様々な困難があります。そんな中で、少しでも僕との時間を楽しいと感じてもらえるように寄り添っていきます。中学受験をより実りのあるのものにしていきましょう。
                   </h3>
                 </div>
               </div>
@@ -851,13 +833,8 @@ export const LandingPage = () => {
                     <img src="/img/img-teacher-keigo.jpg" alt="講師写真" />
                   </figure>
                   <div className="info-teacher">
-                    <h2 className="teachers-name">倉石 圭悟</h2>
+                    <h2 className="teachers-name">ケイゴ</h2>
                     <h4 className="teachers-class">算数・理科</h4>
-                    <h4 className="teachers-schools">
-                      都立西高校
-                      <br />
-                      慶應義塾大学理工学部中退
-                    </h4>
                   </div>
                 </div>
                 <div className="teachers-message">
