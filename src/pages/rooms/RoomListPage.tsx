@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CustomCalendar } from "../../components/CustomCalendar";
+import { CustomerCalendar } from "../../components/CustomerCalendar";
 import { Room } from "../../types/room.class";
 import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 import axios from "axios";
@@ -68,12 +68,12 @@ export const RoomList = () => {
           <Typography>
             日付をクリックすると、詳細画面へと遷移します。
           </Typography>
-          <CustomCalendar events={rooms} />
+          <CustomerCalendar events={rooms} />
         </Box>
 
         <Box sx={{ m: 2 }}>
           <Typography variant="h6">オンライン自習室一覧</Typography>
-          <Typography>予約済みの自習室一覧を表示します。</Typography>
+          <Typography>自習室一覧を表示します。</Typography>
           <EditDataGrid
             defaultColumns={RoomColumns}
             columns={columns}

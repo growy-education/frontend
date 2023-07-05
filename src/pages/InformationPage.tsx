@@ -19,6 +19,4 @@ export const Information = () => {
       <Typography>まだアカウントがアクティベートされていません。</Typography>
     );
   }
-
-  return <p>特にないよ！</p>;
 };

@@ -73,8 +73,7 @@ export const CustomImage = ({ id, style, ...props }: CustomImageProps) => {
       src={imageUrl}
       alt={id}
       style={{
-        maxWidth: "100%",
-        maxHeight: "50vh",
+        maxWidth: "90%",
         aspectRatio:
           imageSize.height !== 0 && imageSize.width / imageSize.height,
         ...style,

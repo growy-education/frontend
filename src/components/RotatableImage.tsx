@@ -19,6 +19,8 @@ export const RotatableImage = ({ id, ...props }: RotatableImageProps) => {
     marginLeft?: number;
     marginRight?: number;
   }>({});
+  const [imageStyle, setImageStyle] = useState<{ height?: number }>({});
+  const [boxStyle, setBoxStyle] = useState<{ height?: number }>({});
 
   const handleImageLoad: React.ReactEventHandler<HTMLImageElement> = (
     event
@@ -31,37 +33,37 @@ export const RotatableImage = ({ id, ...props }: RotatableImageProps) => {
 
   const handleRotate = () => {
     const newRotation = (rotation + 90) % 360;
+    setRotation(newRotation);
     if (imageSize.width >= imageSize.height) {
-      if (rotation % 180 === 0) {
-        setRotation(newRotation);
+      if (newRotation % 180 === 0) {
+        setMargin({});
+      } else {
         setMargin({
           marginTop: (imageSize.width - imageSize.height) / 2,
           marginBottom: (imageSize.width - imageSize.height) / 2,
         });
-      } else {
-        setRotation(newRotation);
-        setMargin({});
       }
     } else {
-      if (rotation % 180 === 0) {
-        setRotation(newRotation);
-        setMargin({
-          marginLeft: (imageSize.height - imageSize.width) / 2,
-          marginRight: (imageSize.height - imageSize.width) / 2,
-        });
+      if (newRotation % 180 === 0) {
+        setImageStyle({});
       } else {
-        setRotation(newRotation);
-        setMargin({});
+        setImageStyle({
+          height: imageSize.width,
+        });
       }
     }
   };
 
   return (
-    <Box position="relative" {...props}>
+    <Box position="relative" {...props} {...imageStyle}>
       <CustomImage
         id={id}
         onLoad={handleImageLoad}
-        style={{ transform: `rotate(${rotation}deg)`, ...margin }}
+        style={{
+          transform: `rotate(${rotation}deg)`,
+          ...margin,
+          ...imageStyle,
+        }}
       />
       {!!imageSize && (
         <IconButton

@@ -17,6 +17,7 @@ import { AxiosContextProvider } from "./contexts/AxiosContextProvider";
 // dayjsの日本語化
 import dayjs from "dayjs";
 import "dayjs/locale/ja";
+import { LandingPageContextProvider } from "./pages/LandingPage";
 dayjs.locale("ja");
 
 const theme = createTheme(
@@ -40,25 +41,27 @@ const theme = createTheme(
 function App() {
   return (
     <div className="App">
-      <ThemeProvider theme={theme}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <GoogleOAuthProvider
-            clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID as string}
-          >
-            <AlertPanelContextProvider>
-              <NotificationContextProvider>
-                <AuthContextProvider>
-                  <AxiosContextProvider>
-                    <UserContextProvider>
-                      <RolesRouter />
-                    </UserContextProvider>
-                  </AxiosContextProvider>
-                </AuthContextProvider>
-              </NotificationContextProvider>
-            </AlertPanelContextProvider>
-          </GoogleOAuthProvider>
-        </LocalizationProvider>
-      </ThemeProvider>
+      <LandingPageContextProvider>
+        <ThemeProvider theme={theme}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <GoogleOAuthProvider
+              clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID as string}
+            >
+              <AlertPanelContextProvider>
+                <NotificationContextProvider>
+                  <AuthContextProvider>
+                    <AxiosContextProvider>
+                      <UserContextProvider>
+                        <RolesRouter />
+                      </UserContextProvider>
+                    </AxiosContextProvider>
+                  </AuthContextProvider>
+                </NotificationContextProvider>
+              </AlertPanelContextProvider>
+            </GoogleOAuthProvider>
+          </LocalizationProvider>
+        </ThemeProvider>
+      </LandingPageContextProvider>
     </div>
   );
 }

@@ -20,6 +20,7 @@ export const QuestionDetailPage = () => {
       .get(`/questions/${questionId}`)
       .then((response) => {
         const question = plainToInstance(Question, response.data);
+        console.log(question.student);
         setQuestion(question);
       })
       .catch((error) => {

@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import {
-  DataGrid,
   GridColDef,
   GridRenderCellParams,
   GridRowParams,
@@ -82,6 +81,8 @@ export const QuestionList = () => {
         const questions = response.data.map((userJson: string) => {
           return plainToInstance(Question, userJson);
         });
+        console.log(questions);
+
         setQuestions(questions);
       })
       .catch((error) =>

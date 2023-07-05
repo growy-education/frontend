@@ -1,5 +1,12 @@
 export enum QuestionStatus {
+  // available for customers
   AVAILABLE = "AVAILABLE",
-  IN_PROGRESS = "IN_PROGRESS",
+  // waiting check from admin
+  CHECKING = "CHECKING",
+  // assigned to teacher
+  ASSIGNED = "ASSIGNED",
+  // waiting assigned to teacher
+  PENDING = "PENDING",
+  // cancelled by user
   CANCELED = "CANCELED",
 }

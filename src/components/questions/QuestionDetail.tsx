@@ -1,4 +1,12 @@
-import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  CircularProgress,
+  Grid,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { Title } from "../QuestionTitle";
 import { Question } from "../../types/question.class";
 import { useCallback } from "react";
@@ -9,6 +17,7 @@ type QuestionDetailProps = {
   question: Question;
 };
 export const QuestionDetail = ({ question, ...props }: QuestionDetailProps) => {
+  const theme = useTheme();
   const {
     id,
     createdAt,
@@ -33,6 +42,14 @@ export const QuestionDetail = ({ question, ...props }: QuestionDetailProps) => {
   return (
     <>
       <Box my={3}>
+        <Title title="回答状況" />
+        <Box display="flex" alignItems="center" justifyContent="center">
+          <Typography>講師を選出しています</Typography>
+          <CircularProgress
+            size={24}
+            style={{ marginLeft: theme.spacing(1) }}
+          />
+        </Box>
         <Title title="ID" />
         <Typography>{id}</Typography>
         <Title title="作成日時" />
