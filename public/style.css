@@ -97,6 +97,7 @@ h4{
     font-weight: 700;
 }
 
+
 /* header */
 
 header{
@@ -545,7 +546,6 @@ header{
 
 .zukai{
     text-align: center;
-
 }
 
 .zukai-img{
@@ -554,10 +554,18 @@ header{
     z-index: 10;
 }
 
+.zukai-overlap{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .arrows{
-    width: 80%;
-    margin: -11rem auto -15rem;
-    z-index: 1;
+    position: absolute;
+    width: 50%;
+    min-width: 300px;
+    z-index: 10;
 }
 .arrows-move {
     z-index: 1;
@@ -569,8 +577,10 @@ header{
   }
 
 .hogoshato{
-    width: 40%;
-    margin: -1rem auto -1rem;
+    margin: 10%;
+    z-index: 1;
+    width: 25%;
+    min-width: 150px;
 }
 
 /*teachers*/

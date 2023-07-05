@@ -379,16 +379,18 @@ export const LandingPage = () => {
                 <figure className="zukai-img zukai-coaching-sp">
                   <img src="/img/zukai-coaching-min.png" alt="コーチング" />
                 </figure>
-                <figure className="arrows">
-                  <img
-                    className="arrows-move"
-                    src="/img/arrows-min.png"
-                    alt="矢印"
-                  />
-                </figure>
-                <figure className="hogoshato">
-                  <img src="/img/zukai-text-min.png" alt="保護者と〜" />
-                </figure>
+                <div className="zukai-overlap">
+                  <figure className="arrows">
+                    <img
+                      className="arrows-move"
+                      src="/img/arrows-min.png"
+                      alt="矢印"
+                    />
+                  </figure>
+                  <figure className="hogoshato">
+                    <img src="/img/zukai-text-min.png" alt="保護者と〜" />
+                  </figure>
+                </div>
                 <figure className="zukai-img zukai-teaching">
                   <img src="/img/zukai-teaching-min.png" alt="ティーチング" />
                 </figure>
