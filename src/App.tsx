@@ -17,12 +17,16 @@ import { AxiosContextProvider } from "./contexts/AxiosContextProvider";
 // dayjsの日本語化
 import dayjs from "dayjs";
 import "dayjs/locale/ja";
-import { LandingPageContextProvider } from "./pages/LandingPage";
+import { LandingPageContextProvider } from "./contexts/LandingPageContextProvider";
 dayjs.locale("ja");
 
 const theme = createTheme(
   {
     palette: {
+      common: {
+        black: "#25372F",
+        white: "#fff",
+      },
       primary: {
         main: "#006837",
         light: "#006837",
@@ -30,6 +34,30 @@ const theme = createTheme(
       secondary: {
         main: "#65bffe",
         light: "#65bffe",
+      },
+    },
+    typography: {
+      fontFamily:
+        "'Roboto', 'Noto Sans JP', 'M PLUS 2', 'Kosugi', 'IBM Plex Sans JP'",
+      h1: {
+        fontSize: "2.0rem",
+        fontWeight: 400,
+      },
+      h2: {
+        fontSize: "1.8rem",
+        fontWeight: 400,
+      },
+      h3: {
+        fontSize: "1.4rem",
+        fontWeight: 400,
+      },
+      h4: {
+        fontSize: "1.3rem",
+        fontWeight: 400,
+      },
+      h5: {
+        fontSize: "1.3rem",
+        fontWeight: 400,
       },
     },
   },
@@ -41,8 +69,8 @@ const theme = createTheme(
 function App() {
   return (
     <div className="App">
-      <LandingPageContextProvider>
-        <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
+        <LandingPageContextProvider>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <GoogleOAuthProvider
               clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID as string}
@@ -60,8 +88,8 @@ function App() {
               </AlertPanelContextProvider>
             </GoogleOAuthProvider>
           </LocalizationProvider>
-        </ThemeProvider>
-      </LandingPageContextProvider>
+        </LandingPageContextProvider>
+      </ThemeProvider>
     </div>
   );
 }
