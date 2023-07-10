@@ -71,7 +71,6 @@ const QTypography = () => {
 const TitleTypography = ({ children, ...props }: TypographyProps) => {
   return (
     <Typography
-      variant="h5"
       sx={{
         color: "common.white",
         marginTop: "auto",
@@ -110,7 +109,6 @@ const CustomAccordionDetails = ({
 const DescriptionTypography = ({ children, ...props }: TypographyProps) => {
   return (
     <Typography
-      variant="h5"
       sx={{
         marginTop: "auto",
         marginBottom: "auto",

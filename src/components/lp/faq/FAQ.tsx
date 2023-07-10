@@ -1,5 +1,4 @@
-import { ExpandMore } from "@mui/icons-material";
-import { Container, Typography, useTheme } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import { FAQCoaching, FAQService, FAQTeaching } from "./FAQs";
 import {
   CustomAccordion,
@@ -8,8 +7,6 @@ import {
 } from "../CustomAccordions";
 
 export const FAQ = () => {
-  const theme = useTheme();
-
   return (
     <>
       <img
