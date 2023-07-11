@@ -52,7 +52,7 @@ export const ImageList = () => {
       {images.map((image) => (
         <ImageListItem
           key={`${image.id}-item`}
-          style={{
+          sx={{
             maxWidth: "500px",
             justifyContent: "center",
             alignItems: "center",

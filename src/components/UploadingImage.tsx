@@ -47,7 +47,7 @@ export const UploadingImage = ({
         // 送信済みかつアップロード済みであれば、クラウドにアップロード済みのアイコン
         <CloudDone
           color="success"
-          style={{ position: "absolute", top: 0, right: 0 }}
+          sx={{ position: "absolute", top: 0, right: 0 }}
         />
       ) : (
         // 送信済みかつアップロードに失敗していれば、
@@ -56,11 +56,11 @@ export const UploadingImage = ({
         <>
           <ErrorOutline
             color="error"
-            style={{ position: "absolute", top: 0, right: 0 }}
+            sx={{ position: "absolute", top: 0, right: 0 }}
           />
           <IconButton
             onClick={() => setReload(true)}
-            style={{ position: "absolute", top: 0, left: 0 }}
+            sx={{ position: "absolute", top: 0, left: 0 }}
           >
             <CloudUploadOutlined />
           </IconButton>

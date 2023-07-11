@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { LPContextProvider } from "./contexts/LPContextProvider";
 import { AuthContextProvider } from "./contexts/AuthContextProvider";
 import { UserContextProvider } from "./contexts/UserContextProvider";
 import { RolesRouter } from "./RolesRouter";
@@ -17,7 +18,6 @@ import { AxiosContextProvider } from "./contexts/AxiosContextProvider";
 // dayjsの日本語化
 import dayjs from "dayjs";
 import "dayjs/locale/ja";
-import { LandingPageContextProvider } from "./contexts/LandingPageContextProvider";
 dayjs.locale("ja");
 
 const theme = createTheme(
@@ -70,8 +70,8 @@ function App() {
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
-        <LandingPageContextProvider>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <LPContextProvider>
             <GoogleOAuthProvider
               clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID as string}
             >
@@ -87,8 +87,8 @@ function App() {
                 </NotificationContextProvider>
               </AlertPanelContextProvider>
             </GoogleOAuthProvider>
-          </LocalizationProvider>
-        </LandingPageContextProvider>
+          </LPContextProvider>
+        </LocalizationProvider>
       </ThemeProvider>
     </div>
   );

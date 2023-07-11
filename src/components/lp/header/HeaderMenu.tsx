@@ -7,8 +7,8 @@ import {
   ListItem,
   Typography,
 } from "@mui/material";
-import { HeaderListTypography } from "../components/HeaderListTypography";
-import { HeaderIconButton } from "../components/HeaderIconButton";
+import { HeaderListTypography } from "./HeaderListTypography";
+import { HeaderIconButton } from "./HeaderIconButton";
 
 type HeaderMenuProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -28,7 +28,7 @@ export const HeaderMenu = ({ setOpen }: HeaderMenuProps) => {
     >
       <Box
         mt={1}
-        mr={2}
+        mr={5}
         sx={{
           width: "100%",
           display: "flex",
@@ -36,11 +36,8 @@ export const HeaderMenu = ({ setOpen }: HeaderMenuProps) => {
           justifyContent: "flex-end",
         }}
       >
-        <IconButton
-          sx={{ color: "white", fontSize: "large" }}
-          onClick={() => setOpen(false)}
-        >
-          <Close />
+        <IconButton sx={{ color: "white" }} onClick={() => setOpen(false)}>
+          <Close fontSize="large" />
         </IconButton>
       </Box>
 

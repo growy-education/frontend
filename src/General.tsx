@@ -25,7 +25,7 @@ export const General: React.FC = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar position="fixed">
-        <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box
             style={{
               display: "flex",

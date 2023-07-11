@@ -1,24 +1,28 @@
+import { useState } from "react";
 import { Alert, Box, Snackbar, styled } from "@mui/material";
+
 import { FAQ } from "../components/lp/faq/FAQ";
 import { Header } from "../components/lp/header/Header";
-import { LineButton } from "../components/lp/LineButton";
+import { FloatButtonBox } from "../components/lp/FloatButtonBox";
 import { MessageAccordion } from "../components/lp/MessageAccordion";
 import { MessageMovie } from "../components/lp/MessageMovie";
-import { Onayami } from "../components/lp/Onayami";
+import { Onayami } from "../components/lp/onayami/Onayami";
 import { PVMovie } from "../components/lp/PVMovie";
-import { About } from "../components/lp/About";
-import { Teachers } from "../components/lp/Teachers";
+import { About } from "../components/lp/about/About";
+import { Teachers } from "../components/lp/teachers/Teachers";
 import { TargetStudents } from "../components/lp/components/TargetStudents";
-import { Voice } from "../components/lp/components/Voice";
-import { Price } from "../components/lp/components/Price";
+import { Voice } from "../components/lp/voice/Voice";
+import { Price } from "../components/lp/price/Price";
 import { YushinMessage } from "../components/lp/components/YushinMessage";
-import { Footer } from "../components/lp/Footer";
-import { DescriptionBox } from "../components/lp/components/DescriptionBox";
-import { useState } from "react";
+import { Footer } from "../components/lp/footer/Footer";
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
-export const LandingPage = () => {
+type LandingPageProps = {
+  toggleLP: () => void;
+};
+
+export const LandingPage = ({ toggleLP }: LandingPageProps) => {
   const [open, setOpen] = useState(true);
   return (
     <>
@@ -78,7 +82,7 @@ export const LandingPage = () => {
         </Box>
 
         {/* 保護者のお悩み */}
-        <Box component="section" className="onayami" mt={2} pt={2}>
+        <Box component="section" mt={2} pt={2}>
           <Onayami />
         </Box>
 
@@ -118,7 +122,42 @@ export const LandingPage = () => {
         </Box>
       </Box>
 
-      <LineButton />
+      <FloatButtonBox>
+        <Box
+          component="a"
+          display="block"
+          href="https://line.me/R/ti/p/@208okwey"
+          sx={{
+            "&:hover": {
+              opacity: "0.7",
+            },
+          }}
+        >
+          <img
+            src="/img/img-btn-line-sp-min.png"
+            alt="LINE登録はこちらフロートボタン"
+            style={{ width: "100%", maxWidth: "15rem" }}
+          />
+        </Box>
+
+        <Box width="2rem" />
+
+        <Box
+          display="block"
+          sx={{
+            "&:hover": {
+              opacity: "0.7",
+            },
+          }}
+          onClick={() => toggleLP()}
+        >
+          <img
+            src="/img/img-btn-member-sp-min.png"
+            alt="LINE登録はこちらフロートボタン"
+            style={{ width: "100%", maxWidth: "15rem" }}
+          />
+        </Box>
+      </FloatButtonBox>
 
       <Footer />
     </>

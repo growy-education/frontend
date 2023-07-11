@@ -13,7 +13,7 @@ import { ExpandMore } from "@mui/icons-material";
 const CustomAccordion = ({ children, ...props }: AccordionProps) => {
   return (
     <Accordion
-      style={{
+      sx={{
         width: "100%",
         backgroundColor: "#f0f5f9",
         marginBottom: "1rem",
@@ -34,7 +34,7 @@ const CustomAccordionSummary = ({
 }: AccordionSummaryProps) => {
   return (
     <AccordionSummary
-      style={{
+      sx={{
         display: "flex",
         alignItems: "center",
         backgroundColor: "#006837",

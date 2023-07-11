@@ -14,7 +14,7 @@ export const FAQ = () => {
         alt="よくあるご質問FAQ"
         style={{ width: "100%" }}
       />
-      <Container style={{ background: "transparent", marginTop: "2rem" }}>
+      <Container sx={{ background: "transparent", marginTop: "2rem" }}>
         <CustomAccordion>
           <CustomAccordionSummary>
             <Typography variant="h4">サービス全般について</Typography>

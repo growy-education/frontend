@@ -68,7 +68,7 @@ export const RotatableImage = ({ id, ...props }: RotatableImageProps) => {
       {!!imageSize && (
         <IconButton
           aria-label="rotate"
-          style={{ position: "absolute", top: 0, right: 0 }}
+          sx={{ position: "absolute", top: 0, right: 0 }}
           onClick={handleRotate}
         >
           <Rotate90DegreesCw />

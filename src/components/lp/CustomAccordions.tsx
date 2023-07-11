@@ -11,7 +11,7 @@ import {
 export const CustomAccordion = ({ children, ...props }: AccordionProps) => {
   return (
     <Accordion
-      style={{
+      sx={{
         background: "transparent",
         boxShadow: "none",
         justifyContent: "center",
@@ -36,7 +36,7 @@ export const CustomAccordionSummary = ({
       }
       aria-controls="panel1a-content"
       id="panel1a-header"
-      style={{
+      sx={{
         borderBottom: "1.5px solid",
       }}
       {...props}

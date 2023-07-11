@@ -65,14 +65,14 @@ export const LoginScreen = ({
   return (
     <Container
       maxWidth="sm"
-      style={{
+      sx={{
         height: "100vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
       }}
     >
-      <Paper elevation={3} style={{ padding: "24px" }}>
+      <Paper elevation={3} sx={{ padding: "24px" }}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography variant="h5" align="center">
@@ -119,7 +119,7 @@ export const LoginScreen = ({
                 type="submit"
                 variant="contained"
                 color="primary"
-                style={{ marginTop: "16px" }}
+                sx={{ marginTop: "16px" }}
               >
                 ログイン
               </Button>

@@ -7,13 +7,13 @@ import {
 
 export const MessageAccordion = () => {
   return (
-    <Container style={{ background: "transparent", marginTop: "2rem" }}>
+    <Container sx={{ background: "transparent", marginTop: "2rem" }}>
       <CustomAccordion>
         <CustomAccordionSummary>
           <Typography variant="h4">Growy創業にあたって</Typography>
         </CustomAccordionSummary>
         <CustomAccordionDetails>
-          <Typography component="p" style={{ textAlign: "left" }}>
+          <Typography component="p" sx={{ textAlign: "left" }}>
             私たちGrowyのスタッフは、もともと中学受験に奮闘する親御様に向けたメディア発信活動「ホンネで中学受験」を運営してきました。
             <br />
             「ホンネで中学受験」では、

@@ -5,10 +5,8 @@ import {
   Container,
   Grid,
   Card,
-  CardMedia,
   CardContent,
   Button,
-  CircularProgress,
 } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { useParams } from "react-router-dom";

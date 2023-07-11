@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
-import { GoogleCredentialResponse } from "@react-oauth/google";
 import axios from "axios";
+import { GoogleCredentialResponse } from "@react-oauth/google";
 import { CircularProgress } from "@mui/material";
 
 import { LoginScreen } from "../SignIn";
@@ -43,12 +43,11 @@ export const AuthContextProvider = ({ children }: Props) => {
 
     if (savedToken) {
       setBearerToken(savedToken);
-      setIsLoggedIn(true);
+      setIsLoggedIn(false);
     }
   }, []);
 
   const handleLogin = (email: string, password: string) => {
-    console.log("email:", email, "password:", password);
     axios
       .post(`${process.env.REACT_APP_BACKEND_BASE_URL}/auth/password`, {
         email,

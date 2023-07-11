@@ -4,14 +4,14 @@ export const PointTypography = ({ children, ...props }: TypographyProps) => {
   return (
     <Typography
       {...props}
-      style={{
+      sx={{
         verticalAlign: "middle",
         paddingTop: ".3rem",
         fontSize: "2rem",
         fontWeight: "bold",
         color: "white",
-        ...{ ...props.style },
       }}
+      {...props}
     >
       {children}
     </Typography>

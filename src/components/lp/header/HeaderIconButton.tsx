@@ -1,15 +1,11 @@
 import { IconButton, IconButtonProps } from "@mui/material";
 
-export const HeaderIconButton = ({ children, ...props }: IconButtonProps) => {
+export const HeaderIconButton = ({
+  children,
+  ...props
+}: IconButtonProps<any>) => {
   return (
-    <IconButton
-      sx={{
-        fontWeight: "bold",
-        color: "white",
-        textDecoration: "none",
-      }}
-      {...props}
-    >
+    <IconButton sx={{ color: "white" }} {...props}>
       {children}
     </IconButton>
   );

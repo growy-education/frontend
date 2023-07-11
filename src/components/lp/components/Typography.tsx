@@ -4,7 +4,7 @@ export const CoachingTypography = ({ children, ...props }: TypographyProps) => {
   return (
     <Typography
       component="span"
-      style={{ color: "#05712E", fontWeight: 700 }}
+      sx={{ color: "#05712E", fontWeight: 700 }}
       {...props}
     >
       {children}
@@ -16,7 +16,7 @@ export const TeachingTypography = ({ children, ...props }: TypographyProps) => {
   return (
     <Typography
       component="span"
-      style={{ color: "#3D9654", fontWeight: 700 }}
+      sx={{ color: "#3D9654", fontWeight: 700 }}
       {...props}
     >
       {children}
@@ -46,7 +46,7 @@ export const CoachingPointTypography = ({
 }: TypographyProps) => {
   return (
     <Typography
-      style={{
+      sx={{
         fontSize: "1.5rem",
         marginBottom: "3%",
         fontWeight: 600,
@@ -66,7 +66,7 @@ export const TeachingPointTypography = ({
 }: TypographyProps) => {
   return (
     <Typography
-      style={{
+      sx={{
         fontSize: "2.5rem",
         marginBottom: "3%",
         fontWeight: 600,
