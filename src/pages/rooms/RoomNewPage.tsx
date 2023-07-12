@@ -11,7 +11,7 @@ import SendIcon from "@mui/icons-material/Send";
 
 import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 import { Box, Button, MenuItem, Select, Typography } from "@mui/material";
-import { Title } from "../../components/QuestionTitle";
+import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import { Teacher } from "../../types/teacher.class";
 
 class CreateRoomDto {
@@ -171,7 +171,7 @@ export const RoomNew = () => {
   return (
     <>
       <Typography variant="h4">オンライン自習室を新規作成する</Typography>
-      <Title title="時間帯" />
+      <HeadlineTypography>時間帯</HeadlineTypography>
       <Select fullWidth defaultValue="weekday" onChange={handleSwitchChange}>
         <MenuItem key="weekday" value="weekday">
           平日（17:00〜19:00）
@@ -181,7 +181,7 @@ export const RoomNew = () => {
         </MenuItem>
       </Select>
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Title title="開始時刻" />
+        <HeadlineTypography>開始時刻</HeadlineTypography>
         <Controller
           name="startAt"
           control={control}
@@ -202,7 +202,7 @@ export const RoomNew = () => {
           )}
         />
 
-        <Title title="終了時刻" />
+        <HeadlineTypography>終了時刻</HeadlineTypography>
         <Controller
           name="endAt"
           control={control}
@@ -223,7 +223,7 @@ export const RoomNew = () => {
           )}
         />
 
-        <Title title="講師を選択する" />
+        <HeadlineTypography>講師を選択する</HeadlineTypography>
         <Select
           required
           fullWidth

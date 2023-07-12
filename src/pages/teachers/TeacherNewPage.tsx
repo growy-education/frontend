@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { TextField } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import { Title } from "../../components/QuestionTitle";
+import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import SendIcon from "@mui/icons-material/Send";
 import { IsNotEmpty, IsNumberString, IsString, Matches } from "class-validator";
 import { useNavigate } from "react-router-dom";
@@ -120,7 +120,7 @@ export const TeacherNew = () => {
       <Typography variant="h4">講師を新規作成する</Typography>
 
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Title title="連携ユーザー" />
+        <HeadlineTypography>連携ユーザー</HeadlineTypography>
         <Select
           required
           fullWidth
@@ -134,7 +134,7 @@ export const TeacherNew = () => {
             </MenuItem>
           ))}
         </Select>
-        <Title title="名前" />
+        <HeadlineTypography>名前</HeadlineTypography>
         <TextField
           fullWidth
           id="firstName"
@@ -144,7 +144,7 @@ export const TeacherNew = () => {
           {...register("firstName")}
         />
 
-        <Title title="名前（読み仮名）" />
+        <HeadlineTypography>名前（読み仮名）</HeadlineTypography>
         <TextField
           fullWidth
           id="firstNameKana"
@@ -158,7 +158,7 @@ export const TeacherNew = () => {
           {...register("firstNameKana")}
         />
 
-        <Title title="苗字" />
+        <HeadlineTypography>苗字</HeadlineTypography>
         <TextField
           id="lastName"
           fullWidth
@@ -172,7 +172,7 @@ export const TeacherNew = () => {
           {...register("lastName")}
         />
 
-        <Title title="苗字（読み仮名）" />
+        <HeadlineTypography>苗字（読み仮名）</HeadlineTypography>
         <TextField
           fullWidth
           id="lastNameKana"
@@ -186,7 +186,7 @@ export const TeacherNew = () => {
           {...register("lastNameKana")}
         />
 
-        <Title title="ChatworkAccountID" />
+        <HeadlineTypography>ChatworkAccountID</HeadlineTypography>
         <TextField
           fullWidth
           id="chatworkAccountId"

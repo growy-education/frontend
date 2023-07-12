@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { TextField } from "@mui/material";
 import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
-import { Title } from "../../components/QuestionTitle";
+import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import { Relationship } from "../../types/relationship.enum";
 import {
   IsEnum,
@@ -176,7 +176,7 @@ export const CustomerEditPage = () => {
     <>
       <Typography variant="h4">保護者情報を更新する</Typography>
 
-      <Title title="名前" />
+      <HeadlineTypography>名前</HeadlineTypography>
       <TextField
         fullWidth
         id="firstName"
@@ -190,7 +190,7 @@ export const CustomerEditPage = () => {
         {...register("firstName")}
       />
 
-      <Title title="名前（読み仮名）" />
+      <HeadlineTypography>名前（読み仮名）</HeadlineTypography>
       <TextField
         fullWidth
         id="firstNameKana"
@@ -204,7 +204,7 @@ export const CustomerEditPage = () => {
         {...register("firstNameKana")}
       />
 
-      <Title title="苗字" />
+      <HeadlineTypography>苗字</HeadlineTypography>
       <TextField
         id="lastName"
         fullWidth
@@ -216,7 +216,7 @@ export const CustomerEditPage = () => {
         {...register("lastName")}
       />
 
-      <Title title="苗字（読み仮名）" />
+      <HeadlineTypography>苗字（読み仮名）</HeadlineTypography>
       <TextField
         fullWidth
         id="lastNameKana"
@@ -230,7 +230,7 @@ export const CustomerEditPage = () => {
         {...register("lastNameKana")}
       />
 
-      <Title title="続柄" />
+      <HeadlineTypography>続柄</HeadlineTypography>
       <Controller
         name="relationship"
         control={control}

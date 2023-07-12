@@ -1,6 +1,6 @@
 import { Customer } from "../../types/customer.class";
 import { Typography } from "@mui/material";
-import { Title } from "../QuestionTitle";
+import { HeadlineTypography } from "../components/Typography/HeadlineTypography";
 import { JaDateTime } from "../JaDateTime";
 
 type CustomerDetailProps = {
@@ -20,21 +20,21 @@ export const CustomerDetail = ({ customer }: CustomerDetailProps) => {
   } = customer;
   return (
     <>
-      <Title title="ID" />
+      <HeadlineTypography>保護者ID</HeadlineTypography>
       <Typography>{id}</Typography>
-      <Title title="作成日時" />
+      <HeadlineTypography>作成日時</HeadlineTypography>
       <JaDateTime date={createdAt} />
-      <Title title="更新日時" />
+      <HeadlineTypography>更新日時</HeadlineTypography>
       <JaDateTime date={updatedAt} />
-      <Title title="名前" />
+      <HeadlineTypography>名前</HeadlineTypography>
       <Typography>{firstName}</Typography>
-      <Title title="名前（読み仮名）" />
+      <HeadlineTypography>名前（読み仮名）</HeadlineTypography>
       <Typography>{firstNameKana}</Typography>
-      <Title title="苗字" />
+      <HeadlineTypography>苗字</HeadlineTypography>
       <Typography>{lastName}</Typography>
-      <Title title="苗字（読み仮名）" />
+      <HeadlineTypography>苗字（読み仮名）</HeadlineTypography>
       <Typography>{lastNameKana}</Typography>
-      <Title title="続柄" />
+      <HeadlineTypography>続柄</HeadlineTypography>
       <Typography>{relationship}</Typography>
     </>
   );

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { TextField } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import { Title } from "../../components/QuestionTitle";
+import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import SendIcon from "@mui/icons-material/Send";
 import { Question } from "../../types/question.class";
 import { useParams } from "react-router-dom";
@@ -42,11 +42,11 @@ export const QuestionEdit = () => {
 
   return (
     <>
-      <Typography variant="h4">講師情報を更新する</Typography>
-      <Title title="ID" />
+      <Typography variant="h4">質問情報を更新する</Typography>
+      <HeadlineTypography>質問ID</HeadlineTypography>
       <Typography>{question.id}</Typography>
 
-      <Title title="質問タイトル" />
+      <HeadlineTypography>質問タイトル</HeadlineTypography>
       <Typography>{question.title}</Typography>
       <TextField
         fullWidth
@@ -56,7 +56,7 @@ export const QuestionEdit = () => {
         onChange={(event) => setTitle(event.target.value)}
       />
 
-      <Title title="質問内容" />
+      <HeadlineTypography>質問内容</HeadlineTypography>
       <Typography>{question.content}</Typography>
       <TextField
         fullWidth
@@ -68,7 +68,7 @@ export const QuestionEdit = () => {
         onChange={(event) => setContent(event.target.value)}
       />
 
-      <Title title="備考" />
+      <HeadlineTypography>備考</HeadlineTypography>
       <Typography>{question.memo}</Typography>
       <TextField
         fullWidth
@@ -79,7 +79,7 @@ export const QuestionEdit = () => {
         onChange={(event) => setMemo(event.target.value)}
       />
 
-      <Title title="問題の画像" />
+      <HeadlineTypography>問題の画像</HeadlineTypography>
       {question.problems.length > 0 && (
         <Box sx={{ mt: 2, overflowX: "auto" }}>
           <Grid container spacing={2} sx={{ pr: 2 }}>
@@ -90,7 +90,7 @@ export const QuestionEdit = () => {
         </Box>
       )}
 
-      <Title title="解答の画像" />
+      <HeadlineTypography>解答の画像</HeadlineTypography>
       {question.solutions.length > 0 && (
         <Box sx={{ mt: 2, overflowX: "auto" }}>
           <Grid container spacing={2} sx={{ pr: 2 }}>

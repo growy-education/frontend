@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { TextField } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import { Title } from "../../components/QuestionTitle";
+import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import SendIcon from "@mui/icons-material/Send";
 import { Relationship } from "../../types/relationship.enum";
 import {
@@ -147,7 +147,7 @@ export const StudentEdit = () => {
   return (
     <>
       <Typography variant="h4">生徒情報を更新する</Typography>
-      <Title title="名前" />
+      <HeadlineTypography>名前</HeadlineTypography>
       <TextField
         fullWidth
         id="firstName"
@@ -157,7 +157,7 @@ export const StudentEdit = () => {
         {...register("firstName")}
       />
 
-      <Title title="名前（読み仮名）" />
+      <HeadlineTypography>名前（読み仮名）</HeadlineTypography>
       <TextField
         fullWidth
         id="firstNameKana"
@@ -171,7 +171,7 @@ export const StudentEdit = () => {
         {...register("firstNameKana")}
       />
 
-      <Title title="苗字" />
+      <HeadlineTypography>苗字</HeadlineTypography>
       <TextField
         id="lastName"
         fullWidth
@@ -183,7 +183,7 @@ export const StudentEdit = () => {
         {...register("lastName")}
       />
 
-      <Title title="苗字（読み仮名）" />
+      <HeadlineTypography>苗字（読み仮名）</HeadlineTypography>
       <TextField
         fullWidth
         id="lastNameKana"
@@ -197,7 +197,7 @@ export const StudentEdit = () => {
         {...register("lastNameKana")}
       />
 
-      <Title title="性別" />
+      <HeadlineTypography>性別</HeadlineTypography>
       <Controller
         name="gender"
         control={control}
@@ -222,7 +222,7 @@ export const StudentEdit = () => {
         )}
       />
 
-      <Title title="小学校名" />
+      <HeadlineTypography>小学校名</HeadlineTypography>
       <TextField
         fullWidth
         id="school"
@@ -236,7 +236,7 @@ export const StudentEdit = () => {
         {...register("school")}
       />
 
-      <Title title="塾" />
+      <HeadlineTypography>塾名</HeadlineTypography>
       <TextField
         fullWidth
         id="juku"
@@ -250,7 +250,7 @@ export const StudentEdit = () => {
         {...register("juku")}
       />
 
-      <Title title="塾の校舎" />
+      <HeadlineTypography>塾の校舎</HeadlineTypography>
       <TextField
         fullWidth
         id="jukuBuilding"
@@ -264,7 +264,7 @@ export const StudentEdit = () => {
         {...register("jukuBuilding")}
       />
 
-      <Title title="学年" />
+      <HeadlineTypography>学年</HeadlineTypography>
       <TextField
         fullWidth
         id="grade"
@@ -278,7 +278,7 @@ export const StudentEdit = () => {
         {...register("grade")}
       />
 
-      <Title title="誕生日" />
+      <HeadlineTypography>誕生日</HeadlineTypography>
       <Controller
         name="birthday"
         control={control}

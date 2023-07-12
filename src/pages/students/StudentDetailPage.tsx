@@ -3,7 +3,7 @@ import { Typography, Box, Container, Button } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { Title } from "../../components/QuestionTitle";
+import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import { Student } from "../../types/student.class";
 import { plainToInstance } from "class-transformer";
 import { StudentDetail } from "../../components/students/StudentDetail";
@@ -39,7 +39,7 @@ export const StudentDetailProps = () => {
         <StudentDetail student={student} />
         {!!student?.user && (
           <>
-            <Title title="ユーザー" />
+            <HeadlineTypography>ユーザー</HeadlineTypography>
             <Button onClick={() => navigate(`/users/${student.user.id}`)}>
               ユーザー詳細ページへ
             </Button>

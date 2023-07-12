@@ -18,7 +18,7 @@ import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import { User } from "../../types/user.class";
 import axios, { isAxiosError } from "axios";
-import { Title } from "../../components/QuestionTitle";
+import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import { plainToInstance } from "class-transformer";
 import { ExpandMore, Lock } from "@mui/icons-material";
 import { Role } from "../../types/role.enum";
@@ -180,19 +180,19 @@ export const UserActivate = () => {
           </Box>
         </Box>
         <Box my={3}>
-          <Title title="ID" />
+          <HeadlineTypography>ユーザーID</HeadlineTypography>
           <Typography>{id}</Typography>
-          <Title title="作成日時" />
+          <HeadlineTypography>作成日時</HeadlineTypography>
           <JaDateTime date={createdAt} />
-          <Title title="更新日時" />
+          <HeadlineTypography>更新日時</HeadlineTypography>
           <JaDateTime date={updatedAt} />
-          <Title title="ユーザー名" />
+          <HeadlineTypography>ユーザー名</HeadlineTypography>
           <Typography>{username}</Typography>
-          <Title title="メールアドレス" />
+          <HeadlineTypography>メールアドレス</HeadlineTypography>
           <Typography>{email}</Typography>
-          <Title title="電話番号" />
+          <HeadlineTypography>電話番号</HeadlineTypography>
           <Typography>{phone}</Typography>
-          <Title title="ロール" />
+          <HeadlineTypography>ユーザータイプ</HeadlineTypography>
           <Typography>{role}</Typography>
         </Box>
       </Box>

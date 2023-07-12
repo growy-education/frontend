@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import { TextField } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import { Title } from "../../components/QuestionTitle";
+import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import SendIcon from "@mui/icons-material/Send";
 import { Relationship } from "../../types/relationship.enum";
 import { IsEnum, IsNotEmpty, IsString, Matches } from "class-validator";
@@ -127,7 +127,7 @@ export const CustomerNewPage = () => {
     <>
       <Typography variant="h4">保護者を新規作成する</Typography>
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Title title="連携ユーザー" />
+        <HeadlineTypography>連携ユーザー</HeadlineTypography>
         <Select
           required
           fullWidth
@@ -141,7 +141,7 @@ export const CustomerNewPage = () => {
             </MenuItem>
           ))}
         </Select>
-        <Title title="名前" />
+        <HeadlineTypography>名前</HeadlineTypography>
         <TextField
           fullWidth
           id="firstName"
@@ -151,7 +151,7 @@ export const CustomerNewPage = () => {
           {...register("firstName")}
         />
 
-        <Title title="名前（読み仮名）" />
+        <HeadlineTypography>名前（読み仮名）</HeadlineTypography>
         <TextField
           fullWidth
           id="firstNameKana"
@@ -165,7 +165,7 @@ export const CustomerNewPage = () => {
           {...register("firstNameKana")}
         />
 
-        <Title title="苗字" />
+        <HeadlineTypography>苗字</HeadlineTypography>
         <TextField
           id="lastName"
           fullWidth
@@ -179,7 +179,7 @@ export const CustomerNewPage = () => {
           {...register("lastName")}
         />
 
-        <Title title="苗字（読み仮名）" />
+        <HeadlineTypography>苗字（読み仮名）</HeadlineTypography>
         <TextField
           fullWidth
           id="lastNameKana"
@@ -193,7 +193,7 @@ export const CustomerNewPage = () => {
           {...register("lastNameKana")}
         />
 
-        <Title title="続柄" />
+        <HeadlineTypography>続柄</HeadlineTypography>
         <Controller
           name="relationship"
           control={control}

@@ -35,7 +35,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import { Title } from "../../components/QuestionTitle";
+import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import { Gender } from "../../types/gender.enum";
 import { User } from "../../types/user.class";
 import axios from "axios";
@@ -178,7 +178,7 @@ export const StudentNew = () => {
     <>
       <Typography variant="h4">生徒を新規作成する</Typography>
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Title title="連携ユーザー" />
+        <HeadlineTypography>連携ユーザー</HeadlineTypography>
         <Select
           fullWidth
           id="userId"
@@ -193,7 +193,7 @@ export const StudentNew = () => {
           ))}
         </Select>
 
-        <Title title="名前" />
+        <HeadlineTypography>名前</HeadlineTypography>
         <TextField
           fullWidth
           id="firstName"
@@ -203,7 +203,7 @@ export const StudentNew = () => {
           {...register("firstName")}
         />
 
-        <Title title="名前（読み仮名）" />
+        <HeadlineTypography>名前（読み仮名）</HeadlineTypography>
         <TextField
           fullWidth
           id="firstNameKana"
@@ -217,7 +217,7 @@ export const StudentNew = () => {
           {...register("firstNameKana")}
         />
 
-        <Title title="苗字" />
+        <HeadlineTypography>苗字</HeadlineTypography>
         <TextField
           id="lastName"
           fullWidth
@@ -231,7 +231,7 @@ export const StudentNew = () => {
           {...register("lastName")}
         />
 
-        <Title title="苗字（読み仮名）" />
+        <HeadlineTypography>苗字（読み仮名）</HeadlineTypography>
         <TextField
           fullWidth
           id="lastNameKana"
@@ -245,7 +245,7 @@ export const StudentNew = () => {
           {...register("lastNameKana")}
         />
 
-        <Title title="性別" />
+        <HeadlineTypography>性別</HeadlineTypography>
         <Controller
           name="gender"
           control={control}
@@ -270,7 +270,7 @@ export const StudentNew = () => {
           )}
         />
 
-        <Title title="小学校名" />
+        <HeadlineTypography>小学校名</HeadlineTypography>
         <TextField
           fullWidth
           id="school"
@@ -284,7 +284,7 @@ export const StudentNew = () => {
           {...register("school")}
         />
 
-        <Title title="塾" />
+        <HeadlineTypography>塾</HeadlineTypography>
         <TextField
           fullWidth
           id="juku"
@@ -298,7 +298,7 @@ export const StudentNew = () => {
           {...register("juku")}
         />
 
-        <Title title="塾の校舎" />
+        <HeadlineTypography>塾の校舎</HeadlineTypography>
         <TextField
           fullWidth
           id="jukuBuilding"
@@ -312,7 +312,7 @@ export const StudentNew = () => {
           {...register("jukuBuilding")}
         />
 
-        <Title title="学年" />
+        <HeadlineTypography>学年</HeadlineTypography>
         <TextField
           fullWidth
           id="grade"
@@ -326,7 +326,7 @@ export const StudentNew = () => {
           {...register("grade")}
         />
 
-        <Title title="誕生日" />
+        <HeadlineTypography>誕生日</HeadlineTypography>
         <Controller
           name="birthday"
           control={control}

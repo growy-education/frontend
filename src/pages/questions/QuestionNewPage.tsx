@@ -4,7 +4,7 @@ import { Box, FormHelperText, Grid, Typography } from "@mui/material";
 import { TextField } from "@mui/material";
 import { Button } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import { Title } from "../../components/QuestionTitle";
+import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import { PhotoLibraryOutlined } from "@mui/icons-material";
 import axios from "axios";
 import { ArrayNotEmpty, IsArray, IsNotEmpty, IsString } from "class-validator";
@@ -12,7 +12,7 @@ import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { useForm } from "react-hook-form";
 import { ConfirmationDialog } from "../../components/ConfirmationDialog";
 import { NotificationContext } from "../../contexts/NotificationContextProvider";
-import { UploadingImage } from "../../components/UploadingImage";
+import { PageTitleTypography } from "../../components/components/Typography/PageTitleTypography";
 
 class CreateQuestionDto {
   @IsNotEmpty({ message: "タイトルを入力してください" })
@@ -118,12 +118,12 @@ export const QuestionNew = () => {
 
   return (
     <>
-      <Typography variant="h4">質問入力画面</Typography>
+      <PageTitleTypography>新しく質問する</PageTitleTypography>
       <Box
         component="form"
         onSubmit={handleSubmit(() => setShowConfirmation(true))}
       >
-        <Title title="質問タイトル" />
+        <HeadlineTypography>質問タイトル</HeadlineTypography>
         <TextField
           fullWidth
           id="title"
@@ -137,7 +137,7 @@ export const QuestionNew = () => {
           {...register("title")}
         />
 
-        <Title title="質問内容" />
+        <HeadlineTypography>質問内容</HeadlineTypography>
         <TextField
           fullWidth
           multiline
@@ -153,7 +153,7 @@ export const QuestionNew = () => {
           {...register("content")}
         />
 
-        <Title title="備考" />
+        <HeadlineTypography>備考</HeadlineTypography>
         <TextField
           fullWidth
           id="question"
@@ -168,7 +168,7 @@ export const QuestionNew = () => {
           {...register("memo")}
         />
 
-        <Title title="問題の画像" />
+        <HeadlineTypography>問題の画像</HeadlineTypography>
         <Box
           sx={{
             mt: 2,
@@ -187,10 +187,10 @@ export const QuestionNew = () => {
                 objectFit: "cover",
               }}
             >
-              <UploadingImage
+              {/* <UploadingImage
                 file={file}
                 handleImageId={handleProblemImageId}
-              />
+              /> */}
             </Box>
           ))}
         </Box>
@@ -217,7 +217,7 @@ export const QuestionNew = () => {
           </Button>
         </label>
 
-        <Title title="解答の画像" />
+        <HeadlineTypography>解答の画像</HeadlineTypography>
         <Box
           sx={{
             mt: 2,
@@ -236,10 +236,10 @@ export const QuestionNew = () => {
                 objectFit: "cover",
               }}
             >
-              <UploadingImage
+              {/* <UploadingImage
                 file={file}
                 handleImageId={handleSolutionImageId}
-              />
+              /> */}
             </Box>
           ))}
         </Box>

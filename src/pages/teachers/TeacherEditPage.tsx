@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { TextField } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import { Title } from "../../components/QuestionTitle";
+import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import SendIcon from "@mui/icons-material/Send";
 import { Relationship } from "../../types/relationship.enum";
 import { TeacherStatus } from "../../types/teacher-status.enum";
@@ -30,7 +30,7 @@ export const TeacherEdit = () => {
     <>
       <Typography variant="h4">講師を新規作成する</Typography>
 
-      <Title title="名前" />
+      <HeadlineTypography>名前</HeadlineTypography>
       <TextField
         fullWidth
         id="firstName"
@@ -39,7 +39,7 @@ export const TeacherEdit = () => {
         onChange={(event) => setFirstName(event.target.value)}
       />
 
-      <Title title="名前（読み仮名）" />
+      <HeadlineTypography>名前（読み仮名）</HeadlineTypography>
       <TextField
         fullWidth
         id="firstNameKana"
@@ -48,7 +48,7 @@ export const TeacherEdit = () => {
         onChange={(event) => setFirstNameKana(event.target.value)}
       />
 
-      <Title title="苗字" />
+      <HeadlineTypography>苗字</HeadlineTypography>
       <TextField
         id="lastName"
         fullWidth
@@ -57,7 +57,7 @@ export const TeacherEdit = () => {
         onChange={(event) => setLastName(event.target.value)}
       />
 
-      <Title title="苗字（読み仮名）" />
+      <HeadlineTypography>苗字（読み仮名）</HeadlineTypography>
       <TextField
         fullWidth
         id="lastNameKana"
@@ -66,7 +66,7 @@ export const TeacherEdit = () => {
         onChange={(event) => setLastNameKana(event.target.value)}
       />
 
-      <Title title="ChatworkID" />
+      <HeadlineTypography>Chatwork Account ID</HeadlineTypography>
       <TextField
         fullWidth
         id="chatworkId"
@@ -75,7 +75,7 @@ export const TeacherEdit = () => {
         onChange={(event) => setChatworkAccountId(event.target.value)}
       />
 
-      <Title title="ステータス" />
+      <HeadlineTypography>ステータス</HeadlineTypography>
       <RadioGroup
         row
         aria-labelledby="demo-radio-buttons-group-label"

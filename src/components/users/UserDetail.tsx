@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { User } from "../../types/user.class";
-import { Title } from "../QuestionTitle";
+import { HeadlineTypography } from "../components/Typography/HeadlineTypography";
 import { JaDateTime } from "../JaDateTime";
 
 type UserDetailProps = {
@@ -12,19 +12,19 @@ export const UserDetail = ({ user }: UserDetailProps) => {
 
   return (
     <>
-      <Title title="ID" />
+      <HeadlineTypography>ユーザーID</HeadlineTypography>
       <Typography>{id}</Typography>
-      <Title title="作成日時" />
+      <HeadlineTypography>作成日時</HeadlineTypography>
       <JaDateTime date={createdAt} />
-      <Title title="更新日時" />
+      <HeadlineTypography>更新日時</HeadlineTypography>
       <JaDateTime date={updatedAt} />
-      <Title title="ユーザー名" />
+      <HeadlineTypography>ユーザー名</HeadlineTypography>
       <Typography>{username}</Typography>
-      <Title title="メールアドレス" />
+      <HeadlineTypography>メールアドレス</HeadlineTypography>
       <Typography>{email}</Typography>
-      <Title title="電話番号" />
+      <HeadlineTypography>電話番号</HeadlineTypography>
       <Typography>{phone}</Typography>
-      <Title title="ロール" />
+      <HeadlineTypography>ユーザータイプ</HeadlineTypography>
       <Typography>{role}</Typography>
     </>
   );

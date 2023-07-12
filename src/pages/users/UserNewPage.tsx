@@ -14,7 +14,7 @@ import {
 } from "class-validator";
 
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import { Title } from "../../components/QuestionTitle";
+import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import axios, { isAxiosError } from "axios";
 import { SubmitButton } from "../../components/SubmitButton";
 import { ConfirmationDialog } from "../../components/ConfirmationDialog";
@@ -135,7 +135,7 @@ export const UserNew = () => {
     <>
       <Typography variant="h4">ユーザーを新規作成する</Typography>
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Title title="ユーザー名" />
+        <HeadlineTypography>ユーザー名</HeadlineTypography>
         <TextField
           fullWidth
           id="username"
@@ -149,7 +149,7 @@ export const UserNew = () => {
           {...register("username")}
         />
 
-        <Title title="メールアドレス" />
+        <HeadlineTypography>メールアドレス</HeadlineTypography>
         <TextField
           fullWidth
           id="email"
@@ -164,7 +164,7 @@ export const UserNew = () => {
           {...register("email")}
         />
 
-        <Title title="パスワード" />
+        <HeadlineTypography>パスワード</HeadlineTypography>
         <TextField
           fullWidth
           id="password"
@@ -177,7 +177,7 @@ export const UserNew = () => {
           }
           {...register("password")}
         />
-        <Title title="電話番号" />
+        <HeadlineTypography>電話番号</HeadlineTypography>
         <TextField
           fullWidth
           id="phone"

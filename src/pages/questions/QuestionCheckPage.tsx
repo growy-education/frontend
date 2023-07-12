@@ -12,7 +12,7 @@ import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { useParams } from "react-router-dom";
 import { Question } from "../../types/question.class";
 import axios from "axios";
-import { Title } from "../../components/QuestionTitle";
+import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import { plainToInstance } from "class-transformer";
 import { LockOpen } from "@mui/icons-material";
 import { LoadingBox } from "../../components/LoadingData";
@@ -95,24 +95,24 @@ export const QuestionCheck = () => {
         </Button>
       </Box>
       <Box my={3}>
-        <Title title="ID" />
+        <HeadlineTypography>ID</HeadlineTypography>
         <Typography>{id}</Typography>
-        <Title title="作成日時" />
+        <HeadlineTypography>作成日時</HeadlineTypography>
         <JaDateTime date={createdAt} />
-        <Title title="更新日時" />
+        <HeadlineTypography>更新日時</HeadlineTypography>
         <JaDateTime date={updatedAt} />
-        <Title title="タイトル" />
+        <HeadlineTypography>タイトル</HeadlineTypography>
         <Typography>{title}</Typography>
-        <Title title="質問内容" />
+        <HeadlineTypography>質問内容</HeadlineTypography>
         <Typography>{content}</Typography>
-        <Title title="備考" />
+        <HeadlineTypography>備考</HeadlineTypography>
         <Typography>{memo || "なし"}</Typography>
       </Box>
-      <Title title="問題画像" />
+      <HeadlineTypography>問題画像</HeadlineTypography>
       {problems.map((image, index) => (
         <CustomImage id={image.id} key={`problems-${index}`} />
       ))}
-      <Title title="解答画像" />
+      <HeadlineTypography>解答画像</HeadlineTypography>
       {solutions.map((image, index) => (
         <CustomImage id={image.id} key={`solution-${index}`} />
       ))}

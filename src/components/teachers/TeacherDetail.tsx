@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { Teacher } from "../../types/teacher.class";
-import { Title } from "../QuestionTitle";
+import { HeadlineTypography } from "../components/Typography/HeadlineTypography";
 import { JaDateTime } from "../JaDateTime";
 import { TeacherStatusTypography } from "./TeacherStatus";
 
@@ -25,69 +25,69 @@ export const TeacherDetail = ({ teacher }: TeacherDetailProps) => {
     <>
       {id && (
         <>
-          <Title title="ID" />
+          <HeadlineTypography>講師ID</HeadlineTypography>
           <Typography>{id}</Typography>
         </>
       )}
 
       {createdAt && (
         <>
-          <Title title="作成日時" />
+          <HeadlineTypography>作成日時</HeadlineTypography>
           <JaDateTime date={createdAt} />
         </>
       )}
 
       {updatedAt && (
         <>
-          <Title title="更新日時" />
+          <HeadlineTypography>更新日時</HeadlineTypography>
           <JaDateTime date={updatedAt} />
         </>
       )}
       {!!firstName && (
         <>
-          <Title title="名前" />
+          <HeadlineTypography>名前</HeadlineTypography>
           <Typography>{firstName}</Typography>
         </>
       )}
 
       {!!firstNameKana && (
         <>
-          <Title title="名前（読み仮名）" />
+          <HeadlineTypography>名前（読み仮名）</HeadlineTypography>
           <Typography>{firstNameKana}</Typography>
         </>
       )}
 
       {!!lastName && (
         <>
-          <Title title="苗字" />
+          <HeadlineTypography>苗字</HeadlineTypography>
           <Typography>{lastName}</Typography>
         </>
       )}
 
       {!!lastNameKana && (
         <>
-          <Title title="苗字（読み仮名）" />
+          <HeadlineTypography>苗字（読み仮名）</HeadlineTypography>
           <Typography>{lastNameKana}</Typography>
         </>
       )}
 
       {!!status && (
         <>
-          <Title title="ステータス" />
+          <HeadlineTypography>ステータス</HeadlineTypography>
           <TeacherStatusTypography status={status} />
         </>
       )}
 
       {!!chatworkAccountId && (
         <>
-          <Title title="Chatwork アカウントID" />
+          <HeadlineTypography>Chatwork Account ID</HeadlineTypography>
           <Typography>{chatworkAccountId}</Typography>
         </>
       )}
 
       {!!assignedQuestionsNumber && (
         <>
-          <Title title="残り質問タスク数" />
+          <HeadlineTypography>残りの質問タスク数</HeadlineTypography>
           <Typography>{assignedQuestionsNumber}</Typography>
         </>
       )}

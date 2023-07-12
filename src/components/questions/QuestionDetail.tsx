@@ -7,7 +7,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { Title } from "../QuestionTitle";
+import { HeadlineTypography } from "../components/Typography/HeadlineTypography";
 import { Question } from "../../types/question.class";
 import { useCallback } from "react";
 import { RotatableImage } from "../images/RotatableImage";
@@ -42,7 +42,7 @@ export const QuestionDetail = ({ question, ...props }: QuestionDetailProps) => {
   return (
     <>
       <Box my={3}>
-        <Title title="回答状況" />
+        <HeadlineTypography>回答状況</HeadlineTypography>
         <Box display="flex" alignItems="center" justifyContent="center">
           <Typography>講師を選出しています</Typography>
           <CircularProgress
@@ -50,24 +50,24 @@ export const QuestionDetail = ({ question, ...props }: QuestionDetailProps) => {
             style={{ marginLeft: theme.spacing(1) }}
           />
         </Box>
-        <Title title="ID" />
+        <HeadlineTypography>質問ID</HeadlineTypography>
         <Typography>{id}</Typography>
-        <Title title="作成日時" />
+        <HeadlineTypography>作成日時</HeadlineTypography>
         <JaDateTime date={createdAt} />
-        <Title title="作成日時" />
+        <HeadlineTypography>更新日時</HeadlineTypography>
         <JaDateTime date={updatedAt} />
-        <Title title="タイトル" />
+        <HeadlineTypography>質問タイトル</HeadlineTypography>
         <Typography>{title}</Typography>
-        <Title title="質問内容" />
+        <HeadlineTypography>質問内容</HeadlineTypography>
         <Typography>{content}</Typography>
-        <Title title="備考" />
+        <HeadlineTypography>備考</HeadlineTypography>
         <Typography>{memo || "なし"}</Typography>
       </Box>
-      <Title title="問題画像" />
+      <HeadlineTypography>問題画像</HeadlineTypography>
       {problems.map((image, index) => (
         <RotatableImage id={image.id} key={`problem-${index}`} />
       ))}
-      <Title title="解答画像" />
+      <HeadlineTypography>解答画像</HeadlineTypography>
       {solutions.map((image, index) => (
         <RotatableImage id={image.id} key={`solution-${index}`} />
       ))}

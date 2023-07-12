@@ -9,7 +9,7 @@ import {
   MaxLength,
   MinLength,
 } from "class-validator";
-import { Title } from "../QuestionTitle";
+import { HeadlineTypography } from "../components/Typography/HeadlineTypography";
 import { Alert, Box, Button, Snackbar, TextField } from "@mui/material";
 import { SubmitButton } from "../SubmitButton";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -130,7 +130,7 @@ export const UserEdit = ({ user, onCancel, onSuccess }: UserEditProps) => {
 
   return (
     <>
-      <Title title="ユーザー名" />
+      <HeadlineTypography>ユーザー名</HeadlineTypography>
       <TextField
         fullWidth
         id="username"
@@ -140,7 +140,7 @@ export const UserEdit = ({ user, onCancel, onSuccess }: UserEditProps) => {
         {...register("username")}
       />
 
-      <Title title="メールアドレス" />
+      <HeadlineTypography>メールアドレス</HeadlineTypography>
       <TextField
         fullWidth
         id="email"
@@ -150,7 +150,7 @@ export const UserEdit = ({ user, onCancel, onSuccess }: UserEditProps) => {
         {...register("email")}
       />
 
-      <Title title="電話番号" />
+      <HeadlineTypography>電話番号</HeadlineTypography>
       <TextField
         fullWidth
         id="phone"

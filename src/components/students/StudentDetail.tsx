@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { Student } from "../../types/student.class";
-import { Title } from "../QuestionTitle";
+import { HeadlineTypography } from "../components/Typography/HeadlineTypography";
 import { JaDateTime } from "../JaDateTime";
 
 type StudentDetailProps = {
@@ -27,91 +27,91 @@ export const StudentDetail = ({ student }: StudentDetailProps) => {
     <>
       {!!id && (
         <>
-          <Title title="ID" />
+          <HeadlineTypography>生徒ID</HeadlineTypography>
           <Typography>{id}</Typography>
         </>
       )}
 
       {!!createdAt && (
         <>
-          <Title title="作成日時" />
+          <HeadlineTypography>作成日時</HeadlineTypography>
           <JaDateTime date={createdAt} />
         </>
       )}
 
       {!!updatedAt && (
         <>
-          <Title title="更新日時" />
+          <HeadlineTypography>更新日時</HeadlineTypography>
           <JaDateTime date={updatedAt} />
         </>
       )}
 
       {!!firstName && (
         <>
-          <Title title="名前" />
+          <HeadlineTypography>名前</HeadlineTypography>
           <Typography>{firstName}</Typography>
         </>
       )}
 
       {!!firstNameKana && (
         <>
-          <Title title="名前（読み仮名）" />
+          <HeadlineTypography>名前（読み仮名）</HeadlineTypography>
           <Typography>{firstNameKana}</Typography>
         </>
       )}
 
       {!!lastName && (
         <>
-          <Title title="苗字" />
+          <HeadlineTypography>苗字</HeadlineTypography>
           <Typography>{lastName}</Typography>
         </>
       )}
 
       {!!lastNameKana && (
         <>
-          <Title title="苗字（読み仮名）" />
+          <HeadlineTypography>苗字（読み仮名）</HeadlineTypography>
           <Typography>{lastNameKana}</Typography>
         </>
       )}
 
       {!!gender && (
         <>
-          <Title title="性別" />
+          <HeadlineTypography>性別</HeadlineTypography>
           <Typography>{gender}</Typography>
         </>
       )}
 
       {!!grade && (
         <>
-          <Title title="学年" />
+          <HeadlineTypography>学年</HeadlineTypography>
           <Typography>{grade}年生</Typography>
         </>
       )}
 
       {!!birthday && (
         <>
-          <Title title="" />
+          <HeadlineTypography>誕生日</HeadlineTypography>
           <Typography></Typography>
         </>
       )}
 
       {!!school && (
         <>
-          <Title title="小学校" />
+          <HeadlineTypography>小学校</HeadlineTypography>
           <Typography>{school}</Typography>
         </>
       )}
 
       {!!juku && (
         <>
-          <Title title="塾" />
+          <HeadlineTypography>塾</HeadlineTypography>
           <Typography>{juku}</Typography>
         </>
       )}
 
       {!!jukuBuilding && (
         <>
-          <Title title="塾の校舎" />
+          <HeadlineTypography>塾の校舎</HeadlineTypography>
           <Typography>{jukuBuilding}</Typography>
         </>
       )}

@@ -3,7 +3,7 @@ import { Typography, Box, Container, Button } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { Title } from "../../components/QuestionTitle";
+import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import { Teacher } from "../../types/teacher.class";
 import { plainToInstance } from "class-transformer";
 import { TeacherDetail } from "../../components/teachers/TeacherDetail";
@@ -42,7 +42,7 @@ export const TeacherDetailProps = () => {
         <TeacherDetail teacher={teacher} />
         {!!teacher?.user && (
           <>
-            <Title title="ユーザー" />
+            <HeadlineTypography>ユーザー</HeadlineTypography>
             <Button onClick={() => navigate(`/users/${teacher.user.id}`)}>
               ユーザー詳細ページへ
             </Button>
