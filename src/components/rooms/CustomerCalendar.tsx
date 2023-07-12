@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/ja";
 import { Box, Typography, useTheme } from "@mui/material";
 import styled from "@emotion/styled";
-import { Room } from "../types/room.class";
+import { Room } from "../../types/room.class";
 import {
   NavigationLabelFunc,
   OnChangeFunc,
@@ -13,20 +13,20 @@ import {
   TileDisabledFunc,
 } from "react-calendar/dist/cjs/shared/types";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../contexts/UserContextProvider";
+import { UserContext } from "../../contexts/UserContextProvider";
 
 dayjs.locale("ja"); // 日本語ロケールを設定
 
 type ScheduledEvents = {
-  [key: string]: TeacherCalendarProps["events"];
+  [key: string]: CustomCalendarProps["events"];
 };
 
-type TeacherCalendarProps = CalendarProps & {
+type CustomCalendarProps = CalendarProps & {
   events: Room[];
 };
 
 // カスタムのカレンダーコンポーネント
-export const TeacherCalendar = ({ events, ...props }: TeacherCalendarProps) => {
+export const CustomerCalendar = ({ events, ...props }: CustomCalendarProps) => {
   const theme = useTheme();
   const StyledCalendar = styled(Calendar)`
     width: 100%;
@@ -97,8 +97,8 @@ export const TeacherCalendar = ({ events, ...props }: TeacherCalendarProps) => {
             sortedScheduleEvents.length !== 0 &&
             sortedScheduleEvents.map(
               (event) =>
-                event.teachers.some(
-                  (teacher) => teacher.id === user.teacher.id
+                event.students.some(
+                  (student) => student.user.id === user.id
                 ) && (
                   <Box key={event.id} textAlign="left">
                     <Typography variant="caption">

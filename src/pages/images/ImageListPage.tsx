@@ -9,12 +9,12 @@ import dayjs from "dayjs";
 import { ImageListItem, ImageListItemBar, Typography } from "@mui/material";
 import { ImageList as MuiImageList } from "@mui/material";
 
-import { useAxiosConfig } from "../contexts/AxiosContextProvider";
+import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 
-import { ImageEntity } from "../types/image.class";
-import { CustomImage } from "./images/CustomImage";
+import { ImageEntity } from "../../types/image.class";
+import { CustomImage } from "../../components/images/CustomImage";
 
-export const ImageList = () => {
+export const ImageListPage = () => {
   const { axiosConfig } = useAxiosConfig();
   const navigate = useNavigate();
 

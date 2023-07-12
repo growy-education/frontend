@@ -2,14 +2,14 @@ import { Box, Typography } from "@mui/material";
 import { GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CustomerCalendar } from "../../components/CustomerCalendar";
+import { CustomerCalendar } from "../../components/rooms/CustomerCalendar";
 import { Room } from "../../types/room.class";
 import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";
-import { EditDataGrid } from "../../components/EditDataGrid";
-import { SearchDataGrid } from "../../components/SearchDataGrid";
-import { CustomDataGrid } from "../../components/CustomDataGrid";
+import { EditDataGrid } from "../../components/components/DataGrid/EditDataGrid";
+import { SearchDataGrid } from "../../components/components/DataGrid/SearchDataGrid";
+import { CustomDataGrid } from "../../components/components/DataGrid/CustomDataGrid";
 
 type CustomGridColDef = GridColDef & { order: number };
 

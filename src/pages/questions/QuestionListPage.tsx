@@ -12,9 +12,9 @@ import { CircleOutlined, Close } from "@mui/icons-material";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";
 import { Question } from "../../types/question.class";
-import { CustomDataGrid } from "../../components/CustomDataGrid";
-import { SearchDataGrid } from "../../components/SearchDataGrid";
-import { EditDataGrid } from "../../components/EditDataGrid";
+import { CustomDataGrid } from "../../components/components/DataGrid/CustomDataGrid";
+import { SearchDataGrid } from "../../components/components/DataGrid/SearchDataGrid";
+import { EditDataGrid } from "../../components/components/DataGrid/EditDataGrid";
 import { Student } from "../../types/student.class";
 import { QuestionCard } from "../../components/questions/QuestionCard";
 

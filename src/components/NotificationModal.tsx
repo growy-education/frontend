@@ -1,15 +1,5 @@
 import React, { useContext } from "react";
-import {
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Modal,
-  Box,
-  Typography,
-} from "@mui/material";
+import { Modal, Box, Typography } from "@mui/material";
 import { NotificationContext } from "../contexts/NotificationContextProvider";
 
 interface NotificationModalProps {}

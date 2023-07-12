@@ -1,6 +1,6 @@
 import { CalendarProps } from "react-calendar";
 import { CustomerCalendar } from "./CustomerCalendar";
-import { Room } from "../types/room.class";
+import { Room } from "../../types/room.class";
 import {
   OnChangeFunc,
   TileDisabledFunc,

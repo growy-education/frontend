@@ -5,6 +5,6 @@ type JaDateProps = TypographyProps & {
   date: Date;
 };
 
-export const JaDate = ({ date, ...props }: JaDateProps) => {
+export const JaDateTypography = ({ date, ...props }: JaDateProps) => {
   return <Typography {...props}>{dayjs(date).format("YYYY/MM/DD")}</Typography>;
 };

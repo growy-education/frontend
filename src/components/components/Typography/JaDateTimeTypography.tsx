@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 type JaDateTimeProps = TypographyProps & {
   date: Date;
 };
-export const JaDateTime = ({ date, ...props }: JaDateTimeProps) => {
+export const JaDateTimeTypography = ({ date, ...props }: JaDateTimeProps) => {
   return (
     <Typography {...props}>{dayjs(date).format("YYYY/MM/DD HH:mm")}</Typography>
   );

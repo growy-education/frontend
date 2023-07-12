@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import { Teacher } from "../../types/teacher.class";
 import { HeadlineTypography } from "../components/Typography/HeadlineTypography";
-import { JaDateTime } from "../JaDateTime";
+import { JaDateTimeTypography } from "../components/Typography/JaDateTimeTypography";
 import { TeacherStatusTypography } from "./TeacherStatus";
 
 type TeacherDetailProps = {
@@ -33,14 +33,14 @@ export const TeacherDetail = ({ teacher }: TeacherDetailProps) => {
       {createdAt && (
         <>
           <HeadlineTypography>作成日時</HeadlineTypography>
-          <JaDateTime date={createdAt} />
+          <JaDateTimeTypography date={createdAt} />
         </>
       )}
 
       {updatedAt && (
         <>
           <HeadlineTypography>更新日時</HeadlineTypography>
-          <JaDateTime date={updatedAt} />
+          <JaDateTimeTypography date={updatedAt} />
         </>
       )}
       {!!firstName && (

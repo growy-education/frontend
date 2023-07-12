@@ -24,8 +24,8 @@ import { AttentionTitleTypography } from "./components/lp/price/AttentionTitleTy
 import { AttentionDescriptionBox } from "./components/lp/price/AttentionDescriptionBox";
 import { AttentionDescriptionTypography } from "./components/lp/price/AttentionDescriptionTypography";
 import { AsteriskTypography } from "./components/lp/price/AsteriskTypography";
-import { LineLinkTypography } from "./components/LineLinkTypography";
-import { GoogleChatLinkTypography } from "./components/GoogleChatLinkTypography";
+import { LineLinkTypography } from "./components/components/Typography/LineLinkTypography";
+import { GoogleChatLinkTypography } from "./components/components/Typography/GoogleChatLinkTypography";
 import { LandingPageContext } from "./contexts/LPContextProvider";
 import { ArrowBack } from "@mui/icons-material";
 

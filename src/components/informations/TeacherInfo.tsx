@@ -3,8 +3,8 @@ import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 import { useEffect } from "react";
 import axios from "axios";
 import { Box } from "@mui/material";
-import { TeacherRoomInfo } from "../TeacherRoomInfo";
-import { TeacherQuestionInfo } from "../TeacherQuestionInfo";
+import { TeacherRoomInfo } from "../rooms/TeacherRoomInfo";
+import { TeacherQuestionInfo } from "../questions/TeacherQuestionInfo";
 
 export const TeacherInfo = () => {
   const navigate = useNavigate();

@@ -15,7 +15,7 @@ import { Voice } from "../components/lp/voice/Voice";
 import { Price } from "../components/lp/price/Price";
 import { YushinMessage } from "../components/lp/components/YushinMessage";
 import { Footer } from "../components/lp/footer/Footer";
-import { Offset } from "../components/Offset";
+import { Offset } from "../tools/Offset";
 
 type LandingPageProps = {
   toggleLP: () => void;

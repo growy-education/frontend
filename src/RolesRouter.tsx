@@ -14,8 +14,8 @@ import { ProfilePage } from "./pages/profiles/ProfilePage";
 import { ProfileEditPage } from "./pages/profiles/ProfileEditPage";
 
 // Images
-import { ImageList } from "./components/ImageList";
-import { ImageNew } from "./components/ImageNew";
+import { ImageListPage } from "./pages/images/ImageListPage";
+import { ImageNew } from "./components/ImageNewPage";
 
 // Questions
 import { QuestionList } from "./pages/questions/QuestionListPage";
@@ -64,7 +64,7 @@ export const RolesRouter: React.FC = () => {
         <Route path="/" element={<General />}>
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/edit" element={<ProfileEditPage />} />
-          <Route path="/images" element={<ImageList />} />
+          <Route path="/images" element={<ImageListPage />} />
           <Route path="/images/new" element={<ImageNew />} />
 
           {user.role === Role.ADMIN && (

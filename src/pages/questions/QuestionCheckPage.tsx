@@ -17,7 +17,7 @@ import { plainToInstance } from "class-transformer";
 import { LockOpen } from "@mui/icons-material";
 import { LoadingBox } from "../../components/LoadingData";
 import { CustomImage } from "../../components/images/CustomImage";
-import { JaDateTime } from "../../components/JaDateTime";
+import { JaDateTimeTypography } from "../../components/components/Typography/JaDateTimeTypography";
 
 export const QuestionCheck = () => {
   const { questionId } = useParams();
@@ -98,9 +98,9 @@ export const QuestionCheck = () => {
         <HeadlineTypography>ID</HeadlineTypography>
         <Typography>{id}</Typography>
         <HeadlineTypography>作成日時</HeadlineTypography>
-        <JaDateTime date={createdAt} />
+        <JaDateTimeTypography date={createdAt} />
         <HeadlineTypography>更新日時</HeadlineTypography>
-        <JaDateTime date={updatedAt} />
+        <JaDateTimeTypography date={updatedAt} />
         <HeadlineTypography>タイトル</HeadlineTypography>
         <Typography>{title}</Typography>
         <HeadlineTypography>質問内容</HeadlineTypography>

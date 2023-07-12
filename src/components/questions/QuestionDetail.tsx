@@ -11,7 +11,7 @@ import { HeadlineTypography } from "../components/Typography/HeadlineTypography"
 import { Question } from "../../types/question.class";
 import { useCallback } from "react";
 import { RotatableImage } from "../images/RotatableImage";
-import { JaDateTime } from "../JaDateTime";
+import { JaDateTimeTypography } from "../components/Typography/JaDateTimeTypography";
 
 type QuestionDetailProps = {
   question: Question;
@@ -53,9 +53,9 @@ export const QuestionDetail = ({ question, ...props }: QuestionDetailProps) => {
         <HeadlineTypography>質問ID</HeadlineTypography>
         <Typography>{id}</Typography>
         <HeadlineTypography>作成日時</HeadlineTypography>
-        <JaDateTime date={createdAt} />
+        <JaDateTimeTypography date={createdAt} />
         <HeadlineTypography>更新日時</HeadlineTypography>
-        <JaDateTime date={updatedAt} />
+        <JaDateTimeTypography date={updatedAt} />
         <HeadlineTypography>質問タイトル</HeadlineTypography>
         <Typography>{title}</Typography>
         <HeadlineTypography>質問内容</HeadlineTypography>

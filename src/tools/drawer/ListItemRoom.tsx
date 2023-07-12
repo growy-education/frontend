@@ -9,8 +9,8 @@ import {
 } from "@mui/material";
 import { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { UserContext } from "../contexts/UserContextProvider";
-import { Role } from "../types/role.enum";
+import { UserContext } from "../../contexts/UserContextProvider";
+import { Role } from "../../types/role.enum";
 
 export const ListItemRoom = () => {
   const navigate = useNavigate();

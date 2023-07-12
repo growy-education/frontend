@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import { Student } from "../../types/student.class";
 import { HeadlineTypography } from "../components/Typography/HeadlineTypography";
-import { JaDateTime } from "../JaDateTime";
+import { JaDateTimeTypography } from "../components/Typography/JaDateTimeTypography";
 
 type StudentDetailProps = {
   student: Partial<Student>;
@@ -35,14 +35,14 @@ export const StudentDetail = ({ student }: StudentDetailProps) => {
       {!!createdAt && (
         <>
           <HeadlineTypography>作成日時</HeadlineTypography>
-          <JaDateTime date={createdAt} />
+          <JaDateTimeTypography date={createdAt} />
         </>
       )}
 
       {!!updatedAt && (
         <>
           <HeadlineTypography>更新日時</HeadlineTypography>
-          <JaDateTime date={updatedAt} />
+          <JaDateTimeTypography date={updatedAt} />
         </>
       )}
 

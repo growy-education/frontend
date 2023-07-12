@@ -9,8 +9,8 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import { UserContext } from "../contexts/UserContextProvider";
-import { Role } from "../types/role.enum";
+import { UserContext } from "../../contexts/UserContextProvider";
+import { Role } from "../../types/role.enum";
 
 export const ListItemQuestion = () => {
   const [questionListOpen, setQuestionListOpen] = useState(false);

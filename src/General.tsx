@@ -18,7 +18,7 @@ import { AccountCircle } from "@mui/icons-material";
 import { AlertPanelContext } from "./contexts/AlertPanelContextProvider";
 import { AlertPanel } from "./components/AlertPanel";
 import { PageWrapperBox } from "./components/PageWrapperBox";
-import { Offset } from "./components/Offset";
+import { Offset } from "./tools/Offset";
 
 export const General: React.FC = () => {
   const navigate = useNavigate();
