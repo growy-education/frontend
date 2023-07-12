@@ -3,7 +3,9 @@ import axios from "axios";
 import { GoogleCredentialResponse } from "@react-oauth/google";
 import { CircularProgress } from "@mui/material";
 
-import { LoginScreen } from "../SignIn";
+import { SignInScreen } from "../SignIn";
+import { createAxiosConfig } from "./AxiosContextProvider";
+import { PendingContextPage } from "../pages/PendingContextPage";
 
 interface AuthContextProps {
   isLoggedIn: boolean;
@@ -25,15 +27,12 @@ const defaultAuthContext: AuthContextProps = {
 
 export const AuthContext = createContext<AuthContextProps>(defaultAuthContext);
 
-export function useAuthContext() {
-  return useContext(AuthContext);
-}
-
 interface Props {
   children: React.ReactNode;
 }
 
 export const AuthContextProvider = ({ children }: Props) => {
+  const [pending, setPending] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [bearerToken, setBearerToken] = useState<string>("");
 
@@ -41,10 +40,23 @@ export const AuthContextProvider = ({ children }: Props) => {
     // ページが読み込まれた際に保存されたBearer Tokenを取得
     const savedToken = localStorage.getItem("bearerToken");
 
+    // Bearer Tokenがあるとき
     if (savedToken) {
-      setBearerToken(savedToken);
-      setIsLoggedIn(false);
+      // バックエンドと通信して保存されたbearerTokenが有効かチェック
+      // 有効であれば、bearerTokenとして値を保持する
+      axios
+        .create(createAxiosConfig(savedToken))
+        .get("/auth/check")
+        .then((response) => {
+          setBearerToken(savedToken);
+          setIsLoggedIn(true);
+        })
+        .catch((_error) => {
+          setBearerToken("");
+          setIsLoggedIn(false);
+        });
     }
+    setPending(false);
   }, []);
 
   const handleLogin = (email: string, password: string) => {
@@ -110,6 +122,10 @@ export const AuthContextProvider = ({ children }: Props) => {
     window.location.href = "/";
   };
 
+  if (pending) {
+    return <PendingContextPage message="ログイン情報を取得中です" />;
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -128,7 +144,7 @@ export const AuthContextProvider = ({ children }: Props) => {
           children
         )
       ) : (
-        <LoginScreen
+        <SignInScreen
           handleEmailPasswordLogin={handleLogin}
           handleGoogleLogin={handleGoogleLogin}
           handleSignup={handleSignup}

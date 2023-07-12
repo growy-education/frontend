@@ -27,40 +27,6 @@ const TeachingTypography = ({ children, ...props }: TypographyProps) => {
   );
 };
 
-const CoachingPointTypography = ({ children, ...props }: TypographyProps) => {
-  return (
-    <Typography
-      sx={{
-        fontSize: "1.5rem",
-        marginBottom: "3%",
-        fontWeight: 600,
-        lineHeight: "2.0rem",
-        color: "#05712E",
-      }}
-      {...props}
-    >
-      {children}
-    </Typography>
-  );
-};
-
-const TeachingPointTypography = ({ children, ...props }: TypographyProps) => {
-  return (
-    <Typography
-      sx={{
-        fontSize: "2.5rem",
-        marginBottom: "3%",
-        fontWeight: 600,
-        lineHeight: "3rem",
-        color: "#3D9654",
-      }}
-      {...props}
-    >
-      {children}
-    </Typography>
-  );
-};
-
 export const About = () => {
   return (
     <Box>

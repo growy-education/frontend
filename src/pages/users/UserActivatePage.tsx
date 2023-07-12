@@ -29,7 +29,7 @@ import { ResultSnackbar } from "../../components/ResultSnackbar";
 import { CustomerDetail } from "../../components/customers/CustomerDetail";
 import { StudentDetail } from "../../components/students/StudentDetail";
 import { TeacherDetail } from "../../components/teachers/TeacherDetail";
-import { LoadingData } from "../../components/LoadingData";
+import { LoadingBox } from "../../components/LoadingData";
 import { JaDateTime } from "../../components/JaDateTime";
 
 class ActivateUserDto {
@@ -133,7 +133,7 @@ export const UserActivate = () => {
   };
 
   if (!!!user) {
-    return <LoadingData message="ユーザー情報を取得中です" />;
+    return <LoadingBox message="ユーザー情報を取得中です" />;
   }
 
   const { id, createdAt, updatedAt, username, email, phone, role } = user;
@@ -211,7 +211,7 @@ export const UserActivate = () => {
                 <Typography>保護者情報がありません</Typography>
               )
             ) : (
-              <LoadingData message="保護者情報を取得中です" />
+              <LoadingBox message="保護者情報を取得中です" />
             )}
           </AccordionDetails>
         </Accordion>
@@ -243,7 +243,7 @@ export const UserActivate = () => {
                 <Typography>講師情報がありません</Typography>
               )
             ) : (
-              <LoadingData message="講師情報を取得中です" />
+              <LoadingBox message="講師情報を取得中です" />
             )}
           </AccordionDetails>
         </Accordion>

@@ -7,7 +7,7 @@ import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 import { plainToInstance } from "class-transformer";
 import { Box, Button, Container } from "@mui/material";
 import { Cancel, EventAvailable } from "@mui/icons-material";
-import { LoadingData } from "../../components/LoadingData";
+import { LoadingBox } from "../../components/LoadingData";
 import { UserContext } from "../../contexts/UserContextProvider";
 
 export const RoomDetail = () => {
@@ -32,7 +32,7 @@ export const RoomDetail = () => {
   }, [axiosConfig, roomId]);
 
   if (!room) {
-    return <LoadingData message="オンライン自習室の情報を取得中です" />;
+    return <LoadingBox message="オンライン自習室の情報を取得中です" />;
   }
 
   return (

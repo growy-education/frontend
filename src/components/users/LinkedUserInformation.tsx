@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { User } from "../../types/user.class";
 import { Role } from "../../types/role.enum";
 import { CustomerDetail } from "../customers/CustomerDetail";
@@ -11,8 +10,6 @@ import {
   Typography,
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
-import { StudentDetail } from "../students/StudentDetail";
-import { TeacherDetail } from "../teachers/TeacherDetail";
 import { useNavigate } from "react-router-dom";
 import { StudentAccordion } from "../students/StudentAccordion";
 import { TeacherAccordion } from "../teachers/TeacherAccordion";

@@ -1,5 +1,11 @@
 import React, { useContext, useState } from "react";
-import { AppBar, Toolbar, IconButton, Drawer, Box } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  SwipeableDrawer,
+  Box,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -11,6 +17,8 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { AccountCircle } from "@mui/icons-material";
 import { AlertPanelContext } from "./contexts/AlertPanelContextProvider";
 import { AlertPanel } from "./components/AlertPanel";
+import { PageWrapperBox } from "./components/PageWrapperBox";
+import { Offset } from "./components/Offset";
 
 export const General: React.FC = () => {
   const navigate = useNavigate();
@@ -66,9 +74,10 @@ export const General: React.FC = () => {
         </Toolbar>
       </AppBar>
 
-      <Drawer
+      <SwipeableDrawer
         anchor="left"
         open={isSidebarOpen}
+        onOpen={handleToggleSidebar}
         onClose={handleToggleSidebar}
         sx={{ width: "auto" }}
       >
@@ -81,19 +90,15 @@ export const General: React.FC = () => {
           </IconButton>
         </Toolbar>
         <DrawerListItem />
-      </Drawer>
+      </SwipeableDrawer>
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          marginTop: "64px",
-        }}
-      >
-        <Outlet />
+      <PageWrapperBox maxWidth="600px">
+        <Offset />
+        <Box p={2}>
+          <Outlet />
+        </Box>
         {alert && <AlertPanel />}
-      </Box>
+      </PageWrapperBox>
     </Box>
   );
 };

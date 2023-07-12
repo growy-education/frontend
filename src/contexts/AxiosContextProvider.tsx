@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from "axios";
 import { AuthContext } from "./AuthContextProvider";
-import { CircularProgress } from "@mui/material";
-import { LoadingData } from "../components/LoadingData";
+import { LoadingBox } from "../components/LoadingData";
+import { PendingContextPage } from "../pages/PendingContextPage";
 
 interface AxiosContextType {
   axiosConfig: AxiosRequestConfig;
@@ -25,6 +25,14 @@ export const useAxiosConfig = (): AxiosContextType => {
   return context;
 };
 
+export const createAxiosConfig = (bearerToken: string) => ({
+  baseURL: process.env.REACT_APP_BACKEND_BASE_URL as string,
+  headers: {
+    Authorization: `Bearer ${bearerToken}`,
+    "Content-Type": "application/json",
+  },
+});
+
 interface AxiosProviderProps {
   children: React.ReactNode;
 }
@@ -32,7 +40,7 @@ interface AxiosProviderProps {
 export const AxiosContextProvider: React.FC<AxiosProviderProps> = ({
   children,
 }) => {
-  const { bearerToken, handleLogout } = useContext(AuthContext);
+  const { bearerToken } = useContext(AuthContext);
 
   const [axiosConfig, setAxiosConfig] = useState<
     AxiosContextType["axiosConfig"] | null
@@ -40,17 +48,11 @@ export const AxiosContextProvider: React.FC<AxiosProviderProps> = ({
 
   useEffect(() => {
     console.log("bearer token\n", `Bearer ${bearerToken}`);
-    setAxiosConfig({
-      baseURL: process.env.REACT_APP_BACKEND_BASE_URL as string,
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-        "Content-Type": "application/json",
-      },
-    });
+    setAxiosConfig(createAxiosConfig(bearerToken));
   }, [bearerToken]);
 
   if (!axiosConfig) {
-    return <LoadingData message="ログイン情報を取得中です" />;
+    return <PendingContextPage message="接続を確立しています" />;
   }
 
   return (

@@ -1,17 +1,16 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
 import axios from "axios";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { User } from "../types/user.class";
 import { AxiosContext } from "./AxiosContextProvider";
 import { plainToInstance } from "class-transformer";
 import { Role } from "../types/role.enum";
-import { LoadingData } from "../components/LoadingData";
+import { LoadingBox } from "../components/LoadingData";
+import { PendingContextPage } from "../pages/PendingContextPage";
 
 interface UserContextProps {
   user: User;
 }
-
-const defaultUserContext: UserContextProps = null;
 
 export const UserContext = createContext<UserContextProps>(null);
 
@@ -43,7 +42,7 @@ export const UserContextProvider = ({ children }: Props) => {
   }, [axiosConfig]);
 
   if (!!!user) {
-    return <LoadingData message="ユーザー情報を取得中" />;
+    return <PendingContextPage message="ユーザー情報を取得中" />;
   }
 
   if (user.role === Role.PENDING) {

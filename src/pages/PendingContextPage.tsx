@@ -1,22 +1,27 @@
 import { Box, BoxProps, CircularProgress, Typography } from "@mui/material";
 
-type LoadingDataProps = BoxProps & {
+type PendingContextPageProps = {
   message: string;
-};
+} & BoxProps;
 
-export const LoadingBox = ({ message, ...props }: LoadingDataProps) => {
+export const PendingContextPage = ({
+  message,
+  children,
+  ...props
+}: PendingContextPageProps) => {
   return (
     <Box
       style={{
-        width: "100%",
-        height: "100%",
+        width: "100vw",
+        height: "100vh",
         display: "flex",
         alignItems: "center",
+        alignContent: "center",
         justifyContent: "center",
       }}
       {...props}
     >
-      <Box sx={{ margin: "auto" }}>
+      <Box pb={5} sx={{ margin: "auto" }}>
         <Typography>{message}</Typography>
         <CircularProgress />
       </Box>

@@ -20,7 +20,6 @@ export const RotatableImage = ({ id, ...props }: RotatableImageProps) => {
     marginRight?: number;
   }>({});
   const [imageStyle, setImageStyle] = useState<{ height?: number }>({});
-  const [boxStyle, setBoxStyle] = useState<{ height?: number }>({});
 
   const handleImageLoad: React.ReactEventHandler<HTMLImageElement> = (
     event

@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 
 export const Footer = () => {
   return (
-    <Box p={3} pb={10} sx={{ backgroundColor: "#006837", color: "#F6F9F8" }}>
+    <Box p={3} pb={12} sx={{ backgroundColor: "#006837", color: "#F6F9F8" }}>
       <Box component="nav">
         <Typography>
           <Typography

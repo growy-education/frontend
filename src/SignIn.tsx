@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Box,
   Button,
@@ -9,7 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import { GoogleCredentialResponse, GoogleLogin } from "@react-oauth/google";
-
 import {
   IsEmail,
   IsNotEmpty,
@@ -20,11 +19,15 @@ import {
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-type LoginScreenProps = {
-  handleEmailPasswordLogin: (email: string, password: string) => void;
-  handleGoogleLogin: (response: GoogleCredentialResponse) => void;
-  handleSignup: (username: string, email: string, password: string) => void;
-};
+import { AttentionBox } from "./components/lp/price/AttentionBox";
+import { AttentionTitleTypography } from "./components/lp/price/AttentionTitleTypography";
+import { AttentionDescriptionBox } from "./components/lp/price/AttentionDescriptionBox";
+import { AttentionDescriptionTypography } from "./components/lp/price/AttentionDescriptionTypography";
+import { AsteriskTypography } from "./components/lp/price/AsteriskTypography";
+import { LineLinkTypography } from "./components/LineLinkTypography";
+import { GoogleChatLinkTypography } from "./components/GoogleChatLinkTypography";
+import { LandingPageContext } from "./contexts/LPContextProvider";
+import { ArrowBack } from "@mui/icons-material";
 
 export class SigninWithPasswordDto {
   @IsNotEmpty({ message: "メールアドレスを入力してください" })
@@ -39,12 +42,19 @@ export class SigninWithPasswordDto {
   password: string;
 }
 
-export const LoginScreen = ({
+type LoginScreenProps = {
+  handleEmailPasswordLogin: (email: string, password: string) => void;
+  handleGoogleLogin: (response: GoogleCredentialResponse) => void;
+  handleSignup: (username: string, email: string, password: string) => void;
+};
+
+export const SignInScreen = ({
   handleEmailPasswordLogin,
   handleGoogleLogin,
-  handleSignup,
 }: LoginScreenProps) => {
   const [googleLoginError, setGoogleLoginError] = useState("");
+
+  const { toggleLP } = useContext(LandingPageContext);
 
   const resolver = classValidatorResolver(SigninWithPasswordDto);
   const {
@@ -66,67 +76,115 @@ export const LoginScreen = ({
     <Container
       maxWidth="sm"
       sx={{
-        height: "100vh",
+        height: "100%",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
       }}
     >
-      <Paper elevation={3} sx={{ padding: "24px" }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Typography variant="h5" align="center">
-              Growyにログイン
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Box display="flex" justifyContent="center">
-              <GoogleLogin
-                onSuccess={handleGoogleLogin}
-                onError={handleGoogleLoginError}
-                size="large"
-              />
-            </Box>
-          </Grid>
-          <Grid item xs={12}>
-            <Box
-              component="form"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-              gap={2}
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <TextField
-                type="email"
-                label="メールアドレス"
-                variant="outlined"
-                id="email"
-                autoComplete="email"
-                error={!!errors.email}
-                helperText={errors.email ? errors.email.message : ""}
-                {...register("email")}
-              />
-              <TextField
-                id="password"
-                label="パスワード"
-                error={!!errors.password}
-                helperText={errors.password ? errors.password.message : ""}
-                {...register("password")}
-              />
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                sx={{ marginTop: "16px" }}
+      <Box p={2} sx={{ minHeight: "10rem" }}>
+        <Box p={2}>
+          <img
+            src="/img/logo-min.png"
+            alt="ロゴ"
+            style={{
+              width: "10rem",
+            }}
+          />
+        </Box>
+
+        <Typography align="center" fontSize="1.5rem" fontWeight="bold">
+          Growyにログインする
+        </Typography>
+
+        <Box p={2} display="flex" justifyContent="center">
+          <GoogleLogin
+            onSuccess={handleGoogleLogin}
+            onError={handleGoogleLoginError}
+            size="large"
+          />
+        </Box>
+
+        <AttentionBox>
+          <AttentionTitleTypography width="12rem">
+            ログインにお困りの方へ...
+          </AttentionTitleTypography>
+          <AttentionDescriptionBox>
+            <AsteriskTypography />
+            <AttentionDescriptionTypography>
+              「Growyでログイン」と表示される方も、表示されているボタンを押してください。
+            </AttentionDescriptionTypography>
+          </AttentionDescriptionBox>
+          <AttentionDescriptionBox>
+            <AsteriskTypography />
+            <AttentionDescriptionTypography>
+              Googleでログインするときには、GrowyのGoogleアカウントでログインしようとしているか確認してください。
+            </AttentionDescriptionTypography>
+          </AttentionDescriptionBox>
+          <AttentionDescriptionBox>
+            <AsteriskTypography />
+            <AttentionDescriptionTypography>
+              お困りの方は
+              <LineLinkTypography />
+              または
+              <GoogleChatLinkTypography />
+              で講師にお問合せください。
+            </AttentionDescriptionTypography>
+          </AttentionDescriptionBox>
+        </AttentionBox>
+        <Box mt={1} sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <Button
+            variant="outlined"
+            startIcon={<ArrowBack />}
+            onClick={() => toggleLP()}
+          >
+            <Typography>ホームページに戻る</Typography>
+          </Button>
+        </Box>
+
+        {process.env.REACT_APP_STAGE === "dev" && (
+          <Box mt={2}>
+            <Typography>デバッグ用ログイン</Typography>
+            <Grid item xs={12}>
+              <Box
+                component="form"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+                gap={2}
+                onSubmit={handleSubmit(onSubmit)}
               >
-                ログイン
-              </Button>
-            </Box>
-          </Grid>
-        </Grid>
-      </Paper>
+                <TextField
+                  type="email"
+                  label="メールアドレス"
+                  variant="outlined"
+                  id="email"
+                  autoComplete="email"
+                  error={!!errors.email}
+                  helperText={errors.email ? errors.email.message : ""}
+                  {...register("email")}
+                />
+                <TextField
+                  id="password"
+                  label="パスワード"
+                  error={!!errors.password}
+                  helperText={errors.password ? errors.password.message : ""}
+                  {...register("password")}
+                />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  sx={{ marginTop: "16px" }}
+                >
+                  ログイン
+                </Button>
+              </Box>
+            </Grid>
+          </Box>
+        )}
+      </Box>
     </Container>
   );
 };

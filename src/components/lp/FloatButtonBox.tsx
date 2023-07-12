@@ -8,9 +8,6 @@ export const FloatButtonBox = ({ children, ...props }: BoxProps) => {
       zIndex={100}
       sx={{
         width: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
       }}
       {...props}
     >

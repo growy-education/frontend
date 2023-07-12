@@ -5,7 +5,7 @@ import { Navigate, useParams } from "react-router-dom";
 import { Question } from "../../types/question.class";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";
-import { LoadingData } from "../../components/LoadingData";
+import { LoadingBox } from "../../components/LoadingData";
 import { QuestionDetail } from "../../components/questions/QuestionDetail";
 import { StudentAccordion } from "../../components/students/StudentAccordion";
 
@@ -33,7 +33,7 @@ export const QuestionDetailPage = () => {
   }
 
   if (!!!question) {
-    return <LoadingData message="質問情報を取得中です" />;
+    return <LoadingBox message="質問情報を取得中です" />;
   }
 
   return (

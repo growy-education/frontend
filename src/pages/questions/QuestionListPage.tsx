@@ -16,6 +16,7 @@ import { CustomDataGrid } from "../../components/CustomDataGrid";
 import { SearchDataGrid } from "../../components/SearchDataGrid";
 import { EditDataGrid } from "../../components/EditDataGrid";
 import { Student } from "../../types/student.class";
+import { QuestionCard } from "../../components/questions/QuestionCard";
 
 type CustomGridColDef = GridColDef & { order: number };
 
@@ -92,7 +93,13 @@ export const QuestionList = () => {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <EditDataGrid
+      <Box p={2}>
+        {questions.map((question) => (
+          <QuestionCard key={`question-${question.id}`} question={question} />
+        ))}
+      </Box>
+
+      {/* <EditDataGrid
         defaultColumns={QuestionColumns}
         columns={columns}
         setColumns={setColumns}
@@ -113,7 +120,7 @@ export const QuestionList = () => {
           rows={questions}
           columns={columns}
         />
-      </Box>
+      </Box> */}
     </Box>
   );
 };

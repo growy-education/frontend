@@ -64,7 +64,7 @@ export const RoomList = () => {
       <Typography variant="h4">オンライン自習室</Typography>
       <Box sx={{ textAlign: "left", width: "100%" }}>
         <Box sx={{ m: 2 }}>
-          <Typography variant="h6">Growyカレンダー</Typography>
+          <Typography variant="h6">カレンダー</Typography>
           <Typography>
             日付をクリックすると、詳細画面へと遷移します。
           </Typography>

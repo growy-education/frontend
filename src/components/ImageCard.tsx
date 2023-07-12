@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { Card, CardMedia, CircularProgress } from "@mui/material";
+import { Card, CardMedia } from "@mui/material";
 import axios from "axios";
 import { AxiosContext } from "../contexts/AxiosContextProvider";
-import { LoadingData } from "./LoadingData";
+import { LoadingBox } from "./LoadingData";
 
 type ImageCardProps = {
   id: string;
@@ -38,7 +38,7 @@ export const ImageCard = ({ id }: ImageCardProps) => {
           width="300"
         />
       ) : (
-        <LoadingData message="画像データの取得中です" />
+        <LoadingBox message="画像データの取得中です" />
       )}
     </Card>
   );

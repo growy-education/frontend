@@ -10,7 +10,7 @@ import {
 import { Title } from "../QuestionTitle";
 import { Question } from "../../types/question.class";
 import { useCallback } from "react";
-import { RotatableImage } from "../RotatableImage";
+import { RotatableImage } from "../images/RotatableImage";
 import { JaDateTime } from "../JaDateTime";
 
 type QuestionDetailProps = {

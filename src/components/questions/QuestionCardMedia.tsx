@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { CardMedia, CardMediaProps } from "@mui/material";
 
-import { AlertBox } from "./AlertBox";
-import { LoadingData } from "./LoadingData";
-import { useAxiosConfig } from "../contexts/AxiosContextProvider";
+import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
+import { LoadingBox } from "../LoadingData";
+import { AlertBox } from "../AlertBox";
 
-type CustomImageProps = Exclude<
-  React.DetailedHTMLProps<
-    React.ImgHTMLAttributes<HTMLImageElement>,
-    HTMLImageElement
-  >,
-  "src"
-> & {
+type QuestionCardMediaProps = {
   id: string;
-};
+} & CardMediaProps<"img">;
 
-export const CustomImage = ({ id, style, ...props }: CustomImageProps) => {
+export const QuestionCardMedia = ({
+  id,
+  children,
+  ...props
+}: QuestionCardMediaProps) => {
   const { axiosConfig } = useAxiosConfig();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
@@ -51,11 +50,10 @@ export const CustomImage = ({ id, style, ...props }: CustomImageProps) => {
         URL.revokeObjectURL(imageUrl);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [axiosConfig, id]);
 
   if (!imageUrl) {
-    return <LoadingData message="画像データの取得中です" />;
+    return <LoadingBox message="画像データの取得中です" />;
   }
 
   if (error) {
@@ -67,16 +65,15 @@ export const CustomImage = ({ id, style, ...props }: CustomImageProps) => {
       />
     );
   }
-
   return (
-    <img
+    <CardMedia
+      component="img"
       src={imageUrl}
       alt={id}
-      style={{
-        maxWidth: "90%",
+      sx={{
+        maxWidth: "100%",
         aspectRatio:
           imageSize.height !== 0 && imageSize.width / imageSize.height,
-        ...style,
       }}
       {...props}
     />

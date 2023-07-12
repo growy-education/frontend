@@ -1,11 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { Alert, Box, Button, Snackbar, Typography } from "@mui/material";
-import { TextField } from "@mui/material";
-import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import { Title } from "../../components/QuestionTitle";
+import { Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import axios, { isAxiosError } from "axios";
 import { plainToInstance } from "class-transformer";
+import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { User } from "../../types/user.class";
 import {
   IsEmail,
@@ -17,7 +15,7 @@ import {
 } from "class-validator";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { LoadingData } from "../../components/LoadingData";
+import { LoadingBox } from "../../components/LoadingData";
 import { UserEdit } from "../../components/users/UserEdit";
 
 class UpdateUserDto {
@@ -145,7 +143,7 @@ export const UserEditPage = () => {
   };
 
   if (!user) {
-    return <LoadingData message="ユーザー情報を取得中です" />;
+    return <LoadingBox message="ユーザー情報を取得中です" />;
   }
 
   return (

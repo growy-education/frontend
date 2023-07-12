@@ -1,27 +1,16 @@
 import { useContext, useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  FormControlLabel,
-  Grid,
-  Radio,
-  RadioGroup,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import { TextField } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { Title } from "../../components/QuestionTitle";
 import SendIcon from "@mui/icons-material/Send";
-import { Relationship } from "../../types/relationship.enum";
-import { TeacherStatus } from "../../types/teacher-status.enum";
 import { Question } from "../../types/question.class";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";
 import { PhotoLibraryOutlined } from "@mui/icons-material";
-import { LoadingData } from "../../components/LoadingData";
-import { CustomImage } from "../../components/CustomImage";
+import { LoadingBox } from "../../components/LoadingData";
+import { CustomImage } from "../../components/images/CustomImage";
 
 export const QuestionEdit = () => {
   const { questionId } = useParams();
@@ -48,7 +37,7 @@ export const QuestionEdit = () => {
   }, [axiosConfig, questionId]);
 
   if (!!!question) {
-    return <LoadingData message="質問情報を取得中です" />;
+    return <LoadingBox message="質問情報を取得中です" />;
   }
 
   return (

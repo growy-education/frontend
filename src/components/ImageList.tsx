@@ -1,20 +1,18 @@
 import { useEffect, useState } from "react";
-import { Info, RotateLeft } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  ImageListItem,
-  ImageListItemBar,
-  Typography,
-} from "@mui/material";
-import { ImageList as MuiImageList } from "@mui/material";
-import { ImageEntity } from "../types/image.class";
-import { CustomImage } from "./CustomImage";
-import { useAxiosConfig } from "../contexts/AxiosContextProvider";
 import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import { plainToInstance } from "class-transformer";
+
 import dayjs from "dayjs";
+
+import { ImageListItem, ImageListItemBar, Typography } from "@mui/material";
+import { ImageList as MuiImageList } from "@mui/material";
+
+import { useAxiosConfig } from "../contexts/AxiosContextProvider";
+
+import { ImageEntity } from "../types/image.class";
+import { CustomImage } from "./images/CustomImage";
 
 export const ImageList = () => {
   const { axiosConfig } = useAxiosConfig();

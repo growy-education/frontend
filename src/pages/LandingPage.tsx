@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert, Box, Snackbar, styled } from "@mui/material";
+import { Alert, Box, Snackbar } from "@mui/material";
 
 import { FAQ } from "../components/lp/faq/FAQ";
 import { Header } from "../components/lp/header/Header";
@@ -15,8 +15,7 @@ import { Voice } from "../components/lp/voice/Voice";
 import { Price } from "../components/lp/price/Price";
 import { YushinMessage } from "../components/lp/components/YushinMessage";
 import { Footer } from "../components/lp/footer/Footer";
-
-const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
+import { Offset } from "../components/Offset";
 
 type LandingPageProps = {
   toggleLP: () => void;
@@ -124,38 +123,47 @@ export const LandingPage = ({ toggleLP }: LandingPageProps) => {
 
       <FloatButtonBox>
         <Box
-          component="a"
-          display="block"
-          href="https://line.me/R/ti/p/@208okwey"
+          p={2}
           sx={{
-            "&:hover": {
-              opacity: "0.7",
-            },
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          <img
-            src="/img/img-btn-line-sp-min.png"
-            alt="LINE登録はこちらフロートボタン"
-            style={{ width: "100%", maxWidth: "15rem" }}
-          />
-        </Box>
+          <Box
+            component="a"
+            display="block"
+            href="https://line.me/R/ti/p/@208okwey"
+            sx={{
+              "&:hover": {
+                opacity: "0.7",
+              },
+            }}
+          >
+            <img
+              src="/img/img-btn-line-sp-min.png"
+              alt="LINE登録はこちらフロートボタン"
+              style={{ width: "100%", maxWidth: "15rem" }}
+            />
+          </Box>
 
-        <Box width="2rem" />
+          <Box width="2rem" />
 
-        <Box
-          display="block"
-          sx={{
-            "&:hover": {
-              opacity: "0.7",
-            },
-          }}
-          onClick={() => toggleLP()}
-        >
-          <img
-            src="/img/img-btn-member-sp-min.png"
-            alt="LINE登録はこちらフロートボタン"
-            style={{ width: "100%", maxWidth: "15rem" }}
-          />
+          <Box
+            display="block"
+            sx={{
+              "&:hover": {
+                opacity: "0.7",
+              },
+            }}
+            onClick={() => toggleLP()}
+          >
+            <img
+              src="/img/img-btn-member-sp-min.png"
+              alt="LINE登録はこちらフロートボタン"
+              style={{ width: "100%", maxWidth: "15rem" }}
+            />
+          </Box>
         </Box>
       </FloatButtonBox>
 

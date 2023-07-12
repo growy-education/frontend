@@ -1,5 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { LandingPage } from "../pages/LandingPage";
+import { LoadingBox } from "../components/LoadingData";
+import { PendingContextPage } from "../pages/PendingContextPage";
 
 interface LPContextType {
   showLP: boolean;
@@ -12,25 +14,32 @@ export const LandingPageContext = createContext<LPContextType>({
 });
 
 export const LPContextProvider = ({ children }) => {
+  const [pending, setPending] = useState(true);
   const [showLP, setShowLP] = useState(true);
 
   useEffect(() => {
     // ページが読み込まれた際に保存されたshowLPを取得
-    const savedShowLP = !!localStorage.getItem("showLP");
+    const savedShowLP = localStorage.getItem("showLP");
 
     if (savedShowLP) {
-      setShowLP(savedShowLP);
+      setShowLP(savedShowLP === "true");
     }
+
+    setPending(false);
   }, []);
 
   const toggleLP = () => {
     if (!showLP) {
       localStorage.setItem("showLP", "true");
     } else {
-      localStorage.removeItem("showLP");
+      localStorage.setItem("showLP", "false");
     }
     setShowLP(!showLP);
   };
+
+  if (pending) {
+    return <PendingContextPage message="ブラウザ情報の取得中です" />;
+  }
 
   return (
     <LandingPageContext.Provider

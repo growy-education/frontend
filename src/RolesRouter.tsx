@@ -150,6 +150,8 @@ export const RolesRouter: React.FC = () => {
           )}
           {user.role === Role.TEACHER && (
             <>
+              <Route path="/" element={<Information />} />
+
               <Route path="/questions" element={<QuestionList />} />
               <Route
                 path="/questions/:questionId"
@@ -159,8 +161,9 @@ export const RolesRouter: React.FC = () => {
                 path="/questions/:questionId/assigned"
                 element={<QuestionAssignedPage />}
               />
-              <Route path="/" element={<Information />} />
+
               <Route path="/rooms" element={<RoomList />} />
+              <Route path="/rooms/:roomId" element={<RoomDetail />} />
             </>
           )}
           <Route path="*" element={<NotFound />} />

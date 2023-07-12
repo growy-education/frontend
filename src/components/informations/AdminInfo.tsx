@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 import axios from "axios";
-import { AdminRoomInfo } from "../AdminRoomInfo";
-import { AdminQuestionInfo } from "../AdminQuestionInfo";
+import { AdminQuestionInfo } from "../questions/AdminQuestionInfo";
+import { AdminRoomInfo } from "../rooms/AdminRoomInfo";
 
 export const AdminInfo = () => {
   const navigate = useNavigate();

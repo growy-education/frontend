@@ -15,8 +15,8 @@ import axios from "axios";
 import { Title } from "../../components/QuestionTitle";
 import { plainToInstance } from "class-transformer";
 import { LockOpen } from "@mui/icons-material";
-import { LoadingData } from "../../components/LoadingData";
-import { CustomImage } from "../../components/CustomImage";
+import { LoadingBox } from "../../components/LoadingData";
+import { CustomImage } from "../../components/images/CustomImage";
 import { JaDateTime } from "../../components/JaDateTime";
 
 export const QuestionCheck = () => {
@@ -39,7 +39,7 @@ export const QuestionCheck = () => {
   }, [axiosConfig, questionId]);
 
   if (!!!question) {
-    return <LoadingData message="質問情報を取得中です" />;
+    return <LoadingBox message="質問情報を取得中です" />;
   }
 
   const {

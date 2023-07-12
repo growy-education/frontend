@@ -29,7 +29,7 @@ import { Customer } from "../../types/customer.class";
 import axios, { isAxiosError } from "axios";
 import { plainToInstance } from "class-transformer";
 import { SubmitButton } from "../../components/SubmitButton";
-import { LoadingData } from "../../components/LoadingData";
+import { LoadingBox } from "../../components/LoadingData";
 
 class UpdateCustomerDto {
   @IsOptional()
@@ -169,7 +169,7 @@ export const CustomerEditPage = () => {
   };
 
   if (!!!customer) {
-    return <LoadingData message="保護者情報を取得中です" />;
+    return <LoadingBox message="保護者情報を取得中です" />;
   }
 
   return (
