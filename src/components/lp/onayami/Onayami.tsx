@@ -68,7 +68,7 @@ export const Onayami = () => {
             }}
           >
             <RedBoldTypography>
-              でも、必要なサポートはたくさんあります
+              親御様が必要なサポートはたくさんあります
             </RedBoldTypography>
             <br />
             スケジュールの作成と管理

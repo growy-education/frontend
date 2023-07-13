@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
-import { Question } from "../../types/question.class";
+import { Question } from "../../dto/question.class";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";

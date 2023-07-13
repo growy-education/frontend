@@ -1,4 +1,4 @@
-import { Customer } from "../../types/customer.class";
+import { Customer } from "../../dto/customer.class";
 import { Typography } from "@mui/material";
 import { HeadlineTypography } from "../components/Typography/HeadlineTypography";
 import { JaDateTimeTypography } from "../components/Typography/JaDateTimeTypography";

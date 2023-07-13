@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { TeacherDetail } from "./TeacherDetail";
-import { Teacher } from "../../types/teacher.class";
+import { Teacher } from "../../dto/teacher.class";
 
 type TeacherAccordionProps = Partial<AccordionProps> & {
   teacher: Teacher;

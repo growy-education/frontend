@@ -1,10 +1,10 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
 import axios from "axios";
 import { Typography } from "@mui/material";
-import { User } from "../types/user.class";
+import { User } from "../dto/user.class";
 import { AxiosContext } from "./AxiosContextProvider";
 import { plainToInstance } from "class-transformer";
-import { Role } from "../types/role.enum";
+import { Role } from "../dto/enum/role.enum";
 import { LoadingBox } from "../components/LoadingData";
 import { PendingContextPage } from "../pages/PendingContextPage";
 

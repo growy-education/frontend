@@ -8,7 +8,7 @@ import {
   Button,
   Typography,
 } from "@mui/material";
-import { Student } from "../../types/student.class";
+import { Student } from "../../dto/student.class";
 import { useNavigate } from "react-router-dom";
 import { StudentDetail } from "./StudentDetail";
 

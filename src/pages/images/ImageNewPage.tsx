@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import { Box, Button, ImageList, Typography } from "@mui/material";
 
-import { useAxiosConfig } from "../contexts/AxiosContextProvider";
+import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 import { Image, Upload } from "@mui/icons-material";
 import axios from "axios";
 

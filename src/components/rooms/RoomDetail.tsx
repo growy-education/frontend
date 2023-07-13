@@ -1,10 +1,9 @@
 import { Button, Typography } from "@mui/material";
 import { HeadlineTypography } from "../components/Typography/HeadlineTypography";
-import { Room } from "../../types/room.class";
+import { Room } from "../../dto/room.class";
 import { JaDateTimeTypography } from "../components/Typography/JaDateTimeTypography";
 import { OpenInNew } from "@mui/icons-material";
 import { RoomStatusTypography } from "./RoomStatus";
-import { StudentAccordion } from "../students/StudentAccordion";
 
 type RoomDetailProps = {
   room: Room;

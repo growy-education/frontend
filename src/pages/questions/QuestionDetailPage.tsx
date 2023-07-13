@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Container } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { Navigate, useParams } from "react-router-dom";
-import { Question } from "../../types/question.class";
+import { Question } from "../../dto/question.class";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";
 import { LoadingBox } from "../../components/LoadingData";

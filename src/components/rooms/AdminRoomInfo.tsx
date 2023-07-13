@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
 
 import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
-import { Room } from "../../types/room.class";
+import { Room } from "../../dto/room.class";
 
 export const AdminRoomInfo = () => {
   const { axiosConfig } = useAxiosConfig();

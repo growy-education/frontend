@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { UserContext } from "./contexts/UserContextProvider";
-import { Role } from "./types/role.enum";
+import { Role } from "./dto/enum/role.enum";
 
 import { General } from "./General";
 

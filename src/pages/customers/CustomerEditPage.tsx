@@ -14,7 +14,7 @@ import {
 import { TextField } from "@mui/material";
 import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
-import { Relationship } from "../../types/relationship.enum";
+import { Relationship } from "../../dto/enum/relationship.enum";
 import {
   IsEnum,
   IsNotEmpty,
@@ -25,7 +25,7 @@ import {
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { Customer } from "../../types/customer.class";
+import { Customer } from "../../dto/customer.class";
 import axios, { isAxiosError } from "axios";
 import { plainToInstance } from "class-transformer";
 import { SubmitButton } from "../../components/SubmitButton";

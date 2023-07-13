@@ -4,7 +4,7 @@ import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
-import { Customer } from "../../types/customer.class";
+import { Customer } from "../../dto/customer.class";
 import { plainToInstance } from "class-transformer";
 import { Edit } from "@mui/icons-material";
 import { CustomerDetail } from "../../components/customers/CustomerDetail";

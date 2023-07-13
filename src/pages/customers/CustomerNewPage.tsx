@@ -19,15 +19,15 @@ import { TextField } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import SendIcon from "@mui/icons-material/Send";
-import { Relationship } from "../../types/relationship.enum";
+import { Relationship } from "../../dto/enum/relationship.enum";
 import { IsEnum, IsNotEmpty, IsString, Matches } from "class-validator";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { useNavigate } from "react-router-dom";
-import { User } from "../../types/user.class";
+import { User } from "../../dto/user.class";
 import { plainToInstance } from "class-transformer";
 import axios from "axios";
-import { Role } from "../../types/role.enum";
+import { Role } from "../../dto/enum/role.enum";
 
 class CreateCustomerDto {
   @IsString()

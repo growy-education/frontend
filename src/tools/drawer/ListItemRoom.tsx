@@ -10,7 +10,7 @@ import {
 import { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContextProvider";
-import { Role } from "../../types/role.enum";
+import { Role } from "../../dto/enum/role.enum";
 
 export const ListItemRoom = () => {
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ export const ListItemRoom = () => {
               <ListItemIcon>
                 <ListAlt />
               </ListItemIcon>
-              <ListItemText primary="オンライン自習室リスト" />
+              <ListItemText primary="自習室リスト" />
             </ListItemButton>
           </ListItem>
           {user.role === Role.ADMIN && (

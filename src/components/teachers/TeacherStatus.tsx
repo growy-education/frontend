@@ -1,6 +1,6 @@
 import { Typography, TypographyProps } from "@mui/material";
 
-import { TeacherStatus } from "../../types/teacher-status.enum";
+import { TeacherStatus } from "../../dto/enum/teacher-status.enum";
 
 type TeacherStatusProps = TypographyProps & {
   status: TeacherStatus;

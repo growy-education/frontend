@@ -5,7 +5,7 @@ import { GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";
-import { Teacher } from "../../types/teacher.class";
+import { Teacher } from "../../dto/teacher.class";
 import { EditDataGrid } from "../../components/components/DataGrid/EditDataGrid";
 import { CustomDataGrid } from "../../components/components/DataGrid/CustomDataGrid";
 import { SearchDataGrid } from "../../components/components/DataGrid/SearchDataGrid";

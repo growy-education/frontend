@@ -4,7 +4,7 @@ import { TextField } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import SendIcon from "@mui/icons-material/Send";
-import { Question } from "../../types/question.class";
+import { Question } from "../../dto/question.class";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";

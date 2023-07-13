@@ -2,11 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import { Box, Container, Button } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
-import { User } from "../../types/user.class";
+import { User } from "../../dto/user.class";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";
 import { Edit, LockOpen } from "@mui/icons-material";
-import { Role } from "../../types/role.enum";
+import { Role } from "../../dto/enum/role.enum";
 import { UserDetail } from "../../components/users/UserDetail";
 import { LinkedUserInformation } from "../../components/users/LinkedUserInformation";
 

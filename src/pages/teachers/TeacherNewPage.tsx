@@ -21,8 +21,8 @@ import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";
-import { User } from "../../types/user.class";
-import { Role } from "../../types/role.enum";
+import { User } from "../../dto/user.class";
+import { Role } from "../../dto/enum/role.enum";
 
 class CreateTeacherDto {
   @IsString()

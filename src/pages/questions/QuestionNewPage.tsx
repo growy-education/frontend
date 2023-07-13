@@ -1,18 +1,22 @@
 import { useContext, useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
-import { Box, FormHelperText, Grid, Typography } from "@mui/material";
-import { TextField } from "@mui/material";
+import { Box, FormHelperText } from "@mui/material";
 import { Button } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
-import { PhotoLibraryOutlined } from "@mui/icons-material";
 import axios from "axios";
-import { ArrayNotEmpty, IsArray, IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString } from "class-validator";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { useForm } from "react-hook-form";
 import { ConfirmationDialog } from "../../components/ConfirmationDialog";
 import { NotificationContext } from "../../contexts/NotificationContextProvider";
 import { PageTitleTypography } from "../../components/components/Typography/PageTitleTypography";
+import { SelectImageButton } from "../../components/components/Button/SelectImageButton";
+import { QuestionTitleTextField } from "../../components/questions/components/TextField/QuestionTitleTextField";
+import { QuestionContentTextField } from "../../components/questions/components/TextField/QuestionContentTextField";
+import { QuestionMemoTextField } from "../../components/questions/components/TextField/QuestionMemoTextField";
+import { NewImageBox } from "../../components/UploadingImage";
+import { Exclude } from "class-transformer";
 
 class CreateQuestionDto {
   @IsNotEmpty({ message: "タイトルを入力してください" })
@@ -27,17 +31,11 @@ class CreateQuestionDto {
   @IsString()
   memo: string;
 
-  @IsArray()
-  @ArrayNotEmpty()
-  @IsString({ each: true })
-  @IsNotEmpty({ each: true })
-  problemIds: string[];
+  @Exclude()
+  problems: File[];
 
-  @IsArray()
-  @ArrayNotEmpty()
-  @IsString({ each: true })
-  @IsNotEmpty({ each: true })
-  solutionIds: string[];
+  @Exclude()
+  solutions: File[];
 }
 
 export const QuestionNew = () => {
@@ -47,31 +45,30 @@ export const QuestionNew = () => {
   const {
     handleSubmit,
     register,
-    trigger,
     setValue,
-    getValues,
     setError,
     formState: { errors },
+    watch,
   } = useForm<CreateQuestionDto>({
     resolver: classValidatorResolver(CreateQuestionDto),
     defaultValues: {
       title: "",
       content: "",
       memo: "",
-      problemIds: [],
-      solutionIds: [],
+      problems: [],
+      solutions: [],
     },
   });
 
-  const [problems, setProblems] = useState<File[]>([]);
-  const [solutions, setSolutions] = useState<File[]>([]);
+  const problems = watch("problems");
+  const solutions = watch("solutions");
 
   const handleProblemImageSelect = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (event.target.files) {
       const filesArray = Array.from(event.target.files);
-      setProblems(filesArray);
+      setValue("problems", filesArray);
     }
   };
 
@@ -80,22 +77,62 @@ export const QuestionNew = () => {
   ) => {
     if (event.target.files) {
       const filesArray = Array.from(event.target.files);
-      setSolutions(filesArray);
+      setValue("solutions", filesArray);
     }
   };
 
-  const handleProblemImageId = (id: string) => {
-    setValue("problemIds", [...getValues("problemIds"), id]);
-  };
+  const handleQuestionUpload = async (data: CreateQuestionDto) => {
+    if (!(Array.isArray(data.problems) && data.problems.length > 0)) {
+      setError("problems", { message: "問題の画像を選択してください。" });
+    }
 
-  const handleSolutionImageId = (id: string) => {
-    setValue("solutionIds", [...getValues("solutionIds"), id]);
-  };
+    if (!(Array.isArray(data.solutions) && data.problems.length > 0)) {
+      setError("solutions", { message: "解答の画像を選択してください。" });
+    }
 
-  const handleImageUpload = async (data: CreateQuestionDto) => {
+    const problemIds = await Promise.all(
+      data.problems.map((file: File) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        return axios
+          .create(axiosConfig)
+          .post("images", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((response) => response.data.id as string);
+      })
+    );
+
+    console.log(problemIds);
+
+    const solutionIds = await Promise.all(
+      data.problems.map((file: File) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        return axios
+          .create(axiosConfig)
+          .post("images", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((response) => response.data.id as string);
+      })
+    );
+
+    console.log(solutionIds);
+
+    const { problems, solutions, ...createQuestionDto } = data;
+
     axios
       .create(axiosConfig)
-      .post("questions", data)
+      .post("questions", {
+        ...createQuestionDto,
+        problemIds,
+        solutionIds,
+      })
       .then((response) => console.log(response.data))
       .catch((error) => {
         console.log(error);
@@ -113,37 +150,26 @@ export const QuestionNew = () => {
 
   const handleConfirm = () => {
     setShowConfirmation(false);
-    handleSubmit(handleImageUpload)();
+    handleSubmit(handleQuestionUpload)();
   };
 
   return (
     <>
       <PageTitleTypography>新しく質問する</PageTitleTypography>
-      <Box
-        component="form"
-        onSubmit={handleSubmit(() => setShowConfirmation(true))}
-      >
+      <Box component="form" onSubmit={handleSubmit(handleQuestionUpload)}>
         <HeadlineTypography>質問タイトル</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="title"
-          label="タイトル"
+        <QuestionTitleTextField
           error={!!errors.title}
           helperText={
             !!errors.title
               ? errors.title.message
-              : "教材名や問題番号がオススメです。解説動画のタイトルにもなります。"
+              : "教材名や問題番号がオススメです。解説動画のタイトルにも使用いたします。"
           }
           {...register("title")}
         />
 
         <HeadlineTypography>質問内容</HeadlineTypography>
-        <TextField
-          fullWidth
-          multiline
-          rows={3}
-          id="content"
-          label="内容"
+        <QuestionContentTextField
           error={!!errors.content}
           helperText={
             !!errors.content
@@ -154,11 +180,7 @@ export const QuestionNew = () => {
         />
 
         <HeadlineTypography>備考</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="question"
-          label="備考"
-          multiline
+        <QuestionMemoTextField
           error={!!errors.memo}
           helperText={
             !!errors.memo
@@ -187,18 +209,16 @@ export const QuestionNew = () => {
                 objectFit: "cover",
               }}
             >
-              {/* <UploadingImage
-                file={file}
-                handleImageId={handleProblemImageId}
-              /> */}
+              <NewImageBox file={file} />
             </Box>
           ))}
         </Box>
 
-        {!!errors.problemIds && (
-          <FormHelperText error>{errors.problemIds.message}</FormHelperText>
+        {!!errors.problems && (
+          <FormHelperText error>{errors.problems.message}</FormHelperText>
         )}
-        <input
+        <Box
+          component="input"
           type="file"
           accept="image/*"
           multiple
@@ -206,16 +226,9 @@ export const QuestionNew = () => {
           style={{ display: "none" }}
           id="problem-image-input"
         />
-        <label htmlFor="problem-image-input">
-          <Button
-            variant="contained"
-            component="span"
-            sx={{ mt: 2 }}
-            endIcon={<PhotoLibraryOutlined />}
-          >
-            問題の画像を選択する
-          </Button>
-        </label>
+        <Box component="label" htmlFor="problem-image-input">
+          <SelectImageButton>問題の画像を選択する</SelectImageButton>
+        </Box>
 
         <HeadlineTypography>解答の画像</HeadlineTypography>
         <Box
@@ -227,7 +240,7 @@ export const QuestionNew = () => {
         >
           {solutions.map((file, index) => (
             <Box
-              key={`solution-box-${index}`}
+              key={`problem-box-${index}`}
               sx={{
                 flex: "0 0 auto",
                 marginRight: 2,
@@ -236,15 +249,12 @@ export const QuestionNew = () => {
                 objectFit: "cover",
               }}
             >
-              {/* <UploadingImage
-                file={file}
-                handleImageId={handleSolutionImageId}
-              /> */}
+              <NewImageBox file={file} />
             </Box>
           ))}
         </Box>
-        {!!errors.solutionIds && (
-          <FormHelperText error>{errors.solutionIds.message}</FormHelperText>
+        {!!errors.solutions && (
+          <FormHelperText error>{errors.solutions.message}</FormHelperText>
         )}
         <input
           type="file"
@@ -255,17 +265,10 @@ export const QuestionNew = () => {
           id="solution-image-input"
         />
         <label htmlFor="solution-image-input">
-          <Button
-            variant="contained"
-            component="span"
-            sx={{ mt: 2 }}
-            endIcon={<PhotoLibraryOutlined />}
-          >
-            解答の画像を選択する
-          </Button>
+          <SelectImageButton>解答の画像を選択する</SelectImageButton>
         </label>
 
-        <Box margin="0.5em">
+        <Box m={1}>
           <Button
             type="submit"
             color="primary"

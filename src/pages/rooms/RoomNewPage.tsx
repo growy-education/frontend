@@ -12,7 +12,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 import { Box, Button, MenuItem, Select, Typography } from "@mui/material";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
-import { Teacher } from "../../types/teacher.class";
+import { Teacher } from "../../dto/teacher.class";
 
 class CreateRoomDto {
   @IsNotEmpty()

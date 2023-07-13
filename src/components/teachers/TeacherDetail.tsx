@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { Teacher } from "../../types/teacher.class";
+import { Teacher } from "../../dto/teacher.class";
 import { HeadlineTypography } from "../components/Typography/HeadlineTypography";
 import { JaDateTimeTypography } from "../components/Typography/JaDateTimeTypography";
 import { TeacherStatusTypography } from "./TeacherStatus";

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
-import { Room } from "../../types/room.class";
+import { Room } from "../../dto/room.class";
 import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 import { plainToInstance } from "class-transformer";
 import { Box, Button, Container } from "@mui/material";

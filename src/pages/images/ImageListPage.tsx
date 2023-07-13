@@ -11,7 +11,7 @@ import { ImageList as MuiImageList } from "@mui/material";
 
 import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 
-import { ImageEntity } from "../../types/image.class";
+import { ImageEntity } from "../../dto/image.class";
 import { CustomImage } from "../../components/images/CustomImage";
 
 export const ImageListPage = () => {

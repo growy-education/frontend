@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios, { isAxiosError } from "axios";
 import { plainToInstance } from "class-transformer";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import { User } from "../../types/user.class";
+import { User } from "../../dto/user.class";
 import {
   IsEmail,
   IsOptional,

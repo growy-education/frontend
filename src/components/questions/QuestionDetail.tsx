@@ -7,11 +7,12 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+
 import { HeadlineTypography } from "../components/Typography/HeadlineTypography";
-import { Question } from "../../types/question.class";
-import { useCallback } from "react";
-import { RotatableImage } from "../images/RotatableImage";
+import { Question } from "../../dto/question.class";
 import { JaDateTimeTypography } from "../components/Typography/JaDateTimeTypography";
+import { QuestionImagesBox } from "./components/QuestionImagesBox";
+import { QuestionAnswerBox } from "./components/QuestionAnswerBox";
 
 type QuestionDetailProps = {
   question: Question;
@@ -29,15 +30,6 @@ export const QuestionDetail = ({ question, ...props }: QuestionDetailProps) => {
     solutions,
     answer,
   } = question;
-
-  const getYouTubePath = useCallback((url: string) => {
-    if (url.includes("https://youtu.be/")) {
-      const id = url.split("https://youtu.be/")[1];
-      if (id) {
-        return `https://www.youtube.com/embed/${id}`;
-      }
-    }
-  }, []);
 
   return (
     <>
@@ -64,27 +56,18 @@ export const QuestionDetail = ({ question, ...props }: QuestionDetailProps) => {
         <Typography>{memo || "なし"}</Typography>
       </Box>
       <HeadlineTypography>問題画像</HeadlineTypography>
-      {problems.map((image, index) => (
-        <RotatableImage id={image.id} key={`problem-${index}`} />
-      ))}
+      <QuestionImagesBox images={problems} />
+
       <HeadlineTypography>解答画像</HeadlineTypography>
-      {solutions.map((image, index) => (
-        <RotatableImage id={image.id} key={`solution-${index}`} />
-      ))}
+      <QuestionImagesBox images={solutions} />
+
       {answer && (
         <Grid item xs={12}>
           <Card>
             <CardContent>
               <Typography variant="h6">回答動画</Typography>
               <Box mt={2} pb="56.25%" position="relative">
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src={getYouTubePath(answer)}
-                  title="回答動画"
-                  allowFullScreen
-                  style={{ position: "absolute", top: 0, left: 0 }}
-                ></iframe>
+                <QuestionAnswerBox answer={answer} />
               </Box>
             </CardContent>
           </Card>

@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { useParams } from "react-router-dom";
-import { Question } from "../../types/question.class";
+import { Question } from "../../dto/question.class";
 import axios from "axios";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import { plainToInstance } from "class-transformer";

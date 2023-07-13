@@ -4,7 +4,7 @@ import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
-import { Teacher } from "../../types/teacher.class";
+import { Teacher } from "../../dto/teacher.class";
 import { plainToInstance } from "class-transformer";
 import { TeacherDetail } from "../../components/teachers/TeacherDetail";
 

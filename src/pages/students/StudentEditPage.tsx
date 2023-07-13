@@ -12,7 +12,7 @@ import { TextField } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import SendIcon from "@mui/icons-material/Send";
-import { Relationship } from "../../types/relationship.enum";
+import { Relationship } from "../../dto/enum/relationship.enum";
 import {
   IsDate,
   IsEnum,
@@ -24,12 +24,12 @@ import {
   MaxDate,
   MinDate,
 } from "class-validator";
-import { Gender } from "../../types/gender.enum";
+import { Gender } from "../../dto/enum/gender.enum";
 import { Type } from "class-transformer";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
-import { Student } from "../../types/student.class";
+import { Student } from "../../dto/student.class";
 import { DatePicker } from "@mui/x-date-pickers";
 import { LoadingBox } from "../../components/LoadingData";
 

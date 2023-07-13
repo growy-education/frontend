@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
-import { Question } from "../../types/question.class";
+import { Question } from "../../dto/question.class";
 import axios from "axios";
 
 export const AdminQuestionInfo = () => {

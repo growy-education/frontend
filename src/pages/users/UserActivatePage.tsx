@@ -16,12 +16,12 @@ import {
 } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
-import { User } from "../../types/user.class";
+import { User } from "../../dto/user.class";
 import axios, { isAxiosError } from "axios";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import { plainToInstance } from "class-transformer";
 import { ExpandMore, Lock } from "@mui/icons-material";
-import { Role } from "../../types/role.enum";
+import { Role } from "../../dto/enum/role.enum";
 import { IsEnum, IsNotEmpty } from "class-validator";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";

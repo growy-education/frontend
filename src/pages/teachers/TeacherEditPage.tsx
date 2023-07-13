@@ -11,8 +11,8 @@ import { TextField } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import SendIcon from "@mui/icons-material/Send";
-import { Relationship } from "../../types/relationship.enum";
-import { TeacherStatus } from "../../types/teacher-status.enum";
+import { Relationship } from "../../dto/enum/relationship.enum";
+import { TeacherStatus } from "../../dto/enum/teacher-status.enum";
 
 export const TeacherEdit = () => {
   const [firstName, setFirstName] = useState("");

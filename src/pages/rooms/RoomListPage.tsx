@@ -3,7 +3,7 @@ import { GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CustomerCalendar } from "../../components/rooms/CustomerCalendar";
-import { Room } from "../../types/room.class";
+import { Room } from "../../dto/room.class";
 import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";

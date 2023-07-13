@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { UserContext } from "../contexts/UserContextProvider";
-import { Role } from "../types/role.enum";
+import { Role } from "../dto/enum/role.enum";
 import { AdminInfo } from "../components/informations/AdminInfo";
 import { CustomerInfo } from "../components/informations/CustomerInfo";
 import { Typography } from "@mui/material";

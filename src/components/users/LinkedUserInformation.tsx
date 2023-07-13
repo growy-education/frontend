@@ -1,5 +1,5 @@
-import { User } from "../../types/user.class";
-import { Role } from "../../types/role.enum";
+import { User } from "../../dto/user.class";
+import { Role } from "../../dto/enum/role.enum";
 import { CustomerDetail } from "../customers/CustomerDetail";
 import {
   Accordion,

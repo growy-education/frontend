@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { Gender } from "./gender.enum";
+import { Gender } from "./enum/gender.enum";
 import { User } from "./user.class";
 
 export class Student {

@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/ja";
 import { Box, Typography, useTheme } from "@mui/material";
 import styled from "@emotion/styled";
-import { Room } from "../../types/room.class";
+import { Room } from "../../dto/room.class";
 import {
   NavigationLabelFunc,
   OnChangeFunc,

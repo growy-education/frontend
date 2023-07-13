@@ -30,16 +30,14 @@ import { TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
-import { Gender } from "../../types/gender.enum";
-import { User } from "../../types/user.class";
+import { Gender } from "../../dto/enum/gender.enum";
+import { User } from "../../dto/user.class";
 import axios from "axios";
-import { Role } from "../../types/role.enum";
+import { Role } from "../../dto/enum/role.enum";
 
 const getMinDate = (): Date => {
   const currentDate = new Date();

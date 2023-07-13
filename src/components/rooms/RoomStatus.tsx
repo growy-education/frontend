@@ -1,5 +1,5 @@
 import { Typography, TypographyProps } from "@mui/material";
-import { RoomStatus } from "../../types/room-status.enum";
+import { RoomStatus } from "../../dto/room-status.enum";
 
 type RoomStatusTypographyProps = TypographyProps & {
   status: RoomStatus;
