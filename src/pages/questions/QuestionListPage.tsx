@@ -92,7 +92,11 @@ export const QuestionList = () => {
     <Box sx={{ width: "100%" }}>
       <Box p={2}>
         {questions.map((question) => (
-          <QuestionCard key={`question-${question.id}`} question={question} />
+          <QuestionCard
+            key={`question-${question.id}`}
+            question={question}
+            sx={{ marginBottom: 3 }}
+          />
         ))}
       </Box>
 

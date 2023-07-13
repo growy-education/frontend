@@ -7,20 +7,33 @@ import { CustomImage } from "./CustomImage";
 type RotatableImageProps = BoxProps & {
   id: string;
 };
+
 export const RotatableImage = ({ id, ...props }: RotatableImageProps) => {
+  const [rotation, setRotation] = useState(0);
+
   const [imageSize, setImageSize] = useState<null | {
     width: number;
     height: number;
   }>(null);
-  const [rotation, setRotation] = useState(0);
+
   const [margin, setMargin] = useState<{
     marginTop?: number;
     marginBottom?: number;
     marginLeft?: number;
     marginRight?: number;
   }>({});
-  const [imageStyle, setImageStyle] = useState<{ height?: number }>({});
 
+  const [boxStyle, setBoxStyle] = useState<{
+    width?: number;
+    height?: number;
+  }>({});
+
+  const [imageStyle, setImageStyle] = useState<{
+    width?: number;
+    height?: number;
+  }>({});
+
+  // Set image width and height when this image is displayed
   const handleImageLoad: React.ReactEventHandler<HTMLImageElement> = (
     event
   ) => {
@@ -33,13 +46,18 @@ export const RotatableImage = ({ id, ...props }: RotatableImageProps) => {
   const handleRotate = () => {
     const newRotation = (rotation + 90) % 360;
     setRotation(newRotation);
+
     if (imageSize.width >= imageSize.height) {
       if (newRotation % 180 === 0) {
-        setMargin({});
+        setBoxStyle({});
+        setImageStyle({});
       } else {
-        setMargin({
-          marginTop: (imageSize.width - imageSize.height) / 2,
-          marginBottom: (imageSize.width - imageSize.height) / 2,
+        setBoxStyle({
+          height: imageSize.width ** 2 / imageSize.height,
+        });
+        setImageStyle({
+          height: imageSize.width,
+          width: imageSize.width ** 2 / imageSize.height,
         });
       }
     } else {
@@ -47,6 +65,7 @@ export const RotatableImage = ({ id, ...props }: RotatableImageProps) => {
         setImageStyle({});
       } else {
         setImageStyle({
+          width: imageSize.width ** 2 / imageSize.height,
           height: imageSize.width,
         });
       }
@@ -54,7 +73,7 @@ export const RotatableImage = ({ id, ...props }: RotatableImageProps) => {
   };
 
   return (
-    <Box position="relative" {...props} {...imageStyle}>
+    <Box position="relative" {...props} style={{ ...props.style, ...boxStyle }}>
       <CustomImage
         id={id}
         onLoad={handleImageLoad}
