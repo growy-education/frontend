@@ -1,7 +1,7 @@
 import { Type } from "class-transformer";
 import { Student } from "./student.class";
 import { Teacher } from "./teacher.class";
-import { RoomStatus } from "./room-status.enum";
+import { RoomStatus } from "./enum/room-status.enum";
 
 export class Room {
   id: string;
