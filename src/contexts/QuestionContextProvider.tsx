@@ -100,6 +100,9 @@ export const QuestionContextProvider = ({ children }: Props) => {
 
   const addQuestions = useCallback(
     async (addedQuestions: Question[]) => {
+      if (addedQuestions.length === 0) {
+        return;
+      }
       for (const addedQuestion of addedQuestions) {
         const index = questions.findIndex(
           (question) => question.id === addedQuestion.id
@@ -164,18 +167,18 @@ export const QuestionContextProvider = ({ children }: Props) => {
         .get(`/questions/${id}`)
         .then((response) => {
           const question = plainToInstance(Question, response.data);
-          addQuestion(question);
           return question;
         })
         .catch((error) => {
           return null;
         });
     },
-    [addQuestion, axiosConfig, questions]
+    [axiosConfig, questions]
   );
 
   const getQuestions = useCallback(
     async (filterDto: GetQuestionsFilterDto): Promise<Question[]> => {
+      console.log(filterDto);
       return axios
         .create(axiosConfig)
         .get("questions", { params: filterDto })

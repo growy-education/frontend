@@ -47,7 +47,6 @@ export const AxiosContextProvider: React.FC<AxiosProviderProps> = ({
   >(null);
 
   useEffect(() => {
-    console.log("bearer token\n", `Bearer ${bearerToken}`);
     setAxiosConfig(createAxiosConfig(bearerToken));
   }, [bearerToken]);
 

@@ -63,7 +63,6 @@ export const SignInScreen = ({
   } = useForm<SigninWithPasswordDto>({ resolver });
 
   const onSubmit: SubmitHandler<SigninWithPasswordDto> = (data) => {
-    console.log(data);
     handleEmailPasswordLogin(data.email, data.password);
   };
 

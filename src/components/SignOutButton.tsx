@@ -8,7 +8,6 @@ export const SignOutButton = () => {
   return (
     <Button
       onClick={() => {
-        console.log("押された!");
         handleLogout();
       }}
     >

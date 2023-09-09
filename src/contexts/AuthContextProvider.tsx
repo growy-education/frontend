@@ -66,7 +66,6 @@ export const AuthContextProvider = ({ children }: Props) => {
         password,
       })
       .then((response) => {
-        console.log("Backendから得られたデータ", response.data);
         const token = response.data.accessToken;
         setBearerToken(token);
         setIsLoggedIn(true);
@@ -79,13 +78,11 @@ export const AuthContextProvider = ({ children }: Props) => {
   };
 
   const handleGoogleLogin = (response: GoogleCredentialResponse) => {
-    console.log("Googleログインで得られたデータ", response);
     axios
       .post(`${process.env.REACT_APP_BACKEND_BASE_URL}/auth/google`, {
         token: response.credential,
       })
       .then((response) => {
-        console.log("Backendから得られたデータ", response.data);
         const token = response.data.accessToken;
         setBearerToken(token);
         setIsLoggedIn(true);
@@ -98,16 +95,13 @@ export const AuthContextProvider = ({ children }: Props) => {
   };
 
   const handleSignup = (username: string, email: string, password: string) => {
-    console.log(email, password);
     axios
       .post(`${process.env.REACT_APP_BACKEND_BASE_URL}/auth`, {
         username,
         email,
         password,
       })
-      .then((response) => {
-        console.log("Backendから得られたデータ", response.data);
-      })
+      .then((response) => {})
       .catch((error) => {
         console.log("AuthContextProviderのエラー:", error);
       });

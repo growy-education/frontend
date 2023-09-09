@@ -40,7 +40,6 @@ export const UserContextProvider = ({ children }: Props) => {
       .create(axiosConfig)
       .get("users/me")
       .then((response) => {
-        console.log(response.data);
         const user = plainToInstance(User, response.data);
         setUser(user);
       })
@@ -62,14 +61,12 @@ export const UserContextProvider = ({ children }: Props) => {
             : TeacherStatus.ACTIVE,
       })
       .then((response) => {
-        console.log(response.data);
         const savedTeacher = plainToInstance(Teacher, response.data);
         user.teacher = savedTeacher;
         setUser(plainToInstance(User, user));
         return savedTeacher;
       })
       .catch((error) => {
-        console.log(error);
         return null;
       });
   }, [axiosConfig, user]);
