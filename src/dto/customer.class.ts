@@ -1,7 +1,7 @@
 import { Type } from "class-transformer";
-import { Relationship } from "./relationship.enum";
 import { User } from "./user.class";
 import { CustomerService } from "./enum/customer-service.enum";
+import { Relationship } from "./enum/relationship.enum";
 
 export class Customer {
   id: string;

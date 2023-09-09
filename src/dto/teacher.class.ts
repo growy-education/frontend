@@ -1,6 +1,6 @@
 import { Type } from "class-transformer";
-import { TeacherStatus } from "./teacher-status.enum";
 import { User } from "./user.class";
+import { TeacherStatus } from "./enum/teacher-status.enum";
 
 export class Teacher {
   id: string;

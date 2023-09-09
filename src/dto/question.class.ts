@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { QuestionStatus } from "./question-status.enum";
+import { QuestionStatus } from "./enum/question-status.enum";
 import { ImageEntity } from "./image.class";
 import { Student } from "./student.class";
 import { Customer } from "./customer.class";

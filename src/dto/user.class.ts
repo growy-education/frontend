@@ -1,8 +1,8 @@
 import { Type } from "class-transformer";
-import { Role } from "./role.enum";
 import { Teacher } from "./teacher.class";
 import { Student } from "./student.class";
 import { Customer } from "./customer.class";
+import { Role } from "./enum/role.enum";
 
 export class User {
   id: string;
