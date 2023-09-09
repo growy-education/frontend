@@ -83,18 +83,10 @@ export const UserEdit = ({ user, onCancel, onSuccess }: UserEditProps) => {
   });
 
   const onSubmit: SubmitHandler<UpdateUserDto> = (data) => {
-    let updatedData: UpdateUserDto = {};
-    for (const key in data) {
-      if (data[key] !== user[key]) {
-        updatedData[key] = data[key];
-      }
-    }
-    console.log(updatedData);
+    console.log(data);
     axios
       .create(axiosConfig)
-      .put(`users/${userId}`, {
-        ...updatedData,
-      })
+      .put(`users/${userId}`, data)
       .then((response) => {
         onSuccess();
       })
