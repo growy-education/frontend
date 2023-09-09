@@ -6,6 +6,7 @@ import {
   IsOptional,
   IsPhoneNumber,
   IsString,
+  IsUrl,
   MaxLength,
   MinLength,
 } from "class-validator";
@@ -16,6 +17,12 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import axios, { isAxiosError } from "axios";
 import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
+import { UsernameTextField } from "./UsernameTextField";
+import { EmailTextField } from "./EmailTextField";
+import { PhoneTextField } from "./PhoneTextField";
+import { ChatWebhookUrlTextField } from "./ChatWebhookUrlTextField";
+import { HeadEditBox } from "../HeadEditBox";
+import { CancelEditButton } from "../components/CancelEditButton";
 
 class UpdateUserDto {
   @IsOptional()
@@ -31,6 +38,13 @@ class UpdateUserDto {
   @IsOptional()
   @IsPhoneNumber("JP", { message: "電話番号を入力してください" })
   phone?: string;
+
+  @IsOptional()
+  @IsUrl(
+    { protocols: ["https"], host_whitelist: ["chat.googleapis.com"] },
+    { message: "例)https://chat.googleapis.com/***" }
+  )
+  chatWebhookUrl: string;
 }
 
 type UserEditProps = {
@@ -64,6 +78,7 @@ export const UserEdit = ({ user, onCancel, onSuccess }: UserEditProps) => {
       username: user?.username || "",
       email: user?.email || "",
       phone: user?.phone || "",
+      chatWebhookUrl: user?.chatWebhookUrl || "",
     },
   });
 
@@ -130,47 +145,26 @@ export const UserEdit = ({ user, onCancel, onSuccess }: UserEditProps) => {
 
   return (
     <>
+      <HeadEditBox>
+        <CancelEditButton onClick={onCancel} />
+        <SubmitButton onClick={handleSubmit(onSubmit)} trigger={trigger} />
+      </HeadEditBox>
+
       <HeadlineTypography>ユーザー名</HeadlineTypography>
-      <TextField
-        fullWidth
-        id="username"
-        label="ユーザー名"
-        error={!!errors.username}
-        helperText={!!errors.username ? errors.username.message : ""}
-        {...register("username")}
-      />
+      <UsernameTextField errors={errors} {...register("username")} />
 
       <HeadlineTypography>メールアドレス</HeadlineTypography>
-      <TextField
-        fullWidth
-        id="email"
-        label="メールアドレス"
-        error={!!errors.email}
-        helperText={errors.email ? errors.email.message : ""}
-        {...register("email")}
-      />
+      <EmailTextField errors={errors} {...register("email")} />
 
       <HeadlineTypography>電話番号</HeadlineTypography>
-      <TextField
-        fullWidth
-        id="phone"
-        label="電話番号"
-        error={!!errors.phone}
-        helperText={errors.phone ? errors.phone.message : ""}
-        {...register("phone")}
+      <PhoneTextField errors={errors} {...register("phone")} />
+
+      <HeadlineTypography>GoogleChat Webhook URL(DM)</HeadlineTypography>
+      <ChatWebhookUrlTextField
+        errors={errors}
+        {...register("chatWebhookUrl")}
       />
 
-      <Box margin="0.5em">
-        <SubmitButton onClick={handleSubmit(onSubmit)} trigger={trigger} />
-        <Button
-          type="submit"
-          color="inherit"
-          variant="contained"
-          onClick={onCancel}
-        >
-          キャンセル
-        </Button>
-      </Box>
       {result.open && !result.success && (
         <Snackbar
           open={result.open && !result.success}

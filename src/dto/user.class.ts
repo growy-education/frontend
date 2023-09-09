@@ -14,9 +14,14 @@ export class User {
   updatedAt: Date;
 
   username: string;
+
   email: string;
+
   phone: string;
+
   role: Role;
+
+  chatWebhookUrl: string;
 
   @Type(() => Customer)
   customer?: Customer;

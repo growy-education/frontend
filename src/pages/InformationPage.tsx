@@ -1,19 +1,35 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { UserContext } from "../contexts/UserContextProvider";
 import { Role } from "../dto/enum/role.enum";
 import { AdminInfo } from "../components/informations/AdminInfo";
 import { CustomerInfo } from "../components/informations/CustomerInfo";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { TeacherInfo } from "../components/informations/TeacherInfo";
+import { PageTitleTypography } from "../components/components/Typography/PageTitleTypography";
 
-export const Information = () => {
+export const HomePage = () => {
   const { user } = useContext(UserContext);
   if (user.role === Role.ADMIN) {
-    return <AdminInfo />;
+    return (
+      <>
+        <PageTitleTypography>ホーム</PageTitleTypography>
+        <AdminInfo />
+      </>
+    );
   } else if (user.role === Role.CUSTOMER) {
-    return <CustomerInfo />;
+    return (
+      <>
+        <PageTitleTypography>ホーム</PageTitleTypography>
+        <CustomerInfo />
+      </>
+    );
   } else if (user.role === Role.TEACHER) {
-    return <TeacherInfo />;
+    return (
+      <>
+        <PageTitleTypography>ホーム</PageTitleTypography>
+        <TeacherInfo />
+      </>
+    );
   } else {
     return (
       <Typography>まだアカウントがアクティベートされていません。</Typography>

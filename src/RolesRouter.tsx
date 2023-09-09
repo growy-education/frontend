@@ -7,7 +7,7 @@ import { Role } from "./dto/enum/role.enum";
 import { General } from "./General";
 
 import { NotFound } from "./components/NotFound";
-import { Information } from "./pages/InformationPage";
+import { HomePage } from "./pages/InformationPage";
 
 // Profiles
 import { ProfilePage } from "./pages/profiles/ProfilePage";
@@ -15,10 +15,10 @@ import { ProfileEditPage } from "./pages/profiles/ProfileEditPage";
 
 // Images
 import { ImageListPage } from "./pages/images/ImageListPage";
-import { ImageNew } from "./components/ImageNewPage";
+import { ImageNew } from "./pages/images/ImageNewPage";
 
 // Questions
-import { QuestionList } from "./pages/questions/QuestionListPage";
+import { QuestionListPage } from "./pages/questions/QuestionListPage";
 import { QuestionNew } from "./pages/questions/QuestionNewPage";
 import { QuestionCheck } from "./pages/questions/QuestionCheckPage";
 import { QuestionDetailPage } from "./pages/questions/QuestionDetailPage";
@@ -62,15 +62,17 @@ export const RolesRouter: React.FC = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<General />}>
-          <Route path="/profile" element={<ProfilePage />} />
+          {/* <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/edit" element={<ProfileEditPage />} />
           <Route path="/images" element={<ImageListPage />} />
-          <Route path="/images/new" element={<ImageNew />} />
+          <Route path="/images/new" element={<ImageNew />} /> */}
+
+          <Route index path="/" element={<HomePage />} />
+          <Route path="/home" element={<HomePage />} />
 
           {user.role === Role.ADMIN && (
             <>
-              <Route path="/" element={<Information />} />
-              <Route path="/questions" element={<QuestionList />} />
+              <Route path="/questions" element={<QuestionListPage />} />
               <Route path="/questions/new" element={<QuestionNew />} />
               <Route
                 path="/questions/:questionId"
@@ -133,8 +135,7 @@ export const RolesRouter: React.FC = () => {
           )}
           {user.role === Role.CUSTOMER && (
             <>
-              <Route path="/" element={<Information />} />
-              <Route path="/questions" element={<QuestionList />} />
+              <Route path="/questions" element={<QuestionListPage />} />
               <Route path="/questions/new" element={<QuestionNew />} />
               <Route
                 path="/questions/:questionId"
@@ -144,21 +145,17 @@ export const RolesRouter: React.FC = () => {
                 path="/questions/:questionId/edit"
                 element={<QuestionEdit />}
               />
-              <Route path="/rooms/" element={<RoomList />} />
-              <Route path="/rooms/:roomId" element={<RoomDetail />} />
             </>
           )}
           {user.role === Role.TEACHER && (
             <>
-              <Route path="/" element={<Information />} />
-
-              <Route path="/questions" element={<QuestionList />} />
+              <Route path="/questions" element={<QuestionListPage />} />
               <Route
                 path="/questions/:questionId"
                 element={<QuestionDetailPage />}
               />
               <Route
-                path="/questions/:questionId/assigned"
+                path="/questions/:questionId/assign"
                 element={<QuestionAssignedPage />}
               />
 

@@ -1,13 +1,13 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Typography } from "@mui/material";
-import { TextField } from "@mui/material";
+import { Box } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import {
   IsEmail,
   IsPhoneNumber,
   IsString,
+  IsUrl,
   Matches,
   MaxLength,
   MinLength,
@@ -19,6 +19,12 @@ import axios, { isAxiosError } from "axios";
 import { SubmitButton } from "../../components/SubmitButton";
 import { ConfirmationDialog } from "../../components/ConfirmationDialog";
 import { ResultSnackbar } from "../../components/ResultSnackbar";
+import { UsernameTextField } from "../../components/users/UsernameTextField";
+import { EmailTextField } from "../../components/users/EmailTextField";
+import { PasswordTextField } from "../../components/users/PasswordTextField";
+import { PhoneTextField } from "../../components/users/PhoneTextField";
+import { ChatWebhookUrlTextField } from "../../components/users/ChatWebhookUrlTextField";
+import { PageTitleTypography } from "../../components/components/Typography/PageTitleTypography";
 
 class CreateUserDto {
   @IsString()
@@ -39,6 +45,12 @@ class CreateUserDto {
 
   @IsPhoneNumber("JP", { message: "電話番号を入力してください" })
   phone: string;
+
+  @IsUrl(
+    { protocols: ["https"], host_whitelist: ["chat.googleapis.com"] },
+    { message: "例)https://chat.googleapis.com/***" }
+  )
+  chatWebhookUrl: string;
 }
 
 export const UserNew = () => {
@@ -133,63 +145,26 @@ export const UserNew = () => {
 
   return (
     <>
-      <Typography variant="h4">ユーザーを新規作成する</Typography>
+      <PageTitleTypography>ユーザーを新規作成する</PageTitleTypography>
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
         <HeadlineTypography>ユーザー名</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="username"
-          label="ユーザー名"
-          error={!!errors.username}
-          helperText={
-            !!errors.username
-              ? errors.username.message
-              : "英数小文字・大文字、そして記号を含む8文字以上。"
-          }
-          {...register("username")}
-        />
+        <UsernameTextField errors={errors} {...register("username")} />
 
         <HeadlineTypography>メールアドレス</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="email"
-          autoComplete="email"
-          label="メールアドレス"
-          error={!!errors.email}
-          helperText={
-            errors.email
-              ? errors.email.message
-              : "有効なメールアドレスを入力してください"
-          }
-          {...register("email")}
-        />
+        <EmailTextField errors={errors} {...register("email")} />
 
         <HeadlineTypography>パスワード</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="password"
-          label="パスワード"
-          error={!!errors.password}
-          helperText={
-            errors.password
-              ? errors.password.message
-              : "英数小文字・大文字、そして記号を含む8文字以上。"
-          }
-          {...register("password")}
-        />
+        <PasswordTextField errors={errors} {...register("password")} />
+
         <HeadlineTypography>電話番号</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="phone"
-          label="電話番号"
-          error={!!errors.phone}
-          helperText={
-            errors.phone
-              ? errors.phone.message
-              : "電話番号を半角英数字で入力してください。"
-          }
-          {...register("phone")}
+        <PhoneTextField errors={errors} {...register("phone")} />
+
+        <HeadlineTypography>GoogleChat Webhook URL(DM)</HeadlineTypography>
+        <ChatWebhookUrlTextField
+          errors={errors}
+          {...register("chatWebhookUrl")}
         />
+
         <Box margin="0.5em">
           <SubmitButton onClick={handleSubmit(onSubmit)} trigger={trigger} />
         </Box>

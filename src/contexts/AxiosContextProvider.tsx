@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { AxiosRequestConfig } from "axios";
 import { AuthContext } from "./AuthContextProvider";
-import { LoadingBox } from "../components/LoadingData";
 import { PendingContextPage } from "../pages/PendingContextPage";
 
 interface AxiosContextType {
@@ -30,6 +29,7 @@ export const createAxiosConfig = (bearerToken: string) => ({
   headers: {
     Authorization: `Bearer ${bearerToken}`,
     "Content-Type": "application/json",
+    "ngrok-skip-browser-warning": true,
   },
 });
 

@@ -30,6 +30,7 @@ import axios, { isAxiosError } from "axios";
 import { plainToInstance } from "class-transformer";
 import { SubmitButton } from "../../components/SubmitButton";
 import { LoadingBox } from "../../components/LoadingData";
+import { HeadEditBox } from "../../components/HeadEditBox";
 
 class UpdateCustomerDto {
   @IsOptional()
@@ -258,7 +259,7 @@ export const CustomerEditPage = () => {
         )}
       />
 
-      <Box margin="0.5em">
+      <HeadEditBox>
         <SubmitButton onClick={handleSubmit(onSubmit)} trigger={trigger} />
         <Button
           type="submit"
@@ -268,7 +269,7 @@ export const CustomerEditPage = () => {
         >
           キャンセル
         </Button>
-      </Box>
+      </HeadEditBox>
       {result.open && !result.success && (
         <Snackbar
           open={result.open && !result.success}

@@ -14,16 +14,19 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { AuthContext } from "./contexts/AuthContextProvider";
 import { DrawerListItem } from "./tools/DrawerListItem";
 import { Outlet, useNavigate } from "react-router-dom";
-import { AccountCircle } from "@mui/icons-material";
 import { AlertPanelContext } from "./contexts/AlertPanelContextProvider";
 import { AlertPanel } from "./components/AlertPanel";
 import { PageWrapperBox } from "./components/PageWrapperBox";
 import { Offset } from "./tools/Offset";
+import { Role } from "./dto/enum/role.enum";
+import { TeacherStatusSwitch } from "./components/teachers/TeacherStatusSwitch";
+import { UserContext } from "./contexts/UserContextProvider";
 
 export const General: React.FC = () => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { handleLogout } = useContext(AuthContext);
+  const { user } = useContext(UserContext);
   const { alert } = useContext(AlertPanelContext);
 
   const handleToggleSidebar = () => {
@@ -58,15 +61,18 @@ export const General: React.FC = () => {
           {/* <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {user.role}モード
           </Typography> */}
-          <Box>
-            <IconButton onClick={() => navigate("/profile")} color="inherit">
+          <Box sx={{ display: "flex", flexDirection: "row" }}>
+            {/* <IconButton onClick={() => navigate("/profile")} color="inherit">
               <AccountCircle />
-            </IconButton>
+            </IconButton> */}
             {/* <IconButton onClick={() => console.log("押されたよ")} color="inherit">
             <Badge badgeContent={4} color={"secondary"}>
               <Notifications />
             </Badge>
           </IconButton> */}
+            {user.role === Role.TEACHER && (
+              <TeacherStatusSwitch teacher={user?.teacher} />
+            )}
             <IconButton onClick={handleLogout} color="inherit">
               <LogoutIcon />
             </IconButton>
@@ -92,9 +98,9 @@ export const General: React.FC = () => {
         <DrawerListItem />
       </SwipeableDrawer>
 
-      <PageWrapperBox maxWidth="600px">
+      <PageWrapperBox maxWidth={"600px"}>
         <Offset />
-        <Box p={2}>
+        <Box m={2}>
           <Outlet />
         </Box>
         {alert && <AlertPanel />}

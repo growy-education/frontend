@@ -117,7 +117,7 @@ export const SignInScreen = ({
           <AttentionDescriptionBox>
             <AsteriskTypography />
             <AttentionDescriptionTypography>
-              Googleでログインするときには、GrowyのGoogleアカウントでログインしようとしているか確認してください。
+              GrowyのGoogleアカウント（@growy.education）でログインしてください。
             </AttentionDescriptionTypography>
           </AttentionDescriptionBox>
           <AttentionDescriptionBox>
@@ -127,7 +127,7 @@ export const SignInScreen = ({
               <LineLinkTypography />
               または
               <GoogleChatLinkTypography />
-              で講師にお問合せください。
+              でスタッフまでお問合せください。
             </AttentionDescriptionTypography>
           </AttentionDescriptionBox>
         </AttentionBox>

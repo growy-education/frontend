@@ -15,12 +15,11 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { TextField } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import SendIcon from "@mui/icons-material/Send";
 import { Relationship } from "../../dto/enum/relationship.enum";
-import { IsEnum, IsNotEmpty, IsString, Matches } from "class-validator";
+import { IsEnum, IsNotEmpty, IsString, IsUrl, Matches } from "class-validator";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { useNavigate } from "react-router-dom";
@@ -28,6 +27,11 @@ import { User } from "../../dto/user.class";
 import { plainToInstance } from "class-transformer";
 import axios from "axios";
 import { Role } from "../../dto/enum/role.enum";
+import { FirstNameTextField } from "../../components/customers/FirstNameTextField";
+import { FirstNameKanaTextField } from "../../components/customers/FirstNameKanaTextField";
+import { LastNameTextField } from "../../components/customers/LastNameTextField";
+import { LastNameKanaTextField } from "../../components/customers/LastNameKanaTextField";
+import { SpaceWebhookUrlTextField } from "../../components/customers/SpaceWebhookUrlTextField";
 
 class CreateCustomerDto {
   @IsString()
@@ -60,6 +64,12 @@ class CreateCustomerDto {
 
   @IsEnum(Relationship)
   relationship: Relationship;
+
+  @IsUrl(
+    { protocols: ["https"], host_whitelist: ["chat.googleapis.com"] },
+    { message: "Invalid host URL" }
+  )
+  spaceWebhookUrl: string;
 }
 
 export const CustomerNewPage = () => {
@@ -142,56 +152,19 @@ export const CustomerNewPage = () => {
           ))}
         </Select>
         <HeadlineTypography>名前</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="firstName"
-          label="名前"
-          error={!!errors.firstName}
-          helperText={!!errors.firstName ? errors.firstName.message : ""}
-          {...register("firstName")}
-        />
+        <FirstNameTextField errors={errors} {...register("firstName")} />
 
         <HeadlineTypography>名前（読み仮名）</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="firstNameKana"
-          label="名前（読み仮名）"
-          error={!!errors.firstNameKana}
-          helperText={
-            !!errors.firstNameKana
-              ? errors.firstNameKana.message
-              : "カタカナで入力してください"
-          }
+        <FirstNameKanaTextField
+          errors={errors}
           {...register("firstNameKana")}
         />
 
         <HeadlineTypography>苗字</HeadlineTypography>
-        <TextField
-          id="lastName"
-          fullWidth
-          label="苗字"
-          error={!!errors.lastName}
-          helperText={
-            !!errors.lastName
-              ? errors.lastName.message
-              : "苗字を入力してください"
-          }
-          {...register("lastName")}
-        />
+        <LastNameTextField errors={errors} {...register("lastName")} />
 
         <HeadlineTypography>苗字（読み仮名）</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="lastNameKana"
-          label="苗字（読み仮名）"
-          error={!!errors.lastName}
-          helperText={
-            !!errors.lastNameKana
-              ? errors.lastNameKana.message
-              : "カタカナで入力してください"
-          }
-          {...register("lastNameKana")}
-        />
+        <LastNameKanaTextField errors={errors} {...register("lastNameKana")} />
 
         <HeadlineTypography>続柄</HeadlineTypography>
         <Controller
@@ -221,6 +194,12 @@ export const CustomerNewPage = () => {
           )}
         />
 
+        <HeadlineTypography>GoogleChatのWebhookURL(Space)</HeadlineTypography>
+        <SpaceWebhookUrlTextField
+          errors={errors}
+          {...register("spaceWebhookUrl")}
+        />
+
         <Box margin="0.5em">
           <Button
             type="submit"
@@ -232,6 +211,7 @@ export const CustomerNewPage = () => {
           </Button>
         </Box>
       </Box>
+
       {/* ダイアログ */}
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>カスタマーが作成されました</DialogTitle>

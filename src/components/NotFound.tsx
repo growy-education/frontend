@@ -1,14 +1,12 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import { Typography, Button, Container, Box } from "@mui/material";
+import { Button, Container, Box } from "@mui/material";
 import { Home } from "@mui/icons-material";
+import { PageTitleTypography } from "./components/Typography/PageTitleTypography";
 
 export const NotFound = () => {
   return (
     <Container>
-      <Typography variant="h1" align="center" gutterBottom>
-        404 Not Found
-      </Typography>
+      <PageTitleTypography>404 Not Found</PageTitleTypography>
       <Box display="flex" flexDirection="column" alignItems="center">
         <img
           src="/notfound.png"
@@ -17,7 +15,7 @@ export const NotFound = () => {
         />
         <Button
           component={Link}
-          to="/"
+          to="/home"
           variant="contained"
           color="primary"
           startIcon={<Home />}

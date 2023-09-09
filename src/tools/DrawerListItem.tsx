@@ -8,14 +8,17 @@ import { ListItemUser } from "./drawer/ListItemUser";
 import { ListItemTeacher } from "./drawer/ListItemTeacher";
 import { ListItemCustomer } from "./drawer/ListItemCustomer";
 import { ListItemStudent } from "./drawer/ListItemStudent";
+import { ListItemHome } from "./drawer/ListItemHome";
+import { ListItemGoogleChat } from "./drawer/ListItemGoogleChat";
+import { ListItemCorrection } from "./drawer/ListItemCorrection";
 
 export const DrawerListItem = () => {
   const { user } = useContext(UserContext);
 
   return (
     <List>
+      <ListItemHome />
       <ListItemQuestion />
-      <ListItemRoom />
       {user.role === Role.ADMIN && (
         <>
           <ListItemUser />
@@ -24,8 +27,13 @@ export const DrawerListItem = () => {
           <ListItemTeacher />
         </>
       )}
-      {user.role === Role.CUSTOMER && <></>}
-      {user.role === Role.TEACHER && <></>}
+      {user.role === Role.CUSTOMER && (
+        <>
+          <ListItemRoom />
+          <ListItemCorrection />
+          <ListItemGoogleChat />
+        </>
+      )}
     </List>
   );
 };

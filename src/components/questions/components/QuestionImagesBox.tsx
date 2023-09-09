@@ -13,7 +13,7 @@ export const QuestionImagesBox = ({
   return (
     <Box {...props}>
       {images.map((image, index) => (
-        <QuestionImageBox id={image.id} key={`problem-${index}`} />
+        <QuestionImageBox id={image.id} key={`${image}-${index}`} />
       ))}
     </Box>
   );

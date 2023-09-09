@@ -1,35 +1,46 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Container } from "@mui/material";
-import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import { Navigate, useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Box } from "@mui/material";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+
 import { Question } from "../../dto/question.class";
-import axios from "axios";
-import { plainToInstance } from "class-transformer";
 import { LoadingBox } from "../../components/LoadingData";
 import { QuestionDetail } from "../../components/questions/QuestionDetail";
-import { StudentAccordion } from "../../components/students/StudentAccordion";
+import { UserContext } from "../../contexts/UserContextProvider";
+import { Role } from "../../dto/enum/role.enum";
+import { EditingQuestionBox } from "../../components/questions/components/EditingQuestionBox";
+import { AnswerQuestionAccordion } from "../../components/questions/AnswerQuestionAccordion";
+import { CheckQuestionAnswerAccordion } from "../../components/questions/CheckQuestionAnswerAccordion";
+import { QuestionContext } from "../../contexts/QuestionContextProvider";
+import { ChangeQuestionTeacherAccordion } from "../../components/questions/ChangeQuestionTeacherBox";
+import { QuestionStatus } from "../../dto/enum/question-status.enum";
+import { TeacherEditQuestionBox } from "../../components/questions/TeacherEditQuestionBox";
+import { NotFound } from "../../components/NotFound";
+import { QuestionAlert } from "../../components/questions/QuestionAlert";
 
 export const QuestionDetailPage = () => {
-  const [question, setQuestion] = useState<null | Question>(null);
-  const { axiosConfig } = useContext(AxiosContext);
-
   const { questionId } = useParams();
+  const { user } = useContext(UserContext);
+  const { questions, getQuestionById } = useContext(QuestionContext);
+
+  const [question, setQuestion] = useState<null | Question>(null);
+  const [notFound, setNotFound] = useState(false);
+
   useEffect(() => {
-    axios
-      .create(axiosConfig)
-      .get(`/questions/${questionId}`)
-      .then((response) => {
-        const question = plainToInstance(Question, response.data);
-        console.log(question.student);
-        setQuestion(question);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [axiosConfig, questionId]);
+    getQuestionById(questionId).then((found) => {
+      if (found) {
+        setQuestion(found);
+      } else {
+        setNotFound(true);
+      }
+    });
+  }, [getQuestionById, questionId, questions]);
 
   if (!!!questionId) {
     return <Navigate to="/questions" />;
+  }
+
+  if (notFound) {
+    return <NotFound />;
   }
 
   if (!!!question) {
@@ -37,9 +48,38 @@ export const QuestionDetailPage = () => {
   }
 
   return (
-    <Container maxWidth="md">
+    <>
+      {user.role === Role.CUSTOMER &&
+        question.status !== QuestionStatus.CANCELED &&
+        question.status !== QuestionStatus.AVAILABLE && (
+          <EditingQuestionBox question={question} />
+        )}
+      {user.role === Role.TEACHER &&
+        question.status !== QuestionStatus.CANCELED &&
+        question.status !== QuestionStatus.CHECKING &&
+        question.status !== QuestionStatus.AVAILABLE && (
+          <TeacherEditQuestionBox question={question} />
+        )}
+      {user.role === Role.ADMIN && (
+        <>
+          {question.status !== QuestionStatus.CANCELED &&
+            question.status !== QuestionStatus.AVAILABLE && (
+              <EditingQuestionBox mb={2} question={question} />
+            )}
+          <Box mb={2}>
+            <QuestionAlert question={question} />
+          </Box>
+          {question.status !== QuestionStatus.CANCELED &&
+            question.status !== QuestionStatus.AVAILABLE &&
+            question.status !== QuestionStatus.CHECKING && (
+              <ChangeQuestionTeacherAccordion question={question} />
+            )}
+          {question.status === QuestionStatus.CHECKING && (
+            <CheckQuestionAnswerAccordion question={question} />
+          )}
+        </>
+      )}
       <QuestionDetail question={question} />
-      <StudentAccordion student={question?.student} />
-    </Container>
+    </>
   );
 };

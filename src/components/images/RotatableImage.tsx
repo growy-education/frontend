@@ -16,13 +16,6 @@ export const RotatableImage = ({ id, ...props }: RotatableImageProps) => {
     height: number;
   }>(null);
 
-  const [margin, setMargin] = useState<{
-    marginTop?: number;
-    marginBottom?: number;
-    marginLeft?: number;
-    marginRight?: number;
-  }>({});
-
   const [boxStyle, setBoxStyle] = useState<{
     width?: number;
     height?: number;
@@ -32,6 +25,8 @@ export const RotatableImage = ({ id, ...props }: RotatableImageProps) => {
     width?: number;
     height?: number;
   }>({});
+
+  const [marginTop, setMarginTop] = useState(0);
 
   // Set image width and height when this image is displayed
   const handleImageLoad: React.ReactEventHandler<HTMLImageElement> = (
@@ -46,28 +41,27 @@ export const RotatableImage = ({ id, ...props }: RotatableImageProps) => {
   const handleRotate = () => {
     const newRotation = (rotation + 90) % 360;
     setRotation(newRotation);
-
-    if (imageSize.width >= imageSize.height) {
-      if (newRotation % 180 === 0) {
-        setBoxStyle({});
-        setImageStyle({});
-      } else {
-        setBoxStyle({
-          height: imageSize.width ** 2 / imageSize.height,
-        });
-        setImageStyle({
-          height: imageSize.width,
-          width: imageSize.width ** 2 / imageSize.height,
-        });
-      }
+    if (newRotation % 180 === 0) {
+      setBoxStyle({});
+      setImageStyle({});
     } else {
+      setBoxStyle({
+        height: imageSize.width ** 2 / imageSize.height,
+      });
+      setImageStyle({
+        height: imageSize.width,
+        width: imageSize.width ** 2 / imageSize.height,
+      });
+    }
+    if (imageSize.width <= imageSize.height) {
       if (newRotation % 180 === 0) {
-        setImageStyle({});
+        setMarginTop(0);
       } else {
-        setImageStyle({
-          width: imageSize.width ** 2 / imageSize.height,
-          height: imageSize.width,
-        });
+        setMarginTop(
+          (imageSize.width ** 2 - imageSize.height ** 2) /
+            (2 * 2 * imageSize.height) +
+            16
+        );
       }
     }
   };
@@ -79,8 +73,16 @@ export const RotatableImage = ({ id, ...props }: RotatableImageProps) => {
         onLoad={handleImageLoad}
         style={{
           transform: `rotate(${rotation}deg)`,
-          ...margin,
+          transformOrigin:
+            imageSize &&
+            imageSize.width >= imageSize.height &&
+            rotation % 180 === 90
+              ? rotation === 90
+                ? `${imageStyle.height / 2}px ${imageStyle.height / 2}px`
+                : `${imageStyle.width / 2}px ${imageStyle.width / 2}px`
+              : "center center",
           ...imageStyle,
+          marginTop,
         }}
       />
       {!!imageSize && (

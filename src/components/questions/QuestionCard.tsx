@@ -31,7 +31,7 @@ export const QuestionCard = ({
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-between",
+              justifyContent: "start",
             }}
           >
             <Typography
@@ -39,9 +39,23 @@ export const QuestionCard = ({
               variant="h5"
               component="div"
               textAlign="left"
+              sx={{
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+              }}
             >
               {question.title}
             </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "end",
+              marginBottom: 1,
+            }}
+          >
             <QuestionStatusBox status={question.status} />
           </Box>
 
@@ -52,6 +66,7 @@ export const QuestionCard = ({
             variant="body2"
             color="text.secondary"
             textAlign="right"
+            date={question.createdAt}
           />
         </CardContent>
         <QuestionCardMedia id={question.problems[0].id} />

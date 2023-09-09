@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Add, ListAlt, Quiz } from "@mui/icons-material";
+import { AddCircle, ListAlt, Quiz } from "@mui/icons-material";
 import {
   Collapse,
   List,
@@ -32,10 +32,20 @@ export const ListItemQuestion = () => {
         <ListItemIcon>
           <Quiz />
         </ListItemIcon>
-        <ListItemText primary="質問回答" />
+        <ListItemText primary="質問回答　　　" />
       </ListItemButton>
       <Collapse in={questionListOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
+          {user.role === Role.CUSTOMER && (
+            <ListItem onClick={() => navigate("/questions/new")}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <AddCircle />
+                </ListItemIcon>
+                <ListItemText primary="質問する" />
+              </ListItemButton>
+            </ListItem>
+          )}
           <ListItem onClick={() => navigate("/questions")}>
             <ListItemButton>
               <ListItemIcon>
@@ -44,16 +54,6 @@ export const ListItemQuestion = () => {
               <ListItemText primary="質問リスト" />
             </ListItemButton>
           </ListItem>
-          {user.role === Role.CUSTOMER && (
-            <ListItem onClick={() => navigate("/questions/new")}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="質問を作成" />
-              </ListItemButton>
-            </ListItem>
-          )}
         </List>
       </Collapse>
     </>

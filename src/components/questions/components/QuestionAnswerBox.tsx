@@ -1,4 +1,4 @@
-import { Box, BoxProps } from "@mui/material";
+import { Box, BoxProps, Typography } from "@mui/material";
 import { Question } from "../../../dto/question.class";
 
 type QuestionAnswerBoxProps = {
@@ -19,15 +19,23 @@ export const QuestionAnswerBox = ({
       return `https://www.youtube.com/embed/${url}`;
     }
   };
+
+  if (!!!answer) {
+    return <Typography>まだ回答動画が作成されていません</Typography>;
+  }
+
   return (
-    <Box
-      component="iframe"
-      width="100%"
-      height="100%"
-      src={getYouTubePath(answer)}
-      title="回答動画"
-      allowFullScreen
-      style={{ position: "absolute", top: 0, left: 0 }}
-    />
+    <Box mt={2} pb="56.25%" position="relative" {...props}>
+      <Box
+        component="iframe"
+        width="100%"
+        height="100%"
+        src={getYouTubePath(answer)}
+        title="回答動画"
+        allowFullScreen
+        sx={{ position: "absolute", top: 0, left: 0 }}
+        onError={() => console.log("エラー！")}
+      />
+    </Box>
   );
 };

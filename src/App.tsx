@@ -18,6 +18,8 @@ import { AxiosContextProvider } from "./contexts/AxiosContextProvider";
 // dayjsの日本語化
 import dayjs from "dayjs";
 import "dayjs/locale/ja";
+import { QuestionContextProvider } from "./contexts/QuestionContextProvider";
+import { TeacherContextProvider } from "./contexts/TeacherContextProvider";
 dayjs.locale("ja");
 
 const theme = createTheme(
@@ -80,7 +82,11 @@ function App() {
                   <AuthContextProvider>
                     <AxiosContextProvider>
                       <UserContextProvider>
-                        <RolesRouter />
+                        <QuestionContextProvider>
+                          <TeacherContextProvider>
+                            <RolesRouter />
+                          </TeacherContextProvider>
+                        </QuestionContextProvider>
                       </UserContextProvider>
                     </AxiosContextProvider>
                   </AuthContextProvider>

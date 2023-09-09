@@ -10,9 +10,8 @@ const statusText = (status: QuestionStatus) => {
     case QuestionStatus.CHECKING:
       return "動画の確認中";
     case QuestionStatus.ASSIGNED:
-      return "動画の作成中";
     case QuestionStatus.PENDING:
-      return "待機中";
+      return "動画の作成中";
     case QuestionStatus.CANCELED:
       return "キャンセル済み";
   }
@@ -25,7 +24,6 @@ const statusColor = (status: QuestionStatus): keyof PaletteOptions => {
     case QuestionStatus.CHECKING:
       return "info";
     case QuestionStatus.ASSIGNED:
-      return "info";
     case QuestionStatus.PENDING:
       return "info";
     case QuestionStatus.CANCELED:

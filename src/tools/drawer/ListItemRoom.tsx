@@ -1,41 +1,57 @@
-import { Add, ListAlt, Tv } from "@mui/icons-material";
+import { Laptop, OpenInNew } from "@mui/icons-material";
 import {
-  Collapse,
-  List,
-  ListItem,
   ListItemButton,
   ListItemIcon,
+  ListItemProps,
   ListItemText,
+  Typography,
 } from "@mui/material";
 import { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContextProvider";
 import { Role } from "../../dto/enum/role.enum";
 
-export const ListItemRoom = () => {
+export const ListItemRoom = (props: ListItemProps) => {
   const navigate = useNavigate();
   const [roomListOpen, setRoomListOpen] = useState(false);
 
   const { user } = useContext(UserContext);
 
-  const handleRoomListToggle = () => {
-    setRoomListOpen(!roomListOpen);
-  };
+  // const handleRoomListToggle = () => {
+  //   setRoomListOpen(!roomListOpen);
+  // };
 
   const location = useLocation();
 
   return (
     <>
       <ListItemButton
-        onClick={handleRoomListToggle}
-        selected={location.pathname.includes("rooms")}
+        target="_blank"
+        href="https://forms.gle/X4bSytAtYh1vyMZe6"
+        rel="noreferrer"
+        // onClick={handleRoomListToggle}
+        // selected={location.pathname.includes("rooms")}
       >
         <ListItemIcon>
-          <Tv />
+          <Laptop />
         </ListItemIcon>
-        <ListItemText primary="オンライン自習室" />
+        <ListItemText
+          primary={
+            <Typography
+              sx={{
+                verticalAlign: "bottom",
+                display: "inline-flex",
+                alignItems: "center",
+              }}
+              {...props}
+            >
+              オンライン自習室
+              <OpenInNew fontSize="1rem" sx={{ ml: 0.25 }} />
+            </Typography>
+          }
+        />
       </ListItemButton>
-      <Collapse in={roomListOpen} timeout="auto" unmountOnExit>
+      {/* <Collapse in={roomListOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <ListItem onClick={() => navigate("/rooms")}>
             <ListItemButton>
@@ -49,14 +65,14 @@ export const ListItemRoom = () => {
             <ListItem onClick={() => navigate("/rooms/new")}>
               <ListItemButton>
                 <ListItemIcon>
-                  <Add />
+                  <AddCircle />
                 </ListItemIcon>
                 <ListItemText primary="オンライン自習室を作成" />
               </ListItemButton>
             </ListItem>
           )}
         </List>
-      </Collapse>
+      </Collapse> */}
     </>
   );
 };

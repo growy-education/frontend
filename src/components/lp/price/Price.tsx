@@ -44,6 +44,13 @@ export const Price = () => {
         <SubtitleDescriptionTypography>
           8,000円/コマ(80分)
         </SubtitleDescriptionTypography>
+
+        <SubtitleBox>
+          <SubtitleTypography>過去問・模試動画添削</SubtitleTypography>
+        </SubtitleBox>
+        <SubtitleDescriptionTypography>
+          5,000円/教材
+        </SubtitleDescriptionTypography>
       </DescriptionBox>
 
       <DescriptionBox>
@@ -68,6 +75,13 @@ export const Price = () => {
             <AsteriskTypography />
             <AttentionDescriptionTypography>
               ティーチングは月4コマ以上を受講していただきます。
+            </AttentionDescriptionTypography>
+          </AttentionDescriptionBox>
+
+          <AttentionDescriptionBox>
+            <AsteriskTypography />
+            <AttentionDescriptionTypography>
+              過去問・模試動画添削では、1年度1科目分(例:「〇〇中2023年度国語」)で１教材とさせていただきます。
             </AttentionDescriptionTypography>
           </AttentionDescriptionBox>
         </AttentionBox>

@@ -8,7 +8,16 @@ type UserDetailProps = {
 };
 
 export const UserDetail = ({ user }: UserDetailProps) => {
-  const { id, createdAt, updatedAt, username, email, phone, role } = user;
+  const {
+    id,
+    createdAt,
+    updatedAt,
+    username,
+    email,
+    phone,
+    role,
+    chatWebhookUrl,
+  } = user;
 
   return (
     <>
@@ -26,6 +35,8 @@ export const UserDetail = ({ user }: UserDetailProps) => {
       <Typography>{phone}</Typography>
       <HeadlineTypography>ユーザータイプ</HeadlineTypography>
       <Typography>{role}</Typography>
+      <HeadlineTypography>GoogleChat WebhookURL(DM)</HeadlineTypography>
+      <Typography sx={{ wordBreak: "break-all" }}>{chatWebhookUrl}</Typography>
     </>
   );
 };

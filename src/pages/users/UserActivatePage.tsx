@@ -233,7 +233,7 @@ export const UserActivate = () => {
         </Accordion>
         <Accordion>
           <AccordionSummary expandIcon={<ExpandMore />} id="teacher">
-            <Typography>Teacher情報</Typography>
+            <Typography>講師情報</Typography>
           </AccordionSummary>
           <AccordionDetails>
             {user ? (

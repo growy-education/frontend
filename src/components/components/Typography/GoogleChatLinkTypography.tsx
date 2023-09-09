@@ -10,7 +10,7 @@ export const GoogleChatLinkTypography = ({
       component="a"
       href="https://mail.google.com/chat/"
       target="_blank"
-      rel="noopener"
+      rel="noreferrer"
       sx={{
         verticalAlign: "bottom",
         display: "inline-flex",

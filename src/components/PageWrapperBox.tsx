@@ -4,10 +4,12 @@ export const PageWrapperBox = ({ children, ...props }: BoxProps) => {
   return (
     <Box
       component="main"
-      width="md"
-      maxWidth="500px"
-      overflow="hidden"
-      sx={{ margin: "0 auto" }}
+      sx={{
+        width: "100%",
+        maxWidth: "500px",
+        margin: "0 auto",
+        overflow: "hidden",
+      }}
       {...props}
     >
       {children}

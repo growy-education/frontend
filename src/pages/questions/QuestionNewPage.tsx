@@ -1,14 +1,15 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SendIcon from "@mui/icons-material/Send";
 import { Box, FormHelperText } from "@mui/material";
 import { Button } from "@mui/material";
-import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import axios from "axios";
 import { IsNotEmpty, IsString } from "class-validator";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
-import { useForm } from "react-hook-form";
-import { ConfirmationDialog } from "../../components/ConfirmationDialog";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+import { AxiosContext } from "../../contexts/AxiosContextProvider";
+import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import { NotificationContext } from "../../contexts/NotificationContextProvider";
 import { PageTitleTypography } from "../../components/components/Typography/PageTitleTypography";
 import { SelectImageButton } from "../../components/components/Button/SelectImageButton";
@@ -16,7 +17,9 @@ import { QuestionTitleTextField } from "../../components/questions/components/Te
 import { QuestionContentTextField } from "../../components/questions/components/TextField/QuestionContentTextField";
 import { QuestionMemoTextField } from "../../components/questions/components/TextField/QuestionMemoTextField";
 import { NewImageBox } from "../../components/UploadingImage";
-import { Exclude } from "class-transformer";
+import { Exclude, plainToInstance } from "class-transformer";
+import { Question } from "../../dto/question.class";
+import { ImageEntity } from "../../dto/image.class";
 
 class CreateQuestionDto {
   @IsNotEmpty({ message: "タイトルを入力してください" })
@@ -39,6 +42,10 @@ class CreateQuestionDto {
 }
 
 export const QuestionNew = () => {
+  const navigate = useNavigate();
+
+  const sending = useRef(false);
+
   const { axiosConfig } = useContext(AxiosContext);
   const { handleNotification: handleError } = useContext(NotificationContext);
 
@@ -81,16 +88,28 @@ export const QuestionNew = () => {
     }
   };
 
-  const handleQuestionUpload = async (data: CreateQuestionDto) => {
+  const handleQuestionUpload: SubmitHandler<CreateQuestionDto> = async (
+    data
+  ) => {
     if (!(Array.isArray(data.problems) && data.problems.length > 0)) {
-      setError("problems", { message: "問題の画像を選択してください。" });
+      return setError("problems", {
+        message: "問題の画像を選択してください。",
+      });
     }
 
     if (!(Array.isArray(data.solutions) && data.problems.length > 0)) {
-      setError("solutions", { message: "解答の画像を選択してください。" });
+      return setError("solutions", {
+        message: "解答の画像を選択してください。",
+      });
     }
 
-    const problemIds = await Promise.all(
+    if (sending.current) {
+      return;
+    }
+
+    sending.current = true;
+
+    const problemImages = await Promise.all(
       data.problems.map((file: File) => {
         const formData = new FormData();
         formData.append("file", file);
@@ -101,14 +120,12 @@ export const QuestionNew = () => {
               "Content-Type": "multipart/form-data",
             },
           })
-          .then((response) => response.data.id as string);
+          .then((response) => plainToInstance(ImageEntity, response.data));
       })
     );
 
-    console.log(problemIds);
-
-    const solutionIds = await Promise.all(
-      data.problems.map((file: File) => {
+    const solutionImages = await Promise.all(
+      data.solutions.map((file: File) => {
         const formData = new FormData();
         formData.append("file", file);
         return axios
@@ -118,11 +135,9 @@ export const QuestionNew = () => {
               "Content-Type": "multipart/form-data",
             },
           })
-          .then((response) => response.data.id as string);
+          .then((response) => plainToInstance(ImageEntity, response.data));
       })
     );
-
-    console.log(solutionIds);
 
     const { problems, solutions, ...createQuestionDto } = data;
 
@@ -130,10 +145,14 @@ export const QuestionNew = () => {
       .create(axiosConfig)
       .post("questions", {
         ...createQuestionDto,
-        problemIds,
-        solutionIds,
+        problems: problemImages,
+        solutions: solutionImages,
       })
-      .then((response) => console.log(response.data))
+      .then((response) => {
+        const question = plainToInstance(Question, response.data);
+        //成功したら詳細ページへ飛ぶ
+        navigate(`/questions/${question.id}`);
+      })
       .catch((error) => {
         console.log(error);
         handleError({
@@ -142,15 +161,10 @@ export const QuestionNew = () => {
           message:
             "質問の送信に失敗しました。ネットワーク環境を確認してください。",
         });
+      })
+      .finally(() => {
+        sending.current = false;
       });
-  };
-
-  // Dialogを表示するかどうか
-  const [showConfirmation, setShowConfirmation] = useState(false);
-
-  const handleConfirm = () => {
-    setShowConfirmation(false);
-    handleSubmit(handleQuestionUpload)();
   };
 
   return (
@@ -194,6 +208,7 @@ export const QuestionNew = () => {
         <Box
           sx={{
             mt: 2,
+            mb: 1,
             display: "flex",
             overflowX: "auto",
           }}
@@ -213,7 +228,6 @@ export const QuestionNew = () => {
             </Box>
           ))}
         </Box>
-
         {!!errors.problems && (
           <FormHelperText error>{errors.problems.message}</FormHelperText>
         )}
@@ -234,6 +248,7 @@ export const QuestionNew = () => {
         <Box
           sx={{
             mt: 2,
+            mb: 1,
             display: "flex",
             overflowX: "auto",
           }}
@@ -256,7 +271,8 @@ export const QuestionNew = () => {
         {!!errors.solutions && (
           <FormHelperText error>{errors.solutions.message}</FormHelperText>
         )}
-        <input
+        <Box
+          component="input"
           type="file"
           accept="image/*"
           multiple
@@ -274,20 +290,12 @@ export const QuestionNew = () => {
             color="primary"
             variant="contained"
             endIcon={<SendIcon />}
+            disabled={sending.current}
           >
             送信
           </Button>
         </Box>
       </Box>
-
-      {/* 確認ダイアログ */}
-      <ConfirmationDialog
-        title="質問を送信しますか？"
-        message="送信した質問は後で確認することができます。"
-        open={showConfirmation}
-        onConfirm={handleConfirm}
-        onCancel={() => setShowConfirmation(false)}
-      />
     </>
   );
 };

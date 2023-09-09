@@ -67,10 +67,10 @@ export const TeachingPointTypography = ({
   return (
     <Typography
       sx={{
-        fontSize: "2.5rem",
+        fontSize: "1.5rem",
         marginBottom: "3%",
         fontWeight: 600,
-        lineHeight: "3rem",
+        lineHeight: "2.0rem",
         color: "#3D9654",
       }}
       {...props}
