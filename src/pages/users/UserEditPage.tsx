@@ -24,9 +24,6 @@ export const UserEditPage = () => {
       .then((response) => {
         const user = plainToInstance(User, response.data);
         setUser(user);
-        setValue("username", user.username);
-        setValue("email", user.email);
-        setValue("phone", user.phone);
       })
       .catch((error) => {
         console.log(error);
