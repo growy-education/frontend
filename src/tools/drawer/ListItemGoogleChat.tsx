@@ -34,7 +34,7 @@ export const ListItemGoogleChat = (props: ListItemProps) => {
               {...props}
             >
               Google Chat
-              <OpenInNew fontSize="1rem" sx={{ ml: 0.25 }} />
+              <OpenInNew fontSize="small" sx={{ ml: 0.25 }} />
             </Typography>
           }
         />

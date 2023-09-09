@@ -34,7 +34,7 @@ export const ListItemCorrection = (props: ListItemProps) => {
               {...props}
             >
               模試・過去問添削
-              <OpenInNew fontSize="1rem" sx={{ ml: 0.25 }} />
+              <OpenInNew fontSize="small" sx={{ ml: 0.25 }} />
             </Typography>
           }
         />
