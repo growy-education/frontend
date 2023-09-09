@@ -1,4 +1,4 @@
-import { IconProps } from "@mui/material";
+import { SvgIconProps } from "@mui/material";
 import { QuestionStatus } from "../../../dto/enum/question-status.enum";
 import {
   Cancel,
@@ -10,7 +10,7 @@ import {
 
 type QuestionStatusIconProps = {
   status: QuestionStatus;
-} & IconProps;
+} & SvgIconProps;
 
 export const QuestionStatusIcon = ({
   status,

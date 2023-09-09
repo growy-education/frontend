@@ -131,7 +131,7 @@ export const SignInScreen = ({
             </AttentionDescriptionTypography>
           </AttentionDescriptionBox>
         </AttentionBox>
-        <Box mt={1} sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <Box mt={1} sx={{ display: "flex", justifyContent: "flex-start" }}>
           <Button
             variant="outlined"
             startIcon={<ArrowBack />}
