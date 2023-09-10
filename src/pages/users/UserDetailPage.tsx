@@ -9,6 +9,7 @@ import { Edit, LockOpen } from "@mui/icons-material";
 import { Role } from "../../dto/enum/role.enum";
 import { UserDetail } from "../../components/users/UserDetail";
 import { LinkedUserInformation } from "../../components/users/LinkedUserInformation";
+import { HeadEditBox } from "../../components/HeadEditBox";
 
 export const UserDetailPage = () => {
   const [user, setUser] = useState<null | User>(null);
@@ -36,7 +37,7 @@ export const UserDetailPage = () => {
 
   return (
     <Container maxWidth="md">
-      <Box display="flex" justifyContent={"flex-end"} mb={2}>
+      <HeadEditBox>
         <Button
           variant="outlined"
           endIcon={<LockOpen />}
@@ -54,7 +55,7 @@ export const UserDetailPage = () => {
         >
           ユーザー情報を編集
         </Button>
-      </Box>
+      </HeadEditBox>
       <Box my={3}>
         <Box mb={2}>
           <UserDetail user={user} />

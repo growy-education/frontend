@@ -17,6 +17,7 @@ export const CustomerDetail = ({ customer }: CustomerDetailProps) => {
     lastName,
     lastNameKana,
     relationship,
+    spaceWebhookUrl,
   } = customer;
   return (
     <>
@@ -36,6 +37,8 @@ export const CustomerDetail = ({ customer }: CustomerDetailProps) => {
       <Typography>{lastNameKana}</Typography>
       <HeadlineTypography>続柄</HeadlineTypography>
       <Typography>{relationship}</Typography>
+      <HeadlineTypography>GoogleChatのWebhookURL(Space)</HeadlineTypography>
+      <Typography>{spaceWebhookUrl}</Typography>
     </>
   );
 };

@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import {
   Box,
   Button,
-  CircularProgress,
   FormControlLabel,
   Radio,
   RadioGroup,
@@ -12,7 +11,6 @@ import { TextField } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import SendIcon from "@mui/icons-material/Send";
-import { Relationship } from "../../dto/enum/relationship.enum";
 import {
   IsDate,
   IsEnum,

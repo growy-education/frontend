@@ -10,8 +10,8 @@ export const CustomerInfo = () => {
   return (
     <>
       <Box sx={{ p: 1 }}>
-        <Typography fontWeight="bold" textAlign="left">
-          現在ご契約中契約中サービス
+        <Typography variant="h4" textAlign="left">
+          ご契約中サービス
         </Typography>
         <Box m={1}>
           <Box m={0.5} display="inline-flex">
@@ -30,13 +30,13 @@ export const CustomerInfo = () => {
             <CoachingChip color="info" disabled />
           </Box>
         </Box>
-        <Typography fontWeight="bold" textAlign="left">
+        <Typography variant="h4" textAlign="left">
           最新アップデート内容
         </Typography>
         <Box m={1}>
           <NewUpdates />
         </Box>
-        <Typography fontWeight="bold" textAlign="left">
+        <Typography variant="h4" textAlign="left">
           ホンネで中学受験の新着動画
         </Typography>
         <Box m={1} pb="56.25%" position="relative">

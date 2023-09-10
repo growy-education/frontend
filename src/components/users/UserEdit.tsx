@@ -90,6 +90,7 @@ export const UserEdit = ({ user, onCancel, onSuccess }: UserEditProps) => {
         onSuccess();
       })
       .catch((error: unknown) => {
+        console.log(error);
         if (isAxiosError(error)) {
           // サーバーからの返答がある
           if (error.response) {

@@ -6,7 +6,7 @@ import { AuthContextProvider } from "./contexts/AuthContextProvider";
 import { UserContextProvider } from "./contexts/UserContextProvider";
 import { RolesRouter } from "./RolesRouter";
 import { NotificationContextProvider } from "./contexts/NotificationContextProvider";
-import { ThemeProvider, createTheme } from "@mui/material";
+import { Theme, ThemeProvider, createTheme } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { jaJP as dataGridJaJp } from "@mui/x-data-grid";
@@ -47,19 +47,22 @@ const theme = createTheme(
       },
       h2: {
         fontSize: "1.8rem",
-        fontWeight: 400,
+        fontWeight: "bold",
+        lineHeight: 1.2,
       },
       h3: {
         fontSize: "1.4rem",
         fontWeight: 400,
       },
       h4: {
-        fontSize: "1.3rem",
-        fontWeight: 400,
+        fontSize: "1.4rem",
+        fontWeight: "bold",
+        lineHeight: 1.5,
       },
       h5: {
-        fontSize: "1.3rem",
+        fontSize: "1.2rem",
         fontWeight: 400,
+        lineHeight: 1.5,
       },
     },
   },

@@ -6,7 +6,7 @@ export const PageWrapperBox = ({ children, ...props }: BoxProps) => {
       component="main"
       sx={{
         width: "100%",
-        maxWidth: "500px",
+        maxWidth: "700px",
         margin: "0 auto",
         overflow: "hidden",
       }}

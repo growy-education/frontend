@@ -1,7 +1,13 @@
 import { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SendIcon from "@mui/icons-material/Send";
-import { Box, FormHelperText } from "@mui/material";
+import {
+  Backdrop,
+  Box,
+  CircularProgress,
+  FormHelperText,
+  Typography,
+} from "@mui/material";
 import { Button } from "@mui/material";
 import axios from "axios";
 import { IsNotEmpty, IsString } from "class-validator";
@@ -44,7 +50,8 @@ class CreateQuestionDto {
 export const QuestionNew = () => {
   const navigate = useNavigate();
 
-  const sending = useRef(false);
+  const [sending, setSending] = useState(false);
+  const [sendingMessage, setSendingMessage] = useState("");
 
   const { axiosConfig } = useContext(AxiosContext);
   const { handleNotification: handleError } = useContext(NotificationContext);
@@ -103,12 +110,13 @@ export const QuestionNew = () => {
       });
     }
 
-    if (sending.current) {
+    if (sending) {
       return;
     }
 
-    sending.current = true;
+    setSending(true);
 
+    setSendingMessage("問題画像の送信中です...");
     const problemImages = await Promise.all(
       data.problems.map((file: File) => {
         const formData = new FormData();
@@ -124,6 +132,7 @@ export const QuestionNew = () => {
       })
     );
 
+    setSendingMessage("解答画像の送信中です...");
     const solutionImages = await Promise.all(
       data.solutions.map((file: File) => {
         const formData = new FormData();
@@ -141,6 +150,7 @@ export const QuestionNew = () => {
 
     const { problems, solutions, ...createQuestionDto } = data;
 
+    setSendingMessage("質問情報の送信中です...");
     axios
       .create(axiosConfig)
       .post("questions", {
@@ -163,7 +173,8 @@ export const QuestionNew = () => {
         });
       })
       .finally(() => {
-        sending.current = false;
+        setSending(false);
+        setSendingMessage("");
       });
   };
 
@@ -290,12 +301,19 @@ export const QuestionNew = () => {
             color="primary"
             variant="contained"
             endIcon={<SendIcon />}
-            disabled={sending.current}
+            disabled={sending}
           >
             送信
           </Button>
         </Box>
       </Box>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={sending}
+      >
+        <Typography color="inherit">{sendingMessage}</Typography>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   );
 };

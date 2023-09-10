@@ -1,35 +1,20 @@
 import { ArrowRight, Check } from "@mui/icons-material";
-import {
-  Avatar,
-  Box,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemIcon,
-  ListItemText,
-  Skeleton,
-  Typography,
-} from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 export const NewUpdates = () => {
   return (
     <>
       <Box display="flex" mb={1}>
         <ArrowRight sx={{ color: "primary.main", display: "flex" }} />
-        <Typography
-          color="primary.main"
-          variant="body1"
-          textAlign="left"
-          sx={{ color: "primary.main", textDecoration: "underline" }}
-        >
+        <Typography variant="h5" color="primary.main" textAlign="left">
           質問回答がWebサイトで利用可能に
         </Typography>
       </Box>
       <>
         <Box mb={1}>
           <Typography textAlign="left">
-            　βテストの段階から好評だった質問回答なのですが、
-            生徒・保護者の皆様からの不満の声もありました。
+            　ご利用の生徒・保護者の皆様から好評だった質問回答なのですが、
+            同様に不満の声もありました。
           </Typography>
         </Box>
         <Box ml={0.5} mr={0.5} mb={1}>
@@ -52,26 +37,21 @@ export const NewUpdates = () => {
         </Box>
         <Box mb={1}>
           <Typography textAlign="left">
-            　これらの声に応えるために、私たちはWebサイトにログイン機能を導入し、
+            　これらの声に応えるために、GrowyはWebサイトにログイン機能を導入し、
             質問回答サービスをGoogleフォームから移行することに決定しました。
           </Typography>
         </Box>
         <Box display="flex" mb={1}>
           <ArrowRight sx={{ color: "primary.main", display: "flex" }} />
-          <Typography
-            color="primary.main"
-            variant="body1"
-            textAlign="left"
-            sx={{ color: "primary.main", textDecoration: "underline" }}
-          >
-            今後のWebサイトへの機能について
+          <Typography variant="h5" color="primary.main" textAlign="left">
+            今後のWebサイトについて
           </Typography>
         </Box>
         <Box mb={1}>
           <Typography textAlign="left">
             　今回のWeb版質問回答が好評であれば、
-            オンライン自習室や過去問・模試動画添削などの各種サービスも
-            少しずつWebサイトへと機能を拡充していくつもりです。
+            オンライン自習室や過去問・模試動画添削などの各種サービスもWebサイトへと移行するなど、
+            今後もWebサイトの機能を拡充していくつもりです。
           </Typography>
         </Box>
         <Box mb={1}>
@@ -80,7 +60,7 @@ export const NewUpdates = () => {
             GoogleChatでスタッフまでお伝えください。
           </Typography>
         </Box>
-        <Box mb={1}>
+        <Box mb={2}>
           <Typography textAlign="left">
             　これからも個別指導塾Growyをよろしくお願いいたします。
           </Typography>

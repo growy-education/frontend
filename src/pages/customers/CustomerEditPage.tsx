@@ -20,6 +20,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUrl,
   Matches,
 } from "class-validator";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
@@ -31,6 +32,13 @@ import { plainToInstance } from "class-transformer";
 import { SubmitButton } from "../../components/SubmitButton";
 import { LoadingBox } from "../../components/LoadingData";
 import { HeadEditBox } from "../../components/HeadEditBox";
+import { FirstNameTextField } from "../../components/customers/FirstNameTextField";
+import { FirstNameKanaTextField } from "../../components/customers/FirstNameKanaTextField";
+import { LastNameTextField } from "../../components/customers/LastNameTextField";
+import { LastNameKanaTextField } from "../../components/customers/LastNameKanaTextField";
+import { PageTitleTypography } from "../../components/components/Typography/PageTitleTypography";
+import { CancelEditButton } from "../../components/components/CancelEditButton";
+import { SpaceWebhookUrlTextField } from "../../components/customers/SpaceWebhookUrlTextField";
 
 class UpdateCustomerDto {
   @IsOptional()
@@ -64,6 +72,13 @@ class UpdateCustomerDto {
   @IsOptional()
   @IsEnum(Relationship)
   relationship?: Relationship;
+
+  @IsOptional()
+  @IsUrl(
+    { protocols: ["https"], host_whitelist: ["chat.googleapis.com"] },
+    { message: "Invalid host URL" }
+  )
+  spaceWebhookUrl: string;
 }
 
 export const CustomerEditPage = () => {
@@ -113,6 +128,7 @@ export const CustomerEditPage = () => {
         setValue("lastName", customer.lastName);
         setValue("lastNameKana", customer.lastNameKana);
         setValue("relationship", customer.relationship);
+        setValue("spaceWebhookUrl", customer.spaceWebhookUrl);
       })
       .catch((error) => {
         console.log(error);
@@ -120,19 +136,9 @@ export const CustomerEditPage = () => {
   }, [axiosConfig, customerId]);
 
   const onSubmit: SubmitHandler<UpdateCustomerDto> = (data) => {
-    console.log(data);
-    let updatedData: UpdateCustomerDto = {};
-    for (const key in data) {
-      if (data[key] !== customer[key]) {
-        updatedData[key] = data[key];
-      }
-    }
-    console.log(updatedData);
     axios
       .create(axiosConfig)
-      .put(`customers/${customerId}`, {
-        ...updatedData,
-      })
+      .put(`customers/${customerId}`, data)
       .then((response) => {
         navigate(`/customers/${customerId}`);
       })
@@ -175,61 +181,26 @@ export const CustomerEditPage = () => {
 
   return (
     <>
-      <Typography variant="h4">保護者情報を更新する</Typography>
+      <PageTitleTypography>保護者情報を編集する</PageTitleTypography>
+
+      <HeadEditBox>
+        <CancelEditButton
+          onClick={() => navigate(`/customers/${customerId}`)}
+        />
+        <SubmitButton onClick={handleSubmit(onSubmit)} trigger={trigger} />
+      </HeadEditBox>
 
       <HeadlineTypography>名前</HeadlineTypography>
-      <TextField
-        fullWidth
-        id="firstName"
-        label="名前"
-        error={!!errors.firstName}
-        helperText={
-          !!errors.firstName
-            ? errors.firstName.message
-            : "名前を入力してください"
-        }
-        {...register("firstName")}
-      />
+      <FirstNameTextField errors={errors} {...register("firstName")} />
 
       <HeadlineTypography>名前（読み仮名）</HeadlineTypography>
-      <TextField
-        fullWidth
-        id="firstNameKana"
-        label="名前（読み仮名）"
-        error={!!errors.firstNameKana}
-        helperText={
-          !!errors.firstNameKana
-            ? errors.firstNameKana.message
-            : "カタカナで入力してください"
-        }
-        {...register("firstNameKana")}
-      />
+      <FirstNameKanaTextField errors={errors} {...register("firstNameKana")} />
 
       <HeadlineTypography>苗字</HeadlineTypography>
-      <TextField
-        id="lastName"
-        fullWidth
-        label="苗字"
-        error={!!errors.lastName}
-        helperText={
-          !!errors.lastName ? errors.lastName.message : "苗字を入力してください"
-        }
-        {...register("lastName")}
-      />
+      <LastNameTextField errors={errors} {...register("lastName")} />
 
       <HeadlineTypography>苗字（読み仮名）</HeadlineTypography>
-      <TextField
-        fullWidth
-        id="lastNameKana"
-        label="苗字（読み仮名）"
-        error={!!errors.lastName}
-        helperText={
-          !!errors.lastNameKana
-            ? errors.lastNameKana.message
-            : "カタカナで入力してください"
-        }
-        {...register("lastNameKana")}
-      />
+      <LastNameKanaTextField errors={errors} {...register("lastNameKana")} />
 
       <HeadlineTypography>続柄</HeadlineTypography>
       <Controller
@@ -259,17 +230,12 @@ export const CustomerEditPage = () => {
         )}
       />
 
-      <HeadEditBox>
-        <SubmitButton onClick={handleSubmit(onSubmit)} trigger={trigger} />
-        <Button
-          type="submit"
-          color="inherit"
-          variant="contained"
-          onClick={() => navigate(`/customers/${customerId}`)}
-        >
-          キャンセル
-        </Button>
-      </HeadEditBox>
+      <HeadlineTypography>GoogleChatのWebhookURL(Space)</HeadlineTypography>
+      <SpaceWebhookUrlTextField
+        errors={errors}
+        {...register("spaceWebhookUrl")}
+      />
+
       {result.open && !result.success && (
         <Snackbar
           open={result.open && !result.success}

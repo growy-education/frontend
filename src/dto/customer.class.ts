@@ -24,6 +24,8 @@ export class Customer {
 
   relationship: Relationship;
 
+  spaceWebhookUrl: string;
+
   @Type(() => User)
   user?: User;
 }
