@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Alert, Box, BoxProps, Typography } from "@mui/material";
+import { Alert, Box, BoxProps } from "@mui/material";
 import { Question } from "../../dto/question.class";
 import { QuestionStatus } from "../../dto/enum/question-status.enum";
 import { AnswerQuestionAccordion } from "./AnswerQuestionAccordion";
@@ -19,7 +19,7 @@ export const TeacherEditQuestionBox = ({
   return (
     <Box {...props}>
       {user.teacher.id !== question?.teacher?.id ? (
-        <Alert severity="info" sx={{ justifyContent: "center" }} {...props}>
+        <Alert severity="info" sx={{ justifyContent: "center" }}>
           この質問は他の講師に割り当てられています
         </Alert>
       ) : (
