@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Typography, Box, Container, Button } from "@mui/material";
+import { Box, Container, Button } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -7,6 +7,9 @@ import { HeadlineTypography } from "../../components/components/Typography/Headl
 import { Student } from "../../dto/student.class";
 import { plainToInstance } from "class-transformer";
 import { StudentDetail } from "../../components/students/StudentDetail";
+import { HeadEditBox } from "../../components/HeadEditBox";
+import { EditButton } from "../../components/components/EditButton";
+import { BackToListButton } from "../../components/components/BackToListButton";
 
 export const StudentDetailProps = () => {
   const [student, setStudent] = useState<null | Student>(null);
@@ -14,7 +17,6 @@ export const StudentDetailProps = () => {
   const navigate = useNavigate();
 
   const { studentId } = useParams();
-  console.log(student);
   useEffect(() => {
     console.log("param studentId:", studentId);
     axios
@@ -34,18 +36,28 @@ export const StudentDetailProps = () => {
   }
 
   return (
-    <Container maxWidth="md">
-      <Box my={3}>
-        <StudentDetail student={student} />
-        {!!student?.user && (
-          <>
-            <HeadlineTypography>ユーザー</HeadlineTypography>
-            <Button onClick={() => navigate(`/users/${student.user.id}`)}>
-              ユーザー詳細ページへ
-            </Button>
-          </>
-        )}
-      </Box>
-    </Container>
+    <>
+      <HeadEditBox>
+        <BackToListButton
+          onClick={() => {
+            navigate(`/students`);
+          }}
+        />
+        <EditButton
+          onClick={() => {
+            navigate(`/students/${student.id}/edit`);
+          }}
+        />
+      </HeadEditBox>
+      <StudentDetail student={student} />
+      {!!student?.user && (
+        <>
+          <HeadlineTypography>ユーザー</HeadlineTypography>
+          <Button onClick={() => navigate(`/users/${student.user.id}`)}>
+            ユーザー詳細ページへ
+          </Button>
+        </>
+      )}
+    </>
   );
 };

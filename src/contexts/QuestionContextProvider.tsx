@@ -86,13 +86,8 @@ export const QuestionContextProvider = ({ children }: Props) => {
       if (index === -1) {
         addQuestion(updatedQuestion);
       } else {
-        const newQuestions = questions.map((question) => {
-          if (question.id === updatedQuestion.id) {
-            return updatedQuestion;
-          }
-          return question;
-        });
-        setQuestions(newQuestions);
+        questions[index] = updatedQuestion;
+        setQuestions([...questions]);
       }
     },
     [addQuestion, questions]
@@ -167,13 +162,14 @@ export const QuestionContextProvider = ({ children }: Props) => {
         .get(`/questions/${id}`)
         .then((response) => {
           const question = plainToInstance(Question, response.data);
+          addQuestion(question);
           return question;
         })
         .catch((error) => {
           return null;
         });
     },
-    [axiosConfig, questions]
+    [addQuestion, axiosConfig, questions]
   );
 
   const getQuestions = useCallback(

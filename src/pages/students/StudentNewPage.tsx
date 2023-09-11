@@ -38,6 +38,14 @@ import { Gender } from "../../dto/enum/gender.enum";
 import { User } from "../../dto/user.class";
 import axios from "axios";
 import { Role } from "../../dto/enum/role.enum";
+import { FirstNameTextField } from "../../components/customers/FirstNameTextField";
+import { FirstNameKanaTextField } from "../../components/customers/FirstNameKanaTextField";
+import { LastNameTextField } from "../../components/customers/LastNameTextField";
+import { LastNameKanaTextField } from "../../components/customers/LastNameKanaTextField";
+import { SchoolTextField } from "../../components/students/SchoolTextField";
+import { JukuTextField } from "../../components/students/JukuTextField";
+import { JukuBuildingTextField } from "../../components/students/JukuBuildingTextField";
+import { GradeTextField } from "../../components/students/GradeTextField";
 
 const getMinDate = (): Date => {
   const currentDate = new Date();
@@ -192,56 +200,19 @@ export const StudentNew = () => {
         </Select>
 
         <HeadlineTypography>名前</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="firstName"
-          label="名前"
-          error={!!errors.firstName}
-          helperText={!!errors.firstName ? errors.firstName.message : ""}
-          {...register("firstName")}
-        />
+        <FirstNameTextField errors={errors} {...register("firstName")} />
 
         <HeadlineTypography>名前（読み仮名）</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="firstNameKana"
-          label="名前（読み仮名）"
-          error={!!errors.firstNameKana}
-          helperText={
-            !!errors.firstNameKana
-              ? errors.firstNameKana.message
-              : "カタカナで入力してください"
-          }
+        <FirstNameKanaTextField
+          errors={errors}
           {...register("firstNameKana")}
         />
 
         <HeadlineTypography>苗字</HeadlineTypography>
-        <TextField
-          id="lastName"
-          fullWidth
-          label="苗字"
-          error={!!errors.lastName}
-          helperText={
-            !!errors.lastName
-              ? errors.lastName.message
-              : "苗字を入力してください"
-          }
-          {...register("lastName")}
-        />
+        <LastNameTextField errors={errors} {...register("lastName")} />
 
         <HeadlineTypography>苗字（読み仮名）</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="lastNameKana"
-          label="苗字（読み仮名）"
-          error={!!errors.lastName}
-          helperText={
-            !!errors.lastNameKana
-              ? errors.lastNameKana.message
-              : "カタカナで入力してください"
-          }
-          {...register("lastNameKana")}
-        />
+        <LastNameKanaTextField errors={errors} {...register("lastNameKana")} />
 
         <HeadlineTypography>性別</HeadlineTypography>
         <Controller
@@ -269,60 +240,16 @@ export const StudentNew = () => {
         />
 
         <HeadlineTypography>小学校名</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="school"
-          label="小学校名"
-          error={!!errors.school}
-          helperText={
-            !!errors.school
-              ? errors.school.message
-              : "通っている学校の名前を入力してください"
-          }
-          {...register("school")}
-        />
+        <SchoolTextField errors={errors} {...register("school")} />
 
         <HeadlineTypography>塾</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="juku"
-          label="塾名"
-          error={!!errors.juku}
-          helperText={
-            !!errors.juku
-              ? errors.juku.message
-              : "通っている塾の名前を入力してください"
-          }
-          {...register("juku")}
-        />
+        <JukuTextField errors={errors} {...register("juku")} />
 
         <HeadlineTypography>塾の校舎</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="jukuBuilding"
-          label="塾の校舎"
-          error={!!errors.jukuBuilding}
-          helperText={
-            !!errors.jukuBuilding
-              ? errors.jukuBuilding.message
-              : "通っている校舎名を入力してください"
-          }
-          {...register("jukuBuilding")}
-        />
-
+        <JukuBuildingTextField errors={errors} {...register("jukuBuilding")} />
         <HeadlineTypography>学年</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="grade"
-          label="学年"
-          error={!!errors.grade}
-          helperText={
-            !!errors.grade
-              ? errors.grade.message
-              : "学年を半角英数字で入力してください"
-          }
-          {...register("grade")}
-        />
+
+        <GradeTextField errors={errors} {...register("grade")} />
 
         <HeadlineTypography>誕生日</HeadlineTypography>
         <Controller

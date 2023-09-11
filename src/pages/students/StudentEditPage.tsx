@@ -30,6 +30,18 @@ import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { Student } from "../../dto/student.class";
 import { DatePicker } from "@mui/x-date-pickers";
 import { LoadingBox } from "../../components/LoadingData";
+import { FirstNameTextField } from "../../components/customers/FirstNameTextField";
+import { FirstNameKanaTextField } from "../../components/customers/FirstNameKanaTextField";
+import { LastNameTextField } from "../../components/customers/LastNameTextField";
+import { LastNameKanaTextField } from "../../components/customers/LastNameKanaTextField";
+import { SchoolTextField } from "../../components/students/SchoolTextField";
+import { JukuTextField } from "../../components/students/JukuTextField";
+import { JukuBuildingTextField } from "../../components/students/JukuBuildingTextField";
+import { GradeTextField } from "../../components/students/GradeTextField";
+import { PageTitleTypography } from "../../components/components/Typography/PageTitleTypography";
+import { HeadEditBox } from "../../components/HeadEditBox";
+import { CancelEditButton } from "../../components/components/CancelEditButton";
+import { SaveEditButton } from "../../components/components/SaveEditButton";
 
 const getMinDate = (): Date => {
   const currentDate = new Date();
@@ -144,56 +156,24 @@ export const StudentEdit = () => {
 
   return (
     <>
-      <Typography variant="h4">生徒情報を更新する</Typography>
+      <PageTitleTypography>生徒情報を更新する</PageTitleTypography>
+
+      <HeadEditBox>
+        <CancelEditButton />
+        <SaveEditButton />
+      </HeadEditBox>
+
       <HeadlineTypography>名前</HeadlineTypography>
-      <TextField
-        fullWidth
-        id="firstName"
-        label="名前"
-        error={!!errors.firstName}
-        helperText={!!errors.firstName ? errors.firstName.message : ""}
-        {...register("firstName")}
-      />
+      <FirstNameTextField errors={errors} {...register("firstName")} />
 
       <HeadlineTypography>名前（読み仮名）</HeadlineTypography>
-      <TextField
-        fullWidth
-        id="firstNameKana"
-        label="名前（読み仮名）"
-        error={!!errors.firstNameKana}
-        helperText={
-          !!errors.firstNameKana
-            ? errors.firstNameKana.message
-            : "カタカナで入力してください"
-        }
-        {...register("firstNameKana")}
-      />
+      <FirstNameKanaTextField errors={errors} {...register("firstNameKana")} />
 
       <HeadlineTypography>苗字</HeadlineTypography>
-      <TextField
-        id="lastName"
-        fullWidth
-        label="苗字"
-        error={!!errors.lastName}
-        helperText={
-          !!errors.lastName ? errors.lastName.message : "苗字を入力してください"
-        }
-        {...register("lastName")}
-      />
+      <LastNameTextField errors={errors} {...register("lastName")} />
 
       <HeadlineTypography>苗字（読み仮名）</HeadlineTypography>
-      <TextField
-        fullWidth
-        id="lastNameKana"
-        label="苗字（読み仮名）"
-        error={!!errors.lastName}
-        helperText={
-          !!errors.lastNameKana
-            ? errors.lastNameKana.message
-            : "カタカナで入力してください"
-        }
-        {...register("lastNameKana")}
-      />
+      <LastNameKanaTextField errors={errors} {...register("lastNameKana")} />
 
       <HeadlineTypography>性別</HeadlineTypography>
       <Controller
@@ -221,60 +201,16 @@ export const StudentEdit = () => {
       />
 
       <HeadlineTypography>小学校名</HeadlineTypography>
-      <TextField
-        fullWidth
-        id="school"
-        label="小学校名"
-        error={!!errors.school}
-        helperText={
-          !!errors.school
-            ? errors.school.message
-            : "通っている学校の名前を入力してください"
-        }
-        {...register("school")}
-      />
+      <SchoolTextField errors={errors} {...register("school")} />
 
       <HeadlineTypography>塾名</HeadlineTypography>
-      <TextField
-        fullWidth
-        id="juku"
-        label="塾名"
-        error={!!errors.juku}
-        helperText={
-          !!errors.juku
-            ? errors.juku.message
-            : "通っている塾の名前を入力してください"
-        }
-        {...register("juku")}
-      />
+      <JukuTextField errors={errors} {...register("juku")} />
 
       <HeadlineTypography>塾の校舎</HeadlineTypography>
-      <TextField
-        fullWidth
-        id="jukuBuilding"
-        label="塾の校舎"
-        error={!!errors.jukuBuilding}
-        helperText={
-          !!errors.jukuBuilding
-            ? errors.jukuBuilding.message
-            : "通っている校舎名を入力してください"
-        }
-        {...register("jukuBuilding")}
-      />
+      <JukuBuildingTextField errors={errors} {...register("juku")} />
 
       <HeadlineTypography>学年</HeadlineTypography>
-      <TextField
-        fullWidth
-        id="grade"
-        label="学年"
-        error={!!errors.grade}
-        helperText={
-          !!errors.grade
-            ? errors.grade.message
-            : "学年を半角英数字で入力してください"
-        }
-        {...register("grade")}
-      />
+      <GradeTextField errors={errors} {...register("jukuBuilding")} />
 
       <HeadlineTypography>誕生日</HeadlineTypography>
       <Controller
@@ -298,17 +234,6 @@ export const StudentEdit = () => {
           />
         )}
       />
-
-      <Box margin="0.5em">
-        <Button
-          color="primary"
-          variant="contained"
-          endIcon={<SendIcon />}
-          onClick={() => console.log("送信しちゃうよ")}
-        >
-          更新する
-        </Button>
-      </Box>
     </>
   );
 };

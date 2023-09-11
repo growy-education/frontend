@@ -2,7 +2,7 @@ import { AssignmentTurnedIn } from "@mui/icons-material";
 import { Button, ButtonProps } from "@mui/material";
 import { QuestionStatus } from "../../../dto/enum/question-status.enum";
 import { Question } from "../../../dto/question.class";
-import { useCallback, useContext, useRef } from "react";
+import { useCallback, useContext, useState } from "react";
 import { QuestionContext } from "../../../contexts/QuestionContextProvider";
 
 type AssignQuestionButtonProps = {
@@ -14,15 +14,15 @@ export const AssignQuestionButton = ({
   ...props
 }: AssignQuestionButtonProps) => {
   const { assignQuestionById } = useContext(QuestionContext);
-  const sending = useRef(false);
+  const [sending, setSending] = useState(false);
 
   const handleClick = useCallback(() => {
-    if (sending.current) {
+    if (sending) {
       return;
     }
-    sending.current = true;
-    assignQuestionById(question.id).finally(() => (sending.current = false));
-  }, [question, assignQuestionById]);
+    setSending(true);
+    assignQuestionById(question.id).finally(() => setSending(false));
+  }, [sending, assignQuestionById, question.id]);
 
   const getButtonDescription = (status: QuestionStatus) => {
     if (status === QuestionStatus.CANCELED) {
@@ -40,7 +40,7 @@ export const AssignQuestionButton = ({
     <Button
       variant="contained"
       endIcon={<AssignmentTurnedIn />}
-      disabled={question.status !== QuestionStatus.PENDING}
+      disabled={sending || question.status !== QuestionStatus.PENDING}
       onClick={handleClick}
       {...props}
     >

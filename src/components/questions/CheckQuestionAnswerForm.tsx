@@ -7,6 +7,7 @@ import { QuestionAnswerBox } from "./components/QuestionAnswerBox";
 
 import { RejectQuestionAnswerButton } from "./RejectQuestionAnswerButton";
 import { VerifyQuestionAnswerButton } from "./VerifyQuestionAnswerButton";
+import { HeadEditBox } from "../HeadEditBox";
 
 type CheckQuestionAnswerFormProps = {
   question: Question;
@@ -20,8 +21,10 @@ export const CheckQuestionAnswerForm = ({
     <Box m={2} component="form" {...props}>
       <QuestionAnswerBox answer={question.answer} />
       <QuestionAnswerCheckBox />
-      <RejectQuestionAnswerButton question={question} />
-      <VerifyQuestionAnswerButton question={question} />
+      <HeadEditBox>
+        <RejectQuestionAnswerButton question={question} />
+        <VerifyQuestionAnswerButton question={question} />
+      </HeadEditBox>
     </Box>
   );
 };

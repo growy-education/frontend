@@ -13,66 +13,93 @@ import { HeadlineTypography } from "../../components/components/Typography/Headl
 import SendIcon from "@mui/icons-material/Send";
 import { Relationship } from "../../dto/enum/relationship.enum";
 import { TeacherStatus } from "../../dto/enum/teacher-status.enum";
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumberString,
+  IsOptional,
+  IsString,
+  Matches,
+} from "class-validator";
+import { classValidatorResolver } from "@hookform/resolvers/class-validator";
+import { useForm } from "react-hook-form";
+import { FirstNameTextField } from "../../components/customers/FirstNameTextField";
+import { FirstNameKanaTextField } from "../../components/customers/FirstNameKanaTextField";
+import { LastNameKanaTextField } from "../../components/customers/LastNameKanaTextField";
+import { LastNameTextField } from "../../components/customers/LastNameTextField";
+import { ChatworkAccountIdTextField } from "../../components/teachers/chatworkAccountIdTextField";
+import { HeadEditBox } from "../../components/HeadEditBox";
+import { CancelEditButton } from "../../components/components/CancelEditButton";
+import { SaveEditButton } from "../../components/components/SaveEditButton";
+
+class UpdateTeacherDto {
+  @IsString()
+  @IsNotEmpty({ message: "ユーザーを選択してください" })
+  userId: string;
+
+  @IsString()
+  @IsNotEmpty({ message: "お名前を入力してください" })
+  @Matches(/^[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}ー－]+$/u, {
+    message: "日本語で入力してください",
+  })
+  firstName: string;
+
+  @IsString()
+  @IsNotEmpty({ message: "お名前（読み仮名）を入力してください" })
+  @Matches(/^[ァ-ヶー]*$/, { message: "カタカナで入力してください" })
+  firstNameKana: string;
+
+  @IsString()
+  @IsNotEmpty({ message: "苗字を入力してください" })
+  @Matches(/^[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}ー－]+$/u, {
+    message: "日本語で入力してください",
+  })
+  lastName: string;
+
+  @IsString()
+  @IsNotEmpty({ message: "苗字（読み仮名）を入力してください" })
+  @Matches(/^[ァ-ヶー]*$/, { message: "カタカナで入力してください" })
+  lastNameKana: string;
+
+  @IsNotEmpty({ message: "ChatworkIDを入力してください" })
+  @IsNumberString({}, { message: "ChatworkIDは数字で入力してください" })
+  chatworkAccountId: string;
+}
 
 export const TeacherEdit = () => {
-  const [firstName, setFirstName] = useState("");
-  const [firstNameKana, setFirstNameKana] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [lastNameKana, setLastNameKana] = useState("");
-  const [status, setStatus] = useState<TeacherStatus.INACTIVE>(
-    TeacherStatus.INACTIVE
-  );
-  const [chatworkAccountId, setChatworkAccountId] = useState("");
-
   const { axiosConfig } = useContext(AxiosContext);
+
+  const resolver = classValidatorResolver(UpdateTeacherDto);
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<UpdateTeacherDto>({ resolver });
 
   return (
     <>
-      <Typography variant="h4">講師を新規作成する</Typography>
+      <HeadEditBox>
+        <CancelEditButton />
+        <SaveEditButton />
+      </HeadEditBox>
 
       <HeadlineTypography>名前</HeadlineTypography>
-      <TextField
-        fullWidth
-        id="firstName"
-        label="ユーザー名"
-        helperText="4文字以上20文字以下で設定する。"
-        onChange={(event) => setFirstName(event.target.value)}
-      />
+      <FirstNameTextField errors={errors} {...register("firstName")} />
 
       <HeadlineTypography>名前（読み仮名）</HeadlineTypography>
-      <TextField
-        fullWidth
-        id="firstNameKana"
-        label="名前（読み仮名）"
-        helperText="@growy.educationが望ましい。"
-        onChange={(event) => setFirstNameKana(event.target.value)}
-      />
+      <FirstNameKanaTextField errors={errors} {...register("firstNameKana")} />
 
       <HeadlineTypography>苗字</HeadlineTypography>
-      <TextField
-        id="lastName"
-        fullWidth
-        label="苗字"
-        helperText="英数小文字・大文字、そして記号を含む8文字以上。"
-        onChange={(event) => setLastName(event.target.value)}
-      />
+      <LastNameTextField errors={errors} {...register("lastName")} />
 
       <HeadlineTypography>苗字（読み仮名）</HeadlineTypography>
-      <TextField
-        fullWidth
-        id="lastNameKana"
-        label="パスワード"
-        helperText="英数小文字・大文字、そして記号を含む8文字以上。"
-        onChange={(event) => setLastNameKana(event.target.value)}
-      />
+      <LastNameKanaTextField errors={errors} {...register("lastNameKana")} />
 
       <HeadlineTypography>Chatwork Account ID</HeadlineTypography>
-      <TextField
-        fullWidth
-        id="chatworkId"
-        label="パスワード"
-        helperText="英数小文字・大文字、そして記号を含む8文字以上。"
-        onChange={(event) => setChatworkAccountId(event.target.value)}
+      <ChatworkAccountIdTextField
+        errors={errors}
+        {...register("chatworkAccountId")}
       />
 
       <HeadlineTypography>ステータス</HeadlineTypography>

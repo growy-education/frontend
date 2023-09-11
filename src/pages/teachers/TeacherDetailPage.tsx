@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Typography, Box, Container, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -7,6 +7,9 @@ import { HeadlineTypography } from "../../components/components/Typography/Headl
 import { Teacher } from "../../dto/teacher.class";
 import { plainToInstance } from "class-transformer";
 import { TeacherDetail } from "../../components/teachers/TeacherDetail";
+import { HeadEditBox } from "../../components/HeadEditBox";
+import { BackToListButton } from "../../components/components/BackToListButton";
+import { EditButton } from "../../components/components/EditButton";
 
 export const TeacherDetailProps = () => {
   const [teacher, setTeacher] = useState<null | Teacher>(null);
@@ -37,18 +40,28 @@ export const TeacherDetailProps = () => {
   }
 
   return (
-    <Container maxWidth="md">
-      <Box my={3}>
-        <TeacherDetail teacher={teacher} />
-        {!!teacher?.user && (
-          <>
-            <HeadlineTypography>ユーザー</HeadlineTypography>
-            <Button onClick={() => navigate(`/users/${teacher.user.id}`)}>
-              ユーザー詳細ページへ
-            </Button>
-          </>
-        )}
-      </Box>
-    </Container>
+    <>
+      <HeadEditBox>
+        <BackToListButton
+          onClick={() => {
+            navigate(`/teachers`);
+          }}
+        />
+        <EditButton
+          onClick={() => {
+            navigate(`/teachers/${teacher.id}/edit`);
+          }}
+        />
+      </HeadEditBox>
+      <TeacherDetail teacher={teacher} />
+      {!!teacher?.user && (
+        <>
+          <HeadlineTypography>ユーザー</HeadlineTypography>
+          <Button onClick={() => navigate(`/users/${teacher.user.id}`)}>
+            ユーザー詳細ページへ
+          </Button>
+        </>
+      )}
+    </>
   );
 };

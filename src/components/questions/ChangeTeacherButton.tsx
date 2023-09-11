@@ -1,6 +1,6 @@
 import { PublishedWithChanges } from "@mui/icons-material";
 import { Button, ButtonProps } from "@mui/material";
-import { useCallback, useContext, useRef } from "react";
+import { useCallback, useContext, useState } from "react";
 import { QuestionContext } from "../../contexts/QuestionContextProvider";
 import { Question } from "../../dto/question.class";
 import { QuestionStatus } from "../../dto/enum/question-status.enum";
@@ -17,16 +17,16 @@ export const ChangeTeacherButton = ({
 }: ChangeTeacherButtonProps) => {
   const { changeQuestionTeacherById } = useContext(QuestionContext);
 
-  const sending = useRef(false);
+  const [sending, setSending] = useState(false);
   const handleClick = useCallback(() => {
-    if (sending.current) {
+    if (sending) {
       return;
     }
-    sending.current = true;
-    changeQuestionTeacherById(question.id, teacherId).finally(
-      () => (sending.current = false)
+    setSending(true);
+    changeQuestionTeacherById(question.id, teacherId).finally(() =>
+      setSending(false)
     );
-  }, [changeQuestionTeacherById, question.id, teacherId]);
+  }, [changeQuestionTeacherById, question.id, sending, teacherId]);
 
   return (
     <Button
@@ -34,7 +34,7 @@ export const ChangeTeacherButton = ({
       endIcon={<PublishedWithChanges />}
       disabled={
         question?.teacher?.id === teacherId ||
-        sending.current ||
+        sending ||
         question.status === QuestionStatus.CANCELED ||
         question.status === QuestionStatus.AVAILABLE
       }

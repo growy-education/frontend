@@ -8,7 +8,6 @@ import { QuestionDetail } from "../../components/questions/QuestionDetail";
 import { UserContext } from "../../contexts/UserContextProvider";
 import { Role } from "../../dto/enum/role.enum";
 import { EditingQuestionBox } from "../../components/questions/components/EditingQuestionBox";
-import { AnswerQuestionAccordion } from "../../components/questions/AnswerQuestionAccordion";
 import { CheckQuestionAnswerAccordion } from "../../components/questions/CheckQuestionAnswerAccordion";
 import { QuestionContext } from "../../contexts/QuestionContextProvider";
 import { ChangeQuestionTeacherAccordion } from "../../components/questions/ChangeQuestionTeacherBox";
@@ -28,6 +27,8 @@ export const QuestionDetailPage = () => {
   useEffect(() => {
     getQuestionById(questionId).then((found) => {
       if (found) {
+        console.log("このコードは動いた");
+        console.log(found);
         setQuestion(found);
       } else {
         setNotFound(true);

@@ -32,7 +32,7 @@ export const RejectQuestionButton = ({
     rejectQuestionById(question.id).finally(() => {
       setSending(false);
     });
-  }, [question, rejectQuestionById]);
+  }, [question.id, rejectQuestionById, sending]);
 
   return (
     <Button
@@ -45,7 +45,7 @@ export const RejectQuestionButton = ({
           }}
         />
       }
-      disabled={disabled}
+      disabled={disabled && sending && props.disabled}
       onClick={handleClick}
       {...props}
     >

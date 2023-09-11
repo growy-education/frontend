@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { Box, BoxProps, Typography } from "@mui/material";
+import { Alert, Box, BoxProps, Typography } from "@mui/material";
 import { Question } from "../../dto/question.class";
 import { QuestionStatus } from "../../dto/enum/question-status.enum";
 import { AnswerQuestionAccordion } from "./AnswerQuestionAccordion";
-import { AssigningQuestionBox } from "./components/AssigningQuestionBox";
+import { ConfirmQuestionBox } from "./components/ConfirmQuestionBox";
 import { UserContext } from "../../contexts/UserContextProvider";
 
 type TeacherEditQuestionBoxProps = {
@@ -19,10 +19,12 @@ export const TeacherEditQuestionBox = ({
   return (
     <Box {...props}>
       {user.teacher.id !== question?.teacher?.id ? (
-        <Typography>この質問は他の講師に割り当てられています.</Typography>
+        <Alert severity="info" sx={{ justifyContent: "center" }} {...props}>
+          この質問は他の講師に割り当てられています
+        </Alert>
       ) : (
         <>
-          <AssigningQuestionBox question={question} />
+          <ConfirmQuestionBox question={question} />
           {question.status === QuestionStatus.ASSIGNED && (
             <AnswerQuestionAccordion question={question} />
           )}

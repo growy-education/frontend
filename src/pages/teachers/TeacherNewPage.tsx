@@ -23,6 +23,11 @@ import axios from "axios";
 import { plainToInstance } from "class-transformer";
 import { User } from "../../dto/user.class";
 import { Role } from "../../dto/enum/role.enum";
+import { FirstNameTextField } from "../../components/customers/FirstNameTextField";
+import { FirstNameKanaTextField } from "../../components/customers/FirstNameKanaTextField";
+import { LastNameTextField } from "../../components/customers/LastNameTextField";
+import { LastNameKanaTextField } from "../../components/customers/LastNameKanaTextField";
+import { ChatworkAccountIdTextField } from "../../components/teachers/chatworkAccountIdTextField";
 
 class CreateTeacherDto {
   @IsString()
@@ -134,69 +139,25 @@ export const TeacherNew = () => {
             </MenuItem>
           ))}
         </Select>
+
         <HeadlineTypography>名前</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="firstName"
-          label="名前"
-          error={!!errors.firstName}
-          helperText={!!errors.firstName ? errors.firstName.message : ""}
-          {...register("firstName")}
-        />
+        <FirstNameTextField errors={errors} {...register("firstName")} />
 
         <HeadlineTypography>名前（読み仮名）</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="firstNameKana"
-          label="名前（読み仮名）"
-          error={!!errors.firstNameKana}
-          helperText={
-            !!errors.firstNameKana
-              ? errors.firstNameKana.message
-              : "カタカナで入力してください"
-          }
+        <FirstNameKanaTextField
+          errors={errors}
           {...register("firstNameKana")}
         />
 
         <HeadlineTypography>苗字</HeadlineTypography>
-        <TextField
-          id="lastName"
-          fullWidth
-          label="苗字"
-          error={!!errors.lastName}
-          helperText={
-            !!errors.lastName
-              ? errors.lastName.message
-              : "苗字を入力してください"
-          }
-          {...register("lastName")}
-        />
+        <LastNameTextField errors={errors} {...register("lastName")} />
 
         <HeadlineTypography>苗字（読み仮名）</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="lastNameKana"
-          label="苗字（読み仮名）"
-          error={!!errors.lastName}
-          helperText={
-            !!errors.lastNameKana
-              ? errors.lastNameKana.message
-              : "カタカナで入力してください"
-          }
-          {...register("lastNameKana")}
-        />
+        <LastNameKanaTextField errors={errors} {...register("lastNameKana")} />
 
         <HeadlineTypography>ChatworkAccountID</HeadlineTypography>
-        <TextField
-          fullWidth
-          id="chatworkAccountId"
-          label="ChatworkAccountID"
-          error={!!errors.chatworkAccountId}
-          helperText={
-            !!errors.chatworkAccountId
-              ? errors.chatworkAccountId.message
-              : "ChatworkAccountIDを入力してください"
-          }
+        <ChatworkAccountIdTextField
+          errors={errors}
           {...register("chatworkAccountId")}
         />
 

@@ -1,31 +1,20 @@
 import { Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Question } from "../../dto/question.class";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { QuestionContext } from "../../contexts/QuestionContextProvider";
 import { QuestionStatus } from "../../dto/enum/question-status.enum";
-import {
-  DataGrid,
-  GridColDef,
-  GridRowParams,
-  GridValueFormatterParams,
-} from "@mui/x-data-grid";
-import { Student } from "../../dto/student.class";
-import { EditDataGrid } from "../components/DataGrid/EditDataGrid";
-import { CustomDataGrid } from "../components/DataGrid/CustomDataGrid";
+import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { plainToInstance } from "class-transformer";
 import { HeadlineTypography } from "../components/Typography/HeadlineTypography";
 
-type CustomGridColDef = GridColDef & { order: number };
-
-const QuestionColumns: CustomGridColDef[] = [
-  { field: "id", headerName: "ID", flex: 1, order: 1 },
-  { field: "title", headerName: "タイトル", flex: 1, order: 4 },
+const QuestionColumns: GridColDef[] = [
+  { field: "id", headerName: "ID", flex: 1 },
+  { field: "title", headerName: "タイトル", flex: 1 },
   {
     field: "reaction",
     headerName: "対応",
     flex: 2,
-    order: 6,
   },
 ];
 
