@@ -30,6 +30,40 @@ interface Props {
   children: React.ReactNode;
 }
 
+/*
+.catch((error: unknown) => {
+        if (isAxiosError(error)) {
+          // サーバーからの返答がある
+          if (error.response) {
+            return setResult({
+              open: true,
+              success: false,
+              title: "",
+              message: "保護者情報に誤りがあります",
+            });
+          }
+          // サーバーからの返答がない
+          if (error.request) {
+            return setResult({
+              open: true,
+              success: false,
+              title: "",
+              message:
+                "サーバーからの返答がありません。ネットワーク接続を確認してください",
+            });
+          }
+        }
+
+        // よくわからんエラーのとき
+        return setResult({
+          open: true,
+          success: false,
+          title: "",
+          message: "予期せぬエラーが発生しました",
+        });
+      });
+*/
+
 export const UserContextProvider = ({ children }: Props) => {
   const { axiosConfig } = useContext(AxiosContext);
 

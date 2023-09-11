@@ -1,16 +1,7 @@
-import { useContext, useState } from "react";
-import {
-  Box,
-  Button,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Typography,
-} from "@mui/material";
-import { TextField } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
-import SendIcon from "@mui/icons-material/Send";
 import {
   IsDate,
   IsEnum,
@@ -24,8 +15,8 @@ import {
 } from "class-validator";
 import { Gender } from "../../dto/enum/gender.enum";
 import { Type } from "class-transformer";
-import { Controller, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { Student } from "../../dto/student.class";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -42,6 +33,8 @@ import { PageTitleTypography } from "../../components/components/Typography/Page
 import { HeadEditBox } from "../../components/HeadEditBox";
 import { CancelEditButton } from "../../components/components/CancelEditButton";
 import { SaveEditButton } from "../../components/components/SaveEditButton";
+import { StudentContext } from "../../contexts/StudentContextProvider";
+import dayjs from "dayjs";
 
 const getMinDate = (): Date => {
   const currentDate = new Date();
@@ -128,15 +121,18 @@ class UpdateStudentDto {
 }
 
 export const StudentEdit = () => {
-  const { axiosConfig } = useContext(AxiosContext);
+  const { studentId } = useParams();
+  const { getStudentById, updateStudentById } = useContext(StudentContext);
   const navigate = useNavigate();
 
   const [student, setStudent] = useState<null | Student>(null);
+  const [sending, setSending] = useState(false);
 
   const resolver = classValidatorResolver(UpdateStudentDto);
   const {
     register,
     handleSubmit,
+    setValue,
     control,
     formState: { errors },
   } = useForm<UpdateStudentDto>({
@@ -147,8 +143,45 @@ export const StudentEdit = () => {
       lastName: "",
       lastNameKana: "",
       gender: Gender.MALE,
+      school: "",
+      juku: "",
+      jukuBuilding: "",
+      birthday: null,
     },
   });
+
+  useEffect(() => {
+    getStudentById(studentId).then((found) => {
+      if (found) {
+        setStudent(found);
+        setValue("firstName", found.firstName);
+        setValue("firstNameKana", found.firstNameKana);
+        setValue("lastName", found.lastName);
+        setValue("lastNameKana", found.lastNameKana);
+        setValue("gender", found.gender);
+        setValue("school", found.school);
+        setValue("juku", found.juku);
+        setValue("jukuBuilding", found.jukuBuilding);
+        setValue("birthday", dayjs(found.birthday));
+      }
+    });
+  }, [getStudentById, studentId]);
+
+  const onSubmit: SubmitHandler<UpdateStudentDto> = (data) => {
+    if (sending) {
+      return;
+    }
+    setSending(true);
+    updateStudentById(studentId, data)
+      .then((student) => {
+        if (student) {
+          navigate(`/students/${student.id}`);
+        }
+      })
+      .finally(() => {
+        setSending(false);
+      });
+  };
 
   if (!student) {
     return <LoadingBox message="生徒情報を取得中です" />;
@@ -159,8 +192,8 @@ export const StudentEdit = () => {
       <PageTitleTypography>生徒情報を更新する</PageTitleTypography>
 
       <HeadEditBox>
-        <CancelEditButton />
-        <SaveEditButton />
+        <CancelEditButton onClick={() => navigate(`/students/${studentId}`)} />
+        <SaveEditButton onClick={handleSubmit(onSubmit)} />
       </HeadEditBox>
 
       <HeadlineTypography>名前</HeadlineTypography>

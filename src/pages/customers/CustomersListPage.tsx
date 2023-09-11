@@ -50,7 +50,7 @@ export const CustomersListPage = () => {
       .create(axiosConfig)
       .get("customers")
       .then((response) => {
-        console.log(response.data);
+        console.log("取得したCustomers", response.data);
         const customers = response.data.map((customerJson: string) =>
           plainToInstance(Customer, customerJson)
         );

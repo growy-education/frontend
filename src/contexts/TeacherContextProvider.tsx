@@ -4,7 +4,6 @@ import React, {
   createContext,
   useContext,
   useCallback,
-  useRef,
 } from "react";
 import axios from "axios";
 import { AxiosContext } from "./AxiosContextProvider";
@@ -17,7 +16,10 @@ import { Role } from "../dto/enum/role.enum";
 interface TeacherContextProps {
   teachers: Teacher[];
   getTeacherById: (id: string) => Promise<Teacher | null>;
-  updateTeacherById: (id: string, teacher: Teacher) => Promise<Teacher | null>;
+  updateTeacherById: (
+    id: string,
+    teacher: Partial<Teacher>
+  ) => Promise<Teacher | null>;
 }
 
 export const TeacherContext = createContext<TeacherContextProps>(null);
@@ -113,15 +115,13 @@ export const TeacherContextProvider = ({ children }: Props) => {
   );
 
   const updateTeacherById = useCallback(
-    (id: string, teacher: Teacher) => {
+    async (id: string, teacher: Partial<Teacher>) => {
       return axios
         .create(axiosConfig)
-        .patch(`teachers/${id}`, {
-          teacher,
-        })
+        .patch(`teachers/${id}`, teacher)
         .then((response) => {
           const savedTeacher = plainToInstance(Teacher, response.data);
-          updateTeacher(teacher);
+          updateTeacher(savedTeacher);
           return savedTeacher;
         })
         .catch((error) => null);

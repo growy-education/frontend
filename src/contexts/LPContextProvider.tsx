@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from "react";
 import { LandingPage } from "../pages/LandingPage";
-import { LoadingBox } from "../components/LoadingData";
 import { PendingContextPage } from "../pages/PendingContextPage";
 
 interface LPContextType {

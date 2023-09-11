@@ -20,6 +20,8 @@ import dayjs from "dayjs";
 import "dayjs/locale/ja";
 import { QuestionContextProvider } from "./contexts/QuestionContextProvider";
 import { TeacherContextProvider } from "./contexts/TeacherContextProvider";
+import { CustomerContextProvider } from "./contexts/CustomerContextProvider";
+import { StudentContextProvider } from "./contexts/StudentContextProvider";
 dayjs.locale("ja");
 
 const theme = createTheme(
@@ -86,9 +88,13 @@ function App() {
                     <AxiosContextProvider>
                       <UserContextProvider>
                         <QuestionContextProvider>
-                          <TeacherContextProvider>
-                            <RolesRouter />
-                          </TeacherContextProvider>
+                          <CustomerContextProvider>
+                            <TeacherContextProvider>
+                              <StudentContextProvider>
+                                <RolesRouter />
+                              </StudentContextProvider>
+                            </TeacherContextProvider>
+                          </CustomerContextProvider>
                         </QuestionContextProvider>
                       </UserContextProvider>
                     </AxiosContextProvider>

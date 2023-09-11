@@ -1,21 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
-  Alert,
-  Box,
-  Button,
-  CircularProgress,
+  Checkbox,
   FormControlLabel,
   FormHelperText,
   Radio,
   RadioGroup,
-  Snackbar,
-  Typography,
 } from "@mui/material";
-import { TextField } from "@mui/material";
-import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import { Relationship } from "../../dto/enum/relationship.enum";
 import {
+  IsArray,
   IsEnum,
   IsNotEmpty,
   IsOptional,
@@ -27,9 +21,6 @@ import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { Customer } from "../../dto/customer.class";
-import axios, { isAxiosError } from "axios";
-import { plainToInstance } from "class-transformer";
-import { SubmitButton } from "../../components/SubmitButton";
 import { LoadingBox } from "../../components/LoadingData";
 import { HeadEditBox } from "../../components/HeadEditBox";
 import { FirstNameTextField } from "../../components/customers/FirstNameTextField";
@@ -39,6 +30,9 @@ import { LastNameKanaTextField } from "../../components/customers/LastNameKanaTe
 import { PageTitleTypography } from "../../components/components/Typography/PageTitleTypography";
 import { CancelEditButton } from "../../components/components/CancelEditButton";
 import { SpaceWebhookUrlTextField } from "../../components/customers/SpaceWebhookUrlTextField";
+import { SaveEditButton } from "../../components/components/SaveEditButton";
+import { CustomerContext } from "../../contexts/CustomerContextProvider";
+import { CustomerService } from "../../dto/enum/customer-service.enum";
 
 class UpdateCustomerDto {
   @IsOptional()
@@ -74,6 +68,11 @@ class UpdateCustomerDto {
   relationship?: Relationship;
 
   @IsOptional()
+  @IsArray()
+  @IsEnum(CustomerService, { each: true })
+  services: CustomerService[];
+
+  @IsOptional()
   @IsUrl(
     { protocols: ["https"], host_whitelist: ["chat.googleapis.com"] },
     { message: "Invalid host URL" }
@@ -81,29 +80,29 @@ class UpdateCustomerDto {
   spaceWebhookUrl: string;
 }
 
+const CustomerServices = [
+  { id: CustomerService.QUESTION_ANSWER, name: "質問回答" },
+  { id: CustomerService.SELF_STUDY_ROOM, name: "オンライン自習室" },
+  { id: CustomerService.TEST_CORRECTION, name: "模試・過去問検索" },
+  { id: CustomerService.TEACHING, name: "ティーチング" },
+  { id: CustomerService.COACHING, name: "コーチング" },
+];
+
 export const CustomerEditPage = () => {
-  const { axiosConfig } = useAxiosConfig();
   const { customerId } = useParams();
-
-  const [customer, setCustomer] = useState<Customer | null>(null);
-
-  // 結果を示すオブジェクトを作成する
-  const [result, setResult] = useState({
-    open: false,
-    success: false,
-    title: "",
-    message: "",
-  });
-
   const navigate = useNavigate();
+  const { getCustomerById, updateCustomerById } = useContext(CustomerContext);
+
+  const [customer, setCustomer] = useState<null | Customer>(null);
+  const [sending, setSending] = useState(false);
 
   const resolver = classValidatorResolver(UpdateCustomerDto);
   const {
     register,
     setValue,
-    trigger,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<UpdateCustomerDto>({
     resolver,
@@ -113,65 +112,43 @@ export const CustomerEditPage = () => {
       lastName: customer?.lastName || "",
       lastNameKana: customer?.lastNameKana || "",
       relationship: customer?.relationship || Relationship.FATHER,
+      services: customer?.services || [],
     },
   });
 
   useEffect(() => {
-    axios
-      .create(axiosConfig)
-      .get(`/customers/${customerId}`)
-      .then((response) => {
-        const customer = plainToInstance(Customer, response.data);
-        setCustomer(customer);
-        setValue("firstName", customer.firstName);
-        setValue("firstNameKana", customer.firstNameKana);
-        setValue("lastName", customer.lastName);
-        setValue("lastNameKana", customer.lastNameKana);
-        setValue("relationship", customer.relationship);
-        setValue("spaceWebhookUrl", customer.spaceWebhookUrl);
+    getCustomerById(customerId)
+      .then((found) => {
+        if (found) {
+          setCustomer(found);
+          setValue("firstName", found?.firstName);
+          setValue("firstNameKana", found?.firstNameKana);
+          setValue("lastName", found?.lastName);
+          setValue("lastNameKana", found?.lastNameKana);
+          setValue("relationship", found?.relationship);
+          setValue("spaceWebhookUrl", found?.spaceWebhookUrl);
+          setValue("services", found?.services);
+        }
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [axiosConfig, customerId]);
+  }, [customerId, getCustomerById, setValue]);
 
   const onSubmit: SubmitHandler<UpdateCustomerDto> = (data) => {
-    axios
-      .create(axiosConfig)
-      .put(`customers/${customerId}`, data)
-      .then((response) => {
-        navigate(`/customers/${customerId}`);
-      })
-      .catch((error: unknown) => {
-        if (isAxiosError(error)) {
-          // サーバーからの返答がある
-          if (error.response) {
-            return setResult({
-              open: true,
-              success: false,
-              title: "",
-              message: "保護者情報に誤りがあります",
-            });
-          }
-          // サーバーからの返答がない
-          if (error.request) {
-            return setResult({
-              open: true,
-              success: false,
-              title: "",
-              message:
-                "サーバーからの返答がありません。ネットワーク接続を確認してください",
-            });
-          }
+    if (sending) {
+      return;
+    }
+    console.log(data.services);
+    setSending(true);
+    updateCustomerById(customerId, data)
+      .then((customer) => {
+        if (customer) {
+          navigate(`/customers/${customerId}`);
         }
-
-        // よくわからんエラーのとき
-        return setResult({
-          open: true,
-          success: false,
-          title: "",
-          message: "予期せぬエラーが発生しました",
-        });
+      })
+      .finally(() => {
+        setSending(false);
       });
   };
 
@@ -187,7 +164,7 @@ export const CustomerEditPage = () => {
         <CancelEditButton
           onClick={() => navigate(`/customers/${customerId}`)}
         />
-        <SubmitButton onClick={handleSubmit(onSubmit)} trigger={trigger} />
+        <SaveEditButton onClick={handleSubmit(onSubmit)} />
       </HeadEditBox>
 
       <HeadlineTypography>名前</HeadlineTypography>
@@ -230,42 +207,43 @@ export const CustomerEditPage = () => {
         )}
       />
 
+      <HeadlineTypography>利用可能サービス</HeadlineTypography>
+      <Controller
+        name="services"
+        control={control}
+        defaultValue={[]}
+        render={({ field: props }) => (
+          <>
+            {CustomerServices.map((item) => (
+              <FormControlLabel
+                label={item.name}
+                control={
+                  <Checkbox
+                    {...props}
+                    key={item.id}
+                    checked={props.value.includes(item.id)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        return props.onChange([...props.value, item.id]);
+                      } else {
+                        return props.onChange(
+                          props.value.filter((removed) => removed !== item.id)
+                        );
+                      }
+                    }}
+                  />
+                }
+              />
+            ))}
+          </>
+        )}
+      />
+
       <HeadlineTypography>GoogleChatのWebhookURL(Space)</HeadlineTypography>
       <SpaceWebhookUrlTextField
         errors={errors}
         {...register("spaceWebhookUrl")}
       />
-
-      {result.open && !result.success && (
-        <Snackbar
-          open={result.open && !result.success}
-          autoHideDuration={6000}
-          onClose={() =>
-            setResult({
-              open: false,
-              success: false,
-              title: "",
-              message: "",
-            })
-          }
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        >
-          <Alert
-            onClose={() =>
-              setResult({
-                open: false,
-                success: false,
-                title: "",
-                message: "",
-              })
-            }
-            severity="error"
-            sx={{ width: "100%" }}
-          >
-            {result.message}
-          </Alert>
-        </Snackbar>
-      )}
     </>
   );
 };

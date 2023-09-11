@@ -1,54 +1,48 @@
 import { useContext, useEffect, useState } from "react";
-import { Box, Container, Button } from "@mui/material";
-import { AxiosContext } from "../../contexts/AxiosContextProvider";
+import { Box, Button, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import { Customer } from "../../dto/customer.class";
-import { plainToInstance } from "class-transformer";
-import { Edit } from "@mui/icons-material";
 import { CustomerDetail } from "../../components/customers/CustomerDetail";
+import { CustomerContext } from "../../contexts/CustomerContextProvider";
+import { LoadingBox } from "../../components/LoadingData";
+import { BackToListButton } from "../../components/components/BackToListButton";
+import { HeadEditBox } from "../../components/HeadEditBox";
+import { EditButton } from "../../components/components/EditButton";
 
 export const CustomerDetailPage = () => {
-  const [customer, setCustomer] = useState<null | Customer>(null);
-  const { axiosConfig } = useContext(AxiosContext);
+  const { customers, getCustomerById } = useContext(CustomerContext);
+  const { customerId } = useParams();
   const navigate = useNavigate();
 
-  const { customerId } = useParams();
-  console.log(customer);
-  useEffect(() => {
-    console.log("param customerId:", customerId);
-    axios
-      .create(axiosConfig)
-      .get(`/customers/${customerId}`)
-      .then((response) => {
-        const customer = plainToInstance(Customer, response.data);
-        setCustomer(customer);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [axiosConfig, customerId]);
+  const [customer, setCustomer] = useState<null | Customer>(null);
+  const [notFound, setNotFound] = useState(false);
 
-  if (!customerId) {
-    return <p>だめだこりゃ！</p>;
-  }
+  useEffect(() => {
+    getCustomerById(customerId).then((found) => {
+      if (found) {
+        setNotFound(false);
+        setCustomer(found);
+      } else {
+        setNotFound(true);
+      }
+    });
+  }, [customers, customerId]);
 
   if (!!!customer) {
-    return <p>ローディングなう！</p>;
+    return <LoadingBox message="保護者情報を取得中..." />;
+  }
+
+  if (notFound) {
+    return <Typography>保護者が見つかりませんでした</Typography>;
   }
 
   return (
-    <Container maxWidth="md">
-      <Box display="flex" justifyContent={"flex-end"} mb={2}>
-        <Button
-          variant="outlined"
-          endIcon={<Edit />}
-          onClick={() => navigate("edit")}
-        >
-          保護者情報を編集
-        </Button>
-      </Box>
+    <>
+      <HeadEditBox>
+        <BackToListButton onClick={() => navigate("/customers")} />
+        <EditButton onClick={() => navigate("edit")} />
+      </HeadEditBox>
       <Box my={3}>
         <CustomerDetail customer={customer} />
         {!!customer?.user && (
@@ -60,6 +54,6 @@ export const CustomerDetailPage = () => {
           </>
         )}
       </Box>
-    </Container>
+    </>
   );
 };

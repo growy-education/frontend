@@ -2,6 +2,7 @@ import { Customer } from "../../dto/customer.class";
 import { Typography } from "@mui/material";
 import { HeadlineTypography } from "../components/Typography/HeadlineTypography";
 import { JaDateTimeTypography } from "../components/Typography/JaDateTimeTypography";
+import { CustomerServiceChips } from "./CustomerServiceChips";
 
 type CustomerDetailProps = {
   customer: Customer;
@@ -17,6 +18,7 @@ export const CustomerDetail = ({ customer }: CustomerDetailProps) => {
     lastName,
     lastNameKana,
     relationship,
+    services,
     spaceWebhookUrl,
   } = customer;
   return (
@@ -37,6 +39,8 @@ export const CustomerDetail = ({ customer }: CustomerDetailProps) => {
       <Typography>{lastNameKana}</Typography>
       <HeadlineTypography>続柄</HeadlineTypography>
       <Typography>{relationship}</Typography>
+      <HeadlineTypography>利用可能サービス</HeadlineTypography>
+      <CustomerServiceChips services={services} />
       <HeadlineTypography>GoogleChatのWebhookURL(Space)</HeadlineTypography>
       <Typography>{spaceWebhookUrl}</Typography>
     </>

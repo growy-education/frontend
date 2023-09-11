@@ -4,7 +4,6 @@ import React, {
   createContext,
   useContext,
   useCallback,
-  useRef,
 } from "react";
 import axios from "axios";
 import { AxiosContext } from "./AxiosContextProvider";
@@ -19,7 +18,7 @@ interface CustomerContextProps {
   getCustomerById: (id: string) => Promise<Customer | null>;
   updateCustomerById: (
     id: string,
-    customer: Customer
+    customer: Partial<Customer>
   ) => Promise<Customer | null>;
 }
 
@@ -42,12 +41,11 @@ export const CustomerContextProvider = ({ children }: Props) => {
         .create(axiosConfig)
         .get("customers")
         .then((response) => {
-          console.log("取得したCustomers:", response.data);
           if (!Array.isArray(response.data)) {
             throw new Error("ネットワークエラー");
           }
-          const customers = response.data.map((userJson: string) => {
-            return plainToInstance(Customer, userJson);
+          const customers = response.data.map((customerJson: string) => {
+            return plainToInstance(Customer, customerJson);
           });
           setCustomers(customers);
         })
@@ -116,24 +114,25 @@ export const CustomerContextProvider = ({ children }: Props) => {
   );
 
   const updateCustomerById = useCallback(
-    (id: string, customer: Customer) => {
+    async (id: string, customer: Partial<Customer>) => {
       return axios
         .create(axiosConfig)
-        .patch(`customers/${id}`, {
-          customer,
-        })
+        .put(`customers/${id}`, customer)
         .then((response) => {
           const savedCustomer = plainToInstance(Customer, response.data);
-          updateCustomer(customer);
+          updateCustomer(savedCustomer);
           return savedCustomer;
         })
-        .catch((error) => null);
+        .catch((error) => {
+          console.log(error);
+          return null;
+        });
     },
     [axiosConfig, updateCustomer]
   );
 
   if (pending) {
-    return <PendingContextPage message="講師情報を取得中" />;
+    return <PendingContextPage message="保護者情報を取得中" />;
   }
 
   return (

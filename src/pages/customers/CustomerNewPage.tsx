@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import {
   Box,
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
@@ -9,6 +10,7 @@ import {
   DialogTitle,
   FormControlLabel,
   FormHelperText,
+  FormLabel,
   MenuItem,
   Radio,
   RadioGroup,
@@ -19,7 +21,14 @@ import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
 import SendIcon from "@mui/icons-material/Send";
 import { Relationship } from "../../dto/enum/relationship.enum";
-import { IsEnum, IsNotEmpty, IsString, IsUrl, Matches } from "class-validator";
+import {
+  IsArray,
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+  IsUrl,
+  Matches,
+} from "class-validator";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { useNavigate } from "react-router-dom";
@@ -32,6 +41,8 @@ import { FirstNameKanaTextField } from "../../components/customers/FirstNameKana
 import { LastNameTextField } from "../../components/customers/LastNameTextField";
 import { LastNameKanaTextField } from "../../components/customers/LastNameKanaTextField";
 import { SpaceWebhookUrlTextField } from "../../components/customers/SpaceWebhookUrlTextField";
+import { CustomerService } from "../../dto/enum/customer-service.enum";
+import { PageTitleTypography } from "../../components/components/Typography/PageTitleTypography";
 
 class CreateCustomerDto {
   @IsString()
@@ -65,6 +76,10 @@ class CreateCustomerDto {
   @IsEnum(Relationship)
   relationship: Relationship;
 
+  @IsArray()
+  @IsEnum(CustomerService, { each: true })
+  services: CustomerService[];
+
   @IsUrl(
     { protocols: ["https"], host_whitelist: ["chat.googleapis.com"] },
     { message: "Invalid host URL" }
@@ -81,6 +96,8 @@ export const CustomerNewPage = () => {
     register,
     handleSubmit,
     control,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm<CreateCustomerDto>({
     resolver,
@@ -90,8 +107,6 @@ export const CustomerNewPage = () => {
   });
 
   const [users, setUsers] = useState<User[]>([]);
-
-  console.log(errors);
 
   useEffect(() => {
     axios
@@ -111,8 +126,6 @@ export const CustomerNewPage = () => {
   }, [axiosConfig]);
 
   const onSubmit: SubmitHandler<CreateCustomerDto> = (data) => {
-    console.log("呼ばれた!");
-    console.log(data);
     axios
       .create(axiosConfig)
       .post("customers", {
@@ -125,6 +138,14 @@ export const CustomerNewPage = () => {
       .catch((error) => console.log(error));
   };
 
+  const CustomerServices = [
+    { id: CustomerService.QUESTION_ANSWER, name: "質問回答" },
+    { id: CustomerService.SELF_STUDY_ROOM, name: "オンライン自習室" },
+    { id: CustomerService.TEST_CORRECTION, name: "模試・過去問検索" },
+    { id: CustomerService.TEACHING, name: "ティーチング" },
+    { id: CustomerService.COACHING, name: "コーチング" },
+  ];
+
   // 確認ダイアログ
   const [open, setOpen] = useState(false);
   // ダイアログの確認ボタンを押すと、ユーザーの一覧画面へと遷移する
@@ -135,7 +156,7 @@ export const CustomerNewPage = () => {
 
   return (
     <>
-      <Typography variant="h4">保護者を新規作成する</Typography>
+      <PageTitleTypography>保護者を新規作成する</PageTitleTypography>
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
         <HeadlineTypography>連携ユーザー</HeadlineTypography>
         <Select
@@ -192,6 +213,36 @@ export const CustomerNewPage = () => {
               </FormHelperText>
             </RadioGroup>
           )}
+        />
+
+        <HeadlineTypography>利用可能サービス</HeadlineTypography>
+        <Controller
+          name="services"
+          control={control}
+          defaultValue={[]}
+          render={(props) => {
+            return (
+              <>
+                {CustomerServices.map((item, index) => (
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        onChange={() => {
+                          setValue("services", [
+                            ...getValues("services"),
+                            item.id,
+                          ]);
+                        }}
+                        defaultChecked={CustomerServices.includes(item.id)}
+                      />
+                    }
+                    key={item.id}
+                    label={item.name}
+                  />
+                ))}
+              </>
+            );
+          }}
         />
 
         <HeadlineTypography>GoogleChatのWebhookURL(Space)</HeadlineTypography>
