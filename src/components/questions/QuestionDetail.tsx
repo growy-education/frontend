@@ -68,7 +68,7 @@ export const QuestionDetail = ({ question, ...props }: QuestionDetailProps) => {
 
       {answer && (
         <>
-          <HeadlineTypography>解答画像</HeadlineTypography>
+          <HeadlineTypography>回答動画</HeadlineTypography>
           <Box p={2}>
             <QuestionAnswerBox answer={answer} />
           </Box>

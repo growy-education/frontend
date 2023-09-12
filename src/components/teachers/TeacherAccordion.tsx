@@ -34,7 +34,7 @@ export const TeacherAccordion = ({
         >
           <Typography>講師情報</Typography>
           {teacher?.id && (
-            <Button onClick={() => navigate(`/students/${teacher?.id}`)}>
+            <Button onClick={() => navigate(`/teachers/${teacher?.id}`)}>
               講師情報の詳細ページへ
             </Button>
           )}
