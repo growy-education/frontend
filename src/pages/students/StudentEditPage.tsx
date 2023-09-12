@@ -172,7 +172,7 @@ export const StudentEdit = () => {
       return;
     }
     setSending(true);
-    updateStudentById(studentId, data)
+    updateStudentById(studentId, { ...data, birthday: data.birthday.toDate() })
       .then((student) => {
         if (student) {
           navigate(`/students/${student.id}`);
