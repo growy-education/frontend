@@ -220,29 +220,31 @@ export const CustomerNewPage = () => {
           name="services"
           control={control}
           defaultValue={[]}
-          render={(props) => {
-            return (
-              <>
-                {CustomerServices.map((item, index) => (
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        onChange={() => {
-                          setValue("services", [
-                            ...getValues("services"),
-                            item.id,
-                          ]);
-                        }}
-                        defaultChecked={CustomerServices.includes(item.id)}
-                      />
-                    }
-                    key={item.id}
-                    label={item.name}
-                  />
-                ))}
-              </>
-            );
-          }}
+          render={({ field: props }) => (
+            <>
+              {CustomerServices.map((item) => (
+                <FormControlLabel
+                  label={item.name}
+                  control={
+                    <Checkbox
+                      {...props}
+                      key={item.id}
+                      checked={props.value.includes(item.id)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          return props.onChange([...props.value, item.id]);
+                        } else {
+                          return props.onChange(
+                            props.value.filter((removed) => removed !== item.id)
+                          );
+                        }
+                      }}
+                    />
+                  }
+                />
+              ))}
+            </>
+          )}
         />
 
         <HeadlineTypography>GoogleChatのWebhookURL(Space)</HeadlineTypography>

@@ -102,7 +102,6 @@ export const CustomerEditPage = () => {
     setValue,
     handleSubmit,
     control,
-    reset,
     formState: { errors },
   } = useForm<UpdateCustomerDto>({
     resolver,
