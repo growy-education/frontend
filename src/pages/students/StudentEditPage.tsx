@@ -162,7 +162,7 @@ export const StudentEdit = () => {
         setValue("school", found.school);
         setValue("juku", found.juku);
         setValue("jukuBuilding", found.jukuBuilding);
-        setValue("birthday", dayjs(found.birthday));
+        setValue("birthday", dayjs(found.birthday) as unknown as Date);
       }
     });
   }, [getStudentById, studentId]);
