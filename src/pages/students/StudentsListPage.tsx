@@ -40,9 +40,9 @@ export const StudentsList = () => {
     { field: "createdAt", headerName: "作成日時", flex: 1 },
     { field: "updatedAt", headerName: "更新日時", flex: 1 },
     { field: "firstName", headerName: "お名前", flex: 1 },
-    { field: "firstNameKana", headerName: "お名前（読み仮名）", flex: 1 },
+    { field: "firstNameKana", headerName: "お名前（フリガナ）", flex: 1 },
     { field: "lastName", headerName: "苗字", flex: 1 },
-    { field: "lastNameKana", headerName: "苗字（読み仮名）", flex: 1 },
+    { field: "lastNameKana", headerName: "苗字（フリガナ）", flex: 1 },
   ];
 
   return (

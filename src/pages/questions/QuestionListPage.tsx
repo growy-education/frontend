@@ -6,6 +6,7 @@ import { QuestionCard } from "../../components/questions/QuestionCard";
 import { YetNoQuestionBox } from "../../components/questions/YetNoQuestionBox";
 import { PageTitleTypography } from "../../components/components/Typography/PageTitleTypography";
 import { QuestionContext } from "../../contexts/QuestionContextProvider";
+import { QuestionStatus } from "../../dto/enum/question-status.enum";
 
 export const QuestionListPage = () => {
   const { questions, getQuestions } = useContext(QuestionContext);
@@ -27,13 +28,15 @@ export const QuestionListPage = () => {
       <PageTitleTypography>質問リスト</PageTitleTypography>
       <Box p={2}>
         {questions.length === 0 && <YetNoQuestionBox />}
-        {questions.map((question) => (
-          <QuestionCard
-            key={`question-${question.id}`}
-            question={question}
-            sx={{ marginBottom: 3 }}
-          />
-        ))}
+        {questions
+          .filter((question) => question.status !== QuestionStatus.CANCELED)
+          .map((question) => (
+            <QuestionCard
+              key={`question-${question.id}`}
+              question={question}
+              sx={{ marginBottom: 3 }}
+            />
+          ))}
         <Button
           variant="contained"
           color="primary"

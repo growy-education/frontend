@@ -9,12 +9,10 @@ import { Question } from "../../dto/question.class";
 import { IsYouTubeUrl } from "../../tools/is-youtube-url.decorator";
 import { QuestionAnswerTextField } from "./components/TextField/QuestionAnswerTextField";
 import { QuestionAnswerBox } from "./components/QuestionAnswerBox";
-import axios from "axios";
-import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import { plainToInstance } from "class-transformer";
 import { Send } from "@mui/icons-material";
 import { QuestionAnswerCheckBox } from "./QuestionAnswerCheckBox";
 import { QuestionContext } from "../../contexts/QuestionContextProvider";
+import { getYoutubeUrl } from "../../tools/get-youtube-url";
 
 type AnswerQuestionFormProps = {
   question: Question;
@@ -23,7 +21,8 @@ type AnswerQuestionFormProps = {
 class AnswerQuestionDto {
   @IsNotEmpty({ message: "URLを入力してください" })
   @IsYouTubeUrl({
-    message: "有効なYouTubeの(e.g.https://youtu.be/***）ではありません",
+    message:
+      "有効なYouTubeの(https://www.youtube.com/watch?v=***）を入力してください",
   })
   answer: string;
 }
@@ -41,6 +40,7 @@ export const AnswerQuestionForm = ({
     register,
     formState: { errors },
     getValues,
+    setError,
     watch,
   } = useForm<AnswerQuestionDto>({
     resolver: classValidatorResolver(AnswerQuestionDto),
@@ -57,8 +57,15 @@ export const AnswerQuestionForm = ({
     if (sending.current) {
       return;
     }
+
+    const answer = getYoutubeUrl(data.answer);
+
+    if (!!!answer) {
+      return setError("answer", { message: "適切なURLではありません。" });
+    }
+
     sending.current = true;
-    answerQuestionById(question.id, data.answer).finally(() => {
+    answerQuestionById(question.id, answer).finally(() => {
       sending.current = false;
     });
   };

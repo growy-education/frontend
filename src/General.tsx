@@ -51,10 +51,11 @@ export const General: React.FC = () => {
             >
               <MenuIcon />
             </IconButton>
-            <img
+            <Box
+              component="img"
               src="/header-logo.png"
               alt="header-logo"
-              style={{ height: "40px", marginLeft: "16px", cursor: "pointer" }}
+              sx={{ height: "40px", cursor: "pointer" }}
               onClick={() => navigate("/")}
             />
           </Box>

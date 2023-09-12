@@ -8,9 +8,9 @@ type TeacherStatusProps = TypographyProps & {
 
 const statusDescription = (status: TeacherStatus) => {
   if (status === TeacherStatus.ACTIVE) {
-    return "活動中";
+    return "質問回答受付中";
   } else {
-    return "休止中";
+    return "質問回答拒否中";
   }
 };
 

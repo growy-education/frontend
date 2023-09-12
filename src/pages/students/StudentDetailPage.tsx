@@ -10,6 +10,7 @@ import { StudentDetail } from "../../components/students/StudentDetail";
 import { HeadEditBox } from "../../components/HeadEditBox";
 import { EditButton } from "../../components/components/EditButton";
 import { BackToListButton } from "../../components/components/BackToListButton";
+import { LoadingBox } from "../../components/LoadingData";
 
 export const StudentDetailProps = () => {
   const [student, setStudent] = useState<null | Student>(null);
@@ -32,7 +33,7 @@ export const StudentDetailProps = () => {
   }, [axiosConfig, studentId]);
 
   if (!!!student) {
-    return <p>ローディングなう！</p>;
+    return <LoadingBox message="生徒情報を取得中" />;
   }
 
   return (

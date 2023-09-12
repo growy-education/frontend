@@ -10,12 +10,10 @@ import {
   DialogTitle,
   FormControlLabel,
   FormHelperText,
-  FormLabel,
   MenuItem,
   Radio,
   RadioGroup,
   Select,
-  Typography,
 } from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
@@ -57,7 +55,7 @@ class CreateCustomerDto {
   firstName: string;
 
   @IsString()
-  @IsNotEmpty({ message: "お名前（読み仮名）を入力してください" })
+  @IsNotEmpty({ message: "お名前（フリガナ）を入力してください" })
   @Matches(/^[ァ-ヶー]*$/, { message: "カタカナで入力してください" })
   firstNameKana: string;
 
@@ -69,7 +67,7 @@ class CreateCustomerDto {
   lastName: string;
 
   @IsString()
-  @IsNotEmpty({ message: "苗字（読み仮名）を入力してください" })
+  @IsNotEmpty({ message: "苗字（フリガナ）を入力してください" })
   @Matches(/^[ァ-ヶー]*$/, { message: "カタカナで入力してください" })
   lastNameKana: string;
 
@@ -96,8 +94,6 @@ export const CustomerNewPage = () => {
     register,
     handleSubmit,
     control,
-    setValue,
-    getValues,
     formState: { errors },
   } = useForm<CreateCustomerDto>({
     resolver,
@@ -141,7 +137,7 @@ export const CustomerNewPage = () => {
   const CustomerServices = [
     { id: CustomerService.QUESTION_ANSWER, name: "質問回答" },
     { id: CustomerService.SELF_STUDY_ROOM, name: "オンライン自習室" },
-    { id: CustomerService.TEST_CORRECTION, name: "模試・過去問検索" },
+    { id: CustomerService.TEST_CORRECTION, name: "模試・過去問添削" },
     { id: CustomerService.TEACHING, name: "ティーチング" },
     { id: CustomerService.COACHING, name: "コーチング" },
   ];
@@ -172,20 +168,21 @@ export const CustomerNewPage = () => {
             </MenuItem>
           ))}
         </Select>
-        <HeadlineTypography>名前</HeadlineTypography>
-        <FirstNameTextField errors={errors} {...register("firstName")} />
-
-        <HeadlineTypography>名前（読み仮名）</HeadlineTypography>
-        <FirstNameKanaTextField
-          errors={errors}
-          {...register("firstNameKana")}
-        />
 
         <HeadlineTypography>苗字</HeadlineTypography>
         <LastNameTextField errors={errors} {...register("lastName")} />
 
-        <HeadlineTypography>苗字（読み仮名）</HeadlineTypography>
+        <HeadlineTypography>苗字（フリガナ）</HeadlineTypography>
         <LastNameKanaTextField errors={errors} {...register("lastNameKana")} />
+
+        <HeadlineTypography>名前</HeadlineTypography>
+        <FirstNameTextField errors={errors} {...register("firstName")} />
+
+        <HeadlineTypography>名前（フリガナ）</HeadlineTypography>
+        <FirstNameKanaTextField
+          errors={errors}
+          {...register("firstNameKana")}
+        />
 
         <HeadlineTypography>続柄</HeadlineTypography>
         <Controller

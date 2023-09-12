@@ -10,6 +10,7 @@ import { TeacherDetail } from "../../components/teachers/TeacherDetail";
 import { HeadEditBox } from "../../components/HeadEditBox";
 import { BackToListButton } from "../../components/components/BackToListButton";
 import { EditButton } from "../../components/components/EditButton";
+import { LoadingBox } from "../../components/LoadingData";
 
 export const TeacherDetailProps = () => {
   const [teacher, setTeacher] = useState<null | Teacher>(null);
@@ -36,7 +37,7 @@ export const TeacherDetailProps = () => {
   }
 
   if (!!!teacher) {
-    return <p>ローディングなう！</p>;
+    return <LoadingBox message="講師情報を取得中" />;
   }
 
   return (

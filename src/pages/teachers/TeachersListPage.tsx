@@ -19,12 +19,12 @@ const TeacherColumns: CustomGridColDef[] = [
   { field: "firstName", headerName: "お名前", flex: 1, order: 4 },
   {
     field: "firstNameKana",
-    headerName: "お名前（読み仮名）",
+    headerName: "お名前（フリガナ）",
     flex: 1,
     order: 5,
   },
   { field: "lastName", headerName: "苗字", flex: 1, order: 6 },
-  { field: "lastNameKana", headerName: "苗字（読み仮名）", flex: 1, order: 7 },
+  { field: "lastNameKana", headerName: "苗字（フリガナ）", flex: 1, order: 7 },
   { field: "status", headerName: "ステータス", flex: 1, order: 8 },
   {
     field: "assignedQuestionsNumber",

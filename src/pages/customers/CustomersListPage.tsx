@@ -17,9 +17,9 @@ const CustomerColumns: CustomGridColDef[] = [
   { field: "createdAt", headerName: "作成日時", flex: 1, order: 2 },
   { field: "updatedAt", headerName: "更新日時", flex: 1, order: 3 },
   { field: "firstName", headerName: "名前", flex: 1, order: 4 },
-  { field: "firstNameKana", headerName: "名前（読み仮名）", order: 5 },
+  { field: "firstNameKana", headerName: "名前（フリガナ）", order: 5 },
   { field: "lastName", headerName: "苗字", flex: 1, order: 6 },
-  { field: "lastNameKana", headerName: "苗字（読み仮名）", flex: 1, order: 7 },
+  { field: "lastNameKana", headerName: "苗字（フリガナ）", flex: 1, order: 7 },
   { field: "relationship", headerName: "続柄", flex: 1, order: 8 },
 ];
 

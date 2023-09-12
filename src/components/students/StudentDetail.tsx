@@ -1,7 +1,7 @@
-import { Typography } from "@mui/material";
 import { Student } from "../../dto/student.class";
 import { HeadlineTypography } from "../components/Typography/HeadlineTypography";
 import { JaDateTimeTypography } from "../components/Typography/JaDateTimeTypography";
+import { DetailTypography } from "../components/DetailTyporagphy";
 
 type StudentDetailProps = {
   student: Partial<Student>;
@@ -28,91 +28,91 @@ export const StudentDetail = ({ student }: StudentDetailProps) => {
       {!!id && (
         <>
           <HeadlineTypography>生徒ID</HeadlineTypography>
-          <Typography>{id}</Typography>
+          <DetailTypography>{id}</DetailTypography>
         </>
       )}
 
       {!!createdAt && (
         <>
           <HeadlineTypography>作成日時</HeadlineTypography>
-          <JaDateTimeTypography date={createdAt} />
+          <JaDateTimeTypography textAlign="right" date={createdAt} />
         </>
       )}
 
       {!!updatedAt && (
         <>
           <HeadlineTypography>更新日時</HeadlineTypography>
-          <JaDateTimeTypography date={updatedAt} />
-        </>
-      )}
-
-      {!!firstName && (
-        <>
-          <HeadlineTypography>名前</HeadlineTypography>
-          <Typography>{firstName}</Typography>
-        </>
-      )}
-
-      {!!firstNameKana && (
-        <>
-          <HeadlineTypography>名前（読み仮名）</HeadlineTypography>
-          <Typography>{firstNameKana}</Typography>
+          <JaDateTimeTypography textAlign="right" date={updatedAt} />
         </>
       )}
 
       {!!lastName && (
         <>
           <HeadlineTypography>苗字</HeadlineTypography>
-          <Typography>{lastName}</Typography>
+          <DetailTypography>{lastName}</DetailTypography>
         </>
       )}
 
       {!!lastNameKana && (
         <>
-          <HeadlineTypography>苗字（読み仮名）</HeadlineTypography>
-          <Typography>{lastNameKana}</Typography>
+          <HeadlineTypography>苗字（フリガナ）</HeadlineTypography>
+          <DetailTypography>{lastNameKana}</DetailTypography>
+        </>
+      )}
+
+      {!!firstName && (
+        <>
+          <HeadlineTypography>名前</HeadlineTypography>
+          <DetailTypography>{firstName}</DetailTypography>
+        </>
+      )}
+
+      {!!firstNameKana && (
+        <>
+          <HeadlineTypography>名前（フリガナ）</HeadlineTypography>
+          <DetailTypography>{firstNameKana}</DetailTypography>
         </>
       )}
 
       {!!gender && (
         <>
           <HeadlineTypography>性別</HeadlineTypography>
-          <Typography>{gender}</Typography>
+          <DetailTypography>{gender}</DetailTypography>
         </>
       )}
 
       {!!grade && (
         <>
           <HeadlineTypography>学年</HeadlineTypography>
-          <Typography>{grade}年生</Typography>
+          <DetailTypography>{grade}年生</DetailTypography>
         </>
       )}
 
       {!!birthday && (
         <>
           <HeadlineTypography>誕生日</HeadlineTypography>
-          <JaDateTimeTypography date={birthday} />
+          <JaDateTimeTypography textAlign="right" date={birthday} />
         </>
       )}
 
       {!!school && (
         <>
           <HeadlineTypography>小学校</HeadlineTypography>
-          <Typography>{school}</Typography>
+          <DetailTypography>{school}</DetailTypography>
         </>
       )}
 
       {!!juku && (
         <>
           <HeadlineTypography>塾</HeadlineTypography>
-          <Typography>{juku}</Typography>
+          <DetailTypography>{juku}</DetailTypography>
         </>
       )}
 
       {!!jukuBuilding && (
         <>
           <HeadlineTypography>塾の校舎</HeadlineTypography>
-          <Typography>{jukuBuilding}</Typography>
+          <DetailTypography>{jukuBuilding}</DetailTypography>
         </>
       )}
     </>

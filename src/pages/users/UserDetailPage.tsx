@@ -10,6 +10,7 @@ import { Role } from "../../dto/enum/role.enum";
 import { UserDetail } from "../../components/users/UserDetail";
 import { LinkedUserInformation } from "../../components/users/LinkedUserInformation";
 import { HeadEditBox } from "../../components/HeadEditBox";
+import { LoadingBox } from "../../components/LoadingData";
 
 export const UserDetailPage = () => {
   const [user, setUser] = useState<null | User>(null);
@@ -32,7 +33,7 @@ export const UserDetailPage = () => {
   }, [axiosConfig, userId]);
 
   if (!!!user) {
-    return <p>ローディングなう！</p>;
+    return <LoadingBox message="講師情報を取得中" />;
   }
 
   return (

@@ -1,8 +1,8 @@
 import { Customer } from "../../dto/customer.class";
-import { Typography } from "@mui/material";
 import { HeadlineTypography } from "../components/Typography/HeadlineTypography";
 import { JaDateTimeTypography } from "../components/Typography/JaDateTimeTypography";
 import { CustomerServiceChips } from "./CustomerServiceChips";
+import { DetailTypography } from "../components/DetailTyporagphy";
 
 type CustomerDetailProps = {
   customer: Customer;
@@ -24,25 +24,25 @@ export const CustomerDetail = ({ customer }: CustomerDetailProps) => {
   return (
     <>
       <HeadlineTypography>保護者ID</HeadlineTypography>
-      <Typography>{id}</Typography>
+      <DetailTypography>{id}</DetailTypography>
       <HeadlineTypography>作成日時</HeadlineTypography>
-      <JaDateTimeTypography date={createdAt} />
+      <JaDateTimeTypography textAlign="right" date={createdAt} />
       <HeadlineTypography>更新日時</HeadlineTypography>
-      <JaDateTimeTypography date={updatedAt} />
-      <HeadlineTypography>名前</HeadlineTypography>
-      <Typography>{firstName}</Typography>
-      <HeadlineTypography>名前（読み仮名）</HeadlineTypography>
-      <Typography>{firstNameKana}</Typography>
+      <JaDateTimeTypography textAlign="right" date={updatedAt} />
       <HeadlineTypography>苗字</HeadlineTypography>
-      <Typography>{lastName}</Typography>
-      <HeadlineTypography>苗字（読み仮名）</HeadlineTypography>
-      <Typography>{lastNameKana}</Typography>
+      <DetailTypography>{lastName}</DetailTypography>
+      <HeadlineTypography>苗字（フリガナ）</HeadlineTypography>
+      <DetailTypography>{lastNameKana}</DetailTypography>
+      <HeadlineTypography>名前</HeadlineTypography>
+      <DetailTypography>{firstName}</DetailTypography>
+      <HeadlineTypography>名前（フリガナ）</HeadlineTypography>
+      <DetailTypography>{firstNameKana}</DetailTypography>
       <HeadlineTypography>続柄</HeadlineTypography>
-      <Typography>{relationship}</Typography>
+      <DetailTypography>{relationship}</DetailTypography>
       <HeadlineTypography>利用可能サービス</HeadlineTypography>
       <CustomerServiceChips services={services} />
       <HeadlineTypography>GoogleChatのWebhookURL(Space)</HeadlineTypography>
-      <Typography>{spaceWebhookUrl}</Typography>
+      <DetailTypography>{spaceWebhookUrl}</DetailTypography>
     </>
   );
 };

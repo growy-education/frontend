@@ -12,7 +12,7 @@ export const FirstNameKanaTextField: FC<FirstNameKanaTextFieldProps> =
       <TextField
         fullWidth
         id="firstNameKana"
-        label="名前（読み仮名）"
+        label="名前（フリガナ）"
         error={!!errors.firstNameKana}
         helperText={
           !!errors.firstNameKana

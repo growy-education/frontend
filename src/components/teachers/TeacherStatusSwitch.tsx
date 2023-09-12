@@ -36,16 +36,14 @@ export const TeacherStatusSwitch = ({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        marginRight: 1,
+        marginRight: 0.5,
       }}
     >
-      <Typography
-        component="div"
-        color={
-          teacher.status === TeacherStatus.ACTIVE ? "secondary" : "default"
-        }
-      >
-        {teacher.status === TeacherStatus.ACTIVE ? "質問受付中" : "質問休止中"}
+      <Typography component="div" sx={{ marginRight: 0.5 }}>
+        質問回答
+      </Typography>
+      <Typography component="div" color="error.main">
+        off
       </Typography>
       <Switch
         disabled={sending}
@@ -55,6 +53,9 @@ export const TeacherStatusSwitch = ({
           teacher.status === TeacherStatus.ACTIVE ? "secondary" : "default"
         }
       />
+      <Typography component="div" color="secondary.main">
+        on
+      </Typography>
     </Box>
   );
 };

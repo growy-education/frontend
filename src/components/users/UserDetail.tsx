@@ -2,6 +2,7 @@ import { Typography } from "@mui/material";
 import { User } from "../../dto/user.class";
 import { HeadlineTypography } from "../components/Typography/HeadlineTypography";
 import { JaDateTimeTypography } from "../components/Typography/JaDateTimeTypography";
+import { DetailTypography } from "../components/DetailTyporagphy";
 
 type UserDetailProps = {
   user: User;
@@ -22,21 +23,23 @@ export const UserDetail = ({ user }: UserDetailProps) => {
   return (
     <>
       <HeadlineTypography>ユーザーID</HeadlineTypography>
-      <Typography>{id}</Typography>
+      <DetailTypography>{id}</DetailTypography>
       <HeadlineTypography>作成日時</HeadlineTypography>
-      <JaDateTimeTypography date={createdAt} />
+      <JaDateTimeTypography textAlign="right" date={createdAt} />
       <HeadlineTypography>更新日時</HeadlineTypography>
-      <JaDateTimeTypography date={updatedAt} />
-      <HeadlineTypography>ユーザー名</HeadlineTypography>
-      <Typography>{username}</Typography>
-      <HeadlineTypography>メールアドレス</HeadlineTypography>
-      <Typography>{email}</Typography>
-      <HeadlineTypography>電話番号</HeadlineTypography>
-      <Typography>{phone}</Typography>
+      <JaDateTimeTypography textAlign="right" date={updatedAt} />
       <HeadlineTypography>ユーザータイプ</HeadlineTypography>
-      <Typography>{role}</Typography>
+      <DetailTypography>{role}</DetailTypography>
+      <HeadlineTypography>ユーザー名</HeadlineTypography>
+      <DetailTypography>{username}</DetailTypography>
+      <HeadlineTypography>メールアドレス</HeadlineTypography>
+      <DetailTypography>{email}</DetailTypography>
+      <HeadlineTypography>電話番号</HeadlineTypography>
+      <DetailTypography>{phone}</DetailTypography>
       <HeadlineTypography>GoogleChat WebhookURL(DM)</HeadlineTypography>
-      <Typography sx={{ wordBreak: "break-all" }}>{chatWebhookUrl}</Typography>
+      <DetailTypography sx={{ wordBreak: "break-all" }}>
+        {chatWebhookUrl}
+      </DetailTypography>
     </>
   );
 };

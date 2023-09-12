@@ -79,7 +79,7 @@ class CreateStudentDto {
   firstName: string;
 
   @IsString()
-  @IsNotEmpty({ message: "お名前（読み仮名）を入力してください" })
+  @IsNotEmpty({ message: "お名前（フリガナ）を入力してください" })
   @Matches(/^[ァ-ヶー]*$/, { message: "カタカナで入力してください" })
   firstNameKana: string;
 
@@ -91,7 +91,7 @@ class CreateStudentDto {
   lastName: string;
 
   @IsString()
-  @IsNotEmpty({ message: "苗字（読み仮名）を入力してください" })
+  @IsNotEmpty({ message: "苗字（フリガナ）を入力してください" })
   @Matches(/^[ァ-ヶー]*$/, { message: "カタカナで入力してください" })
   lastNameKana: string;
 
@@ -198,20 +198,20 @@ export const StudentNew = () => {
           ))}
         </Select>
 
+        <HeadlineTypography>苗字</HeadlineTypography>
+        <LastNameTextField errors={errors} {...register("lastName")} />
+
+        <HeadlineTypography>苗字（フリガナ）</HeadlineTypography>
+        <LastNameKanaTextField errors={errors} {...register("lastNameKana")} />
+
         <HeadlineTypography>名前</HeadlineTypography>
         <FirstNameTextField errors={errors} {...register("firstName")} />
 
-        <HeadlineTypography>名前（読み仮名）</HeadlineTypography>
+        <HeadlineTypography>名前（フリガナ）</HeadlineTypography>
         <FirstNameKanaTextField
           errors={errors}
           {...register("firstNameKana")}
         />
-
-        <HeadlineTypography>苗字</HeadlineTypography>
-        <LastNameTextField errors={errors} {...register("lastName")} />
-
-        <HeadlineTypography>苗字（読み仮名）</HeadlineTypography>
-        <LastNameKanaTextField errors={errors} {...register("lastNameKana")} />
 
         <HeadlineTypography>性別</HeadlineTypography>
         <Controller

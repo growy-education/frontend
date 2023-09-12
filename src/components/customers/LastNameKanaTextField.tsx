@@ -12,7 +12,7 @@ export const LastNameKanaTextField: FC<LastNameKanaTextFieldProps> = forwardRef(
       <TextField
         fullWidth
         id="lastNameKana"
-        label="苗字（読み仮名）"
+        label="苗字（フリガナ）"
         error={!!errors.lastNameKana}
         helperText={
           !!errors.lastNameKana
