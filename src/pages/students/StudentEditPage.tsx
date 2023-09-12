@@ -117,7 +117,7 @@ class UpdateStudentDto {
   @IsDate()
   @MaxDate(getMaxDate(), { message: "生年月日が新しすぎます" })
   @MinDate(getMinDate(), { message: "生年月日が古すぎます" })
-  birthday: Date;
+  birthday: dayjs.Dayjs;
 }
 
 export const StudentEdit = () => {
@@ -162,7 +162,7 @@ export const StudentEdit = () => {
         setValue("school", found.school);
         setValue("juku", found.juku);
         setValue("jukuBuilding", found.jukuBuilding);
-        setValue("birthday", dayjs(found.birthday) as unknown as Date);
+        setValue("birthday", dayjs(found.birthday));
       }
     });
   }, [getStudentById, studentId]);

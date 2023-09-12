@@ -91,7 +91,7 @@ export const StudentDetail = ({ student }: StudentDetailProps) => {
       {!!birthday && (
         <>
           <HeadlineTypography>誕生日</HeadlineTypography>
-          <Typography></Typography>
+          <JaDateTimeTypography date={birthday} />
         </>
       )}
 
