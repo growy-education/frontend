@@ -142,16 +142,6 @@ export const UserActivate = () => {
     <Container maxWidth="md">
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
         <Box display="flex" justifyContent={"space-around"} margin={2}>
-          <Box
-            display="flex"
-            alignItems={"center"}
-            justifyContent={"center"}
-            margin={1}
-          >
-            <Button type="submit" variant="contained" endIcon={<Lock />}>
-              ユーザーを有効化する
-            </Button>
-          </Box>
           <Box>
             <Controller
               name="role"
@@ -177,6 +167,16 @@ export const UserActivate = () => {
                 </>
               )}
             />
+          </Box>
+          <Box
+            display="flex"
+            alignItems={"center"}
+            justifyContent={"center"}
+            margin={1}
+          >
+            <Button type="submit" variant="contained" endIcon={<Lock />}>
+              ユーザーを有効化する
+            </Button>
           </Box>
         </Box>
         <Box my={3}>

@@ -46,26 +46,6 @@ import { JukuTextField } from "../../components/students/JukuTextField";
 import { JukuBuildingTextField } from "../../components/students/JukuBuildingTextField";
 import { GradeTextField } from "../../components/students/GradeTextField";
 
-const getMinDate = (): Date => {
-  const currentDate = new Date();
-  const minDate = new Date(
-    currentDate.getFullYear() - 13,
-    currentDate.getMonth(),
-    currentDate.getDate()
-  );
-  return minDate;
-};
-
-const getMaxDate = (): Date => {
-  const currentDate = new Date();
-  const maxDate = new Date(
-    currentDate.getFullYear() - 9,
-    currentDate.getMonth(),
-    currentDate.getDate()
-  );
-  return maxDate;
-};
-
 class CreateStudentDto {
   @IsString()
   @IsNotEmpty({ message: "ユーザーを選択してください" })
@@ -119,8 +99,6 @@ class CreateStudentDto {
   // format string to Date
   @Type(() => Date)
   @IsDate()
-  @MaxDate(getMaxDate(), { message: "生年月日が新しすぎます" })
-  @MinDate(getMinDate(), { message: "生年月日が古すぎます" })
   birthday: Date;
 }
 

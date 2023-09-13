@@ -19,11 +19,9 @@ export const AlertBox: React.FC<AlertBoxProps> = ({
   ...props
 }) => {
   return (
-    <Box textAlign={"left"} {...props}>
-      <Alert severity={severity} onClose={onClose}>
-        <AlertTitle>{title}</AlertTitle>
-        {description}
-      </Alert>
-    </Box>
+    <Alert severity={severity} onClose={onClose} sx={{ width: "100%" }}>
+      <AlertTitle>{title}</AlertTitle>
+      {description}
+    </Alert>
   );
 };

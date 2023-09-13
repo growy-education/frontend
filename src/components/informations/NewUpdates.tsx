@@ -6,9 +6,6 @@ export const NewUpdates = () => {
     <>
       <Box display="flex" mb={1}>
         <ArrowRight sx={{ color: "primary.main", display: "flex" }} />
-        <Typography variant="h5" color="primary.main" textAlign="left">
-          質問回答がWebサイトで利用可能に
-        </Typography>
       </Box>
       <>
         <Box mb={1}>

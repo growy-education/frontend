@@ -27,8 +27,6 @@ export const QuestionDetailPage = () => {
   useEffect(() => {
     getQuestionById(questionId).then((found) => {
       if (found) {
-        console.log("このコードは動いた");
-        console.log(found);
         setQuestion(found);
       } else {
         setNotFound(true);

@@ -16,13 +16,6 @@ export const EditingQuestionBox = ({
   ...props
 }: EditingQuestionBoxProps) => {
   const navigate = useNavigate();
-  const { cancelQuestionById } = useContext(QuestionContext);
-  const sending = useRef(false);
-
-  const handleClick = useCallback(() => {
-    sending.current = true;
-    cancelQuestionById(question.id).finally(() => (sending.current = false));
-  }, [cancelQuestionById, question.id]);
 
   return (
     <Box
@@ -33,13 +26,7 @@ export const EditingQuestionBox = ({
       }}
       {...props}
     >
-      <CancelQuestionButton
-        question={question}
-        onClick={handleClick}
-        disabled={
-          sending.current || question.status === QuestionStatus.CANCELED
-        }
-      />
+      <CancelQuestionButton question={question} />
       <EditButton
         disabled={question.status !== QuestionStatus.PENDING}
         onClick={() => {

@@ -36,26 +36,6 @@ import { SaveEditButton } from "../../components/components/SaveEditButton";
 import { StudentContext } from "../../contexts/StudentContextProvider";
 import dayjs from "dayjs";
 
-const getMinDate = (): Date => {
-  const currentDate = new Date();
-  const minDate = new Date(
-    currentDate.getFullYear() - 13,
-    currentDate.getMonth(),
-    currentDate.getDate()
-  );
-  return minDate;
-};
-
-const getMaxDate = (): Date => {
-  const currentDate = new Date();
-  const maxDate = new Date(
-    currentDate.getFullYear() - 9,
-    currentDate.getMonth(),
-    currentDate.getDate()
-  );
-  return maxDate;
-};
-
 class UpdateStudentDto {
   @IsOptional()
   @IsString()
@@ -115,8 +95,6 @@ class UpdateStudentDto {
   @IsOptional()
   @Type(() => Date)
   @IsDate()
-  @MaxDate(getMaxDate(), { message: "生年月日が新しすぎます" })
-  @MinDate(getMinDate(), { message: "生年月日が古すぎます" })
   birthday: dayjs.Dayjs;
 }
 

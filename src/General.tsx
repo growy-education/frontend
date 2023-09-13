@@ -14,8 +14,8 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { AuthContext } from "./contexts/AuthContextProvider";
 import { DrawerListItem } from "./tools/DrawerListItem";
 import { Outlet, useNavigate } from "react-router-dom";
-import { AlertPanelContext } from "./contexts/AlertPanelContextProvider";
-import { AlertPanel } from "./components/AlertPanel";
+import { AlertSnackbarContext } from "./contexts/AlertSnackbarContext";
+import { AlertSnackbar } from "./components/AlertSnackbar";
 import { PageWrapperBox } from "./components/PageWrapperBox";
 import { Offset } from "./tools/Offset";
 import { Role } from "./dto/enum/role.enum";
@@ -27,7 +27,7 @@ export const General: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { handleLogout } = useContext(AuthContext);
   const { user } = useContext(UserContext);
-  const { alert } = useContext(AlertPanelContext);
+  const { alert } = useContext(AlertSnackbarContext);
 
   const handleToggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -101,10 +101,10 @@ export const General: React.FC = () => {
 
       <PageWrapperBox maxWidth={"600px"}>
         <Offset />
-        <Box m={2}>
+        <Box m={1}>
+          {alert && <AlertSnackbar />}
           <Outlet />
         </Box>
-        {alert && <AlertPanel />}
       </PageWrapperBox>
     </Box>
   );

@@ -12,7 +12,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { jaJP as dataGridJaJp } from "@mui/x-data-grid";
 import { jaJP as coreJaJP } from "@mui/material/locale";
 import { jaJP } from "@mui/x-date-pickers/locales";
-import { AlertPanelContextProvider } from "./contexts/AlertPanelContextProvider";
+import { AlertSnackbarContextProvider } from "./contexts/AlertSnackbarContext";
 import { AxiosContextProvider } from "./contexts/AxiosContextProvider";
 
 // dayjsの日本語化
@@ -82,7 +82,7 @@ function App() {
             <GoogleOAuthProvider
               clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID as string}
             >
-              <AlertPanelContextProvider>
+              <AlertSnackbarContextProvider>
                 <NotificationContextProvider>
                   <AuthContextProvider>
                     <AxiosContextProvider>
@@ -100,7 +100,7 @@ function App() {
                     </AxiosContextProvider>
                   </AuthContextProvider>
                 </NotificationContextProvider>
-              </AlertPanelContextProvider>
+              </AlertSnackbarContextProvider>
             </GoogleOAuthProvider>
           </LPContextProvider>
         </LocalizationProvider>
