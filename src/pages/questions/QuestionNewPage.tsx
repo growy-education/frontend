@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SendIcon from "@mui/icons-material/Send";
 import {
@@ -13,6 +13,7 @@ import axios from "axios";
 import { IsNotEmpty, IsString } from "class-validator";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { SubmitHandler, useForm } from "react-hook-form";
+import Resizer from "react-image-file-resizer";
 
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
@@ -77,21 +78,57 @@ export const QuestionNew = () => {
   const problems = watch("problems");
   const solutions = watch("solutions");
 
-  const handleProblemImageSelect = (
+  const resizeFile = (file) =>
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        1024,
+        1024,
+        "PNG",
+        100,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        "file"
+      );
+    });
+
+  const handleProblemImageSelect = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (event.target.files) {
       const filesArray = Array.from(event.target.files);
-      setValue("problems", filesArray);
+      const resizedFilesArray = await Promise.all(
+        filesArray.map(async (file) => {
+          try {
+            const resizedFile = await resizeFile(file);
+            return resizedFile as File;
+          } catch (err) {
+            return null;
+          }
+        })
+      );
+      setValue("problems", resizedFilesArray);
     }
   };
 
-  const handleSolutionImageSelect = (
+  const handleSolutionImageSelect = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (event.target.files) {
       const filesArray = Array.from(event.target.files);
-      setValue("solutions", filesArray);
+      const resizedFilesArray = await Promise.all(
+        filesArray.map(async (file) => {
+          try {
+            const resizedFile = await resizeFile(file);
+            return resizedFile as File;
+          } catch (err) {
+            return null;
+          }
+        })
+      );
+      setValue("solutions", resizedFilesArray);
     }
   };
 

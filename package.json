@@ -29,6 +29,7 @@
     "react-dom": "^18.2.0",
     "react-easy-crop": "^5.0.0",
     "react-hook-form": "^7.45.0",
+    "react-image-file-resizer": "^0.4.8",
     "react-router-dom": "^6.11.1",
     "react-scripts": "5.0.1",
     "reflect-metadata": "^0.1.13",
