@@ -26,7 +26,7 @@ export const QuestionDetailPage = () => {
 
   useEffect(() => {
     getQuestionById(questionId).then((found) => {
-      if (found) {
+      if (found instanceof Question) {
         setQuestion(found);
       } else {
         setNotFound(true);

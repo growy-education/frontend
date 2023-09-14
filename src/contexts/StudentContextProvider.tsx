@@ -12,6 +12,8 @@ import { Student } from "../dto/student.class";
 import { PendingContextPage } from "../pages/PendingContextPage";
 import { UserContext } from "./UserContextProvider";
 import { Role } from "../dto/enum/role.enum";
+import { error } from "console";
+import { AlertSnackbarContext } from "./AlertSnackbarContext";
 
 interface StudentContextProps {
   students: Student[];
@@ -29,6 +31,7 @@ interface Props {
 }
 
 export const StudentContextProvider = ({ children }: Props) => {
+  const { handleAxiosError } = useContext(AlertSnackbarContext);
   const { axiosConfig } = useContext(AxiosContext);
   const { user } = useContext(UserContext);
 
@@ -49,17 +52,18 @@ export const StudentContextProvider = ({ children }: Props) => {
           });
           setStudents(students);
         })
-        .catch((error) =>
+        .catch((error) => {
           console.log(
             `error occurred at: ${StudentContextProvider.name}`,
             error
-          )
-        )
+          );
+          handleAxiosError(error);
+        })
         .finally(() => setPending(false));
     } else {
       setPending(false);
     }
-  }, [axiosConfig, user.role]);
+  }, [axiosConfig, handleAxiosError, user.role]);
 
   const sortStudents = (a: Student, b: Student) =>
     b.createdAt.getTime() - a.createdAt.getTime();
@@ -107,10 +111,11 @@ export const StudentContextProvider = ({ children }: Props) => {
           return student;
         })
         .catch((error) => {
-          return null;
+          handleAxiosError(error);
+          return error;
         });
     },
-    [addStudent, axiosConfig, students]
+    [addStudent, axiosConfig, handleAxiosError, students]
   );
 
   const updateStudentById = useCallback(
@@ -120,13 +125,15 @@ export const StudentContextProvider = ({ children }: Props) => {
         .put(`students/${id}`, student)
         .then((response) => {
           const savedStudent = plainToInstance(Student, response.data);
-          console.log(savedStudent);
           updateStudent(savedStudent);
           return savedStudent;
         })
-        .catch((error) => null);
+        .catch((error) => {
+          handleAxiosError(error);
+          return error;
+        });
     },
-    [axiosConfig, updateStudent]
+    [axiosConfig, handleAxiosError, updateStudent]
   );
 
   if (pending) {

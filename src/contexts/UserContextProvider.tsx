@@ -14,60 +14,28 @@ import { Role } from "../dto/enum/role.enum";
 import { PendingContextPage } from "../pages/PendingContextPage";
 import { TeacherStatus } from "../dto/enum/teacher-status.enum";
 import { Teacher } from "../dto/teacher.class";
+import { AlertSnackbarContext } from "./AlertSnackbarContext";
 
 interface UserContextProps {
   user: User;
+  users: User[];
+  createUser: (user: Partial<User>) => Promise<User>;
+  getUserById: (userId: string) => Promise<User>;
+  editUserById: (userId: string, updateUserDto: Partial<User>) => Promise<User>;
   changeTeacherStatus: () => Promise<Teacher | null>;
 }
 
 export const UserContext = createContext<UserContextProps>(null);
-
-export function useUserContext() {
-  return useContext(UserContext);
-}
-
 interface Props {
   children: React.ReactNode;
 }
 
-/*
-.catch((error: unknown) => {
-        if (isAxiosError(error)) {
-          // サーバーからの返答がある
-          if (error.response) {
-            return setResult({
-              open: true,
-              success: false,
-              title: "",
-              message: "保護者情報に誤りがあります",
-            });
-          }
-          // サーバーからの返答がない
-          if (error.request) {
-            return setResult({
-              open: true,
-              success: false,
-              title: "",
-              message:
-                "サーバーからの返答がありません。ネットワーク接続を確認してください",
-            });
-          }
-        }
-
-        // よくわからんエラーのとき
-        return setResult({
-          open: true,
-          success: false,
-          title: "",
-          message: "予期せぬエラーが発生しました",
-        });
-      });
-*/
-
 export const UserContextProvider = ({ children }: Props) => {
   const { axiosConfig } = useContext(AxiosContext);
+  const { handleAxiosError } = useContext(AlertSnackbarContext);
 
   const [user, setUser] = useState<User | null>(null);
+  const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     axios
@@ -77,10 +45,30 @@ export const UserContextProvider = ({ children }: Props) => {
         const user = plainToInstance(User, response.data);
         setUser(user);
       })
-      .catch((error) =>
-        console.log(`error occurred at: ${UserContextProvider.name}`, error)
-      );
-  }, [axiosConfig]);
+      .catch((error) => {
+        console.log(`error occurred at: ${UserContextProvider.name}`, error);
+        handleAxiosError(error);
+      });
+  }, [axiosConfig, handleAxiosError]);
+
+  useEffect(() => {
+    if (user && user.role === Role.ADMIN) {
+      axios
+        .create(axiosConfig)
+        .get("users")
+        .then((response) => {
+          console.log(response.data);
+          const users = response.data.map((userJson: string) =>
+            plainToInstance(User, userJson)
+          );
+          setUsers(users);
+        })
+        .catch((error) => {
+          console.log("error occurred at UsersList.tsx", error);
+          handleAxiosError(error);
+        });
+    }
+  }, [axiosConfig, handleAxiosError, user]);
 
   const changeTeacherStatus = useCallback(async () => {
     if (user.role !== Role.TEACHER) {
@@ -105,6 +93,124 @@ export const UserContextProvider = ({ children }: Props) => {
       });
   }, [axiosConfig, user]);
 
+  const addUser = useCallback(
+    async (addedUser: User) => {
+      setUsers([...users, addedUser]);
+    },
+    [users]
+  );
+
+  const updateUser = useCallback(
+    async (updatedUser: User) => {
+      const index = users.findIndex((user) => user.id === updatedUser.id);
+      if (index === -1) {
+        addUser(updatedUser);
+      } else {
+        users[index] = updatedUser;
+        setUsers([...users]);
+      }
+    },
+    [addUser, users]
+  );
+
+  const addUsers = useCallback(
+    async (addedUsers: User[]) => {
+      if (addedUsers.length === 0) {
+        return;
+      }
+      for (const addedUser of addedUsers) {
+        const index = users.findIndex((user) => user.id === addedUser.id);
+        if (index === -1) {
+          users.push(addedUser);
+        } else {
+          users[index] = addedUser;
+        }
+      }
+      setUsers([...users]);
+    },
+    [users]
+  );
+
+  const getUsers = useCallback(async (): Promise<User[]> => {
+    return axios
+      .create(axiosConfig)
+      .get("users")
+      .then((response) => {
+        if (!Array.isArray(response.data)) {
+          throw new Error("ネットワークエラー");
+        }
+        const retrievedUsers = response.data.map((userJson: string) => {
+          return plainToInstance(User, userJson);
+        });
+        console.log("retrieved", retrievedUsers);
+        addUsers(retrievedUsers);
+        return retrievedUsers;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  }, [addUsers, axiosConfig, handleAxiosError]);
+
+  const createUser = useCallback(
+    async (user: Partial<User>) => {
+      return axios
+        .create(axiosConfig)
+        .post("users", user)
+        .then((response) => {
+          const createdUser = plainToInstance(User, response.data);
+          addUser(createdUser);
+          return createdUser;
+        })
+        .catch((error) => {
+          handleAxiosError(error);
+          return error;
+        });
+    },
+    [addUser, axiosConfig, handleAxiosError]
+  );
+
+  const getUserById = useCallback(
+    async (id: string): Promise<User | null> => {
+      const found = users.find((user) => user.id === id);
+      if (found) {
+        return found;
+      }
+
+      return axios
+        .create(axiosConfig)
+        .get(`/users/${id}`)
+        .then((response) => {
+          const user = plainToInstance(User, response.data);
+          addUser(user);
+          return user;
+        })
+        .catch((error) => {
+          handleAxiosError(error);
+          return error;
+        });
+    },
+    [addUser, axiosConfig, handleAxiosError, users]
+  );
+
+  const editUserById = useCallback(
+    async (id: string, updateUserDto: Partial<User>): Promise<User> => {
+      return axios
+        .create(axiosConfig)
+        .patch(`users/${id}`, updateUserDto)
+        .then((response) => {
+          const user = plainToInstance(User, response.data);
+          updateUser(user);
+          return user;
+        })
+        .catch((error) => {
+          handleAxiosError(error);
+          return error;
+        });
+    },
+    [axiosConfig, handleAxiosError, updateUser]
+  );
+
   if (!!!user) {
     return <PendingContextPage message="ユーザー情報を取得中" />;
   }
@@ -117,6 +223,10 @@ export const UserContextProvider = ({ children }: Props) => {
     <UserContext.Provider
       value={{
         user,
+        users,
+        createUser,
+        getUserById,
+        editUserById,
         changeTeacherStatus,
       }}
     >

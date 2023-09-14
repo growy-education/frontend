@@ -13,18 +13,16 @@ import {
   MinLength,
 } from "class-validator";
 
-import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
-import axios, { isAxiosError } from "axios";
 import { SubmitButton } from "../../components/SubmitButton";
-import { ConfirmationDialog } from "../../components/ConfirmationDialog";
-import { ResultSnackbar } from "../../components/ResultSnackbar";
 import { UsernameTextField } from "../../components/users/UsernameTextField";
 import { EmailTextField } from "../../components/users/EmailTextField";
 import { PasswordTextField } from "../../components/users/PasswordTextField";
 import { PhoneTextField } from "../../components/users/PhoneTextField";
 import { ChatWebhookUrlTextField } from "../../components/users/ChatWebhookUrlTextField";
 import { PageTitleTypography } from "../../components/components/Typography/PageTitleTypography";
+import { UserContext } from "../../contexts/UserContextProvider";
+import { User } from "../../dto/user.class";
 
 class CreateUserDto {
   @IsString()
@@ -54,93 +52,28 @@ class CreateUserDto {
 }
 
 export const UserNew = () => {
-  const { axiosConfig } = useContext(AxiosContext);
   const navigate = useNavigate();
+  const { createUser } = useContext(UserContext);
+  const [sending, setSending] = useState(false);
 
   const resolver = classValidatorResolver(CreateUserDto);
   const {
-    register,
-    handleSubmit,
-    trigger,
-    setError,
     formState: { errors },
+    handleSubmit,
+    reset,
+    register,
   } = useForm<CreateUserDto>({ resolver });
 
-  // 結果を示すオブジェクトを作成する
-  const [result, setResult] = useState({
-    open: false,
-    success: false,
-    title: "",
-    message: "",
-  });
-
   const onSubmit: SubmitHandler<CreateUserDto> = (data) => {
-    axios
-      .create(axiosConfig)
-      .post("users", {
-        ...data,
-      })
-      .then((response) => {
-        setResult({
-          open: true,
-          success: true,
-          title: "ユーザーの作成が完了しました",
-          message: "ユーザーの一覧画面へ遷移しますか？",
-        });
-      })
-      .catch((error: unknown) => {
-        if (isAxiosError(error)) {
-          // サーバーからの返答がある
-          if (error.response) {
-            if (error.response.status === 409) {
-              console.log(error.message);
-              setError("email", {
-                message: "メールアドレスが既に登録されています",
-              });
-              return setResult({
-                open: true,
-                success: false,
-                title: "ユーザーの作成に失敗しました",
-                message: "メールアドレスが既に登録されています",
-              });
-            }
-            return setResult({
-              open: true,
-              success: false,
-              title: "ユーザーの作成に失敗しました",
-              message: "ユーザーのデータに誤りがあります",
-            });
-          }
-          // サーバーからの返答がない
-          if (error.request) {
-            return setResult({
-              open: true,
-              success: false,
-              title: "ユーザーの作成に失敗しました",
-              message:
-                "サーバーからの返答がありません。ネットワーク接続を確認してください。",
-            });
-          }
+    setSending(true);
+    createUser(data)
+      .then((createdUser) => {
+        if (createdUser instanceof User) {
+          navigate(`/users/${createdUser.id}`);
+          reset();
         }
-
-        // よくわからんエラーのとき
-        return setResult({
-          open: true,
-          success: false,
-          title: "ユーザーの作成に失敗しました",
-          message: "予期せぬエラーが発生しました",
-        });
-      });
-  };
-
-  // ダイアログの確認ボタンを押すと、ユーザーの一覧画面へと遷移する
-  const handleConfirm = () => {
-    setResult({ open: false, success: false, title: "", message: "" });
-    navigate("/users"); // 詳細画面への遷移
-  };
-
-  const handleCancel = () => {
-    setResult({ open: false, success: false, title: "", message: "" });
+      })
+      .finally(() => setSending(false));
   };
 
   return (
@@ -166,36 +99,11 @@ export const UserNew = () => {
         />
 
         <Box margin="0.5em">
-          <SubmitButton onClick={handleSubmit(onSubmit)} trigger={trigger} />
+          <SubmitButton onClick={handleSubmit(onSubmit)} disabled={sending}>
+            {sending ? "送信中..." : "送信する"}
+          </SubmitButton>
         </Box>
       </Box>
-
-      {result.open && result.success && (
-        <ConfirmationDialog
-          title={result.title}
-          message={result.message}
-          open={result.open}
-          onConfirm={handleConfirm}
-          onCancel={handleCancel}
-        />
-      )}
-
-      {result.open && !result.success && (
-        <ResultSnackbar
-          severity="error"
-          open={result.open}
-          title={result.title}
-          message={result.message}
-          onClose={() =>
-            setResult({
-              open: false,
-              success: false,
-              title: "",
-              message: "",
-            })
-          }
-        />
-      )}
     </>
   );
 };

@@ -2,7 +2,7 @@ import { Block } from "@mui/icons-material";
 import { Button, ButtonProps } from "@mui/material";
 import { QuestionStatus } from "../../dto/enum/question-status.enum";
 import { Question } from "../../dto/question.class";
-import { useCallback, useContext, useRef } from "react";
+import { useCallback, useContext, useRef, useState } from "react";
 import { QuestionContext } from "../../contexts/QuestionContextProvider";
 
 type RejectQuestionAnswerButtonProps = {
@@ -14,17 +14,15 @@ export const RejectQuestionAnswerButton = ({
   ...props
 }: RejectQuestionAnswerButtonProps) => {
   const { rejectQuestionAnswerById } = useContext(QuestionContext);
-  const sending = useRef(false);
+  const [sending, setSending] = useState(false);
 
   const handleClick = useCallback(() => {
-    if (sending.current) {
+    if (sending) {
       return;
     }
-    sending.current = true;
-    rejectQuestionAnswerById(question.id).finally(
-      () => (sending.current = false)
-    );
-  }, [question, rejectQuestionAnswerById]);
+    setSending(true);
+    rejectQuestionAnswerById(question.id).finally(() => setSending(false));
+  }, [question.id, rejectQuestionAnswerById, sending]);
 
   return (
     <Button

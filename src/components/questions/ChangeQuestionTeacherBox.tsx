@@ -1,3 +1,6 @@
+import { useContext, useEffect, useRef, useState } from "react";
+import axios from "axios";
+
 import {
   Accordion,
   AccordionProps,
@@ -11,15 +14,11 @@ import {
   Typography,
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
-import { useContext, useEffect, useRef, useState } from "react";
-import { Teacher } from "../../dto/teacher.class";
-import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import axios from "axios";
-import { TeacherStatus } from "../../dto/enum/teacher-status.enum";
-import { plainToInstance } from "class-transformer";
+
 import { Question } from "../../dto/question.class";
 import { ChangeTeacherButton } from "./ChangeTeacherButton";
 import { LoadingBox } from "../LoadingData";
+import { TeacherContext } from "../../contexts/TeacherContextProvider";
 
 type ChangeQuestionTeacherAccordionProps = {
   question: Question;
@@ -29,32 +28,17 @@ export const ChangeQuestionTeacherAccordion = ({
   question,
   ...props
 }: ChangeQuestionTeacherAccordionProps) => {
-  const { axiosConfig } = useContext(AxiosContext);
+  const { teachers, getTeachers } = useContext(TeacherContext);
   const [expanded, setExpanded] = useState(false);
-  const sending = useRef(false);
-  const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [selectedTeacherId, setSelectedTeacherId] = useState<string>(
     question?.teacher?.id || ""
   );
-
   useEffect(() => {
-    if (!expanded || sending.current) {
+    if (!expanded) {
       return;
     }
-    sending.current = true;
-    axios
-      .create(axiosConfig)
-      .get("teachers", { params: { status: TeacherStatus.ACTIVE } })
-      .then((response) => {
-        if (!Array.isArray(response.data)) {
-          throw new Error("Backend Serverエラー");
-        }
-        setTeachers(
-          response.data.map((teacher) => plainToInstance(Teacher, teacher))
-        );
-      })
-      .finally(() => (sending.current = false));
-  }, [axiosConfig, expanded]);
+    getTeachers();
+  }, [expanded, getTeachers]);
 
   const handleChange = () => setExpanded(!expanded);
   return (

@@ -13,6 +13,7 @@ import { PendingContextPage } from "../pages/PendingContextPage";
 import { QuestionStatus } from "../dto/enum/question-status.enum";
 import { GetQuestionsFilterDto } from "../dto/get-questions-filter.dto";
 import { UpdateQuestionDto } from "../dto/update-question.dto";
+import { AlertSnackbarContext } from "./AlertSnackbarContext";
 
 interface QuestionContextProps {
   questions: Question[];
@@ -44,6 +45,7 @@ interface Props {
 
 export const QuestionContextProvider = ({ children }: Props) => {
   const { axiosConfig } = useContext(AxiosContext);
+  const { handleAxiosError } = useContext(AlertSnackbarContext);
 
   const [pending, setPending] = useState(true);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -62,9 +64,7 @@ export const QuestionContextProvider = ({ children }: Props) => {
         });
         setQuestions(questions);
       })
-      .catch((error) =>
-        console.log(`error occurred at: ${QuestionContextProvider.name}`, error)
-      )
+      .catch((error) => handleAxiosError(error))
       .finally(() => setPending(false));
   }, [axiosConfig]);
 
@@ -108,9 +108,35 @@ export const QuestionContextProvider = ({ children }: Props) => {
           questions[index] = addedQuestion;
         }
       }
-      setQuestions([...questions]);
+      setQuestions([...questions.sort(sortQuestions)]);
     },
     [questions]
+  );
+
+  const getQuestions = useCallback(
+    async (filterDto: GetQuestionsFilterDto): Promise<Question[]> => {
+      return axios
+        .create(axiosConfig)
+        .get("questions", { params: filterDto })
+        .then((response) => {
+          if (!Array.isArray(response.data)) {
+            throw new Error("ネットワークエラー");
+          }
+          const retrievedQuestions = response.data.map(
+            (questionJson: string) => {
+              return plainToInstance(Question, questionJson);
+            }
+          );
+          addQuestions(retrievedQuestions);
+          return retrievedQuestions;
+        })
+        .catch((error) => {
+          handleAxiosError(error);
+          return error;
+        })
+        .finally(() => setPending(false));
+    },
+    [axiosConfig, handleAxiosError]
   );
 
   const createQuestion = useCallback(
@@ -130,26 +156,6 @@ export const QuestionContextProvider = ({ children }: Props) => {
     [addQuestion, axiosConfig]
   );
 
-  const editQuestionById = useCallback(
-    async (
-      id: string,
-      updateQuestionDto: UpdateQuestionDto
-    ): Promise<Question> => {
-      return axios
-        .create(axiosConfig)
-        .patch(`questions/${id}`, updateQuestionDto)
-        .then((response) => {
-          const question = plainToInstance(Question, response.data);
-          updateQuestion(question);
-          return question;
-        })
-        .catch((error) => {
-          return null;
-        });
-    },
-    [axiosConfig, updateQuestion]
-  );
-
   const getQuestionById = useCallback(
     async (id: string): Promise<Question | null> => {
       const found = questions.find((question) => question.id === id);
@@ -166,40 +172,32 @@ export const QuestionContextProvider = ({ children }: Props) => {
           return question;
         })
         .catch((error) => {
-          return null;
+          handleAxiosError(error);
+          return error;
         });
     },
     [addQuestion, axiosConfig, questions]
   );
 
-  const getQuestions = useCallback(
-    async (filterDto: GetQuestionsFilterDto): Promise<Question[]> => {
-      console.log(filterDto);
+  const editQuestionById = useCallback(
+    async (
+      id: string,
+      updateQuestionDto: UpdateQuestionDto
+    ): Promise<Question> => {
       return axios
         .create(axiosConfig)
-        .get("questions", { params: filterDto })
+        .patch(`questions/${id}`, updateQuestionDto)
         .then((response) => {
-          if (!Array.isArray(response.data)) {
-            throw new Error("ネットワークエラー");
-          }
-          const retrievedQuestions = response.data.map(
-            (questionJson: string) => {
-              return plainToInstance(Question, questionJson);
-            }
-          );
-          addQuestions(retrievedQuestions);
-          return retrievedQuestions;
+          const question = plainToInstance(Question, response.data);
+          updateQuestion(question);
+          return question;
         })
         .catch((error) => {
-          console.log(
-            `error occurred at: ${QuestionContextProvider.name}`,
-            error
-          );
-          return [];
-        })
-        .finally(() => setPending(false));
+          handleAxiosError(error);
+          return error;
+        });
     },
-    [axiosConfig]
+    [axiosConfig, handleAxiosError, updateQuestion]
   );
 
   const cancelQuestionById = useCallback(
@@ -214,9 +212,12 @@ export const QuestionContextProvider = ({ children }: Props) => {
           updateQuestion(question);
           return question;
         })
-        .catch((error) => null);
+        .catch((error) => {
+          handleAxiosError(error);
+          return error;
+        });
     },
-    [axiosConfig, updateQuestion]
+    [axiosConfig, handleAxiosError, updateQuestion]
   );
 
   const assignQuestionById = useCallback(
@@ -231,9 +232,12 @@ export const QuestionContextProvider = ({ children }: Props) => {
           updateQuestion(question);
           return question;
         })
-        .catch((error) => null);
+        .catch((error) => {
+          handleAxiosError(error);
+          return error;
+        });
     },
-    [axiosConfig, updateQuestion]
+    [axiosConfig, handleAxiosError, updateQuestion]
   );
 
   const rejectQuestionById = useCallback(
@@ -248,9 +252,12 @@ export const QuestionContextProvider = ({ children }: Props) => {
           updateQuestion(question);
           return question;
         })
-        .catch((error) => null);
+        .catch((error) => {
+          handleAxiosError(error);
+          return error;
+        });
     },
-    [axiosConfig, updateQuestion]
+    [axiosConfig, handleAxiosError, updateQuestion]
   );
 
   const changeQuestionTeacherById = useCallback(
@@ -266,9 +273,12 @@ export const QuestionContextProvider = ({ children }: Props) => {
           updateQuestion(question);
           return question;
         })
-        .catch((error) => null);
+        .catch((error) => {
+          handleAxiosError(error);
+          return error;
+        });
     },
-    [axiosConfig, updateQuestion]
+    [axiosConfig, handleAxiosError, updateQuestion]
   );
 
   const answerQuestionById = useCallback(
@@ -284,9 +294,12 @@ export const QuestionContextProvider = ({ children }: Props) => {
           updateQuestion(question);
           return question;
         })
-        .catch((error) => null);
+        .catch((error) => {
+          handleAxiosError(error);
+          return error;
+        });
     },
-    [axiosConfig, updateQuestion]
+    [axiosConfig, handleAxiosError, updateQuestion]
   );
 
   const verifyQuestionAnswerById = useCallback(
@@ -301,9 +314,12 @@ export const QuestionContextProvider = ({ children }: Props) => {
           updateQuestion(question);
           return question;
         })
-        .catch((error) => null);
+        .catch((error) => {
+          handleAxiosError(error);
+          return error;
+        });
     },
-    [axiosConfig, updateQuestion]
+    [axiosConfig, handleAxiosError, updateQuestion]
   );
 
   const rejectQuestionAnswerById = useCallback(
@@ -318,9 +334,12 @@ export const QuestionContextProvider = ({ children }: Props) => {
           updateQuestion(question);
           return question;
         })
-        .catch((error) => null);
+        .catch((error) => {
+          handleAxiosError(error);
+          return error;
+        });
     },
-    [axiosConfig, updateQuestion]
+    [axiosConfig, handleAxiosError, updateQuestion]
   );
 
   if (pending) {

@@ -27,6 +27,7 @@ import { NewImageBox } from "../../components/UploadingImage";
 import { Exclude, plainToInstance } from "class-transformer";
 import { Question } from "../../dto/question.class";
 import { ImageEntity } from "../../dto/image.class";
+import { SubmitButton } from "../../components/SubmitButton";
 
 class CreateQuestionDto {
   @IsNotEmpty({ message: "タイトルを入力してください" })
@@ -220,37 +221,13 @@ export const QuestionNew = () => {
       <PageTitleTypography>新しく質問する</PageTitleTypography>
       <Box component="form" onSubmit={handleSubmit(handleQuestionUpload)}>
         <HeadlineTypography>質問タイトル</HeadlineTypography>
-        <QuestionTitleTextField
-          error={!!errors.title}
-          helperText={
-            !!errors.title
-              ? errors.title.message
-              : "教材名や問題番号がオススメです。解説動画のタイトルにも使用いたします。"
-          }
-          {...register("title")}
-        />
+        <QuestionTitleTextField errors={errors} {...register("title")} />
 
         <HeadlineTypography>質問内容</HeadlineTypography>
-        <QuestionContentTextField
-          error={!!errors.content}
-          helperText={
-            !!errors.content
-              ? errors.content.message
-              : "解説の分からないポイントをお書きください。もちろん質問する画像に書き込んでも良いです。"
-          }
-          {...register("content")}
-        />
+        <QuestionContentTextField errors={errors} {...register("content")} />
 
         <HeadlineTypography>備考</HeadlineTypography>
-        <QuestionMemoTextField
-          error={!!errors.memo}
-          helperText={
-            !!errors.memo
-              ? errors.memo.message
-              : "動画へのご要望があればお書きください。解説動画を作成するスタッフが確認いたします。"
-          }
-          {...register("memo")}
-        />
+        <QuestionMemoTextField errors={errors} {...register("memo")} />
 
         <HeadlineTypography>問題の画像</HeadlineTypography>
         <Box
@@ -333,15 +310,7 @@ export const QuestionNew = () => {
         </label>
 
         <Box m={1}>
-          <Button
-            type="submit"
-            color="primary"
-            variant="contained"
-            endIcon={<SendIcon />}
-            disabled={sending}
-          >
-            送信
-          </Button>
+          <SubmitButton>{sending ? "送信中..." : "送信する"}</SubmitButton>
         </Box>
       </Box>
       <Backdrop

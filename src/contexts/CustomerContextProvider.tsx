@@ -12,6 +12,7 @@ import { Customer } from "../dto/customer.class";
 import { PendingContextPage } from "../pages/PendingContextPage";
 import { UserContext } from "./UserContextProvider";
 import { Role } from "../dto/enum/role.enum";
+import { AlertSnackbarContext } from "./AlertSnackbarContext";
 
 interface CustomerContextProps {
   customers: Customer[];
@@ -29,6 +30,7 @@ interface Props {
 }
 
 export const CustomerContextProvider = ({ children }: Props) => {
+  const { handleAxiosError } = useContext(AlertSnackbarContext);
   const { axiosConfig } = useContext(AxiosContext);
   const { user } = useContext(UserContext);
 
@@ -49,17 +51,18 @@ export const CustomerContextProvider = ({ children }: Props) => {
           });
           setCustomers(customers);
         })
-        .catch((error) =>
+        .catch((error) => {
           console.log(
             `error occurred at: ${CustomerContextProvider.name}`,
             error
-          )
-        )
+          );
+          handleAxiosError(error);
+        })
         .finally(() => setPending(false));
     } else {
       setPending(false);
     }
-  }, [axiosConfig, user.role]);
+  }, [axiosConfig, handleAxiosError, user.role]);
 
   const sortCustomers = (a: Customer, b: Customer) =>
     b.createdAt.getTime() - a.createdAt.getTime();
@@ -107,7 +110,8 @@ export const CustomerContextProvider = ({ children }: Props) => {
           return customer;
         })
         .catch((error) => {
-          return null;
+          handleAxiosError(error);
+          return error;
         });
     },
     [addCustomer, axiosConfig, customers]
@@ -124,8 +128,8 @@ export const CustomerContextProvider = ({ children }: Props) => {
           return savedCustomer;
         })
         .catch((error) => {
-          console.log(error);
-          return null;
+          handleAxiosError(error);
+          return error;
         });
     },
     [axiosConfig, updateCustomer]

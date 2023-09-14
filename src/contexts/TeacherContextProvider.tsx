@@ -12,9 +12,11 @@ import { Teacher } from "../dto/teacher.class";
 import { PendingContextPage } from "../pages/PendingContextPage";
 import { UserContext } from "./UserContextProvider";
 import { Role } from "../dto/enum/role.enum";
+import { AlertSnackbarContext } from "./AlertSnackbarContext";
 
 interface TeacherContextProps {
   teachers: Teacher[];
+  getTeachers: () => void;
   getTeacherById: (id: string) => Promise<Teacher | null>;
   updateTeacherById: (
     id: string,
@@ -29,6 +31,7 @@ interface Props {
 }
 
 export const TeacherContextProvider = ({ children }: Props) => {
+  const { handleAxiosError } = useContext(AlertSnackbarContext);
   const { axiosConfig } = useContext(AxiosContext);
   const { user } = useContext(UserContext);
 
@@ -72,6 +75,26 @@ export const TeacherContextProvider = ({ children }: Props) => {
     [teachers]
   );
 
+  const addTeachers = useCallback(
+    async (addedTeachers: Teacher[]) => {
+      if (addedTeachers.length === 0) {
+        return;
+      }
+      for (const addedTeacher of addedTeachers) {
+        const index = teachers.findIndex(
+          (teacher) => teacher.id === addedTeacher.id
+        );
+        if (index === -1) {
+          teachers.push(addedTeacher);
+        } else {
+          teachers[index] = addedTeacher;
+        }
+      }
+      setTeachers([...teachers]);
+    },
+    [teachers]
+  );
+
   const updateTeacher = useCallback(
     async (updatedTeacher: Teacher) => {
       const index = teachers.findIndex(
@@ -92,6 +115,28 @@ export const TeacherContextProvider = ({ children }: Props) => {
     [addTeacher, teachers]
   );
 
+  const getTeachers = useCallback(() => {
+    axios
+      .create(axiosConfig)
+      .get("teachers")
+      .then((response) => {
+        console.log("取得したTeachers:", response.data);
+        if (!Array.isArray(response.data)) {
+          throw new Error("ネットワークエラー");
+        }
+        const retrievedTeachers = response.data.map((userJson: string) => {
+          return plainToInstance(Teacher, userJson);
+        });
+        addTeachers(retrievedTeachers);
+      })
+      .catch((error) => {
+        console.log(`error occurred at: ${TeacherContextProvider.name}`, error);
+        handleAxiosError(error);
+        return error;
+      })
+      .finally(() => setPending(false));
+  }, [addTeachers, axiosConfig, handleAxiosError]);
+
   const getTeacherById = useCallback(
     async (id: string): Promise<Teacher | null> => {
       const found = teachers.find((teacher) => teacher.id === id);
@@ -108,10 +153,11 @@ export const TeacherContextProvider = ({ children }: Props) => {
           return teacher;
         })
         .catch((error) => {
-          return null;
+          handleAxiosError(error);
+          return error;
         });
     },
-    [addTeacher, axiosConfig, teachers]
+    [addTeacher, axiosConfig, handleAxiosError, teachers]
   );
 
   const updateTeacherById = useCallback(
@@ -124,9 +170,12 @@ export const TeacherContextProvider = ({ children }: Props) => {
           updateTeacher(savedTeacher);
           return savedTeacher;
         })
-        .catch((error) => null);
+        .catch((error) => {
+          handleAxiosError(error);
+          return error;
+        });
     },
-    [axiosConfig, updateTeacher]
+    [axiosConfig, handleAxiosError, updateTeacher]
   );
 
   if (pending) {
@@ -137,6 +186,7 @@ export const TeacherContextProvider = ({ children }: Props) => {
     <TeacherContext.Provider
       value={{
         teachers,
+        getTeachers,
         getTeacherById,
         updateTeacherById,
       }}

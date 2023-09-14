@@ -18,15 +18,16 @@ import { UpdateQuestionDto } from "../../dto/update-question.dto";
 import { QuestionContext } from "../../contexts/QuestionContextProvider";
 import { CancelEditButton } from "../../components/components/CancelEditButton";
 import { SaveEditButton } from "../../components/components/SaveEditButton";
+import { NotFound } from "../../components/NotFound";
 
 export const QuestionEdit = () => {
+  const navigate = useNavigate();
   const { questionId } = useParams();
   const { questions, getQuestionById, editQuestionById } =
     useContext(QuestionContext);
 
   const [question, setQuestion] = useState<Question>(null);
-
-  const navigate = useNavigate();
+  const [notFound, setNotFound] = useState(false);
   const [sending, setSending] = useState(false);
 
   const {
@@ -45,12 +46,14 @@ export const QuestionEdit = () => {
   });
 
   useEffect(() => {
-    getQuestionById(questionId).then((question) => {
-      if (question) {
-        setQuestion(question);
-        setValue("title", question.title);
-        setValue("content", question.content);
-        setValue("memo", question.memo);
+    getQuestionById(questionId).then((found) => {
+      if (found instanceof Question) {
+        setQuestion(found);
+        setValue("title", found.title);
+        setValue("content", found.content);
+        setValue("memo", found.memo);
+      } else {
+        setNotFound(true);
       }
     });
   }, [questionId, getQuestionById, setValue]);
@@ -63,17 +66,20 @@ export const QuestionEdit = () => {
     }
     setSending(true);
     editQuestionById(questionId, data)
-      .then((question) => {
-        if (question) {
-          navigate(`/questions/${question.id}`);
+      .then((found) => {
+        if (found instanceof Question) {
+          navigate(`/questions/${found.id}`);
           reset();
         }
       })
-      .catch((error) => console.log(error))
       .finally(() => {
         setSending(false);
       });
   };
+
+  if (notFound) {
+    return <NotFound />;
+  }
 
   if (!!!question) {
     return <LoadingBox message="質問情報を取得中です" />;
@@ -100,37 +106,13 @@ export const QuestionEdit = () => {
       <HeadlineTypography>質問ID</HeadlineTypography>
       <Typography>{question.id}</Typography>
       <HeadlineTypography>質問タイトル</HeadlineTypography>
-      <QuestionTitleTextField
-        error={!!errors.title}
-        helperText={
-          !!errors.title
-            ? errors.title.message
-            : "教材名や問題番号がオススメです。解説動画のタイトルにも使用いたします。"
-        }
-        {...register("title")}
-      />
+      <QuestionTitleTextField errors={errors} {...register("title")} />
 
       <HeadlineTypography>質問内容</HeadlineTypography>
-      <QuestionContentTextField
-        error={!!errors.content}
-        helperText={
-          !!errors.content
-            ? errors.content.message
-            : "解説の分からないポイントをお書きください。もちろん質問する画像に書き込んでも良いです。"
-        }
-        {...register("content")}
-      />
+      <QuestionContentTextField errors={errors} {...register("content")} />
 
       <HeadlineTypography>備考</HeadlineTypography>
-      <QuestionMemoTextField
-        error={!!errors.memo}
-        helperText={
-          !!errors.memo
-            ? errors.memo.message
-            : "動画へのご要望があればお書きください。解説動画を作成するスタッフが確認いたします。"
-        }
-        {...register("memo")}
-      />
+      <QuestionMemoTextField errors={errors} {...register("memo")} />
 
       <HeadlineTypography>回答状況</HeadlineTypography>
       <Box display="flex" alignItems="center" justifyContent="center">

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useContext, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { User } from "../../dto/user.class";
 import {
   IsEmail,
@@ -23,6 +23,8 @@ import { PhoneTextField } from "./PhoneTextField";
 import { ChatWebhookUrlTextField } from "./ChatWebhookUrlTextField";
 import { HeadEditBox } from "../HeadEditBox";
 import { CancelEditButton } from "../components/CancelEditButton";
+import { UserContext } from "../../contexts/UserContextProvider";
+import { SaveEditButton } from "../components/SaveEditButton";
 
 class UpdateUserDto {
   @IsOptional()
@@ -49,28 +51,19 @@ class UpdateUserDto {
 
 type UserEditProps = {
   user: User;
-  onCancel: React.MouseEventHandler<HTMLButtonElement>;
-  onSuccess: () => void;
 };
 
-export const UserEdit = ({ user, onCancel, onSuccess }: UserEditProps) => {
-  const { axiosConfig } = useAxiosConfig();
-  const { userId } = useParams();
+export const UserEdit = ({ user }: UserEditProps) => {
+  const navigate = useNavigate();
+  const { editUserById } = useContext(UserContext);
 
-  // 結果を示すオブジェクトを作成する
-  const [result, setResult] = useState({
-    open: false,
-    success: false,
-    title: "",
-    message: "",
-  });
+  const sending = useRef(false);
 
   const resolver = classValidatorResolver(UpdateUserDto);
   const {
     register,
     handleSubmit,
-    trigger,
-    setError,
+    reset,
     formState: { errors },
   } = useForm<UpdateUserDto>({
     resolver,
@@ -83,65 +76,30 @@ export const UserEdit = ({ user, onCancel, onSuccess }: UserEditProps) => {
   });
 
   const onSubmit: SubmitHandler<UpdateUserDto> = (data) => {
-    axios
-      .create(axiosConfig)
-      .put(`users/${userId}`, data)
-      .then((response) => {
-        onSuccess();
-      })
-      .catch((error: unknown) => {
-        console.log(error);
-        if (isAxiosError(error)) {
-          // サーバーからの返答がある
-          if (error.response) {
-            if (error.response.status === 409) {
-              if (process.env.REACT_APP_STAGE === "dev") {
-                console.log(error.message);
-              }
-              setError("email", {
-                message: "メールアドレスが既に登録されています",
-              });
-              return setResult({
-                open: true,
-                success: false,
-                title: "",
-                message: "メールアドレスが既に登録されています",
-              });
-            }
-            return setResult({
-              open: true,
-              success: false,
-              title: "",
-              message: "ユーザーのデータに誤りがあります",
-            });
-          }
-          // サーバーからの返答がない
-          if (error.request) {
-            return setResult({
-              open: true,
-              success: false,
-              title: "",
-              message:
-                "サーバーからの返答がありません。ネットワーク接続を確認してください",
-            });
-          }
+    if (sending.current) {
+      return;
+    }
+    sending.current = true;
+    editUserById(user.id, data)
+      .then((found) => {
+        if (found instanceof User) {
+          navigate(`/users/${found.id}`);
+          reset();
         }
-
-        // よくわからんエラーのとき
-        return setResult({
-          open: true,
-          success: false,
-          title: "",
-          message: "予期せぬエラーが発生しました",
-        });
+      })
+      .finally(() => {
+        sending.current = false;
       });
   };
 
   return (
     <>
       <HeadEditBox>
-        <CancelEditButton onClick={onCancel} />
-        <SubmitButton onClick={handleSubmit(onSubmit)} trigger={trigger} />
+        <CancelEditButton onClick={() => navigate(`/users/${user.id}`)} />
+        <SaveEditButton
+          onClick={handleSubmit(onSubmit)}
+          disabled={sending.current}
+        />
       </HeadEditBox>
 
       <HeadlineTypography>ユーザー名</HeadlineTypography>
@@ -158,37 +116,6 @@ export const UserEdit = ({ user, onCancel, onSuccess }: UserEditProps) => {
         errors={errors}
         {...register("chatWebhookUrl")}
       />
-
-      {result.open && !result.success && (
-        <Snackbar
-          open={result.open && !result.success}
-          autoHideDuration={6000}
-          onClose={() =>
-            setResult({
-              open: false,
-              success: false,
-              title: "",
-              message: "",
-            })
-          }
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        >
-          <Alert
-            onClose={() =>
-              setResult({
-                open: false,
-                success: false,
-                title: "",
-                message: "",
-              })
-            }
-            severity="error"
-            sx={{ width: "100%" }}
-          >
-            {result.message}
-          </Alert>
-        </Snackbar>
-      )}
     </>
   );
 };

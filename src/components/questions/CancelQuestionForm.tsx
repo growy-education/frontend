@@ -24,8 +24,6 @@ export const CancelQuestionForm = ({
   question,
   ...props
 }: CancelQuestionFormProps) => {
-  const { axiosConfig } = useContext(AxiosContext);
-
   const sending = useRef(false);
 
   const {
@@ -46,14 +44,6 @@ export const CancelQuestionForm = ({
       return;
     }
     sending.current = true;
-
-    // axios
-    //   .create(axiosConfig)
-    //   .post(`/questions/${question.id}`, { status: QuestionStatus.CANCELED })
-    //   .then(() => {})
-    //   .catch(() => {})
-    //   .finally(() => {sending.current = false});
-    console.log("キャンセルした！");
     sending.current = false;
   };
 

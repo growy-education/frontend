@@ -8,6 +8,7 @@ import { User } from "../../dto/user.class";
 
 import { LoadingBox } from "../../components/LoadingData";
 import { UserEdit } from "../../components/users/UserEdit";
+import { PageTitleTypography } from "../../components/components/Typography/PageTitleTypography";
 
 export const UserEditPage = () => {
   const { axiosConfig } = useContext(AxiosContext);
@@ -36,14 +37,8 @@ export const UserEditPage = () => {
 
   return (
     <>
-      <Typography variant="h4">ユーザー情報を編集する</Typography>
-      {!!user && (
-        <UserEdit
-          user={user}
-          onCancel={() => navigate(`/users/${userId}`)}
-          onSuccess={() => navigate(`/users/${userId}`)}
-        />
-      )}
+      <PageTitleTypography>ユーザー情報を編集する</PageTitleTypography>
+      {!!user && <UserEdit user={user} />}
     </>
   );
 };
