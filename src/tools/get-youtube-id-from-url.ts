@@ -15,7 +15,7 @@ export const getYouTubeIdFromUrl = (url: string): string => {
   */
 
   const youtubePatterns =
-    /^(https?:\/\/(www\.)?(m\.)?youtube\.com(\/watch\?v=|\/shorts\/)|https?:\/\/youtu\.be\/)([a-zA-Z0-9_-]{11})(\?t=\d+)?(&.+)?$/;
+    /^(https?:\/\/(www\.)?(m\.)?youtube\.com(\/watch\?v=|\/shorts\/)|https?:\/\/youtu\.be\/)([a-zA-Z0-9_-]{11})(\?.+)?(&.+)?$/;
 
   // 正規表現にマッチする部分を抜き出す
   const match = url.match(youtubePatterns);

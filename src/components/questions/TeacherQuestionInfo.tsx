@@ -50,19 +50,13 @@ export const TeacherQuestionInfo = () => {
       if (question?.teacher?.id !== user.teacher.id) {
         return result;
       }
-      if (
-        question.status === QuestionStatus.PENDING &&
-        Date.now() - question.createdAt.getTime() > 12 * 60 * 60 * 1000
-      ) {
+      if (question.status === QuestionStatus.PENDING) {
         const customQuestion = plainToInstance(CustomQuestion, question);
         customQuestion.reaction = "質問の確認が必要です";
         result.push(customQuestion);
         return result;
       }
-      if (
-        question.status === QuestionStatus.ASSIGNED &&
-        Date.now() - question.createdAt.getTime() > 24 * 60 * 60 * 1000
-      ) {
+      if (question.status === QuestionStatus.ASSIGNED) {
         const customQuestion = plainToInstance(CustomQuestion, question);
         customQuestion.reaction = "質問に回答してください";
         result.push(customQuestion);

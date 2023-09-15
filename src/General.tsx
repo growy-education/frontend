@@ -21,6 +21,7 @@ import { Offset } from "./tools/Offset";
 import { Role } from "./dto/enum/role.enum";
 import { TeacherStatusSwitch } from "./components/teachers/TeacherStatusSwitch";
 import { UserContext } from "./contexts/UserContextProvider";
+import { LogOutButton } from "./components/LogOutButton";
 
 export const General: React.FC = () => {
   const navigate = useNavigate();
@@ -74,9 +75,7 @@ export const General: React.FC = () => {
             {user.role === Role.TEACHER && (
               <TeacherStatusSwitch teacher={user?.teacher} />
             )}
-            <IconButton onClick={handleLogout} color="inherit">
-              <LogoutIcon />
-            </IconButton>
+            <LogOutButton />
           </Box>
         </Toolbar>
       </AppBar>

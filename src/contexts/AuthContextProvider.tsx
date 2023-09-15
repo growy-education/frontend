@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { GoogleCredentialResponse } from "@react-oauth/google";
 import { CircularProgress } from "@mui/material";
 
@@ -13,6 +13,7 @@ interface AuthContextProps {
   handleEmailPasswordLogin: (email: string, password: string) => void;
   handleGoogleLogin: (response: GoogleCredentialResponse) => void;
   handleSignup: (username: string, email: string, password: string) => void;
+  handleAxiosResponseForDebug: (response: AxiosResponse) => void;
   handleLogout: () => void;
 }
 
@@ -22,6 +23,7 @@ const defaultAuthContext: AuthContextProps = {
   handleGoogleLogin: (response: GoogleCredentialResponse) => {},
   handleSignup: (username: string, email: string, password: string) => {},
   handleLogout: () => {},
+  handleAxiosResponseForDebug: (response: AxiosResponse) => {},
   bearerToken: "",
 };
 
@@ -65,13 +67,7 @@ export const AuthContextProvider = ({ children }: Props) => {
         email,
         password,
       })
-      .then((response) => {
-        const token = response.data.accessToken;
-        setBearerToken(token);
-        setIsLoggedIn(true);
-        // Bearer Tokenを保存
-        localStorage.setItem("bearerToken", token);
-      })
+      .then(handleAxiosResponse)
       .catch((error) => {
         console.log("AuthContextProviderのエラー:", error);
       });
@@ -82,13 +78,7 @@ export const AuthContextProvider = ({ children }: Props) => {
       .post(`${process.env.REACT_APP_BACKEND_BASE_URL}/auth/google`, {
         token: response.credential,
       })
-      .then((response) => {
-        const token = response.data.accessToken;
-        setBearerToken(token);
-        setIsLoggedIn(true);
-        // Bearer Tokenを保存
-        localStorage.setItem("bearerToken", token);
-      })
+      .then(handleAxiosResponse)
       .catch((error) => {
         console.log("AuthContextProviderのエラー:", error);
       });
@@ -105,6 +95,29 @@ export const AuthContextProvider = ({ children }: Props) => {
       .catch((error) => {
         console.log("AuthContextProviderのエラー:", error);
       });
+  };
+
+  const handleAxiosResponse = (response: AxiosResponse) => {
+    const token = response?.data?.accessToken;
+    if (typeof token === "string" && token) {
+      setBearerToken(token);
+      setIsLoggedIn(true);
+      // Bearer Tokenを保存
+      localStorage.setItem("bearerToken", token);
+    }
+  };
+
+  const handleAxiosResponseForDebug = (response: AxiosResponse) => {
+    const token = response?.data?.accessToken;
+    if (typeof token === "string" && token) {
+      setIsLoggedIn(false);
+      setBearerToken("");
+
+      setBearerToken(token);
+      setIsLoggedIn(true);
+      // Bearer Tokenを保存
+      localStorage.setItem("bearerToken", token);
+    }
   };
 
   const handleLogout = () => {
@@ -128,6 +141,7 @@ export const AuthContextProvider = ({ children }: Props) => {
         handleGoogleLogin,
         handleSignup,
         handleLogout,
+        handleAxiosResponseForDebug,
         bearerToken,
       }}
     >

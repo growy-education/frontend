@@ -1,23 +1,36 @@
 import { useContext, useEffect, useState } from "react";
-import { Box, Container, Button } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  Typography,
+} from "@mui/material";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import { User } from "../../dto/user.class";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";
-import { Edit, LockOpen } from "@mui/icons-material";
+import { Edit, ExpandMore, LockOpen, Login } from "@mui/icons-material";
 import { Role } from "../../dto/enum/role.enum";
 import { UserDetail } from "../../components/users/UserDetail";
 import { LinkedUserInformation } from "../../components/users/LinkedUserInformation";
 import { HeadEditBox } from "../../components/HeadEditBox";
 import { LoadingBox } from "../../components/LoadingData";
+import { UserContext } from "../../contexts/UserContextProvider";
+import { AlertSnackbarContext } from "../../contexts/AlertSnackbarContext";
+import { AuthContext } from "../../contexts/AuthContextProvider";
 
 export const UserDetailPage = () => {
-  const [user, setUser] = useState<null | User>(null);
+  const { userId } = useParams();
+  const { handleLogout } = useContext(AuthContext);
   const { axiosConfig } = useContext(AxiosContext);
+  const { user: currentUser, debugUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const { userId } = useParams();
+  const [user, setUser] = useState<null | User>(null);
+
   useEffect(() => {
     console.log("param userId:", userId);
     axios
@@ -37,7 +50,7 @@ export const UserDetailPage = () => {
   }
 
   return (
-    <Container maxWidth="md">
+    <>
       <HeadEditBox>
         <Button
           variant="outlined"
@@ -57,6 +70,29 @@ export const UserDetailPage = () => {
           ユーザー情報を編集
         </Button>
       </HeadEditBox>
+      {currentUser.role === Role.ADMIN && (
+        <Accordion sx={{ marginTop: 2 }}>
+          <AccordionSummary
+            expandIcon={<ExpandMore />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography>ユーザーをデバッグする</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Button
+              onClick={() => {
+                handleLogout();
+                debugUser(user.id);
+              }}
+              variant="contained"
+              endIcon={<Login />}
+            >
+              このユーザーとしてログイン
+            </Button>
+          </AccordionDetails>
+        </Accordion>
+      )}
       <Box my={3}>
         <Box mb={2}>
           <UserDetail user={user} />
@@ -65,6 +101,6 @@ export const UserDetailPage = () => {
           <LinkedUserInformation user={user} />
         </Box>
       </Box>
-    </Container>
+    </>
   );
 };

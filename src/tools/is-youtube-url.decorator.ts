@@ -22,11 +22,11 @@ class IsYouTubeUrlConstraint implements ValidatorConstraintInterface {
       "https://m.youtube.com/watch?v=12345678901&list=RD12345678901&start_radio=1",
       "https://www.youtube.com/watch?v=12345678901&list=RD12345678901&start_radio=1&rv=smKgVuS",
       "https://www.youtube.com/watch?v=12345678901&list=RD12345678901&start_radio=1&rv=12345678901&t=38",
-      "https://youtube.com/shorts/12345678901"
+      "https://youtube.com/shorts/12345678901",
     ];
      */
     const youtubeUrlPattern =
-      /^(https?:\/\/(www\.)?(m\.)?youtube\.com(\/watch\?v=|\/shorts\/)|https?:\/\/youtu\.be\/)([a-zA-Z0-9_-]{11})(\?t=\d+)?(&.+)?$/;
+      /^(https?:\/\/(www\.)?(m\.)?youtube\.com(\/watch\?v=|\/shorts\/)|https?:\/\/youtu\.be\/)([a-zA-Z0-9_-]{11})(\?.+)?(&.+)?$/;
 
     return youtubeUrlPattern.test(value);
   }

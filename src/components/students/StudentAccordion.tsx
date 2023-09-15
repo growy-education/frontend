@@ -11,6 +11,9 @@ import {
 import { Student } from "../../dto/student.class";
 import { useNavigate } from "react-router-dom";
 import { StudentDetail } from "./StudentDetail";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/UserContextProvider";
+import { Role } from "../../dto/enum/role.enum";
 
 type StudentAccordionProps = Partial<AccordionProps> & {
   student: Student;
@@ -21,6 +24,7 @@ export const StudentAccordion = ({
   ...props
 }: StudentAccordionProps) => {
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
 
   return (
     <Accordion {...props}>
@@ -41,7 +45,7 @@ export const StudentAccordion = ({
           }}
         >
           <Typography>生徒情報</Typography>
-          {student?.id && (
+          {user.role === Role.ADMIN && student?.id && (
             <Button onClick={() => navigate(`/students/${student.id}`)}>
               生徒情報の詳細ページへ
             </Button>

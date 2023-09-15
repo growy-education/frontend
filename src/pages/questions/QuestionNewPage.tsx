@@ -219,7 +219,11 @@ export const QuestionNew = () => {
   return (
     <>
       <PageTitleTypography>新しく質問する</PageTitleTypography>
-      <Box component="form" onSubmit={handleSubmit(handleQuestionUpload)}>
+      <Box
+        mb={3}
+        component="form"
+        onSubmit={handleSubmit(handleQuestionUpload)}
+      >
         <HeadlineTypography>質問タイトル</HeadlineTypography>
         <QuestionTitleTextField errors={errors} {...register("title")} />
 
@@ -309,8 +313,10 @@ export const QuestionNew = () => {
           <SelectImageButton>解答の画像を選択する</SelectImageButton>
         </label>
 
-        <Box m={1}>
-          <SubmitButton>{sending ? "送信中..." : "送信する"}</SubmitButton>
+        <Box m={1} mt={3}>
+          <SubmitButton disabled={sending}>
+            {sending ? "送信中..." : "送信する"}
+          </SubmitButton>
         </Box>
       </Box>
       <Backdrop

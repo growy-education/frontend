@@ -15,6 +15,7 @@ import { PendingContextPage } from "../pages/PendingContextPage";
 import { TeacherStatus } from "../dto/enum/teacher-status.enum";
 import { Teacher } from "../dto/teacher.class";
 import { AlertSnackbarContext } from "./AlertSnackbarContext";
+import { AuthContext } from "./AuthContextProvider";
 
 interface UserContextProps {
   user: User;
@@ -23,6 +24,7 @@ interface UserContextProps {
   getUserById: (userId: string) => Promise<User>;
   editUserById: (userId: string, updateUserDto: Partial<User>) => Promise<User>;
   changeTeacherStatus: () => Promise<Teacher | null>;
+  debugUser: (userId: string) => void;
 }
 
 export const UserContext = createContext<UserContextProps>(null);
@@ -32,6 +34,7 @@ interface Props {
 
 export const UserContextProvider = ({ children }: Props) => {
   const { axiosConfig } = useContext(AxiosContext);
+  const { handleAxiosResponseForDebug } = useContext(AuthContext);
   const { handleAxiosError } = useContext(AlertSnackbarContext);
 
   const [user, setUser] = useState<User | null>(null);
@@ -211,6 +214,17 @@ export const UserContextProvider = ({ children }: Props) => {
     [axiosConfig, handleAxiosError, updateUser]
   );
 
+  const debugUser = useCallback(
+    (userId: string) => {
+      axios
+        .create(axiosConfig)
+        .get(`/auth/${userId}`)
+        .then(handleAxiosResponseForDebug)
+        .catch(handleAxiosError);
+    },
+    [axiosConfig, handleAxiosError, handleAxiosResponseForDebug]
+  );
+
   if (!!!user) {
     return <PendingContextPage message="ユーザー情報を取得中" />;
   }
@@ -228,6 +242,7 @@ export const UserContextProvider = ({ children }: Props) => {
         getUserById,
         editUserById,
         changeTeacherStatus,
+        debugUser,
       }}
     >
       {children}

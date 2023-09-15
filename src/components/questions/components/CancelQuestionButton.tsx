@@ -75,7 +75,7 @@ export const CancelQuestionButton = ({
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            キャンセルすると質問は削除され、確認できなくなります。
+            キャンセルすると質問は削除され、一覧から確認できなくなります。
           </DialogContentText>
         </DialogContent>
         <DialogActions>
