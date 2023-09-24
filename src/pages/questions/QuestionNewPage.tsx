@@ -1,23 +1,22 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import SendIcon from "@mui/icons-material/Send";
 import {
   Backdrop,
   Box,
   CircularProgress,
   FormHelperText,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
   Typography,
 } from "@mui/material";
-import { Button } from "@mui/material";
 import axios from "axios";
 import { IsNotEmpty, IsString } from "class-validator";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Resizer from "react-image-file-resizer";
 
-import { AxiosContext } from "../../contexts/AxiosContextProvider";
 import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
-import { NotificationContext } from "../../contexts/NotificationContextProvider";
 import { PageTitleTypography } from "../../components/components/Typography/PageTitleTypography";
 import { SelectImageButton } from "../../components/components/Button/SelectImageButton";
 import { QuestionTitleTextField } from "../../components/questions/components/TextField/QuestionTitleTextField";
@@ -25,9 +24,14 @@ import { QuestionContentTextField } from "../../components/questions/components/
 import { QuestionMemoTextField } from "../../components/questions/components/TextField/QuestionMemoTextField";
 import { NewImageBox } from "../../components/UploadingImage";
 import { Exclude, plainToInstance } from "class-transformer";
-import { Question } from "../../dto/question.class";
 import { ImageEntity } from "../../dto/image.class";
 import { SubmitButton } from "../../components/SubmitButton";
+import { UserContext } from "../../contexts/UserContextProvider";
+import { Role } from "../../dto/enum/role.enum";
+import { TeacherContext } from "../../contexts/TeacherContextProvider";
+import { QuestionContext } from "../../contexts/QuestionContextProvider";
+import { Teacher } from "../../dto/teacher.class";
+import { AxiosContext } from "../../contexts/AxiosContextProvider";
 
 class CreateQuestionDto {
   @IsNotEmpty({ message: "タイトルを入力してください" })
@@ -51,12 +55,14 @@ class CreateQuestionDto {
 
 export const QuestionNew = () => {
   const navigate = useNavigate();
+  const { axiosConfig } = useContext(AxiosContext);
+  const { user } = useContext(UserContext);
+  const { teachers } = useContext(TeacherContext);
+  const { createQuestion, createQuestionForTeacher } =
+    useContext(QuestionContext);
 
   const [sending, setSending] = useState(false);
   const [sendingMessage, setSendingMessage] = useState("");
-
-  const { axiosConfig } = useContext(AxiosContext);
-  const { handleNotification: handleError } = useContext(NotificationContext);
 
   const {
     handleSubmit,
@@ -75,6 +81,13 @@ export const QuestionNew = () => {
       solutions: [],
     },
   });
+
+  const [teacher, setTeacher] = useState<Teacher>(null);
+  const handleSelectTeacher = (event: SelectChangeEvent) => {
+    const id = event.target.value;
+    const found = teachers.find((teacher) => teacher.id === id);
+    setTeacher(found);
+  };
 
   const problems = watch("problems");
   const solutions = watch("solutions");
@@ -148,6 +161,10 @@ export const QuestionNew = () => {
       });
     }
 
+    if (user.role === Role.ADMIN && !!!teacher) {
+      return;
+    }
+
     if (sending) {
       return;
     }
@@ -189,36 +206,67 @@ export const QuestionNew = () => {
     const { problems, solutions, ...createQuestionDto } = data;
 
     setSendingMessage("質問情報の送信中です...");
-    axios
-      .create(axiosConfig)
-      .post("questions", {
+
+    if (user.role === Role.ADMIN) {
+      return createQuestionForTeacher({
+        ...createQuestionDto,
+        problems: problemImages,
+        solutions: solutionImages,
+        teacher,
+      })
+        .then((question) => {
+          if (question) {
+            navigate(`/questions/${question.id}`);
+          }
+        })
+        .finally(() => {
+          setSending(false);
+          setTeacher(null);
+          setSendingMessage("");
+        });
+    } else {
+      createQuestion({
         ...createQuestionDto,
         problems: problemImages,
         solutions: solutionImages,
       })
-      .then((response) => {
-        const question = plainToInstance(Question, response.data);
-        //成功したら詳細ページへ飛ぶ
-        navigate(`/questions/${question.id}`);
-      })
-      .catch((error) => {
-        console.log(error);
-        handleError({
-          type: "Modal",
-          title: "ネットワークエラー",
-          message:
-            "質問の送信に失敗しました。ネットワーク環境を確認してください。",
+        .then((question) => {
+          if (question) {
+            navigate(`/questions/${question.id}`);
+          }
+        })
+        .finally(() => {
+          setSending(false);
+          setTeacher(null);
+          setSendingMessage("");
         });
-      })
-      .finally(() => {
-        setSending(false);
-        setSendingMessage("");
-      });
+    }
   };
 
   return (
     <>
       <PageTitleTypography>新しく質問する</PageTitleTypography>
+      {user.role === Role.ADMIN && (
+        <>
+          <Typography color="error.main" variant="caption">
+            講師研修モードです
+          </Typography>
+          <HeadlineTypography>動画を作成する講師</HeadlineTypography>
+          <Select
+            required
+            fullWidth
+            id="teacherId"
+            onChange={handleSelectTeacher}
+          >
+            {teachers.map((teacher) => (
+              <MenuItem key={teacher.id} value={teacher.id}>
+                {teacher.lastName} {teacher.firstName}
+                {teacher?.user?.email}
+              </MenuItem>
+            ))}
+          </Select>
+        </>
+      )}
       <Box component="form" onSubmit={handleSubmit(handleQuestionUpload)}>
         <HeadlineTypography>質問タイトル</HeadlineTypography>
         <QuestionTitleTextField errors={errors} {...register("title")} />

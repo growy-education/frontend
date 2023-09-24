@@ -13,18 +13,20 @@ import { Cancel } from "@mui/icons-material";
 import { Question } from "../../../dto/question.class";
 import { QuestionStatus } from "../../../dto/enum/question-status.enum";
 import { QuestionContext } from "../../../contexts/QuestionContextProvider";
+import { useNavigate } from "react-router-dom";
 
-type CancelQuestionButtonProps = {
+type DeleteQuestionButtonProps = {
   question: Question;
 } & ButtonProps;
 
-export const CancelQuestionButton = ({
+export const DeleteQuestionButton = ({
   question,
   ...props
-}: CancelQuestionButtonProps) => {
-  const { cancelQuestionById } = useContext(QuestionContext);
+}: DeleteQuestionButtonProps) => {
+  const navigate = useNavigate();
+  const { deleteQuestionById } = useContext(QuestionContext);
   const disabled = useMemo(
-    () => question.status !== QuestionStatus.PENDING,
+    () => question.status !== QuestionStatus.CANCELED,
     [question.status]
   );
 
@@ -40,11 +42,17 @@ export const CancelQuestionButton = ({
       return;
     }
     setSending(true);
-    cancelQuestionById(question.id).finally(() => {
-      setSending(false);
-    });
+    deleteQuestionById(question.id)
+      .then((error) => {
+        if (!!!error) {
+          navigate("/questions");
+        }
+      })
+      .finally(() => {
+        setSending(false);
+      });
     setOpen(false);
-  }, [cancelQuestionById, question.id, sending]);
+  }, [deleteQuestionById, question.id, sending]);
 
   return (
     <>
@@ -62,7 +70,7 @@ export const CancelQuestionButton = ({
         onClick={handleClick}
         {...props}
       >
-        質問をキャンセル
+        質問を削除する
       </Button>
       <Dialog
         open={open}
@@ -71,17 +79,17 @@ export const CancelQuestionButton = ({
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"本当に質問をキャンセルしますか？"}
+          {"本当に質問を削除しますか？"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            キャンセルすると、質問には回答動画が作成されなくなります。
+            質問を削除すると、データは完全に削除され復元できなくなります。
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCancel}>キャンセルしない</Button>
+          <Button onClick={handleCancel}>削除しない</Button>
           <Button onClick={handleConfirm} autoFocus>
-            キャンセルする
+            削除する
           </Button>
         </DialogActions>
       </Dialog>

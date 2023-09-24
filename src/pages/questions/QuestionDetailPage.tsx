@@ -49,7 +49,6 @@ export const QuestionDetailPage = () => {
   return (
     <>
       {user.role === Role.CUSTOMER &&
-        question.status !== QuestionStatus.CANCELED &&
         question.status !== QuestionStatus.AVAILABLE && (
           <EditingQuestionBox question={question} />
         )}

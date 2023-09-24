@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { AddCircle, ListAlt, Quiz } from "@mui/icons-material";
+import { AddCircle, ListAlt, ManageAccounts, Quiz } from "@mui/icons-material";
 import {
   Collapse,
   List,
@@ -43,6 +43,16 @@ export const ListItemQuestion = () => {
                   <AddCircle />
                 </ListItemIcon>
                 <ListItemText primary="質問する" />
+              </ListItemButton>
+            </ListItem>
+          )}
+          {user.role === Role.ADMIN && (
+            <ListItem onClick={() => navigate("/questions/new")}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <ManageAccounts />
+                </ListItemIcon>
+                <ListItemText primary="講師研修" />
               </ListItemButton>
             </ListItem>
           )}

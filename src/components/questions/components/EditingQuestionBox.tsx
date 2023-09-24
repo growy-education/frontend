@@ -6,6 +6,7 @@ import { useCallback, useContext, useRef } from "react";
 import { QuestionStatus } from "../../../dto/enum/question-status.enum";
 import { QuestionContext } from "../../../contexts/QuestionContextProvider";
 import { EditButton } from "../../components/EditButton";
+import { DeleteQuestionButton } from "./DeleteQuestionButton";
 
 type EditingQuestionBoxProps = {
   question: Question;
@@ -26,7 +27,11 @@ export const EditingQuestionBox = ({
       }}
       {...props}
     >
-      <CancelQuestionButton question={question} />
+      {question.status === QuestionStatus.CANCELED ? (
+        <DeleteQuestionButton question={question} />
+      ) : (
+        <CancelQuestionButton question={question} />
+      )}
       <EditButton
         disabled={question.status !== QuestionStatus.PENDING}
         onClick={() => {

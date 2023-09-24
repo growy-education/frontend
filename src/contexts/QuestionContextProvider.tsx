@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  createContext,
-  useContext,
-  useCallback,
-} from "react";
+import React, { useState, useEffect, createContext, useContext } from "react";
 import axios from "axios";
 import { AxiosContext } from "./AxiosContextProvider";
 import { plainToInstance } from "class-transformer";
@@ -20,11 +14,16 @@ interface QuestionContextProps {
   getQuestions: (
     filterDto: GetQuestionsFilterDto
   ) => Promise<Question[] | null>;
+  createQuestion: (createQuestionDto: Partial<Question>) => Promise<Question>;
+  createQuestionForTeacher: (
+    createQuestionDto: Partial<Question>
+  ) => Promise<Question>;
   getQuestionById: (id: string) => Promise<Question | null>;
   editQuestionById: (
     id: string,
     data: UpdateQuestionDto
   ) => Promise<Question | null>;
+  deleteQuestionById: (id: string) => Promise<void | Error>;
   cancelQuestionById: (id: string) => Promise<Question | null>;
   assignQuestionById: (id: string) => Promise<Question | null>;
   rejectQuestionById: (id: string) => Promise<Question | null>;
@@ -87,6 +86,13 @@ export const QuestionContextProvider = ({ children }: Props) => {
     }
   };
 
+  const deleteQuestionFromContext = async (deletedQuestionId: string) => {
+    const filteredQuestions = questions.filter(
+      (question) => question.id !== deletedQuestionId
+    );
+    setQuestions(filteredQuestions);
+  };
+
   const addQuestions = async (addedQuestions: Question[]) => {
     if (addedQuestions.length === 0) {
       return;
@@ -133,6 +139,22 @@ export const QuestionContextProvider = ({ children }: Props) => {
       .then((response) => {
         const question = plainToInstance(Question, response.data);
         addQuestion(question);
+        return question;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
+
+  const createQuestionForTeacher = async (question: Partial<Question>) => {
+    return axios
+      .create(axiosConfig)
+      .post("/questions/test", question)
+      .then((response) => {
+        const question = plainToInstance(Question, response.data);
+        addQuestion(question);
+        return question;
       })
       .catch((error) => {
         handleAxiosError(error);
@@ -171,6 +193,19 @@ export const QuestionContextProvider = ({ children }: Props) => {
         const question = plainToInstance(Question, response.data);
         updateQuestion(question);
         return question;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
+
+  const deleteQuestionById = async (id: string): Promise<void> => {
+    return axios
+      .create(axiosConfig)
+      .delete(`questions/${id}`)
+      .then((response) => {
+        deleteQuestionFromContext(id);
       })
       .catch((error) => {
         handleAxiosError(error);
@@ -311,8 +346,11 @@ export const QuestionContextProvider = ({ children }: Props) => {
       value={{
         questions,
         getQuestions,
+        createQuestion,
+        createQuestionForTeacher,
         getQuestionById,
         editQuestionById,
+        deleteQuestionById,
         cancelQuestionById,
         assignQuestionById,
         rejectQuestionById,

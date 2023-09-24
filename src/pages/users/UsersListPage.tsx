@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { GridColDef, GridRowParams } from "@mui/x-data-grid";
@@ -9,6 +9,7 @@ import { User } from "../../dto/user.class";
 import { CustomDataGrid } from "../../components/components/DataGrid/CustomDataGrid";
 import { SearchDataGrid } from "../../components/components/DataGrid//SearchDataGrid";
 import { EditDataGrid } from "../../components/components/DataGrid//EditDataGrid";
+import { UserContext } from "../../contexts/UserContextProvider";
 
 type CustomGridColDef = GridColDef & { order: number };
 
@@ -23,10 +24,9 @@ const UserColumns: CustomGridColDef[] = [
 ];
 
 export const UsersList = () => {
-  const { axiosConfig } = useAxiosConfig();
+  const { users } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const [users, setUsers] = useState<User[]>([]);
   const [columns, setColumns] = useState(UserColumns);
   const [selectedColumn, setSelectedColumn] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
@@ -43,22 +43,6 @@ export const UsersList = () => {
     // Update the filtered users in state
     console.log("いま!");
   };
-
-  useEffect(() => {
-    axios
-      .create(axiosConfig)
-      .get("users")
-      .then((response) => {
-        console.log(response.data);
-        const users = response.data.map((userJson: string) =>
-          plainToInstance(User, userJson)
-        );
-        setUsers(users);
-      })
-      .catch((error) => {
-        console.log("error occurred at UsersList.tsx", error);
-      });
-  }, [axiosConfig]);
 
   return (
     <Box sx={{ width: "100%" }}>
