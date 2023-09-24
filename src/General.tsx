@@ -98,7 +98,7 @@ export const General: React.FC = () => {
         <DrawerListItem />
       </SwipeableDrawer>
 
-      <PageWrapperBox maxWidth={"600px"}>
+      <PageWrapperBox maxWidth={"600px"} pb={3}>
         <Offset />
         <Box m={1}>
           {alert && <AlertSnackbar />}

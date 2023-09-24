@@ -66,281 +66,241 @@ export const QuestionContextProvider = ({ children }: Props) => {
       })
       .catch((error) => handleAxiosError(error))
       .finally(() => setPending(false));
-  }, [axiosConfig]);
+  }, [axiosConfig, handleAxiosError]);
 
   const sortQuestions = (a: Question, b: Question) =>
     b.createdAt.getTime() - a.createdAt.getTime();
 
-  const addQuestion = useCallback(
-    async (addedQuestion: Question) => {
-      setQuestions([...questions, addedQuestion].sort(sortQuestions));
-    },
-    [questions]
-  );
+  const addQuestion = async (addedQuestion: Question) => {
+    setQuestions([...questions, addedQuestion].sort(sortQuestions));
+  };
 
-  const updateQuestion = useCallback(
-    async (updatedQuestion: Question) => {
+  const updateQuestion = async (updatedQuestion: Question) => {
+    const index = questions.findIndex(
+      (question) => question.id === updatedQuestion.id
+    );
+    if (index === -1) {
+      addQuestion(updatedQuestion);
+    } else {
+      questions[index] = updatedQuestion;
+      setQuestions([...questions]);
+    }
+  };
+
+  const addQuestions = async (addedQuestions: Question[]) => {
+    if (addedQuestions.length === 0) {
+      return;
+    }
+    for (const addedQuestion of addedQuestions) {
       const index = questions.findIndex(
-        (question) => question.id === updatedQuestion.id
+        (question) => question.id === addedQuestion.id
       );
       if (index === -1) {
-        addQuestion(updatedQuestion);
+        questions.push(addedQuestion);
       } else {
-        questions[index] = updatedQuestion;
-        setQuestions([...questions]);
+        questions[index] = addedQuestion;
       }
-    },
-    [addQuestion, questions]
-  );
+    }
+    setQuestions([...questions.sort(sortQuestions)]);
+  };
 
-  const addQuestions = useCallback(
-    async (addedQuestions: Question[]) => {
-      if (addedQuestions.length === 0) {
-        return;
-      }
-      for (const addedQuestion of addedQuestions) {
-        const index = questions.findIndex(
-          (question) => question.id === addedQuestion.id
-        );
-        if (index === -1) {
-          questions.push(addedQuestion);
-        } else {
-          questions[index] = addedQuestion;
+  const getQuestions = async (
+    filterDto: GetQuestionsFilterDto
+  ): Promise<Question[]> => {
+    return axios
+      .create(axiosConfig)
+      .get("questions", { params: filterDto })
+      .then((response) => {
+        if (!Array.isArray(response.data)) {
+          throw new Error("ネットワークエラー");
         }
-      }
-      setQuestions([...questions.sort(sortQuestions)]);
-    },
-    [questions]
-  );
-
-  const getQuestions = useCallback(
-    async (filterDto: GetQuestionsFilterDto): Promise<Question[]> => {
-      return axios
-        .create(axiosConfig)
-        .get("questions", { params: filterDto })
-        .then((response) => {
-          if (!Array.isArray(response.data)) {
-            throw new Error("ネットワークエラー");
-          }
-          const retrievedQuestions = response.data.map(
-            (questionJson: string) => {
-              return plainToInstance(Question, questionJson);
-            }
-          );
-          addQuestions(retrievedQuestions);
-          return retrievedQuestions;
-        })
-        .catch((error) => {
-          handleAxiosError(error);
-          return error;
-        })
-        .finally(() => setPending(false));
-    },
-    [axiosConfig, handleAxiosError]
-  );
-
-  const createQuestion = useCallback(
-    async (question: Partial<Question>) => {
-      return axios
-        .create(axiosConfig)
-        .post("questions", question)
-        .then((response) => {
-          const question = plainToInstance(Question, response.data);
-          //成功したら詳細ページへ飛ぶ
-          addQuestion(question);
-        })
-        .catch((error) => {
-          return null;
+        const retrievedQuestions = response.data.map((questionJson: string) => {
+          return plainToInstance(Question, questionJson);
         });
-    },
-    [addQuestion, axiosConfig]
-  );
+        addQuestions(retrievedQuestions);
+        return retrievedQuestions;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
 
-  const getQuestionById = useCallback(
-    async (id: string): Promise<Question | null> => {
-      const found = questions.find((question) => question.id === id);
-      if (found) {
-        return found;
-      }
+  const createQuestion = async (question: Partial<Question>) => {
+    return axios
+      .create(axiosConfig)
+      .post("questions", question)
+      .then((response) => {
+        const question = plainToInstance(Question, response.data);
+        addQuestion(question);
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
 
-      return axios
-        .create(axiosConfig)
-        .get(`/questions/${id}`)
-        .then((response) => {
-          const question = plainToInstance(Question, response.data);
-          addQuestion(question);
-          return question;
-        })
-        .catch((error) => {
-          handleAxiosError(error);
-          return error;
-        });
-    },
-    [addQuestion, axiosConfig, questions]
-  );
+  const getQuestionById = async (id: string): Promise<Question | null> => {
+    const found = questions.find((question) => question.id === id);
+    if (found) {
+      return found;
+    }
 
-  const editQuestionById = useCallback(
-    async (
-      id: string,
-      updateQuestionDto: UpdateQuestionDto
-    ): Promise<Question> => {
-      return axios
-        .create(axiosConfig)
-        .patch(`questions/${id}`, updateQuestionDto)
-        .then((response) => {
-          const question = plainToInstance(Question, response.data);
-          updateQuestion(question);
-          return question;
-        })
-        .catch((error) => {
-          handleAxiosError(error);
-          return error;
-        });
-    },
-    [axiosConfig, handleAxiosError, updateQuestion]
-  );
+    return axios
+      .create(axiosConfig)
+      .get(`/questions/${id}`)
+      .then((response) => {
+        const question = plainToInstance(Question, response.data);
+        addQuestion(question);
+        return question;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
 
-  const cancelQuestionById = useCallback(
-    async (id: string): Promise<Question | null> => {
-      return axios
-        .create(axiosConfig)
-        .patch(`questions/${id}`, {
-          status: QuestionStatus.CANCELED,
-        })
-        .then((response) => {
-          const question = plainToInstance(Question, response.data);
-          updateQuestion(question);
-          return question;
-        })
-        .catch((error) => {
-          handleAxiosError(error);
-          return error;
-        });
-    },
-    [axiosConfig, handleAxiosError, updateQuestion]
-  );
+  const editQuestionById = async (
+    id: string,
+    updateQuestionDto: UpdateQuestionDto
+  ): Promise<Question> => {
+    return axios
+      .create(axiosConfig)
+      .patch(`questions/${id}`, updateQuestionDto)
+      .then((response) => {
+        const question = plainToInstance(Question, response.data);
+        updateQuestion(question);
+        return question;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
 
-  const assignQuestionById = useCallback(
-    async (id: string): Promise<Question | null> => {
-      return axios
-        .create(axiosConfig)
-        .patch(`questions/${id}`, {
-          status: QuestionStatus.ASSIGNED,
-        })
-        .then((response) => {
-          const question = plainToInstance(Question, response.data);
-          updateQuestion(question);
-          return question;
-        })
-        .catch((error) => {
-          handleAxiosError(error);
-          return error;
-        });
-    },
-    [axiosConfig, handleAxiosError, updateQuestion]
-  );
+  const cancelQuestionById = async (id: string): Promise<Question | null> => {
+    return axios
+      .create(axiosConfig)
+      .patch(`questions/${id}`, {
+        status: QuestionStatus.CANCELED,
+      })
+      .then((response) => {
+        const question = plainToInstance(Question, response.data);
+        updateQuestion(question);
+        return question;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
 
-  const rejectQuestionById = useCallback(
-    async (id: string): Promise<Question | null> => {
-      return axios
-        .create(axiosConfig)
-        .patch(`questions/${id}`, {
-          status: QuestionStatus.PENDING,
-        })
-        .then((response) => {
-          const question = plainToInstance(Question, response.data);
-          updateQuestion(question);
-          return question;
-        })
-        .catch((error) => {
-          handleAxiosError(error);
-          return error;
-        });
-    },
-    [axiosConfig, handleAxiosError, updateQuestion]
-  );
+  const assignQuestionById = async (id: string): Promise<Question | null> => {
+    return axios
+      .create(axiosConfig)
+      .patch(`questions/${id}`, {
+        status: QuestionStatus.ASSIGNED,
+      })
+      .then((response) => {
+        const question = plainToInstance(Question, response.data);
+        updateQuestion(question);
+        return question;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
 
-  const changeQuestionTeacherById = useCallback(
-    async (questionId: string, teacherId: string) => {
-      return axios
-        .create(axiosConfig)
-        .patch(`questions/${questionId}`, {
-          status: QuestionStatus.PENDING,
-          teacher: { id: teacherId },
-        })
-        .then((response) => {
-          const question = plainToInstance(Question, response.data);
-          updateQuestion(question);
-          return question;
-        })
-        .catch((error) => {
-          handleAxiosError(error);
-          return error;
-        });
-    },
-    [axiosConfig, handleAxiosError, updateQuestion]
-  );
+  const rejectQuestionById = async (id: string): Promise<Question | null> => {
+    return axios
+      .create(axiosConfig)
+      .patch(`questions/${id}`, {
+        status: QuestionStatus.PENDING,
+      })
+      .then((response) => {
+        const question = plainToInstance(Question, response.data);
+        updateQuestion(question);
+        return question;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
 
-  const answerQuestionById = useCallback(
-    async (id: string, answer: string) => {
-      return axios
-        .create(axiosConfig)
-        .patch(`questions/${id}`, {
-          status: QuestionStatus.CHECKING,
-          answer,
-        })
-        .then((response) => {
-          const question = plainToInstance(Question, response.data);
-          updateQuestion(question);
-          return question;
-        })
-        .catch((error) => {
-          handleAxiosError(error);
-          return error;
-        });
-    },
-    [axiosConfig, handleAxiosError, updateQuestion]
-  );
+  const changeQuestionTeacherById = async (
+    questionId: string,
+    teacherId: string
+  ) => {
+    return axios
+      .create(axiosConfig)
+      .patch(`questions/${questionId}`, {
+        status: QuestionStatus.PENDING,
+        teacher: { id: teacherId },
+      })
+      .then((response) => {
+        const question = plainToInstance(Question, response.data);
+        updateQuestion(question);
+        return question;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
 
-  const verifyQuestionAnswerById = useCallback(
-    async (id: string) => {
-      return axios
-        .create(axiosConfig)
-        .patch(`questions/${id}`, {
-          status: QuestionStatus.AVAILABLE,
-        })
-        .then((response) => {
-          const question = plainToInstance(Question, response.data);
-          updateQuestion(question);
-          return question;
-        })
-        .catch((error) => {
-          handleAxiosError(error);
-          return error;
-        });
-    },
-    [axiosConfig, handleAxiosError, updateQuestion]
-  );
+  const answerQuestionById = async (id: string, answer: string) => {
+    return axios
+      .create(axiosConfig)
+      .patch(`questions/${id}`, {
+        status: QuestionStatus.CHECKING,
+        answer,
+      })
+      .then((response) => {
+        const question = plainToInstance(Question, response.data);
+        updateQuestion(question);
+        return question;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
 
-  const rejectQuestionAnswerById = useCallback(
-    async (id: string) => {
-      return axios
-        .create(axiosConfig)
-        .patch(`questions/${id}`, {
-          status: QuestionStatus.ASSIGNED,
-        })
-        .then((response) => {
-          const question = plainToInstance(Question, response.data);
-          updateQuestion(question);
-          return question;
-        })
-        .catch((error) => {
-          handleAxiosError(error);
-          return error;
-        });
-    },
-    [axiosConfig, handleAxiosError, updateQuestion]
-  );
+  const verifyQuestionAnswerById = async (id: string) => {
+    return axios
+      .create(axiosConfig)
+      .patch(`questions/${id}`, {
+        status: QuestionStatus.AVAILABLE,
+      })
+      .then((response) => {
+        const question = plainToInstance(Question, response.data);
+        updateQuestion(question);
+        return question;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
+
+  const rejectQuestionAnswerById = async (id: string) => {
+    return axios
+      .create(axiosConfig)
+      .patch(`questions/${id}`, {
+        status: QuestionStatus.ASSIGNED,
+      })
+      .then((response) => {
+        const question = plainToInstance(Question, response.data);
+        updateQuestion(question);
+        return question;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
 
   if (pending) {
     return <PendingContextPage message="質問情報を取得中" />;

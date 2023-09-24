@@ -82,8 +82,8 @@ export const UserDetailPage = () => {
           <AccordionDetails>
             <Button
               onClick={() => {
-                handleLogout();
                 debugUser(user.id);
+                navigate("/home");
               }}
               variant="contained"
               endIcon={<Login />}

@@ -219,11 +219,7 @@ export const QuestionNew = () => {
   return (
     <>
       <PageTitleTypography>新しく質問する</PageTitleTypography>
-      <Box
-        mb={3}
-        component="form"
-        onSubmit={handleSubmit(handleQuestionUpload)}
-      >
+      <Box component="form" onSubmit={handleSubmit(handleQuestionUpload)}>
         <HeadlineTypography>質問タイトル</HeadlineTypography>
         <QuestionTitleTextField errors={errors} {...register("title")} />
 

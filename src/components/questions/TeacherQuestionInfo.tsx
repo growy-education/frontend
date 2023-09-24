@@ -38,7 +38,7 @@ export const TeacherQuestionInfo = () => {
     getQuestions({
       statuses: [QuestionStatus.PENDING, QuestionStatus.ASSIGNED],
     });
-  }, [getQuestions]);
+  }, []);
 
   const handleRowClick = (params: GridRowParams) => {
     const rowId = params.id as string;

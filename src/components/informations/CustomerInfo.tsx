@@ -21,7 +21,7 @@ export const CustomerInfo = () => {
               width="100%"
               height="100%"
               src={
-                "https://www.youtube.com/embed/?list=UU35PZPRvt3OBQ10dYj2k61w"
+                "https://www.youtube.com/embed/?list=UU35PZPRvt3OBQ10dYj2k61w&?rel=0&controls=0&autoplay=0"
               }
               title="ホンネで中学受験の新着動画"
               allowFullScreen

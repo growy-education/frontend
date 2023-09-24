@@ -40,7 +40,7 @@ export const AdminQuestionInfo = () => {
         QuestionStatus.CHECKING,
       ],
     });
-  }, [getQuestions]);
+  }, []);
 
   const reactionRequiredQuestions: CustomQuestion[] = useMemo(
     () =>

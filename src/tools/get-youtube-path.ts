@@ -1,3 +1,4 @@
+import { IsUrl, isURL } from "class-validator";
 import { getYouTubeIdFromUrl } from "./get-youtube-id-from-url";
 
 /**
@@ -6,9 +7,14 @@ import { getYouTubeIdFromUrl } from "./get-youtube-id-from-url";
  * @returns 埋め込み用のURLか""を返す
  */
 export const getEmbedYouTubePath = (url: string): string => {
-  const youtubeId = getYouTubeIdFromUrl(url);
+  let youtubeId: string;
+  if (isURL(url)) {
+    youtubeId = getYouTubeIdFromUrl(url);
+  } else {
+    youtubeId = url;
+  }
   if (youtubeId) {
-    return `https://www.youtube.com/embed/${youtubeId}`;
+    return `https://www.youtube.com/embed/${youtubeId}?rel=0&autoplay=0`;
   } else {
     return "";
   }
