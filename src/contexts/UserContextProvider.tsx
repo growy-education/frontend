@@ -23,6 +23,7 @@ interface UserContextProps {
   createUser: (user: Partial<User>) => Promise<User>;
   getUserById: (userId: string) => Promise<User>;
   editUserById: (userId: string, updateUserDto: Partial<User>) => Promise<User>;
+  deleteUserById: (userId: string) => Promise<void>;
   changeTeacherStatus: () => Promise<Teacher | null>;
   debugUser: (userId: string) => void;
 }
@@ -115,6 +116,15 @@ export const UserContextProvider = ({ children }: Props) => {
     },
     [addUser, users]
   );
+
+  const deleteUser = async (deletedUserId: string) => {
+    const index = users.findIndex((user) => user.id === deletedUserId);
+    if (index === -1) {
+      return;
+    }
+    const filteredUsers = users.filter((user) => user.id !== deletedUserId);
+    setUsers(filteredUsers);
+  };
 
   const addUsers = useCallback(
     async (addedUsers: User[]) => {
@@ -214,6 +224,19 @@ export const UserContextProvider = ({ children }: Props) => {
     [axiosConfig, handleAxiosError, updateUser]
   );
 
+  const deleteUserById = async (id: string): Promise<void> => {
+    return axios
+      .create(axiosConfig)
+      .delete(`users/${id}`)
+      .then((_response) => {
+        deleteUser(id);
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
+
   const debugUser = useCallback(
     (userId: string) => {
       axios
@@ -241,6 +264,7 @@ export const UserContextProvider = ({ children }: Props) => {
         createUser,
         getUserById,
         editUserById,
+        deleteUserById,
         changeTeacherStatus,
         debugUser,
       }}

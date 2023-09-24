@@ -12,7 +12,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { User } from "../../dto/user.class";
 import axios from "axios";
 import { plainToInstance } from "class-transformer";
-import { Edit, ExpandMore, LockOpen, Login } from "@mui/icons-material";
+import { Delete, Edit, ExpandMore, LockOpen, Login } from "@mui/icons-material";
 import { Role } from "../../dto/enum/role.enum";
 import { UserDetail } from "../../components/users/UserDetail";
 import { LinkedUserInformation } from "../../components/users/LinkedUserInformation";
@@ -24,9 +24,12 @@ import { AuthContext } from "../../contexts/AuthContextProvider";
 
 export const UserDetailPage = () => {
   const { userId } = useParams();
-  const { handleLogout } = useContext(AuthContext);
   const { axiosConfig } = useContext(AxiosContext);
-  const { user: currentUser, debugUser } = useContext(UserContext);
+  const {
+    user: currentUser,
+    debugUser,
+    deleteUserById,
+  } = useContext(UserContext);
   const navigate = useNavigate();
 
   const [user, setUser] = useState<null | User>(null);
@@ -71,27 +74,48 @@ export const UserDetailPage = () => {
         </Button>
       </HeadEditBox>
       {currentUser.role === Role.ADMIN && (
-        <Accordion sx={{ marginTop: 2 }}>
-          <AccordionSummary
-            expandIcon={<ExpandMore />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <Typography>ユーザーをデバッグする</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Button
-              onClick={() => {
-                debugUser(user.id);
-                navigate("/home");
-              }}
-              variant="contained"
-              endIcon={<Login />}
+        <>
+          <Accordion sx={{ marginTop: 2 }}>
+            <AccordionSummary
+              expandIcon={<ExpandMore />}
+              id="debug-user-accordion"
             >
-              このユーザーとしてログイン
-            </Button>
-          </AccordionDetails>
-        </Accordion>
+              <Typography>ユーザーをデバッグする</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Button
+                onClick={() => {
+                  debugUser(user.id);
+                  navigate("/home");
+                }}
+                variant="contained"
+                endIcon={<Login />}
+              >
+                このユーザーとしてログイン
+              </Button>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion sx={{ marginTop: 2 }}>
+            <AccordionSummary
+              expandIcon={<ExpandMore />}
+              id="delete-user-accordion"
+            >
+              <Typography>ユーザーを削除する</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Button
+                onClick={() => {
+                  deleteUserById(user.id);
+                  navigate("/users");
+                }}
+                variant="contained"
+                endIcon={<Delete />}
+              >
+                このユーザーを削除
+              </Button>
+            </AccordionDetails>
+          </Accordion>
+        </>
       )}
       <Box my={3}>
         <Box mb={2}>

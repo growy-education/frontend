@@ -4,12 +4,16 @@ import { HeadlineTypography } from "../components/Typography/HeadlineTypography"
 import { JaDateTimeTypography } from "../components/Typography/JaDateTimeTypography";
 import { TeacherStatusTypography } from "./TeacherStatus";
 import { DetailTypography } from "../components/DetailTyporagphy";
+import { NotFound } from "../NotFound";
 
 type TeacherDetailProps = {
   teacher: Teacher;
 };
 
 export const TeacherDetail = ({ teacher }: TeacherDetailProps) => {
+  if (!!!teacher) {
+    return <NotFound />;
+  }
   const {
     id,
     createdAt,
