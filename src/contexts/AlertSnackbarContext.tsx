@@ -40,6 +40,12 @@ export const AlertSnackbarContextProvider: React.FC<
     if (isAxiosError(error)) {
       // サーバーからの返答がある
       if (error.response) {
+        if (error.response.status === 404) {
+          return;
+        }
+        if (error.response.status === 500) {
+          return;
+        }
         return setAlert({
           severity: "error",
           title: "エラー",

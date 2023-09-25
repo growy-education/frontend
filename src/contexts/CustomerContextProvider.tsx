@@ -21,6 +21,7 @@ interface CustomerContextProps {
     id: string,
     customer: Partial<Customer>
   ) => Promise<Customer | null>;
+  sendMessageToCustomer: (id: string, message: string) => Promise<void>;
 }
 
 export const CustomerContext = createContext<CustomerContextProps>(null);
@@ -135,6 +136,20 @@ export const CustomerContextProvider = ({ children }: Props) => {
     [axiosConfig, updateCustomer]
   );
 
+  const sendMessageToCustomer = useCallback(
+    async (id: string, message: string) => {
+      return axios
+        .create(axiosConfig)
+        .post(`customers/${id}/message`, { message })
+        .then((_response) => {})
+        .catch((error) => {
+          handleAxiosError(error);
+          return error;
+        });
+    },
+    [axiosConfig, handleAxiosError]
+  );
+
   if (pending) {
     return <PendingContextPage message="保護者情報を取得中" />;
   }
@@ -145,6 +160,7 @@ export const CustomerContextProvider = ({ children }: Props) => {
         customers,
         getCustomerById,
         updateCustomerById,
+        sendMessageToCustomer,
       }}
     >
       {children}

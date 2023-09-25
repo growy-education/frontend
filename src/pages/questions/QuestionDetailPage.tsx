@@ -25,6 +25,9 @@ export const QuestionDetailPage = () => {
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
+    if (notFound) {
+      return;
+    }
     getQuestionById(questionId).then((found) => {
       if (found instanceof Question) {
         setQuestion(found);
@@ -32,7 +35,7 @@ export const QuestionDetailPage = () => {
         setNotFound(true);
       }
     });
-  }, [getQuestionById, questionId, questions]);
+  }, [getQuestionById, questionId, questions, notFound]);
 
   if (!!!questionId) {
     return <Navigate to="/questions" />;
@@ -48,7 +51,7 @@ export const QuestionDetailPage = () => {
 
   return (
     <>
-      {user.role === Role.CUSTOMER &&
+      {(user.role === Role.CUSTOMER || user.role === Role.ADMIN) &&
         question.status !== QuestionStatus.AVAILABLE && (
           <EditingQuestionBox question={question} />
         )}

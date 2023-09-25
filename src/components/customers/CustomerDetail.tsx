@@ -3,6 +3,8 @@ import { HeadlineTypography } from "../components/Typography/HeadlineTypography"
 import { JaDateTimeTypography } from "../components/Typography/JaDateTimeTypography";
 import { CustomerServiceChips } from "./CustomerServiceChips";
 import { DetailTypography } from "../components/DetailTyporagphy";
+import { CheckCustomerWebhookButton } from "./CheckCustomerWebhookButton";
+import { Box } from "@mui/material";
 
 type CustomerDetailProps = {
   customer: Customer;
@@ -42,6 +44,9 @@ export const CustomerDetail = ({ customer }: CustomerDetailProps) => {
       <HeadlineTypography>利用可能サービス</HeadlineTypography>
       <CustomerServiceChips services={services} />
       <HeadlineTypography>GoogleChatのWebhookURL(Space)</HeadlineTypography>
+      <Box display="flex" justifyContent="flex-end">
+        <CheckCustomerWebhookButton customer={customer} />
+      </Box>
       <DetailTypography>{spaceWebhookUrl}</DetailTypography>
     </>
   );

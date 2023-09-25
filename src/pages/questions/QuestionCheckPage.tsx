@@ -97,10 +97,8 @@ export const QuestionCheck = () => {
       <Box my={3}>
         <HeadlineTypography>ID</HeadlineTypography>
         <Typography>{id}</Typography>
-        <HeadlineTypography>作成日時</HeadlineTypography>
+        <HeadlineTypography>質問日時</HeadlineTypography>
         <JaDateTimeTypography date={createdAt} />
-        <HeadlineTypography>更新日時</HeadlineTypography>
-        <JaDateTimeTypography date={updatedAt} />
         <HeadlineTypography>タイトル</HeadlineTypography>
         <Typography>{title}</Typography>
         <HeadlineTypography>質問内容</HeadlineTypography>

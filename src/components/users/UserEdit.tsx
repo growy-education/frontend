@@ -82,6 +82,8 @@ export const UserEdit = ({ user }: UserEditProps) => {
     sending.current = true;
     editUserById(user.id, data)
       .then((found) => {
+        console.log(found instanceof User);
+        console.log(found);
         if (found instanceof User) {
           navigate(`/users/${found.id}`);
           reset();

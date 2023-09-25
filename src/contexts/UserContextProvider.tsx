@@ -24,6 +24,7 @@ interface UserContextProps {
   getUserById: (userId: string) => Promise<User>;
   editUserById: (userId: string, updateUserDto: Partial<User>) => Promise<User>;
   deleteUserById: (userId: string) => Promise<void>;
+  checkUserWebhook: (userId: string) => Promise<void>;
   changeTeacherStatus: () => Promise<Teacher | null>;
   debugUser: (userId: string) => void;
 }
@@ -210,7 +211,7 @@ export const UserContextProvider = ({ children }: Props) => {
     async (id: string, updateUserDto: Partial<User>): Promise<User> => {
       return axios
         .create(axiosConfig)
-        .patch(`users/${id}`, updateUserDto)
+        .put(`users/${id}`, updateUserDto)
         .then((response) => {
           const user = plainToInstance(User, response.data);
           updateUser(user);
@@ -236,6 +237,27 @@ export const UserContextProvider = ({ children }: Props) => {
         return error;
       });
   };
+
+  const checkUserWebhook = useCallback(
+    async (id: string): Promise<void> => {
+      let message = "【GrowyBotのテスト通知】\n";
+      message +=
+        "この通知はGrowyBotのテストですので、お気になさらないでください🙇‍♂️\n";
+      return axios
+        .create(axiosConfig)
+        .post(`users/${id}/message`, {
+          message,
+        })
+        .then((response) => {
+          return;
+        })
+        .catch((error) => {
+          handleAxiosError(error);
+          return error;
+        });
+    },
+    [axiosConfig, handleAxiosError]
+  );
 
   const debugUser = useCallback(
     (userId: string) => {
@@ -265,6 +287,7 @@ export const UserContextProvider = ({ children }: Props) => {
         getUserById,
         editUserById,
         deleteUserById,
+        checkUserWebhook,
         changeTeacherStatus,
         debugUser,
       }}

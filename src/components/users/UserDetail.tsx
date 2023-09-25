@@ -1,8 +1,9 @@
-import { Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { User } from "../../dto/user.class";
 import { HeadlineTypography } from "../components/Typography/HeadlineTypography";
 import { JaDateTimeTypography } from "../components/Typography/JaDateTimeTypography";
 import { DetailTypography } from "../components/DetailTyporagphy";
+import { CheckUserWebhookButton } from "./CheckUserWebhookButton";
 
 type UserDetailProps = {
   user: User;
@@ -37,6 +38,9 @@ export const UserDetail = ({ user }: UserDetailProps) => {
       <HeadlineTypography>電話番号</HeadlineTypography>
       <DetailTypography>{phone}</DetailTypography>
       <HeadlineTypography>GoogleChat WebhookURL(DM)</HeadlineTypography>
+      <Box display="flex" justifyContent="flex-end">
+        <CheckUserWebhookButton user={user} />
+      </Box>
       <DetailTypography sx={{ wordBreak: "break-all" }}>
         {chatWebhookUrl}
       </DetailTypography>

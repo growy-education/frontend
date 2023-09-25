@@ -39,10 +39,8 @@ export const QuestionDetail = ({ question, ...props }: QuestionDetailProps) => {
         </Box>
         <HeadlineTypography>質問ID</HeadlineTypography>
         <Typography>{id}</Typography>
-        <HeadlineTypography>作成日時</HeadlineTypography>
+        <HeadlineTypography>質問日時</HeadlineTypography>
         <JaDateTimeTypography date={createdAt} />
-        <HeadlineTypography>更新日時</HeadlineTypography>
-        <JaDateTimeTypography date={updatedAt} />
         <HeadlineTypography>質問タイトル</HeadlineTypography>
         <Box p={2}>
           <Typography>{title}</Typography>
