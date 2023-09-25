@@ -51,7 +51,7 @@ export const QuestionDetailPage = () => {
 
   return (
     <>
-      {(user.role === Role.CUSTOMER || user.role === Role.ADMIN) &&
+      {user.role === Role.CUSTOMER &&
         question.status !== QuestionStatus.AVAILABLE && (
           <EditingQuestionBox question={question} />
         )}
@@ -63,10 +63,9 @@ export const QuestionDetailPage = () => {
         )}
       {user.role === Role.ADMIN && (
         <>
-          {question.status !== QuestionStatus.CANCELED &&
-            question.status !== QuestionStatus.AVAILABLE && (
-              <EditingQuestionBox mb={2} question={question} />
-            )}
+          {question.status !== QuestionStatus.AVAILABLE && (
+            <EditingQuestionBox mb={2} question={question} />
+          )}
           <Box mb={2}>
             <QuestionAlert question={question} />
           </Box>

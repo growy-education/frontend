@@ -10,5 +10,7 @@ export class ImageEntity {
   @Type(() => Date)
   updatedAt: Date;
 
+  driveId: string;
+
   owner?: User;
 }

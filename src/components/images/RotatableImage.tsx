@@ -3,9 +3,11 @@ import { Box, BoxProps, IconButton } from "@mui/material";
 
 import { Rotate90DegreesCw } from "@mui/icons-material";
 import { CustomImage } from "./CustomImage";
+import { ImageEntity } from "../../dto/image.class";
 
 type RotatableImageProps = BoxProps & {
   id: string;
+  image: ImageEntity;
 };
 
 export const RotatableImage = ({ id, ...props }: RotatableImageProps) => {

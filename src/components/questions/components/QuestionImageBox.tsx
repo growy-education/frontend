@@ -1,12 +1,16 @@
-import { Box, BoxProps } from "@mui/material";
+import { Box, BoxProps, Button } from "@mui/material";
 import { RotatableImage } from "../../images/RotatableImage";
+import { ImageEntity } from "../../../dto/image.class";
+import { FileOpen, OpenInNew } from "@mui/icons-material";
 
 type QuestionImageBoxProps = {
   id: string;
+  image: ImageEntity;
 } & BoxProps;
 
 export const QuestionImageBox = ({
   id,
+  image,
   children,
   ...props
 }: QuestionImageBoxProps) => {
@@ -17,7 +21,20 @@ export const QuestionImageBox = ({
       key={`question-box-key-${id}`}
       {...props}
     >
-      <RotatableImage id={id} key={`question-image-key-${id}`} />
+      <Box display="flex" justifyContent="flex-end">
+        <Button
+          endIcon={<OpenInNew />}
+          href={`https://drive.google.com/file/d/${image.driveId}/view`}
+          target="_blank"
+          rel="noreferrer"
+          sx={{
+            textTransform: "none",
+          }}
+        >
+          GoogleDriveで開く
+        </Button>
+      </Box>
+      <RotatableImage id={id} image={image} key={`question-image-key-${id}`} />
     </Box>
   );
 };
