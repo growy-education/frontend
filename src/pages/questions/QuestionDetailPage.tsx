@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Box } from "@mui/material";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 
 import { Question } from "../../dto/question.class";
 import { LoadingBox } from "../../components/LoadingData";

@@ -39,10 +39,8 @@ export const LogOutButton = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCancel} color="error">
-            ログアウトしない
-          </Button>
-          <Button onClick={handleConfirm} autoFocus>
+          <Button onClick={handleCancel}>ログアウトしない</Button>
+          <Button onClick={handleConfirm} color="warning">
             ログアウトする
           </Button>
         </DialogActions>

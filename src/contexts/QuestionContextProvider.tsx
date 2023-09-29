@@ -18,7 +18,8 @@ interface QuestionContextProps {
   createQuestionForTeacher: (
     createQuestionDto: Partial<Question>
   ) => Promise<Question>;
-  getQuestionById: (id: string) => Promise<Question | null>;
+  getQuestionById: (id: string) => Promise<Question | Error>;
+  getQuestionByIdFromBackend: (id: string) => Promise<Question | Error>;
   editQuestionById: (
     id: string,
     data: UpdateQuestionDto
@@ -33,7 +34,10 @@ interface QuestionContextProps {
   ) => Promise<Question | null>;
   answerQuestionById: (id: string, answer: string) => Promise<Question | null>;
   verifyQuestionAnswerById: (id: string) => Promise<Question | null>;
-  rejectQuestionAnswerById: (id: string) => Promise<Question | null>;
+  rejectQuestionAnswerById: (
+    id: string,
+    message?: string
+  ) => Promise<Question | null>;
 }
 
 export const QuestionContext = createContext<QuestionContextProps>(null);
@@ -162,12 +166,18 @@ export const QuestionContextProvider = ({ children }: Props) => {
       });
   };
 
-  const getQuestionById = async (id: string): Promise<Question | null> => {
+  const getQuestionById = async (id: string): Promise<Question | Error> => {
     const found = questions.find((question) => question.id === id);
     if (found) {
       return found;
     }
 
+    return getQuestionByIdFromBackend(id);
+  };
+
+  const getQuestionByIdFromBackend = async (
+    id: string
+  ): Promise<Question | Error> => {
     return axios
       .create(axiosConfig)
       .get(`/questions/${id}`)
@@ -247,11 +257,15 @@ export const QuestionContextProvider = ({ children }: Props) => {
       });
   };
 
-  const rejectQuestionById = async (id: string): Promise<Question | null> => {
+  const rejectQuestionById = async (
+    id: string,
+    message?: string
+  ): Promise<Question | null> => {
     return axios
       .create(axiosConfig)
       .patch(`questions/${id}`, {
         status: QuestionStatus.PENDING,
+        message,
       })
       .then((response) => {
         const question = plainToInstance(Question, response.data);
@@ -298,6 +312,7 @@ export const QuestionContextProvider = ({ children }: Props) => {
         return question;
       })
       .catch((error) => {
+        console.log(error);
         handleAxiosError(error);
         return error;
       });
@@ -306,7 +321,7 @@ export const QuestionContextProvider = ({ children }: Props) => {
   const verifyQuestionAnswerById = async (id: string) => {
     return axios
       .create(axiosConfig)
-      .patch(`questions/${id}`, {
+      .patch(`questions/${id}/check`, {
         status: QuestionStatus.AVAILABLE,
       })
       .then((response) => {
@@ -320,11 +335,12 @@ export const QuestionContextProvider = ({ children }: Props) => {
       });
   };
 
-  const rejectQuestionAnswerById = async (id: string) => {
+  const rejectQuestionAnswerById = async (id: string, message: string) => {
     return axios
       .create(axiosConfig)
-      .patch(`questions/${id}`, {
+      .patch(`questions/${id}/check`, {
         status: QuestionStatus.ASSIGNED,
+        message,
       })
       .then((response) => {
         const question = plainToInstance(Question, response.data);
@@ -349,6 +365,7 @@ export const QuestionContextProvider = ({ children }: Props) => {
         createQuestion,
         createQuestionForTeacher,
         getQuestionById,
+        getQuestionByIdFromBackend,
         editQuestionById,
         deleteQuestionById,
         cancelQuestionById,

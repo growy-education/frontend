@@ -19,11 +19,15 @@ import { QuestionContext } from "../../contexts/QuestionContextProvider";
 import { CancelEditButton } from "../../components/components/CancelEditButton";
 import { SaveEditButton } from "../../components/components/SaveEditButton";
 import { NotFound } from "../../components/NotFound";
+import { QuestionStatus } from "../../dto/enum/question-status.enum";
+import { AlertSnackbarContext } from "../../contexts/AlertSnackbarContext";
+import { AxiosError } from "axios";
 
 export const QuestionEdit = () => {
   const navigate = useNavigate();
   const { questionId } = useParams();
-  const { questions, getQuestionById, editQuestionById } =
+  const { handleAlert } = useContext(AlertSnackbarContext);
+  const { getQuestionById, editQuestionById, getQuestionByIdFromBackend } =
     useContext(QuestionContext);
 
   const [question, setQuestion] = useState<Question>(null);
@@ -48,6 +52,23 @@ export const QuestionEdit = () => {
   useEffect(() => {
     getQuestionById(questionId).then((found) => {
       if (found instanceof Question) {
+        if (found.status !== QuestionStatus.PENDING) {
+          if (found.status === QuestionStatus.ASSIGNED) {
+            navigate(`/questions/${found.id}`);
+            return handleAlert({
+              severity: "info",
+              title: "質問を編集できません",
+              description:
+                "この質問は講師が動画を作成中のため、編集することができません",
+            });
+          }
+          navigate(`/questions/${found.id}`);
+          return handleAlert({
+            severity: "info",
+            title: "質問を編集できません",
+            description: "この質問は待機状態ではないため編集できません",
+          });
+        }
         setQuestion(found);
         setValue("title", found.title);
         setValue("content", found.content);

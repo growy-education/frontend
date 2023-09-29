@@ -8,7 +8,7 @@ export const TeacherInfo = () => {
       <Box>
         <TeacherQuestionInfo />
       </Box>
-      <Box>
+      <Box mt={3}>
         <TeacherRoomInfo />
       </Box>
     </>

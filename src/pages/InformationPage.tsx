@@ -6,6 +6,7 @@ import { CustomerInfo } from "../components/informations/CustomerInfo";
 import { Box, Typography } from "@mui/material";
 import { TeacherInfo } from "../components/informations/TeacherInfo";
 import { PageTitleTypography } from "../components/components/Typography/PageTitleTypography";
+import { QuestionTaskDescription } from "../components/questions/QuestionTaskDescription";
 
 export const HomePage = () => {
   const { user } = useContext(UserContext);
@@ -28,6 +29,7 @@ export const HomePage = () => {
       <>
         <PageTitleTypography>ホーム</PageTitleTypography>
         <TeacherInfo />
+        <QuestionTaskDescription />
       </>
     );
   } else {

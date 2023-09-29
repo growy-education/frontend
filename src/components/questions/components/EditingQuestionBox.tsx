@@ -2,9 +2,7 @@ import { Box, BoxProps } from "@mui/material";
 import { Question } from "../../../dto/question.class";
 import { CancelQuestionButton } from "./CancelQuestionButton";
 import { useNavigate } from "react-router-dom";
-import { useCallback, useContext, useRef } from "react";
 import { QuestionStatus } from "../../../dto/enum/question-status.enum";
-import { QuestionContext } from "../../../contexts/QuestionContextProvider";
 import { EditButton } from "../../components/EditButton";
 import { DeleteQuestionButton } from "./DeleteQuestionButton";
 

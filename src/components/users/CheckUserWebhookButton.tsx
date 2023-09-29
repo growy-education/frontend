@@ -82,7 +82,7 @@ export const CheckUserWebhookButton = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancel}>送信しない</Button>
-          <Button onClick={handleConfirm} autoFocus color={"warning"}>
+          <Button onClick={handleConfirm} color={"warning"}>
             送信する
           </Button>
         </DialogActions>

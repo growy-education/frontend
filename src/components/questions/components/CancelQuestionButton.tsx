@@ -80,7 +80,7 @@ export const CancelQuestionButton = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancel}>キャンセルしない</Button>
-          <Button onClick={handleConfirm} autoFocus>
+          <Button onClick={handleConfirm} color="warning">
             キャンセルする
           </Button>
         </DialogActions>

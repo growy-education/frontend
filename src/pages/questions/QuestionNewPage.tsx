@@ -246,28 +246,29 @@ export const QuestionNew = () => {
   return (
     <>
       <PageTitleTypography>新しく質問する</PageTitleTypography>
-      {user.role === Role.ADMIN && (
-        <>
-          <Typography color="error.main" variant="caption">
-            講師研修モードです
-          </Typography>
-          <HeadlineTypography>動画を作成する講師</HeadlineTypography>
-          <Select
-            required
-            fullWidth
-            id="teacherId"
-            onChange={handleSelectTeacher}
-          >
-            {teachers.map((teacher) => (
-              <MenuItem key={teacher.id} value={teacher.id}>
-                {teacher.lastName} {teacher.firstName}
-                {teacher?.user?.email}
-              </MenuItem>
-            ))}
-          </Select>
-        </>
-      )}
+
       <Box component="form" onSubmit={handleSubmit(handleQuestionUpload)}>
+        {user.role === Role.ADMIN && (
+          <>
+            <Typography color="error.main" variant="caption">
+              講師研修モードです
+            </Typography>
+            <HeadlineTypography>動画を作成する講師</HeadlineTypography>
+            <Select
+              required
+              fullWidth
+              id="teacherId"
+              onChange={handleSelectTeacher}
+            >
+              {teachers.map((teacher) => (
+                <MenuItem key={teacher.id} value={teacher.id}>
+                  {teacher.lastName} {teacher.firstName}
+                  {teacher?.user?.email}
+                </MenuItem>
+              ))}
+            </Select>
+          </>
+        )}
         <HeadlineTypography>質問タイトル</HeadlineTypography>
         <QuestionTitleTextField errors={errors} {...register("title")} />
 

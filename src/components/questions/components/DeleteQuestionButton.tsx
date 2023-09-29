@@ -88,7 +88,7 @@ export const DeleteQuestionButton = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancel}>削除しない</Button>
-          <Button onClick={handleConfirm} autoFocus>
+          <Button onClick={handleConfirm} color="warning">
             削除する
           </Button>
         </DialogActions>
