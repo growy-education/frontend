@@ -145,19 +145,7 @@ export const AuthContextProvider = ({ children }: Props) => {
         bearerToken,
       }}
     >
-      {isLoggedIn ? (
-        bearerToken === "" ? (
-          <CircularProgress />
-        ) : (
-          children
-        )
-      ) : (
-        <SignInScreen
-          handleEmailPasswordLogin={handleLogin}
-          handleGoogleLogin={handleGoogleLogin}
-          handleSignup={handleSignup}
-        />
-      )}
+      {children}
     </AuthContext.Provider>
   );
 };

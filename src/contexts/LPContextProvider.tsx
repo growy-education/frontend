@@ -1,6 +1,9 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { LandingPage } from "../pages/LandingPage";
 import { PendingContextPage } from "../pages/PendingContextPage";
+import { AuthContext } from "./AuthContextProvider";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { SignInScreen } from "../SignIn";
 
 interface LPContextType {
   showLP: boolean;
@@ -13,6 +16,7 @@ export const LandingPageContext = createContext<LPContextType>({
 });
 
 export const LPContextProvider = ({ children }) => {
+  const { isLoggedIn } = useContext(AuthContext);
   const [pending, setPending] = useState(true);
   const [showLP, setShowLP] = useState(true);
 
@@ -40,6 +44,10 @@ export const LPContextProvider = ({ children }) => {
     return <PendingContextPage message="ブラウザ情報の取得中です" />;
   }
 
+  if (isLoggedIn) {
+    return children;
+  }
+
   return (
     <LandingPageContext.Provider
       value={{
@@ -47,7 +55,12 @@ export const LPContextProvider = ({ children }) => {
         toggleLP,
       }}
     >
-      {showLP ? <LandingPage toggleLP={toggleLP} /> : children}
+      <BrowserRouter>
+        <Routes>
+          <Route index path="" element={<LandingPage />} />
+          <Route path="*" element={<SignInScreen />} />
+        </Routes>
+      </BrowserRouter>
     </LandingPageContext.Provider>
   );
 };

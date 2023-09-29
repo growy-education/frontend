@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { GoogleCredentialResponse, GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
 import {
   IsEmail,
   IsNotEmpty,
@@ -25,8 +25,9 @@ import { AttentionDescriptionTypography } from "./components/lp/price/AttentionD
 import { AsteriskTypography } from "./components/lp/price/AsteriskTypography";
 import { LineLinkTypography } from "./components/components/Typography/LineLinkTypography";
 import { GoogleChatLinkTypography } from "./components/components/Typography/GoogleChatLinkTypography";
-import { LandingPageContext } from "./contexts/LPContextProvider";
 import { ArrowBack } from "@mui/icons-material";
+import { AuthContext } from "./contexts/AuthContextProvider";
+import { useNavigate } from "react-router-dom";
 
 export class SigninWithPasswordDto {
   @IsNotEmpty({ message: "メールアドレスを入力してください" })
@@ -42,18 +43,14 @@ export class SigninWithPasswordDto {
 }
 
 type LoginScreenProps = {
-  handleEmailPasswordLogin: (email: string, password: string) => void;
-  handleGoogleLogin: (response: GoogleCredentialResponse) => void;
-  handleSignup: (username: string, email: string, password: string) => void;
+  handleBackToLP?: () => void;
 };
 
-export const SignInScreen = ({
-  handleEmailPasswordLogin,
-  handleGoogleLogin,
-}: LoginScreenProps) => {
+export const SignInScreen = ({ handleBackToLP }: LoginScreenProps) => {
+  const navigate = useNavigate();
+  const { handleEmailPasswordLogin, handleGoogleLogin } =
+    useContext(AuthContext);
   const [googleLoginError, setGoogleLoginError] = useState("");
-
-  const { toggleLP } = useContext(LandingPageContext);
 
   const resolver = classValidatorResolver(SigninWithPasswordDto);
   const {
@@ -134,7 +131,9 @@ export const SignInScreen = ({
           <Button
             variant="outlined"
             startIcon={<ArrowBack />}
-            onClick={() => toggleLP()}
+            onClick={() => {
+              navigate("/");
+            }}
           >
             <Typography>ホームページに戻る</Typography>
           </Button>

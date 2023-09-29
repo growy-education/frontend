@@ -78,13 +78,13 @@ function App() {
     <div className="App">
       <ThemeProvider theme={theme}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <LPContextProvider>
-            <GoogleOAuthProvider
-              clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID as string}
-            >
-              <AlertSnackbarContextProvider>
-                <NotificationContextProvider>
-                  <AuthContextProvider>
+          <GoogleOAuthProvider
+            clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID as string}
+          >
+            <AlertSnackbarContextProvider>
+              <NotificationContextProvider>
+                <AuthContextProvider>
+                  <LPContextProvider>
                     <AxiosContextProvider>
                       <UserContextProvider>
                         <QuestionContextProvider>
@@ -98,11 +98,11 @@ function App() {
                         </QuestionContextProvider>
                       </UserContextProvider>
                     </AxiosContextProvider>
-                  </AuthContextProvider>
-                </NotificationContextProvider>
-              </AlertSnackbarContextProvider>
-            </GoogleOAuthProvider>
-          </LPContextProvider>
+                  </LPContextProvider>
+                </AuthContextProvider>
+              </NotificationContextProvider>
+            </AlertSnackbarContextProvider>
+          </GoogleOAuthProvider>
         </LocalizationProvider>
       </ThemeProvider>
     </div>

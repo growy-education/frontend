@@ -16,12 +16,10 @@ import { Price } from "../components/lp/price/Price";
 import { YushinMessage } from "../components/lp/components/YushinMessage";
 import { Footer } from "../components/lp/footer/Footer";
 import { Offset } from "../tools/Offset";
+import { useNavigate } from "react-router-dom";
 
-type LandingPageProps = {
-  toggleLP: () => void;
-};
-
-export const LandingPage = ({ toggleLP }: LandingPageProps) => {
+export const LandingPage = () => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(true);
   return (
     <>
@@ -156,11 +154,11 @@ export const LandingPage = ({ toggleLP }: LandingPageProps) => {
                 opacity: "0.7",
               },
             }}
-            onClick={() => toggleLP()}
+            onClick={() => navigate("/home")}
           >
             <img
               src="/img/img-btn-member-sp-min.png"
-              alt="LINE登録はこちらフロートボタン"
+              alt="ログインはこちらボタン"
               style={{ width: "100%", maxWidth: "15rem" }}
             />
           </Box>

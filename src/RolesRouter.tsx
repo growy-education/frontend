@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { UserContext } from "./contexts/UserContextProvider";
 import { Role } from "./dto/enum/role.enum";
@@ -67,7 +67,7 @@ export const RolesRouter: React.FC = () => {
           <Route path="/images" element={<ImageListPage />} />
           <Route path="/images/new" element={<ImageNew />} /> */}
 
-          <Route index path="/" element={<HomePage />} />
+          <Route index path="" element={<Navigate to="/home" />} />
           <Route path="/home" element={<HomePage />} />
 
           {user.role === Role.ADMIN && (
