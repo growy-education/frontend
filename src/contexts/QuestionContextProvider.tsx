@@ -28,6 +28,7 @@ interface QuestionContextProps {
   cancelQuestionById: (id: string) => Promise<Question | null>;
   assignQuestionById: (id: string) => Promise<Question | null>;
   rejectQuestionById: (id: string) => Promise<Question | null>;
+  reportQuestionById: (id: string, message: string) => Promise<void | Error>;
   changeQuestionTeacherById: (
     questionId: string,
     teacherId: string
@@ -278,6 +279,22 @@ export const QuestionContextProvider = ({ children }: Props) => {
       });
   };
 
+  const reportQuestionById = async (
+    id: string,
+    message: string
+  ): Promise<void | null> => {
+    return axios
+      .create(axiosConfig)
+      .post(`questions/${id}/report`, {
+        message,
+      })
+      .then((_response) => {})
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
+
   const changeQuestionTeacherById = async (
     questionId: string,
     teacherId: string
@@ -371,6 +388,7 @@ export const QuestionContextProvider = ({ children }: Props) => {
         cancelQuestionById,
         assignQuestionById,
         rejectQuestionById,
+        reportQuestionById,
         changeQuestionTeacherById,
         answerQuestionById,
         verifyQuestionAnswerById,

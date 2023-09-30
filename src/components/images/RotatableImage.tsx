@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, BoxProps, IconButton } from "@mui/material";
+import { Box, BoxProps, Fab } from "@mui/material";
 
 import { Rotate90DegreesCw } from "@mui/icons-material";
 import { CustomImage } from "./CustomImage";
@@ -88,13 +88,15 @@ export const RotatableImage = ({ id, ...props }: RotatableImageProps) => {
         }}
       />
       {!!imageSize && (
-        <IconButton
+        <Fab
           aria-label="rotate"
+          color="primary"
+          size="small"
           sx={{ position: "absolute", top: 0, right: 0 }}
           onClick={handleRotate}
         >
           <Rotate90DegreesCw />
-        </IconButton>
+        </Fab>
       )}
     </Box>
   );

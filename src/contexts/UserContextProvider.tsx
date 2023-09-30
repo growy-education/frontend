@@ -26,6 +26,7 @@ interface UserContextProps {
   deleteUserById: (userId: string) => Promise<void>;
   checkUserWebhook: (userId: string) => Promise<void>;
   changeTeacherStatus: () => Promise<Teacher | null>;
+  sendMessageToAdmin: (message: string) => Promise<void>;
   debugUser: (userId: string) => void;
 }
 
@@ -238,6 +239,21 @@ export const UserContextProvider = ({ children }: Props) => {
       });
   };
 
+  const sendMessageToAdmin = async (message: string): Promise<void> => {
+    return axios
+      .create(axiosConfig)
+      .post("users/admin/message", {
+        message,
+      })
+      .then((response) => {
+        return;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
+
   const checkUserWebhook = useCallback(
     async (id: string): Promise<void> => {
       let message = "【GrowyBotのテスト通知】\n";
@@ -289,6 +305,7 @@ export const UserContextProvider = ({ children }: Props) => {
         deleteUserById,
         checkUserWebhook,
         changeTeacherStatus,
+        sendMessageToAdmin,
         debugUser,
       }}
     >

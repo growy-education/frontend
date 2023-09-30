@@ -1,28 +1,30 @@
-import { useCallback, useContext, useMemo, useState } from "react";
 import {
   Button,
-  ButtonProps,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  MenuItem,
+  MenuItemProps,
+  Typography,
 } from "@mui/material";
-import { Cancel } from "@mui/icons-material";
-
-import { Question } from "../../../dto/question.class";
-import { QuestionStatus } from "../../../dto/enum/question-status.enum";
-import { QuestionContext } from "../../../contexts/QuestionContextProvider";
+import { useCallback, useContext, useMemo, useState } from "react";
+import { Question } from "../../dto/question.class";
+import { AssignmentLate } from "@mui/icons-material";
+import { QuestionContext } from "../../contexts/QuestionContextProvider";
+import { QuestionStatus } from "../../dto/enum/question-status.enum";
 import { useNavigate } from "react-router-dom";
 
-type DeleteQuestionButtonProps = {
+type DeleteQuestionMenuItemProps = {
   question: Question;
-} & ButtonProps;
+} & MenuItemProps;
 
-export const DeleteQuestionButton = ({
+export const DeleteQuestionMenuItem = ({
   question,
+  onClick,
   ...props
-}: DeleteQuestionButtonProps) => {
+}: DeleteQuestionMenuItemProps) => {
   const navigate = useNavigate();
   const { deleteQuestionById } = useContext(QuestionContext);
   const disabled = useMemo(
@@ -33,7 +35,12 @@ export const DeleteQuestionButton = ({
   const [open, setOpen] = useState(false);
   const [sending, setSending] = useState(false);
 
-  const handleCancel = () => setOpen(false);
+  const handleCancel = () => {
+    setOpen(false);
+    if (onClick) {
+      onClick(null);
+    }
+  };
 
   const handleClick = () => setOpen(true);
 
@@ -52,37 +59,35 @@ export const DeleteQuestionButton = ({
         setSending(false);
       });
     setOpen(false);
-  }, [deleteQuestionById, navigate, question.id, sending]);
+    if (onClick) {
+      onClick(null);
+    }
+  }, [deleteQuestionById, navigate, onClick, question.id, sending]);
 
   return (
     <>
-      <Button
-        variant="outlined"
-        color="error"
-        endIcon={
-          <Cancel
-            sx={{
-              color: !disabled && !sending && !!!props.disabled && "error.main",
-            }}
-          />
-        }
-        disabled={disabled || sending}
+      <MenuItem
         onClick={handleClick}
+        disableRipple
+        disabled={disabled && sending && props.disabled}
         {...props}
       >
-        質問を削除する
-      </Button>
+        <AssignmentLate color={"error"} />
+        <Typography color="error.main" ml={1}>
+          質問を削除する
+        </Typography>
+      </MenuItem>
       <Dialog
         open={open}
         onClose={handleCancel}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        aria-labelledby="delete-question-alert-dialog-title"
+        aria-describedby="delete-question-alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
+        <DialogTitle id="delete-question-alert-dialog-title">
           {"本当に質問を削除しますか？"}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText id="delete-question-alert-dialog-description">
             質問を削除すると、データは完全に削除され復元できなくなります。
           </DialogContentText>
         </DialogContent>

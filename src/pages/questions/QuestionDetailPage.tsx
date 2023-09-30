@@ -7,14 +7,17 @@ import { LoadingBox } from "../../components/LoadingData";
 import { QuestionDetail } from "../../components/questions/QuestionDetail";
 import { UserContext } from "../../contexts/UserContextProvider";
 import { Role } from "../../dto/enum/role.enum";
-import { EditingQuestionBox } from "../../components/questions/components/EditingQuestionBox";
 import { CheckQuestionAnswerAccordion } from "../../components/questions/CheckQuestionAnswerAccordion";
 import { QuestionContext } from "../../contexts/QuestionContextProvider";
 import { ChangeQuestionTeacherAccordion } from "../../components/questions/ChangeQuestionTeacherBox";
 import { QuestionStatus } from "../../dto/enum/question-status.enum";
-import { TeacherEditQuestionBox } from "../../components/questions/TeacherEditQuestionBox";
 import { NotFound } from "../../components/NotFound";
-import { QuestionAlert } from "../../components/questions/QuestionAlert";
+import { AdminQuestionAlert } from "../../components/questions/AdminQuestionAlert";
+import { QuestionHeaderBox } from "../../components/questions/QuestionHeaderBox";
+import { RolesGuard } from "../../tools/RolesGuard";
+import { QuestionStatusesGuard } from "../../tools/QuestionStatusesGuard";
+import { AnswerQuestionAccordion } from "../../components/questions/AnswerQuestionAccordion";
+import { TeacherQuestionAlert } from "../../components/questions/TeacherQuestionAlert";
 
 export const QuestionDetailPage = () => {
   const { questionId } = useParams();
@@ -51,34 +54,40 @@ export const QuestionDetailPage = () => {
 
   return (
     <>
-      {user.role === Role.CUSTOMER &&
-        question.status !== QuestionStatus.AVAILABLE && (
-          <EditingQuestionBox question={question} />
-        )}
-      {user.role === Role.TEACHER &&
-        question.status !== QuestionStatus.CANCELED &&
-        question.status !== QuestionStatus.CHECKING &&
-        question.status !== QuestionStatus.AVAILABLE && (
-          <TeacherEditQuestionBox question={question} />
-        )}
-      {user.role === Role.ADMIN && (
-        <>
-          {question.status !== QuestionStatus.AVAILABLE && (
-            <EditingQuestionBox mb={2} question={question} />
-          )}
-          <Box mb={2}>
-            <QuestionAlert question={question} />
-          </Box>
-          {question.status !== QuestionStatus.CANCELED &&
-            question.status !== QuestionStatus.AVAILABLE &&
-            question.status !== QuestionStatus.CHECKING && (
-              <ChangeQuestionTeacherAccordion question={question} />
-            )}
-          {question.status === QuestionStatus.CHECKING && (
-            <CheckQuestionAnswerAccordion question={question} />
-          )}
-        </>
-      )}
+      <QuestionHeaderBox question={question} my={1} />
+      <RolesGuard roles={[Role.ADMIN]}>
+        <AdminQuestionAlert question={question} />
+      </RolesGuard>
+      <RolesGuard roles={[Role.TEACHER]}>
+        <TeacherQuestionAlert question={question} />
+      </RolesGuard>
+      <RolesGuard roles={[Role.TEACHER]}>
+        <QuestionStatusesGuard
+          question={question}
+          statuses={[QuestionStatus.ASSIGNED]}
+        >
+          <AnswerQuestionAccordion question={question} />
+        </QuestionStatusesGuard>
+      </RolesGuard>
+      <RolesGuard roles={[Role.ADMIN]}>
+        <QuestionStatusesGuard
+          question={question}
+          statuses={[
+            QuestionStatus.PENDING,
+            QuestionStatus.ASSIGNED,
+            QuestionStatus.CHECKING,
+          ]}
+        >
+          <ChangeQuestionTeacherAccordion question={question} />
+        </QuestionStatusesGuard>
+        <QuestionStatusesGuard
+          question={question}
+          statuses={[QuestionStatus.CHECKING]}
+        >
+          <CheckQuestionAnswerAccordion question={question} />
+        </QuestionStatusesGuard>
+      </RolesGuard>
+
       <QuestionDetail question={question} />
     </>
   );

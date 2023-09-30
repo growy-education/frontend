@@ -68,8 +68,6 @@ export const RejectQuestionAnswerButton = ({
     setOpen(false);
   };
 
-  console.log(errors.rejectedMessage);
-
   return (
     <>
       <Button
