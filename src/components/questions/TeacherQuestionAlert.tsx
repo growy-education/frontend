@@ -13,7 +13,7 @@ export const TeacherQuestionAlert = ({
   ...props
 }: TeacherQuestionAlertProps) => {
   const { user } = useContext(UserContext);
-  if (user?.teacher?.id !== question?.teacher.id) {
+  if (user?.teacher?.id !== question?.teacher?.id) {
     return (
       <Alert severity="info" sx={{ my: 1 }} {...props}>
         この質問は他の講師に割り当てられています
