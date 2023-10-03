@@ -93,7 +93,12 @@ export const QuestionHeaderBox = ({
         <RolesGuard roles={[Role.CUSTOMER, Role.ADMIN]}>
           <QuestionStatusesGuard
             question={question}
-            statuses={[QuestionStatus.CANCELED, QuestionStatus.AVAILABLE]}
+            statuses={[
+              QuestionStatus.CANCELED,
+              QuestionStatus.PENDING,
+              QuestionStatus.ASSIGNED,
+              QuestionStatus.AVAILABLE,
+            ]}
           >
             <DeleteQuestionMenuItem question={question} onClick={handleClose} />
           </QuestionStatusesGuard>
