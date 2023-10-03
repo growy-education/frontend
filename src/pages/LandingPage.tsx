@@ -45,7 +45,7 @@ export const LandingPage = () => {
             severity="info"
             sx={{ width: "100%" }}
           >
-            現在コーチングの生徒が満員となったため、コーチングの募集は予約待ちとなっております。
+            現在コーチングの定員が残りわずかとなっております。
           </Alert>
         </Snackbar>
 

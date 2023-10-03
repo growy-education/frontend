@@ -106,6 +106,50 @@ export const Teachers = () => {
               この経験を積み重ね「やり抜く力」を身につけるために、全力でサポートしていきます。
             </TeacherCommentTypography>
           </TeacherBox>
+
+          <TeacherBox mt={3}>
+            <TeacherInfoBox>
+              <FaceImageBox>
+                <img
+                  src="/img/img-teacher-taira.jpg"
+                  alt="たいら写真"
+                  style={{ borderRadius: "10px" }}
+                />
+              </FaceImageBox>
+              <TeacherDescriptionBox>
+                <Typography sx={{ fontWeight: "bold" }}>たいら</Typography>
+                <Typography>算数</Typography>
+              </TeacherDescriptionBox>
+            </TeacherInfoBox>
+            <TeacherCommentTypography>
+              考える楽しさ、解ける爽快感。算数を好きになってもらうように魅力を伝えたいと思います。
+              <br />
+              また、算数は解法を暗記するのではなく、論理的に解いていく自力をつけることで成績が伸びていきます。
+              <br />
+              つねに「なぜ」を意識し、将来にも役立つ「考える力」を育てるべく楽しく指導いたします。
+            </TeacherCommentTypography>
+          </TeacherBox>
+
+          <TeacherBox mt={3}>
+            <TeacherInfoBox>
+              <FaceImageBox>
+                <img
+                  src="/img/img-teacher-hagi.jpg"
+                  alt="ハギ写真"
+                  style={{ borderRadius: "10px" }}
+                />
+              </FaceImageBox>
+              <TeacherDescriptionBox>
+                <Typography sx={{ fontWeight: "bold" }}>ハギ</Typography>
+                <Typography>国語</Typography>
+              </TeacherDescriptionBox>
+            </TeacherInfoBox>
+            <TeacherCommentTypography>
+              中学受験は厳しい戦いの連続だと思いますが、その中で勉強を楽しみながら進めていくお手伝いができればと思っています。
+              <br />
+              皆さんが将来受験期を振り返ったとき、中学受験が少しでも良い経験だったと感じられるよう全力でサポートします。
+            </TeacherCommentTypography>
+          </TeacherBox>
         </Box>
 
         <DescriptionBox>
