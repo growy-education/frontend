@@ -45,7 +45,7 @@ export const AnswerQuestionForm = ({
   } = useForm<AnswerQuestionDto>({
     resolver: classValidatorResolver(AnswerQuestionDto),
     defaultValues: {
-      answer: question?.answer || "",
+      answer: question?.answers[0] || "",
     },
   });
 
@@ -96,7 +96,7 @@ export const AnswerQuestionForm = ({
             variant="contained"
             endIcon={<Send />}
             disabled={
-              sending.current || question?.answer === getValues("answer")
+              sending.current || question?.answers[0] === getValues("answer")
             }
           >
             回答する

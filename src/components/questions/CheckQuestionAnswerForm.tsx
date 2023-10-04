@@ -19,7 +19,10 @@ export const CheckQuestionAnswerForm = ({
 }: CheckQuestionAnswerFormProps) => {
   return (
     <Box m={2} component="form" {...props}>
-      <QuestionAnswerBox answer={question.answer} />
+      {question?.answers?.length !== 0 &&
+        question?.answers?.map((answer) => (
+          <QuestionAnswerBox answer={answer} />
+        ))}
       <QuestionAnswerCheckBox />
       <HeadEditBox>
         <RejectQuestionAnswerButton question={question} />

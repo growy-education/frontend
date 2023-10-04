@@ -321,7 +321,7 @@ export const QuestionContextProvider = ({ children }: Props) => {
       .create(axiosConfig)
       .patch(`questions/${id}`, {
         status: QuestionStatus.CHECKING,
-        answer,
+        answers: [answer],
       })
       .then((response) => {
         const question = plainToInstance(Question, response.data);

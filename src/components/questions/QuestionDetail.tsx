@@ -27,7 +27,7 @@ export const QuestionDetail = ({ question, ...props }: QuestionDetailProps) => {
     memo,
     problems,
     solutions,
-    answer,
+    answers,
   } = question;
 
   return (
@@ -64,12 +64,14 @@ export const QuestionDetail = ({ question, ...props }: QuestionDetailProps) => {
         <QuestionImagesBox id="solutions" images={solutions} />
       </Box>
 
-      {answer && (
+      {answers && (
         <>
           <HeadlineTypography>回答動画</HeadlineTypography>
-          <Box p={2}>
-            <QuestionAnswerBox answer={answer} />
-          </Box>
+          {answers.map((answer) => (
+            <Box p={2}>
+              <QuestionAnswerBox answer={answer} />
+            </Box>
+          ))}
         </>
       )}
       {user.role === Role.ADMIN && question?.teacher && (

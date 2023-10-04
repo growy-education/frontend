@@ -42,17 +42,8 @@ export const QuestionCheck = () => {
     return <LoadingBox message="質問情報を取得中です" />;
   }
 
-  const {
-    id,
-    createdAt,
-    updatedAt,
-    title,
-    content,
-    memo,
-    problems,
-    solutions,
-    answer,
-  } = question;
+  const { id, createdAt, title, content, memo, problems, solutions, answers } =
+    question;
 
   const getImagePaths = (urls: string[]) => {
     const ids = urls.map((url) => {
@@ -114,25 +105,26 @@ export const QuestionCheck = () => {
       {solutions.map((image, index) => (
         <CustomImage id={image.id} key={`solution-${index}`} />
       ))}
-      {answer && (
-        <Grid item xs={12}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6">回答動画</Typography>
-              <Box mt={2} pb="56.25%" position="relative">
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src={getYouTubePath(answer)}
-                  title="回答動画"
-                  allowFullScreen
-                  style={{ position: "absolute", top: 0, left: 0 }}
-                ></iframe>
-              </Box>
-            </CardContent>
-          </Card>
-        </Grid>
-      )}
+      {answers &&
+        answers.map((answer) => (
+          <Grid item xs={12}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6">回答動画</Typography>
+                <Box mt={2} pb="56.25%" position="relative">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={getYouTubePath(answer)}
+                    title="回答動画"
+                    allowFullScreen
+                    style={{ position: "absolute", top: 0, left: 0 }}
+                  ></iframe>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
     </Container>
   );
 };

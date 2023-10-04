@@ -3,7 +3,7 @@ import { Question } from "../../../dto/question.class";
 import { getEmbedYouTubePath } from "../../../tools/get-youtube-path";
 
 type QuestionAnswerBoxProps = {
-  answer: Question["answer"];
+  answer: Question["answers"][0];
 } & BoxProps<"iframe">;
 
 export const QuestionAnswerBox = ({

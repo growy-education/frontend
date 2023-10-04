@@ -28,7 +28,7 @@ export class Question {
   @Type(() => ImageEntity)
   solutions: ImageEntity[];
 
-  answer?: string;
+  answers: string[];
 
   @Type(() => Student)
   student?: Student;
