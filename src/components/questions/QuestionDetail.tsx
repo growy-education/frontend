@@ -11,6 +11,7 @@ import { useContext } from "react";
 import { StudentAccordion } from "../students/StudentAccordion";
 import { Role } from "../../dto/enum/role.enum";
 import { TeacherAccordion } from "../teachers/TeacherAccordion";
+import { QuestionStatus } from "../../dto/enum/question-status.enum";
 
 type QuestionDetailProps = {
   question: Question;
@@ -64,7 +65,7 @@ export const QuestionDetail = ({ question, ...props }: QuestionDetailProps) => {
         <QuestionImagesBox id="solutions" images={solutions} />
       </Box>
 
-      {answers && (
+      {question.status === QuestionStatus.AVAILABLE && answers && (
         <>
           <HeadlineTypography>回答動画</HeadlineTypography>
           {answers.map((answer) => (

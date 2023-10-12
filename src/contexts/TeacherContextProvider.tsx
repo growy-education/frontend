@@ -68,54 +68,45 @@ export const TeacherContextProvider = ({ children }: Props) => {
   const sortTeachers = (a: Teacher, b: Teacher) =>
     b.createdAt.getTime() - a.createdAt.getTime();
 
-  const addTeacher = useCallback(
-    async (addedTeacher: Teacher) => {
-      setTeachers([...teachers, addedTeacher].sort(sortTeachers));
-    },
-    [teachers]
-  );
+  const addTeacher = async (addedTeacher: Teacher) => {
+    setTeachers([...teachers, addedTeacher].sort(sortTeachers));
+  };
 
-  const addTeachers = useCallback(
-    async (addedTeachers: Teacher[]) => {
-      if (addedTeachers.length === 0) {
-        return;
-      }
-      for (const addedTeacher of addedTeachers) {
-        const index = teachers.findIndex(
-          (teacher) => teacher.id === addedTeacher.id
-        );
-        if (index === -1) {
-          teachers.push(addedTeacher);
-        } else {
-          teachers[index] = addedTeacher;
-        }
-      }
-      setTeachers([...teachers]);
-    },
-    [teachers]
-  );
-
-  const updateTeacher = useCallback(
-    async (updatedTeacher: Teacher) => {
+  const addTeachers = async (addedTeachers: Teacher[]) => {
+    if (addedTeachers.length === 0) {
+      return;
+    }
+    for (const addedTeacher of addedTeachers) {
       const index = teachers.findIndex(
-        (teacher) => teacher.id === updatedTeacher.id
+        (teacher) => teacher.id === addedTeacher.id
       );
       if (index === -1) {
-        addTeacher(updatedTeacher);
+        teachers.push(addedTeacher);
       } else {
-        const newTeachers = teachers.map((teacher) => {
-          if (teacher.id === updatedTeacher.id) {
-            return updatedTeacher;
-          }
-          return teacher;
-        });
-        setTeachers(newTeachers);
+        teachers[index] = addedTeacher;
       }
-    },
-    [addTeacher, teachers]
-  );
+    }
+    setTeachers([...teachers]);
+  };
 
-  const getTeachers = useCallback(() => {
+  const updateTeacher = async (updatedTeacher: Teacher) => {
+    const index = teachers.findIndex(
+      (teacher) => teacher.id === updatedTeacher.id
+    );
+    if (index === -1) {
+      addTeacher(updatedTeacher);
+    } else {
+      const newTeachers = teachers.map((teacher) => {
+        if (teacher.id === updatedTeacher.id) {
+          return updatedTeacher;
+        }
+        return teacher;
+      });
+      setTeachers(newTeachers);
+    }
+  };
+
+  const getTeachers = () => {
     axios
       .create(axiosConfig)
       .get("teachers")
@@ -135,48 +126,42 @@ export const TeacherContextProvider = ({ children }: Props) => {
         return error;
       })
       .finally(() => setPending(false));
-  }, [addTeachers, axiosConfig, handleAxiosError]);
+  };
 
-  const getTeacherById = useCallback(
-    async (id: string): Promise<Teacher | null> => {
-      const found = teachers.find((teacher) => teacher.id === id);
-      if (found) {
-        return found;
-      }
+  const getTeacherById = async (id: string): Promise<Teacher | null> => {
+    const found = teachers.find((teacher) => teacher.id === id);
+    if (found) {
+      return found;
+    }
 
-      return axios
-        .create(axiosConfig)
-        .get(`/teachers/${id}`)
-        .then((response) => {
-          const teacher = plainToInstance(Teacher, response.data);
-          addTeacher(teacher);
-          return teacher;
-        })
-        .catch((error) => {
-          handleAxiosError(error);
-          return error;
-        });
-    },
-    [addTeacher, axiosConfig, handleAxiosError, teachers]
-  );
+    return axios
+      .create(axiosConfig)
+      .get(`/teachers/${id}`)
+      .then((response) => {
+        const teacher = plainToInstance(Teacher, response.data);
+        addTeacher(teacher);
+        return teacher;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
 
-  const updateTeacherById = useCallback(
-    async (id: string, teacher: Partial<Teacher>) => {
-      return axios
-        .create(axiosConfig)
-        .patch(`teachers/${id}`, teacher)
-        .then((response) => {
-          const savedTeacher = plainToInstance(Teacher, response.data);
-          updateTeacher(savedTeacher);
-          return savedTeacher;
-        })
-        .catch((error) => {
-          handleAxiosError(error);
-          return error;
-        });
-    },
-    [axiosConfig, handleAxiosError, updateTeacher]
-  );
+  const updateTeacherById = async (id: string, teacher: Partial<Teacher>) => {
+    return axios
+      .create(axiosConfig)
+      .patch(`teachers/${id}`, teacher)
+      .then((response) => {
+        const savedTeacher = plainToInstance(Teacher, response.data);
+        updateTeacher(savedTeacher);
+        return savedTeacher;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
 
   if (pending) {
     return <PendingContextPage message="講師情報を取得中" />;

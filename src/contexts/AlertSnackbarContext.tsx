@@ -38,6 +38,20 @@ export const AlertSnackbarContextProvider: React.FC<
 
   const handleAxiosError = (error: Error) => {
     if (isAxiosError(error)) {
+      const url = error?.request?.url;
+      const method = error?.request?.method;
+      if (
+        typeof url === "string" &&
+        url.includes("/images") &&
+        method === "post"
+      ) {
+        return setAlert({
+          severity: "error",
+          title: "エラー",
+          description:
+            "画像の送信時にエラーが発生しました。画像データを確認してください。",
+        });
+      }
       // サーバーからの返答がある
       if (error.response) {
         if (error.response.status === 404) {

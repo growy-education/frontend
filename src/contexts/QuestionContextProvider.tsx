@@ -14,10 +14,12 @@ interface QuestionContextProps {
   getQuestions: (
     filterDto: GetQuestionsFilterDto
   ) => Promise<Question[] | null>;
-  createQuestion: (createQuestionDto: Partial<Question>) => Promise<Question>;
+  createQuestion: (
+    createQuestionDto: Partial<Question>
+  ) => Promise<Question | Error>;
   createQuestionForTeacher: (
     createQuestionDto: Partial<Question>
-  ) => Promise<Question>;
+  ) => Promise<Question | Error>;
   getQuestionById: (id: string) => Promise<Question | Error>;
   getQuestionByIdFromBackend: (id: string) => Promise<Question | Error>;
   editQuestionById: (
@@ -63,8 +65,9 @@ export const QuestionContextProvider = ({ children }: Props) => {
         if (!Array.isArray(response.data)) {
           throw new Error("ネットワークエラー");
         }
-        const questions = response.data.map((userJson: string) => {
-          return plainToInstance(Question, userJson);
+        const questions = response.data.map((questionJson: string) => {
+          console.log(questionJson);
+          return plainToInstance(Question, questionJson);
         });
         setQuestions(questions);
       })

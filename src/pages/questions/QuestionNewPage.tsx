@@ -32,6 +32,7 @@ import { TeacherContext } from "../../contexts/TeacherContextProvider";
 import { QuestionContext } from "../../contexts/QuestionContextProvider";
 import { Teacher } from "../../dto/teacher.class";
 import { AxiosContext } from "../../contexts/AxiosContextProvider";
+import { Question } from "../../dto/question.class";
 
 class CreateQuestionDto {
   @IsNotEmpty({ message: "タイトルを入力してください" })
@@ -171,41 +172,58 @@ export const QuestionNew = () => {
 
     setSending(true);
 
-    setSendingMessage("問題画像の送信中です...");
-    const problemImages = await Promise.all(
-      data.problems.map((file: File) => {
-        const formData = new FormData();
-        formData.append("file", file);
-        return axios
-          .create(axiosConfig)
-          .post("images", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((response) => plainToInstance(ImageEntity, response.data));
-      })
-    );
+    let problemImages: ImageEntity[];
+    try {
+      setSendingMessage("問題画像の送信中です...");
+      problemImages = await Promise.all(
+        data.problems.map(async (file: File) => {
+          const formData = new FormData();
+          formData.append("file", file);
+          return axios
+            .create(axiosConfig)
+            .post("images", formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((response) => plainToInstance(ImageEntity, response.data));
+        })
+      );
+    } catch (error) {
+      setSending(false);
+      setSendingMessage("");
+      return setError("problems", {
+        message: "問題画像の送信中にエラーが発生しました。",
+      });
+    }
 
     setSendingMessage("解答画像の送信中です...");
-    const solutionImages = await Promise.all(
-      data.solutions.map((file: File) => {
-        const formData = new FormData();
-        formData.append("file", file);
-        return axios
-          .create(axiosConfig)
-          .post("images", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((response) => plainToInstance(ImageEntity, response.data));
-      })
-    );
-
-    const { problems, solutions, ...createQuestionDto } = data;
+    let solutionImages: ImageEntity[];
+    try {
+      solutionImages = await Promise.all(
+        data.solutions.map((file: File) => {
+          const formData = new FormData();
+          formData.append("file", file);
+          return axios
+            .create(axiosConfig)
+            .post("images", formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((response) => plainToInstance(ImageEntity, response.data));
+        })
+      );
+    } catch (error) {
+      setSending(false);
+      setSendingMessage("");
+      return setError("solutions", {
+        message: "解答画像の送信中にエラーが発生しました。",
+      });
+    }
 
     setSendingMessage("質問情報の送信中です...");
+    const { problems, solutions, ...createQuestionDto } = data;
 
     if (user.role === Role.ADMIN) {
       return createQuestionForTeacher({
@@ -214,9 +232,9 @@ export const QuestionNew = () => {
         solutions: solutionImages,
         teacher,
       })
-        .then((question) => {
-          if (question) {
-            navigate(`/questions/${question.id}`);
+        .then((result) => {
+          if (result instanceof Question) {
+            navigate(`/questions/${result.id}`);
           }
         })
         .finally(() => {
@@ -230,9 +248,9 @@ export const QuestionNew = () => {
         problems: problemImages,
         solutions: solutionImages,
       })
-        .then((question) => {
-          if (question) {
-            navigate(`/questions/${question.id}`);
+        .then((result) => {
+          if (result instanceof Question) {
+            navigate(`/questions/${result.id}`);
           }
         })
         .finally(() => {

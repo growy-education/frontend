@@ -38,7 +38,7 @@ export const ChangeQuestionTeacherAccordion = ({
       return;
     }
     getTeachers();
-  }, [expanded, getTeachers]);
+  }, [expanded]);
 
   const handleChange = () => setExpanded(!expanded);
   return (
