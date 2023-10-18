@@ -45,7 +45,7 @@ export const LandingPage = () => {
             severity="info"
             sx={{ width: "100%" }}
           >
-            現在コーチングの定員が満員となっております。
+            現在コーチングが満員となっております。
           </Alert>
         </Snackbar>
 
