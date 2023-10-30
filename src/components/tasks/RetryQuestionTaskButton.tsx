@@ -1,6 +1,5 @@
 import { Block } from "@mui/icons-material";
 import {
-  Box,
   Button,
   ButtonProps,
   Dialog,
@@ -18,22 +17,24 @@ import { QuestionContext } from "../../contexts/QuestionContextProvider";
 import { IsNotEmpty, IsString } from "class-validator";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { Task } from "../../dto/task.class";
+import { TaskStatus } from "../../dto/enum/task-status.enum";
 
-class RejectQuestionAnswerDto {
-  @IsNotEmpty({ message: "拒否理由を入力してください" })
+class RetryQuestionTaskDto {
+  @IsNotEmpty({ message: "動画の修正点を入力してください" })
   @IsString()
-  rejectedMessage: string;
+  retryMessage: string;
 }
 
-type RejectQuestionAnswerButtonProps = {
-  question: Question;
+type RetryQuestionTaskButtonProps = {
+  task: Task;
 } & ButtonProps;
 
-export const RejectQuestionAnswerButton = ({
-  question,
+export const RetryQuestionTaskButton = ({
+  task,
   ...props
-}: RejectQuestionAnswerButtonProps) => {
-  const { rejectQuestionAnswerById } = useContext(QuestionContext);
+}: RetryQuestionTaskButtonProps) => {
+  const { retryQuestionTaskById } = useContext(QuestionContext);
   const [sending, setSending] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -42,10 +43,10 @@ export const RejectQuestionAnswerButton = ({
     register,
     reset,
     formState: { errors },
-  } = useForm<RejectQuestionAnswerDto>({
-    resolver: classValidatorResolver(RejectQuestionAnswerDto),
+  } = useForm<RetryQuestionTaskDto>({
+    resolver: classValidatorResolver(RetryQuestionTaskDto),
     defaultValues: {
-      rejectedMessage: "",
+      retryMessage: "",
     },
   });
 
@@ -55,14 +56,14 @@ export const RejectQuestionAnswerButton = ({
   };
   const handleClick = () => setOpen(true);
 
-  const handleRejectQuestionAnswer: SubmitHandler<
-    RejectQuestionAnswerDto
-  > = async (data) => {
+  const handleRetryQuestionTask: SubmitHandler<RetryQuestionTaskDto> = async (
+    data
+  ) => {
     if (sending) {
       return;
     }
     setSending(true);
-    rejectQuestionAnswerById(question.id, data.rejectedMessage).finally(() =>
+    retryQuestionTaskById(task.id, data.retryMessage).finally(() =>
       setSending(false)
     );
     setOpen(false);
@@ -74,7 +75,7 @@ export const RejectQuestionAnswerButton = ({
         variant="outlined"
         color="warning"
         endIcon={<Block sx={{ color: "warning.main" }} />}
-        disabled={question.status !== QuestionStatus.CHECKING}
+        disabled={task.status !== TaskStatus.REVIEWING}
         onClick={handleClick}
         {...props}
       >
@@ -83,12 +84,12 @@ export const RejectQuestionAnswerButton = ({
       <Dialog open={open} onClose={handleCancel}>
         <Stack
           component="form"
-          onSubmit={handleSubmit(handleRejectQuestionAnswer)}
+          onSubmit={handleSubmit(handleRetryQuestionTask)}
         >
           <DialogTitle>回答動画を拒否する</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              回答動画を拒否する理由を入力してください。このメッセージは講師に送信されます。
+              動画の修正点を入力してください。このメッセージは講師に送信されます。
             </DialogContentText>
             <TextField
               id="message"
@@ -98,13 +99,13 @@ export const RejectQuestionAnswerButton = ({
               autoFocus
               multiline
               margin="dense"
-              error={!!errors.rejectedMessage}
+              error={!!errors.retryMessage}
               helperText={
-                !!errors.rejectedMessage
-                  ? errors.rejectedMessage.message
-                  : "講師に通知する拒否理由を入力してください"
+                !!errors.retryMessage
+                  ? errors.retryMessage.message
+                  : "講師に通知する修正点を入力してください"
               }
-              {...register("rejectedMessage")}
+              {...register("retryMessage")}
             />
           </DialogContent>
           <DialogActions>

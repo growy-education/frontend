@@ -69,7 +69,7 @@ export const QuestionCard = ({
             date={question.createdAt}
           />
         </CardContent>
-        <QuestionCardMedia id={question.problems[0].id} />
+        <QuestionCardMedia id={question?.problems[0]?.id} />
       </CardActionArea>
     </Card>
   );

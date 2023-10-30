@@ -16,6 +16,7 @@ import { QuestionStatusesGuard } from "../../tools/QuestionStatusesGuard";
 import { QuestionStatus } from "../../dto/enum/question-status.enum";
 import { ConfirmQuestionMenuItem } from "./ConfirmQuestionMenuItem";
 import { UserContext } from "../../contexts/UserContextProvider";
+import { AddTaskToQuestionMenuItem } from "../tasks/AddTaskToQuestionMenuItem";
 
 type QuestionHeaderBoxProps = {
   question: Question;
@@ -86,22 +87,26 @@ export const QuestionHeaderBox = ({
             <RejectQuestionMenuItem question={question} onClick={handleClose} />
           </QuestionStatusesGuard>
         </RolesGuard>
-        <Divider />
         <RolesGuard roles={[Role.TEACHER]}>
           <ReportQuestionMenuItem question={question} onClick={handleClose} />
         </RolesGuard>
-        <RolesGuard roles={[Role.CUSTOMER, Role.ADMIN]}>
+        <RolesGuard roles={[Role.CUSTOMER]}>
           <QuestionStatusesGuard
             question={question}
-            statuses={[
-              QuestionStatus.CANCELED,
-              QuestionStatus.PENDING,
-              QuestionStatus.ASSIGNED,
-              QuestionStatus.AVAILABLE,
-            ]}
+            statuses={[QuestionStatus.CANCELED]}
           >
             <DeleteQuestionMenuItem question={question} onClick={handleClose} />
           </QuestionStatusesGuard>
+        </RolesGuard>
+        <RolesGuard roles={[Role.ADMIN]}>
+          <DeleteQuestionMenuItem question={question} onClick={handleClose} />
+        </RolesGuard>
+        <RolesGuard roles={[Role.ADMIN]}>
+          <Divider />
+          <AddTaskToQuestionMenuItem
+            question={question}
+            onClick={handleClose}
+          />
         </RolesGuard>
       </QuestionActionMenu>
     </Box>

@@ -1,11 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { Box } from "@mui/material";
 import { Navigate, useParams } from "react-router-dom";
 
 import { Question } from "../../dto/question.class";
 import { LoadingBox } from "../../components/LoadingData";
 import { QuestionDetail } from "../../components/questions/QuestionDetail";
-import { UserContext } from "../../contexts/UserContextProvider";
 import { Role } from "../../dto/enum/role.enum";
 import { CheckQuestionAnswerAccordion } from "../../components/questions/CheckQuestionAnswerAccordion";
 import { QuestionContext } from "../../contexts/QuestionContextProvider";
@@ -18,10 +16,10 @@ import { RolesGuard } from "../../tools/RolesGuard";
 import { QuestionStatusesGuard } from "../../tools/QuestionStatusesGuard";
 import { AnswerQuestionAccordion } from "../../components/questions/AnswerQuestionAccordion";
 import { TeacherQuestionAlert } from "../../components/questions/TeacherQuestionAlert";
+import { QuestionTasksAccordion } from "../../components/questions/AnswerQuestionTaskAccordion";
 
 export const QuestionDetailPage = () => {
   const { questionId } = useParams();
-  const { user } = useContext(UserContext);
   const { questions, getQuestionById } = useContext(QuestionContext);
 
   const [question, setQuestion] = useState<null | Question>(null);
@@ -61,14 +59,6 @@ export const QuestionDetailPage = () => {
       <RolesGuard roles={[Role.TEACHER]}>
         <TeacherQuestionAlert question={question} />
       </RolesGuard>
-      <RolesGuard roles={[Role.TEACHER]}>
-        <QuestionStatusesGuard
-          question={question}
-          statuses={[QuestionStatus.ASSIGNED]}
-        >
-          <AnswerQuestionAccordion question={question} />
-        </QuestionStatusesGuard>
-      </RolesGuard>
       <RolesGuard roles={[Role.ADMIN]}>
         <QuestionStatusesGuard
           question={question}
@@ -80,12 +70,9 @@ export const QuestionDetailPage = () => {
         >
           <ChangeQuestionTeacherAccordion question={question} />
         </QuestionStatusesGuard>
-        <QuestionStatusesGuard
-          question={question}
-          statuses={[QuestionStatus.CHECKING]}
-        >
-          <CheckQuestionAnswerAccordion question={question} />
-        </QuestionStatusesGuard>
+      </RolesGuard>
+      <RolesGuard roles={[Role.ADMIN, Role.TEACHER]}>
+        <QuestionTasksAccordion question={question} />
       </RolesGuard>
 
       <QuestionDetail question={question} />

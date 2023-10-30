@@ -52,10 +52,6 @@ export const QuestionCardMedia = ({
     };
   }, [axiosConfig, id]);
 
-  if (!imageUrl) {
-    return <LoadingBox message="画像データの取得中です" />;
-  }
-
   if (error) {
     return (
       <AlertBox
@@ -65,6 +61,11 @@ export const QuestionCardMedia = ({
       />
     );
   }
+
+  if (!imageUrl) {
+    return <LoadingBox message="画像データの取得中です" />;
+  }
+
   return (
     <CardMedia
       component="img"

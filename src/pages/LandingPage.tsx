@@ -45,7 +45,9 @@ export const LandingPage = () => {
             severity="info"
             sx={{ width: "100%" }}
           >
-            現在コーチングが満員となっております。
+            コーチングサービスは現在満員となっておりますので
+            <br />
+            2023年度につきましては予約待ちという形になります🙇‍♂️
           </Alert>
         </Snackbar>
 

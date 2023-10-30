@@ -4,6 +4,7 @@ import { ImageEntity } from "./image.class";
 import { Student } from "./student.class";
 import { Customer } from "./customer.class";
 import { Teacher } from "./teacher.class";
+import { Task } from "./task.class";
 
 export class Question {
   id: string;
@@ -29,6 +30,9 @@ export class Question {
   solutions: ImageEntity[];
 
   answers: string[];
+
+  @Type(() => Task)
+  tasks: Task[];
 
   @Type(() => Student)
   student?: Student;

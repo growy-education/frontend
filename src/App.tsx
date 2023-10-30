@@ -22,6 +22,7 @@ import { QuestionContextProvider } from "./contexts/QuestionContextProvider";
 import { TeacherContextProvider } from "./contexts/TeacherContextProvider";
 import { CustomerContextProvider } from "./contexts/CustomerContextProvider";
 import { StudentContextProvider } from "./contexts/StudentContextProvider";
+import { TaskContextProvider } from "./contexts/TaskContextProvider";
 dayjs.locale("ja");
 
 const theme = createTheme(
@@ -91,7 +92,9 @@ function App() {
                           <CustomerContextProvider>
                             <TeacherContextProvider>
                               <StudentContextProvider>
-                                <RolesRouter />
+                                <TaskContextProvider>
+                                  <RolesRouter />
+                                </TaskContextProvider>
                               </StudentContextProvider>
                             </TeacherContextProvider>
                           </CustomerContextProvider>

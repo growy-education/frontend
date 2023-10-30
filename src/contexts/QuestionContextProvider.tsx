@@ -8,6 +8,8 @@ import { QuestionStatus } from "../dto/enum/question-status.enum";
 import { GetQuestionsFilterDto } from "../dto/get-questions-filter.dto";
 import { UpdateQuestionDto } from "../dto/update-question.dto";
 import { AlertSnackbarContext } from "./AlertSnackbarContext";
+import { Task } from "../dto/task.class";
+import { TaskStatus } from "../dto/enum/task-status.enum";
 
 interface QuestionContextProps {
   questions: Question[];
@@ -41,6 +43,15 @@ interface QuestionContextProps {
     id: string,
     message?: string
   ) => Promise<Question | null>;
+  addTaskToQuestionById: (id: string, title: string) => Promise<Task | Error>;
+  updateTaskById: (id: string, dto: Partial<Task>) => Promise<Task | Error>;
+  completeQuestionTaskById: (id: string) => Promise<Task | Error>;
+  retryQuestionTaskById: (id: string, message: string) => Promise<Task | Error>;
+  deleteQuestionTaskById: (id: string) => Promise<void | Error>;
+  answerQuestionTaskById: (
+    taskId: string,
+    answer: string
+  ) => Promise<Task | Error>;
 }
 
 export const QuestionContext = createContext<QuestionContextProps>(null);
@@ -230,7 +241,7 @@ export const QuestionContextProvider = ({ children }: Props) => {
   const cancelQuestionById = async (id: string): Promise<Question | null> => {
     return axios
       .create(axiosConfig)
-      .patch(`questions/${id}`, {
+      .patch(`questions/${id}/status`, {
         status: QuestionStatus.CANCELED,
       })
       .then((response) => {
@@ -247,7 +258,7 @@ export const QuestionContextProvider = ({ children }: Props) => {
   const assignQuestionById = async (id: string): Promise<Question | null> => {
     return axios
       .create(axiosConfig)
-      .patch(`questions/${id}`, {
+      .post(`questions/${id}/confirm`, {
         status: QuestionStatus.ASSIGNED,
       })
       .then((response) => {
@@ -267,14 +278,152 @@ export const QuestionContextProvider = ({ children }: Props) => {
   ): Promise<Question | null> => {
     return axios
       .create(axiosConfig)
-      .patch(`questions/${id}`, {
-        status: QuestionStatus.PENDING,
-        message,
+      .post(`questions/${id}/confirm`, {
+        status: TaskStatus.REJECTED,
       })
       .then((response) => {
         const question = plainToInstance(Question, response.data);
         updateQuestion(question);
         return question;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
+
+  const addTaskToQuestionById = async (
+    id: string,
+    title: string
+  ): Promise<Task> => {
+    return axios
+      .create(axiosConfig)
+      .post(`questions/${id}/tasks`, {
+        title,
+      })
+      .then((response) => {
+        const task = plainToInstance(Task, response.data);
+        getQuestionById(id).then((question) => {
+          if (question instanceof Question) {
+            question.tasks.push(task);
+            updateQuestion(question);
+          }
+        });
+        return task;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
+
+  const updateTaskById = async (
+    id: string,
+    dto: Partial<Task>
+  ): Promise<Task | Error> => {
+    const question = questions.find((question) =>
+      question.tasks.some((task) => task.id === id)
+    );
+    if (!question) {
+      return new Error(`question with task id: ${id} not found`);
+    }
+    return axios
+      .create(axiosConfig)
+      .patch(`tasks/${id}`, dto)
+      .then((response) => {
+        const savedTask = plainToInstance(Task, response.data);
+        question.tasks = question.tasks.map((task) => {
+          if (task.id === id) {
+            return savedTask;
+          }
+          return task;
+        });
+        updateQuestion(question);
+        return savedTask;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
+
+  const completeQuestionTaskById = async (
+    id: string
+  ): Promise<Task | Error> => {
+    const question = questions.find((question) =>
+      question.tasks.some((task) => task.id === id)
+    );
+    if (!question) {
+      return new Error(`question with task id: ${id} not found`);
+    }
+    return axios
+      .create(axiosConfig)
+      .post(`tasks/${id}/review`, {
+        status: TaskStatus.COMPLETED,
+      })
+      .then((response) => {
+        const savedTask = plainToInstance(Task, response.data);
+        question.tasks = question.tasks.map((task) => {
+          if (task.id === id) {
+            return savedTask;
+          }
+          return task;
+        });
+        updateQuestion(question);
+        return savedTask;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
+
+  const retryQuestionTaskById = async (
+    id: string,
+    message: string
+  ): Promise<Task | Error> => {
+    const question = questions.find((question) =>
+      question.tasks.some((task) => task.id === id)
+    );
+    if (!question) {
+      return new Error(`question with task id: ${id} not found`);
+    }
+    return axios
+      .create(axiosConfig)
+      .post(`tasks/${id}/review`, {
+        status: TaskStatus.IN_PROGRESS,
+        retryMessage: message,
+      })
+      .then((response) => {
+        const savedTask = plainToInstance(Task, response.data);
+        question.tasks = question.tasks.map((task) => {
+          if (task.id === id) {
+            return savedTask;
+          }
+          return task;
+        });
+        updateQuestion(question);
+        return savedTask;
+      })
+      .catch((error) => {
+        handleAxiosError(error);
+        return error;
+      });
+  };
+
+  const deleteQuestionTaskById = async (id: string): Promise<void | Error> => {
+    const question = questions.find((question) =>
+      question.tasks.some((task) => task.id === id)
+    );
+    if (!question) {
+      return new Error(`question with task id: ${id} not found`);
+    }
+    return axios
+      .create(axiosConfig)
+      .delete(`tasks/${id}`)
+      .then((_response) => {
+        question.tasks = question.tasks.filter((task) => task.id !== id);
+        updateQuestion(question);
       })
       .catch((error) => {
         handleAxiosError(error);
@@ -304,8 +453,7 @@ export const QuestionContextProvider = ({ children }: Props) => {
   ) => {
     return axios
       .create(axiosConfig)
-      .patch(`questions/${questionId}`, {
-        status: QuestionStatus.PENDING,
+      .patch(`questions/${questionId}/teacher`, {
         teacher: { id: teacherId },
       })
       .then((response) => {
@@ -330,6 +478,36 @@ export const QuestionContextProvider = ({ children }: Props) => {
         const question = plainToInstance(Question, response.data);
         updateQuestion(question);
         return question;
+      })
+      .catch((error) => {
+        console.log(error);
+        handleAxiosError(error);
+        return error;
+      });
+  };
+
+  const answerQuestionTaskById = async (
+    taskId: string,
+    answer: string
+  ): Promise<Task | Error> => {
+    const question = questions.find((question) =>
+      question.tasks.some((task) => task.id === taskId)
+    );
+    return axios
+      .create(axiosConfig)
+      .post(`tasks/${taskId}/answer`, {
+        answer,
+      })
+      .then((response) => {
+        const savedTask = plainToInstance(Task, response.data);
+        question.tasks = question.tasks.map((task) => {
+          if (task.id === taskId) {
+            return savedTask;
+          }
+          return task;
+        });
+        updateQuestion(question);
+        return savedTask;
       })
       .catch((error) => {
         console.log(error);
@@ -391,11 +569,17 @@ export const QuestionContextProvider = ({ children }: Props) => {
         cancelQuestionById,
         assignQuestionById,
         rejectQuestionById,
+        addTaskToQuestionById,
+        updateTaskById,
         reportQuestionById,
         changeQuestionTeacherById,
         answerQuestionById,
         verifyQuestionAnswerById,
         rejectQuestionAnswerById,
+        completeQuestionTaskById,
+        retryQuestionTaskById,
+        deleteQuestionTaskById,
+        answerQuestionTaskById,
       }}
     >
       {children}
