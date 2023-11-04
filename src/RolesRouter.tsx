@@ -54,6 +54,8 @@ import { StudentNew } from "./pages/students/StudentNewPage";
 import { StudentDetailProps } from "./pages/students/StudentDetailPage";
 import { StudentEdit } from "./pages/students/StudentEditPage";
 import { QuestionAssignedPage } from "./pages/questions/QuestionAssignedPage";
+import { LessonsListPage } from "./pages/LessonsListPage";
+import { Lesson } from "./dto/lesson.class";
 
 export const RolesRouter: React.FC = () => {
   const { user } = useContext(UserContext);
@@ -86,6 +88,9 @@ export const RolesRouter: React.FC = () => {
                 path="/questions/:questionId/check"
                 element={<QuestionCheck />}
               />
+
+              <Route path="/lessons" element={<LessonsListPage />} />
+
               <Route path="/rooms" element={<RoomList />} />
               <Route path="/rooms/new" element={<RoomNew />} />
               <Route path="/rooms/:roomId" element={<RoomDetail />} />
@@ -161,6 +166,8 @@ export const RolesRouter: React.FC = () => {
 
               <Route path="/rooms" element={<RoomList />} />
               <Route path="/rooms/:roomId" element={<RoomDetail />} />
+
+              <Route path="lessons" element={<LessonsListPage />} />
             </>
           )}
           <Route path="*" element={<NotFound />} />
