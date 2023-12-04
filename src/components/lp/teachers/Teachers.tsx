@@ -29,7 +29,9 @@ export const Teachers = () => {
                 />
               </FaceImageBox>
               <TeacherDescriptionBox>
-                <Typography sx={{ fontWeight: "bold" }}>ヒロクマ</Typography>
+                <Typography sx={{ fontWeight: "bold" }}>
+                  竹熊（ヒロクマ）
+                </Typography>
                 <Typography>算数、理科</Typography>
               </TeacherDescriptionBox>
             </TeacherInfoBox>
@@ -55,7 +57,9 @@ export const Teachers = () => {
                 />
               </FaceImageBox>
               <TeacherDescriptionBox>
-                <Typography sx={{ fontWeight: "bold" }}>よしもん</Typography>
+                <Typography sx={{ fontWeight: "bold" }}>
+                  よしもん（吉本）
+                </Typography>
                 <Typography>算数、理科</Typography>
               </TeacherDescriptionBox>
             </TeacherInfoBox>
@@ -75,7 +79,9 @@ export const Teachers = () => {
                 />
               </FaceImageBox>
               <TeacherDescriptionBox>
-                <Typography sx={{ fontWeight: "bold" }}>ハマタク</Typography>
+                <Typography sx={{ fontWeight: "bold" }}>
+                  濱野（ハマタク）
+                </Typography>
                 <Typography>国語、社会</Typography>
               </TeacherDescriptionBox>
             </TeacherInfoBox>
@@ -94,7 +100,9 @@ export const Teachers = () => {
                 />
               </FaceImageBox>
               <TeacherDescriptionBox>
-                <Typography sx={{ fontWeight: "bold" }}>ケイゴ</Typography>
+                <Typography sx={{ fontWeight: "bold" }}>
+                  倉石（ケイゴ）
+                </Typography>
                 <Typography>算数、理科</Typography>
               </TeacherDescriptionBox>
             </TeacherInfoBox>
@@ -117,7 +125,7 @@ export const Teachers = () => {
                 />
               </FaceImageBox>
               <TeacherDescriptionBox>
-                <Typography sx={{ fontWeight: "bold" }}>たいら</Typography>
+                <Typography sx={{ fontWeight: "bold" }}>平</Typography>
                 <Typography>算数</Typography>
               </TeacherDescriptionBox>
             </TeacherInfoBox>
@@ -140,7 +148,7 @@ export const Teachers = () => {
                 />
               </FaceImageBox>
               <TeacherDescriptionBox>
-                <Typography sx={{ fontWeight: "bold" }}>ハギ</Typography>
+                <Typography sx={{ fontWeight: "bold" }}>萩原</Typography>
                 <Typography>国語</Typography>
               </TeacherDescriptionBox>
             </TeacherInfoBox>
@@ -148,6 +156,32 @@ export const Teachers = () => {
               中学受験は厳しい戦いの連続だと思いますが、その中で勉強を楽しみながら進めていくお手伝いができればと思っています。
               <br />
               皆さんが将来受験期を振り返ったとき、中学受験が少しでも良い経験だったと感じられるよう全力でサポートします。
+            </TeacherCommentTypography>
+          </TeacherBox>
+
+          <TeacherBox mt={3}>
+            <TeacherInfoBox>
+              <FaceImageBox>
+                <img
+                  src="/img/img-teacher-matsushita.jpg"
+                  alt="松下写真"
+                  style={{ borderRadius: "10px" }}
+                />
+              </FaceImageBox>
+              <TeacherDescriptionBox>
+                <Typography sx={{ fontWeight: "bold" }}>松下</Typography>
+                <Typography>国語</Typography>
+              </TeacherDescriptionBox>
+            </TeacherInfoBox>
+            <TeacherCommentTypography>
+              中学受験の国語では、難解な文章の読解や、一筋縄ではいかない設問への解答が求められます。
+              <br />
+              そういった難問に取り組んでいる生徒の皆さんに、
+              <br />
+              「難しかったところが理解できるようになった」
+              「頑張りをわかってもらえた」
+              <br />
+              など、嬉しさや楽しさを少しでも感じていただけるよう尽力いたします。
             </TeacherCommentTypography>
           </TeacherBox>
         </Box>
