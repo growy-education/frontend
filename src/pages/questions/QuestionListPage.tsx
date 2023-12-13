@@ -1,72 +1,102 @@
-import { useContext, useState } from "react";
+import { Fragment } from "react";
 import { Box, Button } from "@mui/material";
 
-import { QuestionCard } from "../../components/questions/QuestionCard";
-import { YetNoQuestionBox } from "../../components/questions/YetNoQuestionBox";
-import { PageTitleTypography } from "../../components/components/Typography/PageTitleTypography";
-import { QuestionContext } from "../../contexts/QuestionContextProvider";
-import { UserContext } from "../../contexts/UserContextProvider";
-import { Role } from "../../dto/enum/role.enum";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { plainToInstance } from "class-transformer";
+import { Question } from "../../features/questions/types/question.class";
+
+import { QuestionCard } from "../../features/questions/QuestionCard";
+import { YetNoQuestionBox } from "../../features/questions/YetNoQuestionBox";
+import { PageTitleTypography } from "../../components/Element/Typography/PageTitleTypography";
+import { AlertBox } from "../../features/AlertBox";
+import { axios } from "../../tools/axios";
+import { LoadingBox } from "../../features/LoadingData";
 
 export const QuestionListPage = () => {
-  const { user } = useContext(UserContext);
-  const { questions, getQuestions } = useContext(QuestionContext);
-  const [fetching, setFetching] = useState(false);
-  const [noMoreData, setNoMoreData] = useState(false);
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    isPending,
+    isError,
+  } = useInfiniteQuery({
+    queryKey: ["questions"],
+    queryFn: async ({ pageParam }) => {
+      const response = await axios.get("/questions", { params: pageParam });
+      if (!Array.isArray(response.data)) {
+        throw new Error();
+      }
+      return plainToInstance(Question, response.data);
+    },
+    initialPageParam: { take: 10, skip: 0 },
+    getNextPageParam: (lastPage, allPages) => {
+      if (!!!lastPage || !!!allPages) {
+        return;
+      }
+      if (lastPage.length < 10) {
+        return;
+      }
+      const length = allPages.reduce((sum, questions) => {
+        sum += questions.length;
+        return sum;
+      }, 0);
+      return {
+        take: 10,
+        skip: length,
+      };
+    },
+  });
 
   const handleLoadMore = () => {
-    if (fetching) {
+    if (isFetchingNextPage) {
       return;
     }
-    setFetching(true);
-    getQuestions({ take: 10, skip: questions.length })
-      .then((value) => {
-        console.log(value);
-        if (value.length === 0) {
-          return setNoMoreData(true);
-        }
-      })
-      .finally(() => setFetching(false));
+    fetchNextPage();
   };
+
+  if (isPending) {
+    <LoadingBox message="質問情報を取得しています" />;
+  }
+
+  if (isError) {
+    return (
+      <AlertBox
+        severity="error"
+        title="エラー"
+        description="質問が取得できませんでした"
+      />
+    );
+  }
 
   return (
     <Box sx={{ width: "100%" }}>
       <PageTitleTypography>質問リスト</PageTitleTypography>
       <Box p={2}>
-        {questions.length === 0 && <YetNoQuestionBox />}
-        {questions
-          .filter((question) => {
-            if (user.role === Role.ADMIN) {
-              return true;
-            }
-
-            if (user.role === Role.CUSTOMER) {
-              return user?.customer?.id === question?.customer?.id;
-            }
-
-            if (user.role === Role.TEACHER) {
-              return user?.teacher?.id === question?.teacher?.id;
-            }
-            return true;
-          })
-          .map((question) => (
-            <QuestionCard
-              key={`question-${question.id}`}
-              question={question}
-              sx={{ marginBottom: 3 }}
-            />
-          ))}
+        {data?.pages.length === 0 && <YetNoQuestionBox />}
+        {data?.pages.map((page, i) => (
+          <Fragment key={i}>
+            {page.map((question) => (
+              <QuestionCard
+                key={`question-${question.id}`}
+                question={question}
+                sx={{ marginBottom: 3 }}
+              />
+            ))}
+          </Fragment>
+        ))}
         <Button
           variant="contained"
           color="primary"
           onClick={handleLoadMore}
-          disabled={fetching || noMoreData}
+          disabled={isFetching || !hasNextPage}
         >
-          {fetching
+          {isFetching
             ? "読み込んでいます..."
-            : noMoreData
-            ? "質問がありません"
-            : "もっと読み込む"}
+            : hasNextPage
+            ? "もっと読み込む"
+            : "質問がありません"}
         </Button>
       </Box>
     </Box>

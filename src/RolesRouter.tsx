@@ -1,28 +1,31 @@
 import React, { useContext } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
-import { UserContext } from "./contexts/UserContextProvider";
-import { Role } from "./dto/enum/role.enum";
+import { AuthContext } from "./providers/auth.provider";
+import { Role } from "./features/users/types/role.enum";
 
 import { General } from "./General";
 
-import { NotFound } from "./components/NotFound";
+import { NotFound } from "./features/NotFound";
 import { HomePage } from "./pages/InformationPage";
 
 // Profiles
-import { ProfilePage } from "./pages/profiles/ProfilePage";
-import { ProfileEditPage } from "./pages/profiles/ProfileEditPage";
+import { ProfilePage } from "./pages/account/ProfilePage";
+import { ProfileEditPage } from "./pages/account/ProfileEditPage";
 
 // Images
 import { ImageListPage } from "./pages/images/ImageListPage";
 import { ImageNew } from "./pages/images/ImageNewPage";
 
-// Questions
+/*
+ * Questions
+ */
 import { QuestionListPage } from "./pages/questions/QuestionListPage";
-import { QuestionNew } from "./pages/questions/QuestionNewPage";
-import { QuestionCheck } from "./pages/questions/QuestionCheckPage";
+// new
+import { AdminQuestionNewPage } from "./pages/questions/new/AdminQuestionNewPage";
+import { CustomerQuestionNewPage } from "./pages/questions/new/CustomerQuestionNewPage";
 import { QuestionDetailPage } from "./pages/questions/QuestionDetailPage";
-import { QuestionEdit } from "./pages/questions/QuestionEditPage";
+import { QuestionEdit } from "./pages/questions/edit/QuestionEditPage";
 
 // Customers
 import { CustomersListPage } from "./pages/customers/CustomersListPage";
@@ -40,7 +43,6 @@ import { UsersList } from "./pages/users/UsersListPage";
 import { UserNew } from "./pages/users/UserNewPage";
 import { UserDetailPage } from "./pages/users/UserDetailPage";
 import { UserEditPage } from "./pages/users/UserEditPage";
-import { UserActivate } from "./pages/users/UserActivatePage";
 
 // Teachers
 import { TeachersList } from "./pages/teachers/TeachersListPage";
@@ -53,21 +55,21 @@ import { StudentsList } from "./pages/students/StudentsListPage";
 import { StudentNew } from "./pages/students/StudentNewPage";
 import { StudentDetailProps } from "./pages/students/StudentDetailPage";
 import { StudentEdit } from "./pages/students/StudentEditPage";
-import { QuestionAssignedPage } from "./pages/questions/QuestionAssignedPage";
-import { LessonsListPage } from "./pages/LessonsListPage";
-import { Lesson } from "./dto/lesson.class";
+import { LessonsListPage } from "./pages/lessons/LessonsListPage";
 
 export const RolesRouter: React.FC = () => {
-  const { user } = useContext(UserContext);
+  const { user } = useContext(AuthContext);
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<General />}>
-          {/* <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/account" element={<ProfilePage />} />
+          {/* 
           <Route path="/profile/edit" element={<ProfileEditPage />} />
           <Route path="/images" element={<ImageListPage />} />
-          <Route path="/images/new" element={<ImageNew />} /> */}
+           */}
+          <Route path="/images/new" element={<ImageNew />} />
 
           <Route index path="" element={<Navigate to="/home" />} />
           <Route path="/home" element={<HomePage />} />
@@ -75,7 +77,7 @@ export const RolesRouter: React.FC = () => {
           {user.role === Role.ADMIN && (
             <>
               <Route path="/questions" element={<QuestionListPage />} />
-              <Route path="/questions/new" element={<QuestionNew />} />
+              <Route path="/questions/new" element={<AdminQuestionNewPage />} />
               <Route
                 path="/questions/:questionId"
                 element={<QuestionDetailPage />}
@@ -83,10 +85,6 @@ export const RolesRouter: React.FC = () => {
               <Route
                 path="/questions/:questionId/edit"
                 element={<QuestionEdit />}
-              />
-              <Route
-                path="/questions/:questionId/check"
-                element={<QuestionCheck />}
               />
 
               <Route path="/lessons" element={<LessonsListPage />} />
@@ -98,10 +96,6 @@ export const RolesRouter: React.FC = () => {
               <Route path="/users" element={<UsersList />} />
               <Route path="/users/new" element={<UserNew />} />
               <Route path="/users/:userId/" element={<UserDetailPage />} />
-              <Route
-                path="/users/:userId/activate"
-                element={<UserActivate />}
-              />
               <Route path="/users/:userId/edit" element={<UserEditPage />} />
 
               <Route path="/customers" element={<CustomersListPage />} />
@@ -141,7 +135,10 @@ export const RolesRouter: React.FC = () => {
           {user.role === Role.CUSTOMER && (
             <>
               <Route path="/questions" element={<QuestionListPage />} />
-              <Route path="/questions/new" element={<QuestionNew />} />
+              <Route
+                path="/questions/new"
+                element={<CustomerQuestionNewPage />}
+              />
               <Route
                 path="/questions/:questionId"
                 element={<QuestionDetailPage />}
@@ -158,10 +155,6 @@ export const RolesRouter: React.FC = () => {
               <Route
                 path="/questions/:questionId"
                 element={<QuestionDetailPage />}
-              />
-              <Route
-                path="/questions/:questionId/assign"
-                element={<QuestionAssignedPage />}
               />
 
               <Route path="/rooms" element={<RoomList />} />

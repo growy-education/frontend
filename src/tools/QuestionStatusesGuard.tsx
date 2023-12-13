@@ -1,5 +1,5 @@
-import { QuestionStatus } from "../dto/enum/question-status.enum";
-import { Question } from "../dto/question.class";
+import { QuestionStatus } from "../features/questions/types/question-status.enum";
+import { Question } from "../features/questions/types/question.class";
 
 type QuestionStatusesGuardProps = {
   question: Question;

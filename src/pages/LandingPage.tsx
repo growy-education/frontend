@@ -1,21 +1,21 @@
 import { useState } from "react";
 import { Alert, Box, Snackbar } from "@mui/material";
 
-import { FAQ } from "../components/lp/faq/FAQ";
-import { Header } from "../components/lp/header/Header";
-import { FloatButtonBox } from "../components/lp/FloatButtonBox";
-import { MessageAccordion } from "../components/lp/MessageAccordion";
-import { MessageMovie } from "../components/lp/MessageMovie";
-import { Onayami } from "../components/lp/onayami/Onayami";
-import { PVMovie } from "../components/lp/PVMovie";
-import { About } from "../components/lp/about/About";
-import { Teachers } from "../components/lp/teachers/Teachers";
-import { TargetStudents } from "../components/lp/components/TargetStudents";
-import { Voice } from "../components/lp/voice/Voice";
-import { Price } from "../components/lp/price/Price";
-import { YushinMessage } from "../components/lp/components/YushinMessage";
-import { Footer } from "../components/lp/footer/Footer";
-import { Offset } from "../tools/Offset";
+import { FAQ } from "../features/lp/faq/FAQ";
+import { Header } from "../features/lp/header/Header";
+import { FloatButtonBox } from "../features/lp/FloatButtonBox";
+import { MessageAccordion } from "../features/lp/MessageAccordion";
+import { MessageMovie } from "../features/lp/MessageMovie";
+import { Onayami } from "../features/lp/onayami/Onayami";
+import { PVMovie } from "../features/lp/PVMovie";
+import { About } from "../features/lp/about/About";
+import { Teachers } from "../features/lp/teachers/Teachers";
+import { TargetStudents } from "../features/lp/components/TargetStudents";
+import { Voice } from "../features/lp/voice/Voice";
+import { Price } from "../features/lp/price/Price";
+import { YushinMessage } from "../features/lp/components/YushinMessage";
+import { Footer } from "../features/lp/footer/Footer";
+import { Offset } from "../components/Layout/Offset";
 import { useNavigate } from "react-router-dom";
 
 export const LandingPage = () => {

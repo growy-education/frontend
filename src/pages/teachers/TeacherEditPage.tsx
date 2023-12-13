@@ -1,87 +1,31 @@
-import { useContext, useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Typography,
-} from "@mui/material";
-import { TextField } from "@mui/material";
-import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
-import SendIcon from "@mui/icons-material/Send";
-import { Relationship } from "../../dto/enum/relationship.enum";
-import { TeacherStatus } from "../../dto/enum/teacher-status.enum";
-import {
-  IsEnum,
-  IsNotEmpty,
-  IsNumberString,
-  IsOptional,
-  IsString,
-  Matches,
-} from "class-validator";
+import { useEffect } from "react";
+import { HeadlineTypography } from "../../components/Element/Typography/HeadlineTypography";
+import { TeacherStatus } from "../../features/teachers/types/teacher-status.enum";
+
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { FirstNameTextField } from "../../components/customers/FirstNameTextField";
-import { FirstNameKanaTextField } from "../../components/customers/FirstNameKanaTextField";
-import { LastNameKanaTextField } from "../../components/customers/LastNameKanaTextField";
-import { LastNameTextField } from "../../components/customers/LastNameTextField";
-import { ChatworkAccountIdTextField } from "../../components/teachers/chatworkAccountIdTextField";
-import { HeadEditBox } from "../../components/HeadEditBox";
-import { CancelEditButton } from "../../components/components/CancelEditButton";
-import { SaveEditButton } from "../../components/components/SaveEditButton";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { FirstNameTextField } from "../../features/customers/FirstNameTextField";
+import { FirstNameKanaTextField } from "../../features/customers/FirstNameKanaTextField";
+import { LastNameKanaTextField } from "../../features/customers/LastNameKanaTextField";
+import { LastNameTextField } from "../../features/customers/LastNameTextField";
+import { ChatworkAccountIdTextField } from "../../features/teachers/chatworkAccountIdTextField";
+import { HeadEditBox } from "../../features/HeadEditBox";
+import { CancelEditButton } from "../../components/Element/Button/CancelEditButton";
+import { SaveEditButton } from "../../components/Element/Button/SaveEditButton";
 import { useNavigate, useParams } from "react-router-dom";
-import { TeacherContext } from "../../contexts/TeacherContextProvider";
-
-class UpdateTeacherDto {
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty({ message: "お名前を入力してください" })
-  @Matches(/^[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}ー－]+$/u, {
-    message: "日本語で入力してください",
-  })
-  firstName: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty({ message: "お名前（フリガナ）を入力してください" })
-  @Matches(/^[ァ-ヶー]*$/, { message: "カタカナで入力してください" })
-  firstNameKana: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty({ message: "苗字を入力してください" })
-  @Matches(/^[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}ー－]+$/u, {
-    message: "日本語で入力してください",
-  })
-  lastName: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty({ message: "苗字（フリガナ）を入力してください" })
-  @Matches(/^[ァ-ヶー]*$/, { message: "カタカナで入力してください" })
-  lastNameKana: string;
-
-  @IsOptional()
-  @IsNotEmpty({ message: "ChatworkIDを入力してください" })
-  @IsNumberString({}, { message: "ChatworkIDは数字で入力してください" })
-  chatworkAccountId: string;
-
-  @IsOptional()
-  @IsEnum(TeacherStatus, { message: "ステータスを選択してください" })
-  status?: TeacherStatus;
-}
+import { UpdateTeacherDto } from "../../features/teachers/types/update-teacher.dto";
+import { useTeacher } from "../../features/teachers/api/getTeacher";
+import { useUpdateTeacher } from "../../features/teachers/api/updateTeacher";
+import { TeacherStatusRadioGroup } from "../../features/teachers/TeacherStatusRadioGroup";
 
 export const TeacherEdit = () => {
   const { teacherId } = useParams();
-  const navigate = useNavigate();
-  const { getTeacherById, updateTeacherById } = useContext(TeacherContext);
 
-  const [sending, setSending] = useState(false);
+  const { data: teacher } = useTeacher({ teacherId });
 
   const resolver = classValidatorResolver(UpdateTeacherDto);
   const {
+    reset,
     register,
     handleSubmit,
     control,
@@ -90,41 +34,39 @@ export const TeacherEdit = () => {
   } = useForm<UpdateTeacherDto>({
     resolver,
     defaultValues: {
+      firstName: "",
+      firstNameKana: "",
+      lastName: "",
+      lastNameKana: "",
+      chatworkAccountId: "",
       status: TeacherStatus.INACTIVE,
     },
   });
 
   useEffect(() => {
-    getTeacherById(teacherId).then((found) => {
-      setValue("firstName", found.firstName);
-      setValue("firstNameKana", found.firstNameKana);
-      setValue("lastName", found.lastName);
-      setValue("lastNameKana", found.lastNameKana);
-      setValue("chatworkAccountId", found.chatworkAccountId);
-      setValue("status", found.status);
-    });
-  }, [getTeacherById, setValue, teacherId]);
+    if (teacher) {
+      setValue("firstName", teacher.firstName);
+      setValue("firstNameKana", teacher.firstNameKana);
+      setValue("lastName", teacher.lastName);
+      setValue("lastNameKana", teacher.lastNameKana);
+      setValue("chatworkAccountId", teacher.chatworkAccountId);
+      setValue("status", teacher.status);
+    }
+  }, [setValue, teacher]);
+
+  const mutation = useUpdateTeacher();
 
   const onSubmit: SubmitHandler<UpdateTeacherDto> = (data) => {
-    if (sending) {
+    if (mutation.isPending) {
       return;
     }
-    setSending(true);
-    updateTeacherById(teacherId, data)
-      .then((teacher) => {
-        if (teacher) {
-          navigate(`/teachers/${teacher.id}`);
-        }
-      })
-      .finally(() => {
-        setSending(false);
-      });
+    mutation.mutate({ id: teacherId, dto: data });
   };
 
   return (
     <>
       <HeadEditBox>
-        <CancelEditButton onClick={() => navigate(`/teachers/${teacherId}`)} />
+        <CancelEditButton onClick={() => reset()} />
         <SaveEditButton onClick={handleSubmit(onSubmit)} />
       </HeadEditBox>
 
@@ -147,24 +89,7 @@ export const TeacherEdit = () => {
       />
 
       <HeadlineTypography>ステータス</HeadlineTypography>
-      <Controller
-        name="status"
-        control={control}
-        render={({ field }) => (
-          <RadioGroup row name="radio-buttons-group" {...field}>
-            <FormControlLabel
-              value={TeacherStatus.ACTIVE}
-              control={<Radio />}
-              label="質問回答受付中"
-            />
-            <FormControlLabel
-              value={TeacherStatus.INACTIVE}
-              control={<Radio />}
-              label="質問回答拒否中"
-            />
-          </RadioGroup>
-        )}
-      />
+      <TeacherStatusRadioGroup errors={errors} control={control} />
     </>
   );
 };

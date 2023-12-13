@@ -1,14 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { GridColDef, GridRowParams } from "@mui/x-data-grid";
-import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import axios from "axios";
-import { plainToInstance } from "class-transformer";
-import { Customer } from "../../dto/customer.class";
-import { CustomDataGrid } from "../../components/components/DataGrid/CustomDataGrid";
-import { EditDataGrid } from "../../components/components/DataGrid/EditDataGrid";
-import { SearchDataGrid } from "../../components/components/DataGrid/SearchDataGrid";
+import { CustomDataGrid } from "../../components/Element/DataGrid/CustomDataGrid";
+import { EditDataGrid } from "../../components/Element/DataGrid/EditDataGrid";
+import { SearchDataGrid } from "../../components/Element/DataGrid/SearchDataGrid";
+import { useCustomers } from "../../features/customers/api/getCustomers";
+import { LoadingBox } from "../../features/LoadingData";
+import { AlertBox } from "../../features/AlertBox";
 
 type CustomGridColDef = GridColDef & { order: number };
 
@@ -25,9 +24,8 @@ const CustomerColumns: CustomGridColDef[] = [
 
 export const CustomersListPage = () => {
   const navigate = useNavigate();
-  const { axiosConfig } = useContext(AxiosContext);
+  const { isLoading, isError, data: customers } = useCustomers();
 
-  const [customers, setCustomers] = useState<Customer[]>([]);
   const [columns, setColumns] = useState(CustomerColumns);
   const [selectedColumn, setSelectedColumn] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
@@ -45,21 +43,19 @@ export const CustomersListPage = () => {
     console.log("いま!");
   };
 
-  useEffect(() => {
-    axios
-      .create(axiosConfig)
-      .get("customers")
-      .then((response) => {
-        console.log("取得したCustomers", response.data);
-        const customers = response.data.map((customerJson: string) =>
-          plainToInstance(Customer, customerJson)
-        );
-        setCustomers(customers);
-      })
-      .catch((error) =>
-        console.log("error occurred at CustomersList.tsx", error)
-      );
-  }, [axiosConfig]);
+  if (isLoading) {
+    return <LoadingBox message="保護者情報を取得中" />;
+  }
+
+  if (isError) {
+    return (
+      <AlertBox
+        severity="error"
+        title="ネットワークエラーが発生しました"
+        description="保護者情報の取得に失敗しました"
+      />
+    );
+  }
 
   return (
     <Box sx={{ width: "100%" }}>

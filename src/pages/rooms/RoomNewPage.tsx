@@ -6,13 +6,12 @@ import { IsDate, IsNotEmpty, IsString } from "class-validator";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import axios, { isAxiosError } from "axios";
 import SendIcon from "@mui/icons-material/Send";
 
-import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
 import { Box, Button, MenuItem, Select, Typography } from "@mui/material";
-import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
-import { Teacher } from "../../dto/teacher.class";
+import { HeadlineTypography } from "../../components/Element/Typography/HeadlineTypography";
+import { Teacher } from "../../features/teachers/types/teacher.class";
+import { axios } from "../../tools/axios";
 
 class CreateRoomDto {
   @IsNotEmpty()
@@ -44,14 +43,12 @@ export const mockTeachers = [
 ] as Teacher[];
 
 export const RoomNew = () => {
-  const { axiosConfig } = useAxiosConfig();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   useEffect(() => {
     axios
-      .create(axiosConfig)
       .get("/teachers")
       .then((response) => {
         const teachers = response.data.map((teacherJson) =>
@@ -60,7 +57,7 @@ export const RoomNew = () => {
         setTeachers(teachers);
       })
       .catch((error) => console.log(`error occured at ${__dirname}, ${error}`));
-  }, [axiosConfig]);
+  }, []);
 
   const resolver = classValidatorResolver(CreateRoomDto);
   const {
@@ -95,55 +92,7 @@ export const RoomNew = () => {
     message: "",
   });
 
-  const onSubmit: SubmitHandler<CreateRoomDto> = (data) => {
-    console.log("動いた！");
-    console.log(data);
-    console.log(data.startAt.toString());
-    console.log(data.endAt.toString());
-
-    // axios
-    //   .create(axiosConfig)
-    //   .post("rooms", {})
-    //   .then((response) => {
-    //     setResult({
-    //       open: true,
-    //       success: true,
-    //       title: "オンライン自習室の作成が完了しました",
-    //       message: "オンライン自習室の一覧画面へ遷移しますか？",
-    //     });
-    //   })
-    //   .catch((error: unknown) => {
-    //     if (isAxiosError(error)) {
-    //       // サーバーからの返答がある
-    //       if (error.response) {
-    //         return setResult({
-    //           open: true,
-    //           success: false,
-    //           title: "",
-    //           message: "ユーザーのデータに誤りがあります",
-    //         });
-    //       }
-    //       // サーバーからの返答がない
-    //       if (error.request) {
-    //         return setResult({
-    //           open: true,
-    //           success: false,
-    //           title: "",
-    //           message:
-    //             "サーバーからの返答がありません。ネットワーク接続を確認してください",
-    //         });
-    //       }
-    //     }
-
-    //     // よくわからんエラーのとき
-    //     return setResult({
-    //       open: true,
-    //       success: false,
-    //       title: "",
-    //       message: "予期せぬエラーが発生しました",
-    //     });
-    //   });
-  };
+  const onSubmit: SubmitHandler<CreateRoomDto> = (data) => {};
 
   // ダイアログの確認ボタンを押すと、オンライン自習室の一覧画面へと遷移する
   const handleConfirm = () => {

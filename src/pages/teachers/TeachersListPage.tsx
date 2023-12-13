@@ -1,14 +1,13 @@
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { GridColDef, GridRowParams } from "@mui/x-data-grid";
-import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import axios from "axios";
-import { plainToInstance } from "class-transformer";
-import { Teacher } from "../../dto/teacher.class";
-import { EditDataGrid } from "../../components/components/DataGrid/EditDataGrid";
-import { CustomDataGrid } from "../../components/components/DataGrid/CustomDataGrid";
-import { SearchDataGrid } from "../../components/components/DataGrid/SearchDataGrid";
+import { EditDataGrid } from "../../components/Element/DataGrid/EditDataGrid";
+import { CustomDataGrid } from "../../components/Element/DataGrid/CustomDataGrid";
+import { SearchDataGrid } from "../../components/Element/DataGrid/SearchDataGrid";
+import { AlertBox } from "../../features/AlertBox";
+import { LoadingBox } from "../../features/LoadingData";
+import { useTeachers } from "../../features/teachers/api/getTeachers";
 
 type CustomGridColDef = GridColDef & { order: number };
 
@@ -35,14 +34,14 @@ const TeacherColumns: CustomGridColDef[] = [
 ];
 
 export const TeachersList = () => {
+  const navigate = useNavigate();
+
   const [columns, setColumns] = useState<CustomGridColDef[]>(TeacherColumns);
-  const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [selectedColumn, setSelectedColumn] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
 
-  const { axiosConfig } = useContext(AxiosContext);
+  const { isLoading, isError, data: teachers } = useTeachers();
 
-  const navigate = useNavigate();
   const handleRowClick = (params: GridRowParams) => {
     const rowId = params.id as string;
     navigate(`./${rowId}`);
@@ -56,21 +55,19 @@ export const TeachersList = () => {
     console.log("いま!");
   };
 
-  useEffect(() => {
-    axios
-      .create(axiosConfig)
-      .get("teachers")
-      .then((response) => {
-        console.log(response.data);
-        const teachers = response.data.map((teacherJson: string) =>
-          plainToInstance(Teacher, teacherJson)
-        );
-        setTeachers(teachers);
-      })
-      .catch((error) =>
-        console.log("error occurred at TeachersList.tsx", error)
-      );
-  }, [axiosConfig]);
+  if (isLoading) {
+    return <LoadingBox message="講師情報を取得中" />;
+  }
+
+  if (isError) {
+    return (
+      <AlertBox
+        severity="error"
+        title="ネットワークエラーが発生しました"
+        description="講師情報の取得に失敗しました"
+      />
+    );
+  }
 
   return (
     <Box sx={{ width: "100%" }}>

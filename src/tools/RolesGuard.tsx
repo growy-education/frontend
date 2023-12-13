@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { Role } from "../dto/enum/role.enum";
-import { UserContext } from "../contexts/UserContextProvider";
+import { Role } from "../features/users/types/role.enum";
+import { AuthContext } from "../providers/auth.provider";
 
 type RolesGuardProps = {
   roles: Role[];
@@ -10,7 +10,7 @@ export const RolesGuard: React.FC<RolesGuardProps> = ({
   roles,
   children,
 }: RolesGuardProps) => {
-  const { user } = useContext(UserContext);
+  const { user } = useContext(AuthContext);
   if (roles.includes(user.role)) {
     return <>{children}</>;
   }

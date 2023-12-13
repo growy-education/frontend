@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleCredentialResponse, GoogleLogin } from "@react-oauth/google";
 import {
   IsEmail,
   IsNotEmpty,
@@ -18,16 +18,19 @@ import {
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { AttentionBox } from "./components/lp/price/AttentionBox";
-import { AttentionTitleTypography } from "./components/lp/price/AttentionTitleTypography";
-import { AttentionDescriptionBox } from "./components/lp/price/AttentionDescriptionBox";
-import { AttentionDescriptionTypography } from "./components/lp/price/AttentionDescriptionTypography";
-import { AsteriskTypography } from "./components/lp/price/AsteriskTypography";
-import { LineLinkTypography } from "./components/components/Typography/LineLinkTypography";
-import { GoogleChatLinkTypography } from "./components/components/Typography/GoogleChatLinkTypography";
+import { AttentionBox } from "./features/lp/price/AttentionBox";
+import { AttentionTitleTypography } from "./features/lp/price/AttentionTitleTypography";
+import { AttentionDescriptionBox } from "./features/lp/price/AttentionDescriptionBox";
+import { AttentionDescriptionTypography } from "./features/lp/price/AttentionDescriptionTypography";
+import { AsteriskTypography } from "./features/lp/price/AsteriskTypography";
+import { LineLinkTypography } from "./components/Element/Typography/LineLinkTypography";
+import { GoogleChatLinkTypography } from "./components/Element/Typography/GoogleChatLinkTypography";
 import { ArrowBack } from "@mui/icons-material";
-import { AuthContext } from "./contexts/AuthContextProvider";
+import { AuthContext } from "./providers/auth.provider";
 import { useNavigate } from "react-router-dom";
+import { useLoginWithPassword } from "./features/auth/api/loginWithPassword";
+import { useLoginWithGoogle } from "./features/auth/api/loginWithGoogle";
+import { SubmitButton } from "./features/SubmitButton";
 
 export class SigninWithPasswordDto {
   @IsNotEmpty({ message: "メールアドレスを入力してください" })
@@ -42,15 +45,10 @@ export class SigninWithPasswordDto {
   password: string;
 }
 
-type LoginScreenProps = {
-  handleBackToLP?: () => void;
-};
-
-export const SignInScreen = ({ handleBackToLP }: LoginScreenProps) => {
+export const SignInScreen = () => {
   const navigate = useNavigate();
-  const { handleEmailPasswordLogin, handleGoogleLogin } =
-    useContext(AuthContext);
-  const [googleLoginError, setGoogleLoginError] = useState("");
+  const mutationPasswordLogin = useLoginWithPassword();
+  const mutationGoogleLogin = useLoginWithGoogle();
 
   const resolver = classValidatorResolver(SigninWithPasswordDto);
   const {
@@ -60,12 +58,17 @@ export const SignInScreen = ({ handleBackToLP }: LoginScreenProps) => {
   } = useForm<SigninWithPasswordDto>({ resolver });
 
   const onSubmit: SubmitHandler<SigninWithPasswordDto> = (data) => {
-    handleEmailPasswordLogin(data.email, data.password);
+    mutationPasswordLogin.mutate({
+      email: data.email,
+      password: data.password,
+    });
   };
 
-  const handleGoogleLoginError = () => {
-    setGoogleLoginError("GoogleLoginに失敗しました。");
+  const handleGoogleLogin = (response: GoogleCredentialResponse) => {
+    mutationGoogleLogin.mutate({ response });
   };
+
+  const handleGoogleLoginError = () => {};
 
   return (
     <Container
@@ -169,14 +172,7 @@ export const SignInScreen = ({ handleBackToLP }: LoginScreenProps) => {
                   helperText={errors.password ? errors.password.message : ""}
                   {...register("password")}
                 />
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  sx={{ marginTop: "16px" }}
-                >
-                  ログイン
-                </Button>
+                <SubmitButton sx={{ mt: 2 }}>ログイン</SubmitButton>
               </Box>
             </Grid>
           </Box>

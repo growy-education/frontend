@@ -1,15 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
 import { GridColDef, GridRowParams } from "@mui/x-data-grid";
-import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
-import axios from "axios";
-import { plainToInstance } from "class-transformer";
-import { User } from "../../dto/user.class";
-import { CustomDataGrid } from "../../components/components/DataGrid/CustomDataGrid";
-import { SearchDataGrid } from "../../components/components/DataGrid//SearchDataGrid";
-import { EditDataGrid } from "../../components/components/DataGrid//EditDataGrid";
-import { UserContext } from "../../contexts/UserContextProvider";
+
+import { CustomDataGrid } from "../../components/Element/DataGrid/CustomDataGrid";
+import { SearchDataGrid } from "../../components/Element/DataGrid/SearchDataGrid";
+import { EditDataGrid } from "../../components/Element/DataGrid/EditDataGrid";
+import { LoadingBox } from "../../features/LoadingData";
+import { AlertBox } from "../../features/AlertBox";
+import { useUsers } from "../../features/users/api/getUsers";
 
 type CustomGridColDef = GridColDef & { order: number };
 
@@ -24,12 +23,13 @@ const UserColumns: CustomGridColDef[] = [
 ];
 
 export const UsersList = () => {
-  const { users } = useContext(UserContext);
   const navigate = useNavigate();
 
   const [columns, setColumns] = useState(UserColumns);
   const [selectedColumn, setSelectedColumn] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
+
+  const { isLoading, isError, data: users } = useUsers({});
 
   const handleRowClick = (params: GridRowParams) => {
     const rowId = params.id as string;
@@ -43,6 +43,20 @@ export const UsersList = () => {
     // Update the filtered users in state
     console.log("いま!");
   };
+
+  if (isLoading) {
+    return <LoadingBox message="ユーザーを取得しています" />;
+  }
+
+  if (isError) {
+    return (
+      <AlertBox
+        severity="error"
+        title="エラー"
+        description="ユーザーデータの取得に失敗しました。ネットワーク環境を確認してください。"
+      />
+    );
+  }
 
   return (
     <Box sx={{ width: "100%" }}>

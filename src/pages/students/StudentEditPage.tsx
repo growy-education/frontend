@@ -1,113 +1,40 @@
-import { useContext, useEffect, useState } from "react";
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
-import {
-  IsDate,
-  IsEnum,
-  IsIn,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  Matches,
-  MaxDate,
-  MinDate,
-} from "class-validator";
-import { Gender } from "../../dto/enum/gender.enum";
-import { Type } from "class-transformer";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { HeadlineTypography } from "../../components/Element/Typography/HeadlineTypography";
+
+import { Gender } from "../../features/students/types/gender.enum";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
-import { Student } from "../../dto/student.class";
-import { DatePicker } from "@mui/x-date-pickers";
-import { LoadingBox } from "../../components/LoadingData";
-import { FirstNameTextField } from "../../components/customers/FirstNameTextField";
-import { FirstNameKanaTextField } from "../../components/customers/FirstNameKanaTextField";
-import { LastNameTextField } from "../../components/customers/LastNameTextField";
-import { LastNameKanaTextField } from "../../components/customers/LastNameKanaTextField";
-import { SchoolTextField } from "../../components/students/SchoolTextField";
-import { JukuTextField } from "../../components/students/JukuTextField";
-import { JukuBuildingTextField } from "../../components/students/JukuBuildingTextField";
-import { GradeTextField } from "../../components/students/GradeTextField";
-import { PageTitleTypography } from "../../components/components/Typography/PageTitleTypography";
-import { HeadEditBox } from "../../components/HeadEditBox";
-import { CancelEditButton } from "../../components/components/CancelEditButton";
-import { SaveEditButton } from "../../components/components/SaveEditButton";
-import { StudentContext } from "../../contexts/StudentContextProvider";
+import { LoadingBox } from "../../features/LoadingData";
+import { FirstNameTextField } from "../../features/customers/FirstNameTextField";
+import { FirstNameKanaTextField } from "../../features/customers/FirstNameKanaTextField";
+import { LastNameTextField } from "../../features/customers/LastNameTextField";
+import { LastNameKanaTextField } from "../../features/customers/LastNameKanaTextField";
+import { SchoolTextField } from "../../features/students/SchoolTextField";
+import { JukuTextField } from "../../features/students/JukuTextField";
+import { JukuBuildingTextField } from "../../features/students/JukuBuildingTextField";
+import { GradeTextField } from "../../features/students/GradeTextField";
+import { PageTitleTypography } from "../../components/Element/Typography/PageTitleTypography";
+import { HeadEditBox } from "../../features/HeadEditBox";
+import { CancelEditButton } from "../../components/Element/Button/CancelEditButton";
+import { SaveEditButton } from "../../components/Element/Button/SaveEditButton";
 import dayjs from "dayjs";
-
-class UpdateStudentDto {
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty({ message: "お名前を入力してください" })
-  @Matches(/^[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}ー－]+$/u, {
-    message: "日本語で入力してください",
-  })
-  firstName: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty({ message: "お名前（フリガナ）を入力してください" })
-  @Matches(/^[ァ-ヶー]*$/, { message: "カタカナで入力してください" })
-  firstNameKana: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty({ message: "苗字を入力してください" })
-  @Matches(/^[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}ー－]+$/u, {
-    message: "日本語で入力してください",
-  })
-  lastName: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty({ message: "苗字（フリガナ）を入力してください" })
-  @Matches(/^[ァ-ヶー]*$/, { message: "カタカナで入力してください" })
-  lastNameKana: string;
-
-  @IsOptional()
-  @IsEnum(Gender)
-  gender: Gender;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty({ message: "小学校名を入力してください" })
-  school: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty({ message: "塾名を入力してください" })
-  juku: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty({ message: "塾の校舎名を入力してください" })
-  jukuBuilding: string;
-
-  @IsOptional()
-  @IsNotEmpty({ message: "学年を入力してください" })
-  @IsIn(["1", "2", "3", "4", "5", "6"], {
-    message: "学年は半角英数字で入力してください",
-  })
-  grade: string;
-
-  // format string to Date
-  @IsOptional()
-  @Type(() => Date)
-  @IsDate()
-  birthday: dayjs.Dayjs;
-}
+import { AlertBox } from "../../features/AlertBox";
+import { useStudent } from "../../features/students/api/getStudent";
+import { useUpdateStudent } from "../../features/students/api/updateStudent";
+import { UpdateStudentDto } from "../../features/students/types/update-student.dto";
+import { GenderRadioGroup } from "../../features/students/GenderRadioGroup";
+import { BirthdayDatePicker } from "../../features/students/BirthdayDatePicker";
 
 export const StudentEdit = () => {
-  const { studentId } = useParams();
-  const { getStudentById, updateStudentById } = useContext(StudentContext);
   const navigate = useNavigate();
+  const { studentId } = useParams();
 
-  const [student, setStudent] = useState<null | Student>(null);
-  const [sending, setSending] = useState(false);
+  const { data: student, isError, isPending } = useStudent({ studentId });
 
   const resolver = classValidatorResolver(UpdateStudentDto);
   const {
+    reset,
     register,
     handleSubmit,
     setValue,
@@ -129,40 +56,40 @@ export const StudentEdit = () => {
   });
 
   useEffect(() => {
-    getStudentById(studentId).then((found) => {
-      if (found) {
-        setStudent(found);
-        setValue("firstName", found.firstName);
-        setValue("firstNameKana", found.firstNameKana);
-        setValue("lastName", found.lastName);
-        setValue("lastNameKana", found.lastNameKana);
-        setValue("gender", found.gender);
-        setValue("school", found.school);
-        setValue("juku", found.juku);
-        setValue("jukuBuilding", found.jukuBuilding);
-        setValue("birthday", dayjs(found.birthday));
-      }
-    });
-  }, [getStudentById, studentId]);
+    if (student) {
+      setValue("firstName", student.firstName);
+      setValue("firstNameKana", student.firstNameKana);
+      setValue("lastName", student.lastName);
+      setValue("lastNameKana", student.lastNameKana);
+      setValue("gender", student.gender);
+      setValue("school", student.school);
+      setValue("juku", student.juku);
+      setValue("jukuBuilding", student.jukuBuilding);
+      setValue("birthday", dayjs(student.birthday));
+    }
+  }, [setValue, student]);
+
+  const mutation = useUpdateStudent();
 
   const onSubmit: SubmitHandler<UpdateStudentDto> = (data) => {
-    if (sending) {
+    if (mutation.isPending) {
       return;
     }
-    setSending(true);
-    updateStudentById(studentId, { ...data, birthday: data.birthday.toDate() })
-      .then((student) => {
-        if (student) {
-          navigate(`/students/${student.id}`);
-        }
-      })
-      .finally(() => {
-        setSending(false);
-      });
+    mutation.mutate({ id: studentId, dto: data });
   };
 
-  if (!student) {
+  if (isPending) {
     return <LoadingBox message="生徒情報を取得中です" />;
+  }
+
+  if (isError) {
+    return (
+      <AlertBox
+        severity="error"
+        title="ネットワークエラー"
+        description="生徒情報の取得に失敗しました。ネットワーク状態を確認してください。"
+      />
+    );
   }
 
   return (
@@ -170,7 +97,7 @@ export const StudentEdit = () => {
       <PageTitleTypography>生徒情報を更新する</PageTitleTypography>
 
       <HeadEditBox>
-        <CancelEditButton onClick={() => navigate(`/students/${studentId}`)} />
+        <CancelEditButton onClick={() => reset()} />
         <SaveEditButton onClick={handleSubmit(onSubmit)} />
       </HeadEditBox>
 
@@ -187,29 +114,7 @@ export const StudentEdit = () => {
       <FirstNameKanaTextField errors={errors} {...register("firstNameKana")} />
 
       <HeadlineTypography>性別</HeadlineTypography>
-      <Controller
-        name="gender"
-        control={control}
-        render={({ field }) => (
-          <RadioGroup row name="radio-buttons-group" {...field}>
-            <FormControlLabel
-              value={Gender.MALE}
-              control={<Radio />}
-              label="男の子"
-            />
-            <FormControlLabel
-              value={Gender.FEMALE}
-              control={<Radio />}
-              label="女の子"
-            />
-            <FormControlLabel
-              value={Gender.OTHER}
-              control={<Radio />}
-              label="その他"
-            />
-          </RadioGroup>
-        )}
-      />
+      <GenderRadioGroup errors={errors} control={control} />
 
       <HeadlineTypography>小学校名</HeadlineTypography>
       <SchoolTextField errors={errors} {...register("school")} />
@@ -224,27 +129,7 @@ export const StudentEdit = () => {
       <GradeTextField errors={errors} {...register("jukuBuilding")} />
 
       <HeadlineTypography>誕生日</HeadlineTypography>
-      <Controller
-        name="birthday"
-        control={control}
-        defaultValue={null}
-        {...register("birthday")}
-        render={({ field }) => (
-          <DatePicker
-            {...field}
-            format="YYYY/MM/DD"
-            label="誕生日"
-            slotProps={{
-              textField: {
-                fullWidth: true,
-                variant: "outlined",
-                error: !!errors.birthday,
-                helperText: !!errors.birthday && errors.birthday.message,
-              },
-            }}
-          />
-        )}
-      />
+      <BirthdayDatePicker errors={errors} control={control} />
     </>
   );
 };

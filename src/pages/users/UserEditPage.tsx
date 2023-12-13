@@ -1,38 +1,28 @@
-import { useContext, useEffect, useState } from "react";
-import { Typography } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
-import axios, { isAxiosError } from "axios";
-import { plainToInstance } from "class-transformer";
-import { AxiosContext } from "../../contexts/AxiosContextProvider";
-import { User } from "../../dto/user.class";
+import { useParams } from "react-router-dom";
 
-import { LoadingBox } from "../../components/LoadingData";
-import { UserEdit } from "../../components/users/UserEdit";
-import { PageTitleTypography } from "../../components/components/Typography/PageTitleTypography";
+import { LoadingBox } from "../../features/LoadingData";
+import { UserEdit } from "../../features/users/UserEdit";
+import { PageTitleTypography } from "../../components/Element/Typography/PageTitleTypography";
+
+import { AlertBox } from "../../features/AlertBox";
+import { useUser } from "../../features/users/api/getUser";
 
 export const UserEditPage = () => {
-  const { axiosConfig } = useContext(AxiosContext);
   const { userId } = useParams();
+  const { data: user, isError, isPending } = useUser({ userId });
 
-  const navigate = useNavigate();
-
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    axios
-      .create(axiosConfig)
-      .get(`/users/${userId}`)
-      .then((response) => {
-        const user = plainToInstance(User, response.data);
-        setUser(user);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [axiosConfig, userId]);
-
-  if (!user) {
+  if (isPending) {
     return <LoadingBox message="ユーザー情報を取得中です" />;
+  }
+
+  if (isError) {
+    return (
+      <AlertBox
+        severity="error"
+        title="エラーが発生しました"
+        description="ユーザー情報を取得できませんでした。ネットワーク状態を確認してください。"
+      />
+    );
   }
 
   return (

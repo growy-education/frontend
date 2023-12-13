@@ -119,6 +119,13 @@ git clone . https://github.com/growy-education/frontend
 $ yarn start
 ```
 
+```bash
+# Update auth
+gcloud auth application-default login
+# Listen forward to production database
+./cloud-sql-proxy --port 1234 growyapp:asia-northeast1:postgresql-production
+```
+
 以上で開発環境の立ち上げは終了です。
 
 ## テストを実行する

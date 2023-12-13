@@ -2,14 +2,13 @@ import { Box, Typography } from "@mui/material";
 import { GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CustomerCalendar } from "../../components/rooms/CustomerCalendar";
-import { Room } from "../../dto/room.class";
-import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
-import axios from "axios";
+import { CustomerCalendar } from "../../features/rooms/CustomerCalendar";
+import { Room } from "../../features/rooms/types/room.class";
 import { plainToInstance } from "class-transformer";
-import { EditDataGrid } from "../../components/components/DataGrid/EditDataGrid";
-import { SearchDataGrid } from "../../components/components/DataGrid/SearchDataGrid";
-import { CustomDataGrid } from "../../components/components/DataGrid/CustomDataGrid";
+import { EditDataGrid } from "../../components/Element/DataGrid/EditDataGrid";
+import { SearchDataGrid } from "../../components/Element/DataGrid/SearchDataGrid";
+import { CustomDataGrid } from "../../components/Element/DataGrid/CustomDataGrid";
+import { axios } from "../../tools/axios";
 
 type CustomGridColDef = GridColDef & { order: number };
 
@@ -25,7 +24,6 @@ const RoomColumns: CustomGridColDef[] = [
 
 export const RoomList = () => {
   const navigate = useNavigate();
-  const { axiosConfig } = useAxiosConfig();
   const [rooms, setRooms] = useState<Room[]>([]);
   const [columns, setColumns] = useState(RoomColumns);
   const [selectedColumn, setSelectedColumn] = useState<string>("");
@@ -46,7 +44,6 @@ export const RoomList = () => {
 
   useEffect(() => {
     axios
-      .create(axiosConfig)
       .get("rooms")
       .then((response) => {
         const rooms = response.data.map((userJson: string) =>
@@ -57,7 +54,7 @@ export const RoomList = () => {
       .catch((error) => {
         console.log("error occurred at RoomList.tsx", error);
       });
-  }, [axiosConfig]);
+  }, []);
 
   return (
     <>

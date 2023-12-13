@@ -1,15 +1,15 @@
 import { useContext } from "react";
-import { UserContext } from "../contexts/UserContextProvider";
-import { Role } from "../dto/enum/role.enum";
-import { AdminInfo } from "../components/informations/AdminInfo";
-import { CustomerInfo } from "../components/informations/CustomerInfo";
-import { Box, Typography } from "@mui/material";
-import { TeacherInfo } from "../components/informations/TeacherInfo";
-import { PageTitleTypography } from "../components/components/Typography/PageTitleTypography";
-import { QuestionTaskDescription } from "../components/questions/QuestionTaskDescription";
+import { Role } from "../features/users/types/role.enum";
+import { AdminInfo } from "../features/informations/AdminInfo";
+import { CustomerInfo } from "../features/informations/CustomerInfo";
+import { Typography } from "@mui/material";
+import { TeacherInfo } from "../features/informations/TeacherInfo";
+import { PageTitleTypography } from "../components/Element/Typography/PageTitleTypography";
+import { QuestionTaskDescription } from "../features/questions/QuestionTaskDescription";
+import { AuthContext } from "../providers/auth.provider";
 
 export const HomePage = () => {
-  const { user } = useContext(UserContext);
+  const { user } = useContext(AuthContext);
   if (user.role === Role.ADMIN) {
     return (
       <>

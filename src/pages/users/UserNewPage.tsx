@@ -1,61 +1,20 @@
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
+
+import { HeadlineTypography } from "../../components/Element/Typography/HeadlineTypography";
+import { UsernameTextField } from "../../features/users/UsernameTextField";
+import { EmailTextField } from "../../features/users/edit/EmailTextField";
+import { PasswordTextField } from "../../features/users/edit/PasswordTextField";
+import { PhoneTextField } from "../../features/users/edit/PhoneTextField";
+import { ChatWebhookUrlTextField } from "../../features/users/edit/ChatWebhookUrlTextField";
+import { PageTitleTypography } from "../../components/Element/Typography/PageTitleTypography";
+import { SubmitButton } from "../../features/SubmitButton";
+
 import { SubmitHandler, useForm } from "react-hook-form";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
-import {
-  IsEmail,
-  IsPhoneNumber,
-  IsString,
-  IsUrl,
-  Matches,
-  MaxLength,
-  MinLength,
-} from "class-validator";
-
-import { HeadlineTypography } from "../../components/components/Typography/HeadlineTypography";
-import { SubmitButton } from "../../components/SubmitButton";
-import { UsernameTextField } from "../../components/users/UsernameTextField";
-import { EmailTextField } from "../../components/users/EmailTextField";
-import { PasswordTextField } from "../../components/users/PasswordTextField";
-import { PhoneTextField } from "../../components/users/PhoneTextField";
-import { ChatWebhookUrlTextField } from "../../components/users/ChatWebhookUrlTextField";
-import { PageTitleTypography } from "../../components/components/Typography/PageTitleTypography";
-import { UserContext } from "../../contexts/UserContextProvider";
-import { User } from "../../dto/user.class";
-
-class CreateUserDto {
-  @IsString()
-  @MinLength(4, { message: "ユーザー名は4文字以上にしてください。" })
-  @MaxLength(20, { message: "ユーザー名は20文字以下にしてください。" })
-  username: string;
-
-  @IsString()
-  @MinLength(8, { message: "パスワードは8文字以上にしてください。" })
-  @MaxLength(32, { message: "パスワードは32文字以下にしてください。" })
-  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: "パスワードには小文字・大文字・記号を含めてください。",
-  })
-  password: string;
-
-  @IsEmail({}, { message: "有効なメールアドレスを入力してください。" })
-  email: string;
-
-  @IsPhoneNumber("JP", { message: "電話番号を入力してください" })
-  phone: string;
-
-  @IsUrl(
-    { protocols: ["https"], host_whitelist: ["chat.googleapis.com"] },
-    { message: "例)https://chat.googleapis.com/***" }
-  )
-  chatWebhookUrl: string;
-}
+import { CreateUserDto } from "../../features/users/types/create-user.dto";
+import { useCreateUser } from "../../features/users/api/createUser";
 
 export const UserNew = () => {
-  const navigate = useNavigate();
-  const { createUser } = useContext(UserContext);
-  const [sending, setSending] = useState(false);
-
   const resolver = classValidatorResolver(CreateUserDto);
   const {
     formState: { errors },
@@ -64,16 +23,10 @@ export const UserNew = () => {
     register,
   } = useForm<CreateUserDto>({ resolver });
 
+  const mutation = useCreateUser();
+
   const onSubmit: SubmitHandler<CreateUserDto> = (data) => {
-    setSending(true);
-    createUser(data)
-      .then((createdUser) => {
-        if (createdUser instanceof User) {
-          navigate(`/users/${createdUser.id}`);
-          reset();
-        }
-      })
-      .finally(() => setSending(false));
+    mutation.mutate(data);
   };
 
   return (
@@ -99,8 +52,11 @@ export const UserNew = () => {
         />
 
         <Box margin="0.5em">
-          <SubmitButton onClick={handleSubmit(onSubmit)} disabled={sending}>
-            {sending ? "送信中..." : "送信する"}
+          <SubmitButton
+            onClick={handleSubmit(onSubmit)}
+            disabled={mutation.isPending}
+          >
+            {mutation.isPending ? "送信中..." : "送信する"}
           </SubmitButton>
         </Box>
       </Box>

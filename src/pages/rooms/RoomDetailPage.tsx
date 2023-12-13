@@ -1,18 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 
-import { Room } from "../../dto/room.class";
-import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
+import { Room } from "../../features/rooms/types/room.class";
 import { plainToInstance } from "class-transformer";
 import { Box, Button, Container } from "@mui/material";
 import { Cancel, EventAvailable } from "@mui/icons-material";
-import { LoadingBox } from "../../components/LoadingData";
-import { UserContext } from "../../contexts/UserContextProvider";
+import { LoadingBox } from "../../features/LoadingData";
+import { axios } from "../../tools/axios";
+import { AuthContext } from "../../providers/auth.provider";
 
 export const RoomDetail = () => {
-  const { axiosConfig } = useAxiosConfig();
-  const { user } = useContext(UserContext);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [room, setRoom] = useState<null | Room>();
@@ -20,7 +18,6 @@ export const RoomDetail = () => {
 
   useEffect(() => {
     axios
-      .create(axiosConfig)
       .get(`/rooms/${roomId}`)
       .then((response) => {
         const room = plainToInstance(Room, response.data);
@@ -29,7 +26,7 @@ export const RoomDetail = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, [axiosConfig, roomId]);
+  }, [roomId]);
 
   if (!room) {
     return <LoadingBox message="オンライン自習室の情報を取得中です" />;

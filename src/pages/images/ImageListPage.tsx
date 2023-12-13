@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import axios from "axios";
 import { plainToInstance } from "class-transformer";
 
 import dayjs from "dayjs";
@@ -9,29 +8,23 @@ import dayjs from "dayjs";
 import { ImageListItem, ImageListItemBar, Typography } from "@mui/material";
 import { ImageList as MuiImageList } from "@mui/material";
 
-import { useAxiosConfig } from "../../contexts/AxiosContextProvider";
-
-import { ImageEntity } from "../../dto/image.class";
-import { CustomImage } from "../../components/images/CustomImage";
+import { ImageEntity } from "../../features/images/types/image.class";
+import { CustomImage } from "../../features/images/CustomImage";
+import { axios } from "../../tools/axios";
 
 export const ImageListPage = () => {
-  const { axiosConfig } = useAxiosConfig();
   const navigate = useNavigate();
 
   const [images, setImages] = useState<ImageEntity[]>([]);
 
   useEffect(() => {
-    axios
-      .create(axiosConfig)
-      .get("images")
-      .then((response) => {
-        console.log(response.data);
-        const images = response.data.map((responseJson) =>
-          plainToInstance(ImageEntity, responseJson)
-        );
-        setImages(images);
-      });
-  }, [axiosConfig]);
+    axios.get("images").then((response) => {
+      const images = response.data.map((responseJson) =>
+        plainToInstance(ImageEntity, responseJson)
+      );
+      setImages(images);
+    });
+  }, []);
   return (
     <MuiImageList
       sx={{
