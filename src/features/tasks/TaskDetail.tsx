@@ -9,7 +9,7 @@ import { TaskStatus } from "./types/task-status.enum";
 import { TaskStatusTypgraphy } from "./TaskStatusTypography";
 import { QuestionAnswerBox } from "../questions/components/QuestionAnswerBox";
 import { TaskType } from "./types/task-type.enum";
-import { TaskTitle } from "./TaskTitle";
+import { TaskTitle } from "./components/title/TaskTitle";
 import { CompleteQuestionTaskButton } from "./CompleteQuestionTaskButton";
 import { RetryQuestionTaskButton } from "./RetryQuestionTaskButton";
 import { HeadEditBox } from "../HeadEditBox";

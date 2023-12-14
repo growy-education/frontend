@@ -16,7 +16,7 @@ export const updateTask = async ({
   id,
   dto,
 }: UpdateTaskVariables): Promise<Task> => {
-  return axios.put(`tasks/${id}`, dto).then((response) => {
+  return axios.patch(`tasks/${id}`, dto).then((response) => {
     return plainToInstance(Task, response.data);
   });
 };
@@ -35,7 +35,7 @@ export const useUpdateTask = ({ options }: UseUpdateTaskOptions = {}) => {
         type: "success",
         title: "タスクを更新しました",
       });
-      await queryClient.invalidateQueries({ queryKey: ["tasks", task.id] });
+      await queryClient.invalidateQueries({ queryKey: ["questions"] });
     },
     onError: async (error) => {
       set({

@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { Box, IconButton, TextField, Typography } from "@mui/material";
 import { Cancel, Edit, Save } from "@mui/icons-material";
-import { HeadlineTypography } from "../../components/Element/Typography/HeadlineTypography";
+import { HeadlineTypography } from "../../../../components/Element/Typography/HeadlineTypography";
 
 import { SubmitHandler, useForm } from "react-hook-form";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
-import { Task } from "./types/task.class";
-import { useUpdateTask } from "./api/updateTask";
-import { UpdateTaskDto } from "./types/update-task.dto";
+import { Task } from "../../types/task.class";
+import { useUpdateTask } from "../../api/updateTask";
+import { UpdateTaskDto } from "../../types/update-task.dto";
+import { EditIconButton } from "../../../../components/Element/IconButton/EditIconButton";
+import { TaskTitleTextField } from "./TaskTitleTextField";
 
 type TaskTitleProps = {
   task: Task;
@@ -56,38 +58,12 @@ export const TaskTitle = ({ task }: TaskTitleProps) => {
       >
         <HeadlineTypography>タイトル</HeadlineTypography>
         <Box>
-          {isEditing && (
-            <IconButton type="submit" arial-label="save-button">
-              <Save color="primary" fontSize="large" />
-            </IconButton>
-          )}
-          <IconButton aria-label="edit-button">
-            {isEditing ? (
-              <Cancel
-                color="warning"
-                fontSize="large"
-                onClick={() => setIsEditing(false)}
-              />
-            ) : (
-              <Edit onClick={() => setIsEditing(true)} />
-            )}
-          </IconButton>
+          <EditIconButton isEditing={isEditing} setIsEditing={setIsEditing} />
         </Box>
       </Box>
       <Box>
         {isEditing ? (
-          <>
-            <TextField
-              fullWidth
-              id="title"
-              label="タイトル"
-              error={!!errors.title}
-              helperText={
-                !!errors.title ? errors.title.message : "例)「大問1のみ」など"
-              }
-              {...register("title")}
-            />
-          </>
+          <TaskTitleTextField errors={errors} {...register("title")} />
         ) : (
           <Typography>{task.title}</Typography>
         )}
