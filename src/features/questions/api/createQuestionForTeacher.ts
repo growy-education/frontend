@@ -6,21 +6,21 @@ import { axios } from "../../../tools/axios";
 import { Question } from "../types/question.class";
 import { useToastStore } from "../../../stores/toast.store";
 import { MutationOptions } from "../../../tools/react-query";
-import { CreateQuestionDto } from "../types/create-question.dto";
+import { CreateQuestionForTeacherDto } from "../types/create-question-for-teacher";
 
-export const createQuestion = async (
-  data: CreateQuestionDto
+export const createQuestionForTeacher = async (
+  data: CreateQuestionForTeacherDto
 ): Promise<Question> => {
-  return axios.post("questions", data).then((response) => {
+  return axios.post("/questions/training", data).then((response) => {
     return plainToInstance(Question, response.data);
   });
 };
 
 type UseCreateQuestionOptions = {
-  options?: MutationOptions<typeof createQuestion>;
+  options?: MutationOptions<typeof createQuestionForTeacher>;
 };
 
-export const useCreateQuestion = ({
+export const useCreateQuestionForTeacher = ({
   options,
 }: UseCreateQuestionOptions = {}) => {
   const queryClient = useQueryClient();
@@ -42,7 +42,7 @@ export const useCreateQuestion = ({
         title: "質問の作成に失敗しました",
       });
     },
-    mutationFn: createQuestion,
+    mutationFn: createQuestionForTeacher,
     ...options,
   });
 };

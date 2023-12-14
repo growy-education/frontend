@@ -23,7 +23,7 @@ export class CreateQuestionDto {
   @ArrayMinSize(1, {
     message: "問題画像を選択してください",
   })
-  @IsNotEmpty({ each: true, message: "問題画像に問題があります" })
+  @IsNotEmpty({ each: true, message: "問題画像のアップロードに問題があります" })
   problems: (null | ImageEntity)[];
 
   @ArrayMinSize(1, {
@@ -31,7 +31,7 @@ export class CreateQuestionDto {
   })
   @IsNotEmpty({
     each: true,
-    message: "解答画像に問題があります",
+    message: "解答画像のアップロードに問題があります",
   })
   solutions: (null | ImageEntity)[];
 }

@@ -12,6 +12,9 @@ import { CreateQuestionDto } from "../../../features/questions/types/create-ques
 import { QuestionSubjectSelect } from "../../../features/questions/components/subject/QuestionSubjectSelect";
 import { useCreateQuestion } from "../../../features/questions/api/createQuestion";
 import { QuestionImagesInput } from "../../../features/questions/components/images/QuestionImagesInput";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { Subject } from "../../../domains/subject.enum";
 
 export const CustomerQuestionNewPage = () => {
   const mutation = useCreateQuestion();
@@ -48,7 +51,11 @@ export const CustomerQuestionNewPage = () => {
 
       <Box component="form" onSubmit={handleSubmit(handleQuestionUpload)}>
         <HeadlineTypography>科目</HeadlineTypography>
-        <QuestionSubjectSelect errors={errors} {...register("subject")} />
+        <QuestionSubjectSelect
+          defaultValue={""}
+          errors={errors}
+          {...register("subject")}
+        />
 
         <HeadlineTypography>質問タイトル</HeadlineTypography>
         <QuestionTitleTextField errors={errors} {...register("title")} />

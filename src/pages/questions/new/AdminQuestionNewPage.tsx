@@ -12,7 +12,7 @@ import { QuestionSubjectSelect } from "../../../features/questions/components/su
 import { CreateQuestionForTeacherDto } from "../../../features/questions/types/create-question-for-teacher";
 import { TeacherSelect } from "../../../features/questions/components/teacher/TeacherSelect";
 import { QuestionImagesInput } from "../../../features/questions/components/images/QuestionImagesInput";
-import { useCreateQuestion } from "../../../features/questions/api/createQuestion";
+import { useCreateQuestionForTeacher } from "../../../features/questions/api/createQuestionForTeacher";
 
 export const AdminQuestionNewPage = () => {
   const {
@@ -33,7 +33,7 @@ export const AdminQuestionNewPage = () => {
     },
   });
 
-  const mutation = useCreateQuestion();
+  const mutation = useCreateQuestionForTeacher();
 
   const handleQuestionUpload: SubmitHandler<
     CreateQuestionForTeacherDto
