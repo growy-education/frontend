@@ -29,7 +29,7 @@ export const UploadingImage = ({
   ...props
 }: UploadingImageProps) => {
   return (
-    <ImageListItem sx={{ width: "400px" }}>
+    <ImageListItem sx={{ width: "100%" }}>
       <ImageListItemBar
         position="top"
         title={

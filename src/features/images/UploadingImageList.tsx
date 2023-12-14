@@ -1,4 +1,4 @@
-import { Box, ImageList, Skeleton } from "@mui/material";
+import { ImageList } from "@mui/material";
 import { UploadingImage } from "./UploadingImage";
 import { ImageEntity } from "./types/image.class";
 
@@ -17,8 +17,12 @@ export const UploadingImageList = ({
   removeFile,
   resendFile,
 }: UploadingImageListProps) => {
+  if (files.length === 0) {
+    return <></>;
+  }
+
   return (
-    <Box maxWidth={"100%"}>
+    <ImageList cols={1} sx={{ width: "80%", height: "400px", marginY: "16px" }}>
       {files.map((file, index) => (
         <UploadingImage
           key={`image-${file.name}-${index}`}
@@ -30,6 +34,6 @@ export const UploadingImageList = ({
           resendFile={resendFile}
         />
       ))}
-    </Box>
+    </ImageList>
   );
 };

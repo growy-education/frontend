@@ -7,17 +7,9 @@ type NewImageBoxProps = {
 
 export const NewImageBox = ({ file, ...props }: NewImageBoxProps) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
     const url = URL.createObjectURL(file);
-    const image = new Image();
-    image.src = url;
-    image.onload = () => {
-      const width = image.width;
-      const height = image.height;
-      setImageSize({ width, height });
-    };
     setImageUrl(url);
     // コンポーネントがアンマウントされたときにURLを解放
     return () => {
@@ -31,9 +23,7 @@ export const NewImageBox = ({ file, ...props }: NewImageBoxProps) => {
       src={imageUrl}
       alt="送信予定の画像"
       sx={{
-        height: "300px",
-        aspectRatio:
-          imageSize.height !== 0 && imageSize.width / imageSize.height,
+        width: "100%",
         ...props.sx,
       }}
       {...props}

@@ -54,7 +54,7 @@ export const QuestionImageInput = ({
           overflowX: "auto",
         }}
       >
-        <ImagesListBox images={files} />
+        <ImagesListBox files={files} />
       </Box>
       {!!errors[type] && (
         <FormHelperText>{errors[type].message}</FormHelperText>

@@ -31,7 +31,11 @@ export const QuestionImagesInput = ({
   errors,
 }: QuestionImagesInputProps) => {
   const uploadImageMutation = useCreateImageEntity();
-  const deleteImageMutation = useDeleteImage();
+  const deleteImageMutation = useDeleteImage({
+    options: {
+      onSuccess: () => {},
+    },
+  });
   const [files, setFiles] = useState<File[]>([]);
   const [processing, setProcessing] = useState(false);
 
@@ -138,7 +142,7 @@ export const QuestionImagesInput = ({
           mt: 2,
           mb: 1,
           display: "flex",
-          overflowX: "auto",
+          justifyContent: "center",
         }}
       >
         {files.length === images.length && (
@@ -160,7 +164,9 @@ export const QuestionImagesInput = ({
       />
       <Box component="label" htmlFor={`${type}-image-input`}>
         <SelectImageButton disabled={processing}>
-          {(type === "problems" ? "問題" : "解答") + "の画像を選択する"}
+          {processing
+            ? "処理中です..."
+            : (type === "problems" ? "問題" : "解答") + "の画像を選択する"}
         </SelectImageButton>
       </Box>
     </>
