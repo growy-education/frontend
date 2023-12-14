@@ -167,6 +167,31 @@ export const Teachers = () => {
             <TeacherInfoBox>
               <FaceImageBox>
                 <img
+                  src="/img/img-teacher-komori.jpg"
+                  alt="小森写真"
+                  style={{ borderRadius: "10px" }}
+                />
+              </FaceImageBox>
+              <TeacherDescriptionBox>
+                <Typography sx={{ fontWeight: "bold" }}>
+                  小森（けーし）
+                </Typography>
+                <Typography>理科</Typography>
+              </TeacherDescriptionBox>
+            </TeacherInfoBox>
+            <TeacherCommentTypography>
+              塾に行っているのに、勉強しているのに成績が上がらない。
+              <br />
+              誰しもがぶつかるこの壁は「わかる」を「できる」にすることで越えられます。
+              <br />
+              自身の中学受験の経験も踏まえ、生徒の皆さんが「できる」を自らの力で掴めるよう、親身になってとことんお手伝いさせていただきたいと思います。
+            </TeacherCommentTypography>
+          </TeacherBox>
+
+          <TeacherBox mt={3}>
+            <TeacherInfoBox>
+              <FaceImageBox>
+                <img
                   src="/img/img-teacher-hagi.jpg"
                   alt="ハギ写真"
                   style={{ borderRadius: "10px" }}
@@ -183,6 +208,34 @@ export const Teachers = () => {
               中学受験は厳しい戦いの連続だと思いますが、その中で勉強を楽しみながら進めていくお手伝いができればと思っています。
               <br />
               皆さんが将来受験期を振り返ったとき、中学受験が少しでも良い経験だったと感じられるよう全力でサポートします。
+            </TeacherCommentTypography>
+          </TeacherBox>
+
+          <TeacherBox mt={3}>
+            <TeacherInfoBox>
+              <FaceImageBox>
+                <img
+                  src="/img/img-teacher-okumura.jpg"
+                  alt="奥村写真"
+                  style={{ borderRadius: "10px" }}
+                />
+              </FaceImageBox>
+              <TeacherDescriptionBox>
+                <Typography sx={{ fontWeight: "bold" }}>
+                  奥村（おくむら）
+                </Typography>
+                <Typography>国語</Typography>
+              </TeacherDescriptionBox>
+            </TeacherInfoBox>
+            <TeacherCommentTypography>
+              国語って楽しい！の気持ちを生徒の皆さんに届けます！
+              <br />
+              国語の点数を上げるのは難しいと思っている方も多いと思います。
+              <br />
+              しかし、国語の問題の多くは、やり方を覚えさえすればあとは内容を当てはめるだけ。
+              算数に非常に似ています。
+              <br />
+              私と一緒に、「国語の公式」をたくさん覚えて、「読めて楽しい！」「解けて楽しい！」を増やしていきましょう！
             </TeacherCommentTypography>
           </TeacherBox>
 
