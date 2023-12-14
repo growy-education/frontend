@@ -25,12 +25,10 @@ type UseConfirmLessonOptions = {
 
 export const useConfirmLesson = ({ options }: UseConfirmLessonOptions = {}) => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const { set } = useToastStore();
 
   return useMutation({
     onSuccess: async (lesson) => {
-      navigate(`/lessons/${lesson.id}`);
       set({
         type: "success",
         title: "授業を確認しました",
