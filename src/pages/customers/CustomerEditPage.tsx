@@ -6,11 +6,11 @@ import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { LoadingBox } from "../../features/LoadingData";
-import { HeadEditBox } from "../../features/HeadEditBox";
-import { FirstNameTextField } from "../../features/customers/FirstNameTextField";
-import { FirstNameKanaTextField } from "../../features/customers/FirstNameKanaTextField";
-import { LastNameTextField } from "../../features/customers/LastNameTextField";
-import { LastNameKanaTextField } from "../../features/customers/LastNameKanaTextField";
+import { HeaderBox } from "../../components/Layout/HeaderBox";
+import { FirstNameTextField } from "../../components/Element/TextField/FirstNameTextField";
+import { FirstNameKanaTextField } from "../../components/Element/TextField/FirstNameKanaTextField";
+import { LastNameTextField } from "../../components/Element/TextField/LastNameTextField";
+import { LastNameKanaTextField } from "../../components/Element/TextField/LastNameKanaTextField";
 import { PageTitleTypography } from "../../components/Element/Typography/PageTitleTypography";
 import { CancelEditButton } from "../../components/Element/Button/CancelEditButton";
 import { SpaceWebhookUrlTextField } from "../../features/customers/SpaceWebhookUrlTextField";
@@ -73,10 +73,10 @@ export const CustomerEditPage = () => {
     <>
       <PageTitleTypography>保護者情報を編集する</PageTitleTypography>
 
-      <HeadEditBox>
+      <HeaderBox>
         <CancelEditButton onClick={() => reset()} />
         <SaveEditButton onClick={handleSubmit(onSubmit)} />
-      </HeadEditBox>
+      </HeaderBox>
 
       <HeadlineTypography>苗字</HeadlineTypography>
       <LastNameTextField errors={errors} {...register("lastName")} />

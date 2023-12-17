@@ -10,11 +10,9 @@ import { NotFound } from "./features/NotFound";
 import { HomePage } from "./pages/InformationPage";
 
 // Profiles
-import { ProfilePage } from "./pages/account/ProfilePage";
-import { ProfileEditPage } from "./pages/account/ProfileEditPage";
+import { AccountPage } from "./pages/settings/AccountPage";
 
 // Images
-import { ImageListPage } from "./pages/images/ImageListPage";
 import { ImageNew } from "./pages/images/ImageNewPage";
 
 /*
@@ -48,7 +46,6 @@ import { UserEditPage } from "./pages/users/UserEditPage";
 import { TeachersList } from "./pages/teachers/TeachersListPage";
 import { TeacherNew } from "./pages/teachers/TeacherNewPage";
 import { TeacherDetailProps } from "./pages/teachers/TeacherDetailPage";
-import { TeacherEdit } from "./pages/teachers/TeacherEditPage";
 
 // Students
 import { StudentsList } from "./pages/students/StudentsListPage";
@@ -56,6 +53,7 @@ import { StudentNew } from "./pages/students/StudentNewPage";
 import { StudentDetailProps } from "./pages/students/StudentDetailPage";
 import { StudentEdit } from "./pages/students/StudentEditPage";
 import { LessonsListPage } from "./pages/lessons/LessonsListPage";
+import { TeacherSettingsPage } from "./pages/settings/TeacherSettingsPage";
 
 export const RolesRouter: React.FC = () => {
   const { user } = useContext(AuthContext);
@@ -64,7 +62,8 @@ export const RolesRouter: React.FC = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<General />}>
-          <Route path="/account" element={<ProfilePage />} />
+          <Route path="/settings" element={<AccountPage />} />
+          <Route path="/settings/account" element={<AccountPage />} />
           {/* 
           <Route path="/profile/edit" element={<ProfileEditPage />} />
           <Route path="/images" element={<ImageListPage />} />
@@ -115,10 +114,6 @@ export const RolesRouter: React.FC = () => {
                 path="/teachers/:teacherId/"
                 element={<TeacherDetailProps />}
               />
-              <Route
-                path="/teachers/:teacherId/edit"
-                element={<TeacherEdit />}
-              />
 
               <Route path="/students/" element={<StudentsList />} />
               <Route path="/students/new" element={<StudentNew />} />
@@ -161,6 +156,11 @@ export const RolesRouter: React.FC = () => {
               <Route path="/rooms/:roomId" element={<RoomDetail />} />
 
               <Route path="lessons" element={<LessonsListPage />} />
+
+              <Route
+                path="settings/teacher"
+                element={<TeacherSettingsPage />}
+              />
             </>
           )}
           <Route path="*" element={<NotFound />} />

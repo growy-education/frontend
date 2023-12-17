@@ -7,16 +7,18 @@ import {
 
 type SubjectChipProps = {
   subject: Subject;
-} & Omit<ChipProps, "title">;
+} & Omit<ChipProps, "label">;
 
 export const SubjectChip = ({ subject, ...props }: SubjectChipProps) => {
   return (
     <Chip
-      title={getSubjectText(subject)}
+      label={getSubjectText(subject)}
       variant="outlined"
       {...props}
       sx={{
         color: getSubjectColor(subject),
+        fontWeight: "bold",
+        borderColor: getSubjectColor(subject),
         ...props.sx,
       }}
     />

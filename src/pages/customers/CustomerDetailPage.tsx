@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { HeadlineTypography } from "../../components/Element/Typography/HeadlineTypography";
 import { CustomerDetail } from "../../features/customers/CustomerDetail";
 import { LoadingBox } from "../../features/LoadingData";
-import { HeadEditBox } from "../../features/HeadEditBox";
+import { HeaderBox } from "../../components/Layout/HeaderBox";
 import { EditButton } from "../../components/Element/Button/EditButton";
 import { AlertBox } from "../../features/AlertBox";
 import { useCustomer } from "../../features/customers/api/getCustomer";
@@ -31,10 +31,10 @@ export const CustomerDetailPage = () => {
 
   return (
     <>
-      <HeadEditBox>
+      <HeaderBox>
         <BackButton />
         <EditButton />
-      </HeadEditBox>
+      </HeaderBox>
       <Box my={3}>
         <CustomerDetail customer={customer} />
         {!!customer?.user && (

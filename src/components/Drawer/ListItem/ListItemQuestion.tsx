@@ -32,7 +32,7 @@ export const ListItemQuestion = () => {
         <ListItemIcon>
           <Quiz />
         </ListItemIcon>
-        <ListItemText primary="質問回答　　　" />
+        <ListItemText primary="質問回答     " />
       </ListItemButton>
       <Collapse in={questionListOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>

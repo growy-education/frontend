@@ -1,6 +1,6 @@
 import { Box, BoxProps } from "@mui/material";
 
-export const HeadEditBox = (props: BoxProps) => {
+export const HeaderBox = (props: BoxProps) => {
   return (
     <Box
       display="flex"

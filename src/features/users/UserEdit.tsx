@@ -5,7 +5,7 @@ import { UsernameTextField } from "./UsernameTextField";
 import { EmailTextField } from "./edit/EmailTextField";
 import { PhoneTextField } from "./edit/PhoneTextField";
 import { ChatWebhookUrlTextField } from "./edit/ChatWebhookUrlTextField";
-import { HeadEditBox } from "../HeadEditBox";
+import { HeaderBox } from "../../components/Layout/HeaderBox";
 import { CancelEditButton } from "../../components/Element/Button/CancelEditButton";
 import { SaveEditButton } from "../../components/Element/Button/SaveEditButton";
 
@@ -45,13 +45,13 @@ export const UserEdit = ({ user }: UserEditProps) => {
 
   return (
     <>
-      <HeadEditBox>
+      <HeaderBox>
         <CancelEditButton onClick={() => reset()} />
         <SaveEditButton
           onClick={handleSubmit(onSubmit)}
           disabled={mutation.isPending}
         />
-      </HeadEditBox>
+      </HeaderBox>
 
       <HeadlineTypography>ユーザー名</HeadlineTypography>
       <UsernameTextField errors={errors} {...register("username")} />

@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { plainToInstance } from "class-transformer";
 
@@ -17,7 +16,7 @@ export const updateTeacher = async ({
   id,
   dto,
 }: UpdateTeacherVariables): Promise<Teacher> => {
-  return axios.put(`teachers/${id}`, dto).then((response) => {
+  return axios.patch(`teachers/${id}`, dto).then((response) => {
     return plainToInstance(Teacher, response.data);
   });
 };
@@ -28,15 +27,13 @@ type UseUpdateTeacherOptions = {
 
 export const useUpdateTeacher = ({ options }: UseUpdateTeacherOptions = {}) => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const { set } = useToastStore();
 
   return useMutation({
     onSuccess: async (teacher, variables) => {
-      navigate(`/teachers/${teacher.id}`, { replace: true });
       set({
         type: "success",
-        title: "講師を更新しました",
+        title: "講師情報を更新しました",
       });
       await queryClient.invalidateQueries({ queryKey: ["teachers"] });
       if (variables.id === "me") {
@@ -46,7 +43,7 @@ export const useUpdateTeacher = ({ options }: UseUpdateTeacherOptions = {}) => {
     onError: async (error) => {
       set({
         type: "error",
-        title: "講師の更新に失敗しました",
+        title: "講師情報の更新に失敗しました",
       });
     },
     mutationFn: updateTeacher,

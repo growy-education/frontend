@@ -40,7 +40,7 @@ export const GenderRadioGroup = ({
             />
           </RadioGroup>
           <FormHelperText error={!!errors.gender}>
-            {errors.gender.message}
+            {errors.gender?.message}
           </FormHelperText>
         </>
       )}

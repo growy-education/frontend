@@ -16,16 +16,22 @@ export const TeacherStatusRadioGroup = ({
       name="status"
       control={control}
       render={({ field }) => (
-        <RadioGroup row name="radio-buttons-group-teacher-status" {...field}>
+        <RadioGroup
+          row
+          name="radio-buttons-group-teacher-status"
+          sx={{ justifyContent: "center" }}
+          {...field}
+        >
           <FormControlLabel
             value={TeacherStatus.ACTIVE}
             control={<Radio />}
-            label="質問回答受付中"
+            label="受付中"
           />
           <FormControlLabel
             value={TeacherStatus.INACTIVE}
             control={<Radio />}
-            label="質問回答拒否中"
+            color="error"
+            label="拒否中"
           />
         </RadioGroup>
       )}

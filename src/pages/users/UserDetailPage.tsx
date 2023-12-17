@@ -3,14 +3,13 @@ import { useParams } from "react-router-dom";
 import { AxiosError } from "axios";
 import { UserDetail } from "../../features/users/UserDetail";
 import { LinkedUserInformation } from "../../features/users/LinkedUserInformation";
-import { HeadEditBox } from "../../features/HeadEditBox";
+import { HeaderBox } from "../../components/Layout/HeaderBox";
 import { LoadingBox } from "../../features/LoadingData";
 import { useUser } from "../../features/users/api/getUser";
 import { AlertBox } from "../../features/AlertBox";
 import { NotFound } from "../../features/NotFound";
-import { EditButton } from "../../components/Element/Button/EditButton";
 import { BackButton } from "../../components/Element/Button/BackButton";
-import { DebugUserAccordion } from "../../features/users/DebugUserAccordion";
+import { UserActionMenuButton } from "../../features/users/components/UserActionMenuButton";
 
 export const UserDetailPage = () => {
   const { userId } = useParams();
@@ -39,19 +38,17 @@ export const UserDetailPage = () => {
       <AlertBox
         severity="error"
         title="エラー"
-        description="生徒情報の取得に失敗しました"
+        description="ユーザー情報の取得に失敗しました"
       />
     );
   }
 
   return (
     <>
-      <HeadEditBox>
+      <HeaderBox>
         <BackButton />
-        <EditButton />
-      </HeadEditBox>
-
-      <DebugUserAccordion userId={userId} />
+        <UserActionMenuButton user={user} />
+      </HeaderBox>
 
       <Box my={3}>
         <Box mb={2}>

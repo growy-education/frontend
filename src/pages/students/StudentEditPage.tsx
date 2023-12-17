@@ -6,16 +6,16 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { LoadingBox } from "../../features/LoadingData";
-import { FirstNameTextField } from "../../features/customers/FirstNameTextField";
-import { FirstNameKanaTextField } from "../../features/customers/FirstNameKanaTextField";
-import { LastNameTextField } from "../../features/customers/LastNameTextField";
-import { LastNameKanaTextField } from "../../features/customers/LastNameKanaTextField";
+import { FirstNameTextField } from "../../components/Element/TextField/FirstNameTextField";
+import { FirstNameKanaTextField } from "../../components/Element/TextField/FirstNameKanaTextField";
+import { LastNameTextField } from "../../components/Element/TextField/LastNameTextField";
+import { LastNameKanaTextField } from "../../components/Element/TextField/LastNameKanaTextField";
 import { SchoolTextField } from "../../features/students/SchoolTextField";
 import { JukuTextField } from "../../features/students/JukuTextField";
 import { JukuBuildingTextField } from "../../features/students/JukuBuildingTextField";
 import { GradeTextField } from "../../features/students/GradeTextField";
 import { PageTitleTypography } from "../../components/Element/Typography/PageTitleTypography";
-import { HeadEditBox } from "../../features/HeadEditBox";
+import { HeaderBox } from "../../components/Layout/HeaderBox";
 import { CancelEditButton } from "../../components/Element/Button/CancelEditButton";
 import { SaveEditButton } from "../../components/Element/Button/SaveEditButton";
 import dayjs from "dayjs";
@@ -96,10 +96,10 @@ export const StudentEdit = () => {
     <>
       <PageTitleTypography>生徒情報を更新する</PageTitleTypography>
 
-      <HeadEditBox>
+      <HeaderBox>
         <CancelEditButton onClick={() => reset()} />
         <SaveEditButton onClick={handleSubmit(onSubmit)} />
-      </HeadEditBox>
+      </HeaderBox>
 
       <HeadlineTypography>苗字</HeadlineTypography>
       <LastNameTextField errors={errors} {...register("lastName")} />

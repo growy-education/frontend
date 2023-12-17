@@ -11,7 +11,8 @@ import { ListItemHome } from "./ListItem/ListItemHome";
 import { ListItemGoogleChat } from "./ListItem/ListItemGoogleChat";
 import { ListItemCorrection } from "./ListItem/ListItemCorrection";
 import { AuthContext } from "../../providers/auth.provider";
-import { ListItemAccount } from "./ListItem/ListItemAccount";
+import { ListItemSettings } from "./ListItem/ListItemSettings";
+import { LIstItemLesson } from "./ListItem/ListItemLesson";
 
 export const DrawerListItem = () => {
   const { user } = useContext(AuthContext);
@@ -20,7 +21,7 @@ export const DrawerListItem = () => {
     <List>
       <ListItemHome />
       <ListItemQuestion />
-      <ListItemAccount />
+      <LIstItemLesson />
       {user.role === Role.ADMIN && (
         <>
           <ListItemUser />
@@ -35,6 +36,7 @@ export const DrawerListItem = () => {
           <ListItemGoogleChat />
         </>
       )}
+      <ListItemSettings />
     </List>
   );
 };

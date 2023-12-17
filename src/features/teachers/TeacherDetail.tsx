@@ -1,10 +1,16 @@
-import { Typography } from "@mui/material";
 import { Teacher } from "./types/teacher.class";
-import { HeadlineTypography } from "../../components/Element/Typography/HeadlineTypography";
-import { JaDateTimeTypography } from "../../components/Element/Typography/JaDateTimeTypography";
-import { TeacherStatusTypography } from "./TeacherStatus";
-import { DetailTypography } from "../../components/Element/Typography/DetailTyporagphy";
 import { NotFound } from "../NotFound";
+import { Id } from "../../components/shared/Id";
+import { CreatedAt } from "../../components/shared/CreatedAt";
+import { UpdatedAt } from "../../components/shared/UpdatedAt";
+import { TeacherLastName } from "./components/TeacherLastName";
+import { Divider } from "@mui/material";
+import { TeacherLastNameKana } from "./components/TeacherLastNameKana";
+import { TeacherFirstName } from "./components/TeacherFirstName";
+import { TeacherFirstNameKana } from "./components/TeacherFirstNameKana";
+import { ChatworkAccountId } from "./components/ChatworkAccountId";
+import { TeacherStatus } from "./components/TeacherStatus";
+import { TeacherSubjects } from "./components/TeacherSubjects";
 
 type TeacherDetailProps = {
   teacher: Teacher;
@@ -14,89 +20,29 @@ export const TeacherDetail = ({ teacher }: TeacherDetailProps) => {
   if (!!!teacher) {
     return <NotFound />;
   }
-  const {
-    id,
-    createdAt,
-    updatedAt,
-    firstName,
-    firstNameKana,
-    lastName,
-    lastNameKana,
-    status,
-    chatworkAccountId,
-    assignedQuestionsNumber,
-  } = teacher;
+  const { id, createdAt, updatedAt } = teacher;
+
   return (
     <>
-      {id && (
-        <>
-          <HeadlineTypography>講師ID</HeadlineTypography>
-          <DetailTypography>{id}</DetailTypography>
-        </>
-      )}
-
-      {createdAt && (
-        <>
-          <HeadlineTypography>作成日時</HeadlineTypography>
-          <JaDateTimeTypography textAlign="right" date={createdAt} />
-        </>
-      )}
-
-      {updatedAt && (
-        <>
-          <HeadlineTypography>更新日時</HeadlineTypography>
-          <JaDateTimeTypography textAlign="right" date={updatedAt} />
-        </>
-      )}
-
-      {!!lastName && (
-        <>
-          <HeadlineTypography>苗字</HeadlineTypography>
-          <DetailTypography>{lastName}</DetailTypography>
-        </>
-      )}
-
-      {!!lastNameKana && (
-        <>
-          <HeadlineTypography>苗字（フリガナ）</HeadlineTypography>
-          <DetailTypography>{lastNameKana}</DetailTypography>
-        </>
-      )}
-
-      {!!firstName && (
-        <>
-          <HeadlineTypography>名前</HeadlineTypography>
-          <DetailTypography>{firstName}</DetailTypography>
-        </>
-      )}
-
-      {!!firstNameKana && (
-        <>
-          <HeadlineTypography>名前（フリガナ）</HeadlineTypography>
-          <DetailTypography>{firstNameKana}</DetailTypography>
-        </>
-      )}
-
-      {!!status && (
-        <>
-          <HeadlineTypography>ステータス</HeadlineTypography>
-          <TeacherStatusTypography textAlign="right" status={status} />
-        </>
-      )}
-
-      {!!chatworkAccountId && (
-        <>
-          <HeadlineTypography>Chatwork Account ID</HeadlineTypography>
-          <DetailTypography>{chatworkAccountId}</DetailTypography>
-        </>
-      )}
-
-      {!!assignedQuestionsNumber && (
-        <>
-          <HeadlineTypography>残りの質問タスク数</HeadlineTypography>
-          <DetailTypography>{assignedQuestionsNumber}</DetailTypography>
-        </>
-      )}
+      <Id id={id} my={1} />
+      <Divider />
+      <CreatedAt createdAt={createdAt} my={1} />
+      <Divider />
+      <UpdatedAt updatedAt={updatedAt} my={1} />
+      <Divider />
+      <TeacherLastName teacher={teacher} my={1} />
+      <Divider />
+      <TeacherLastNameKana teacher={teacher} my={1} />
+      <Divider />
+      <TeacherFirstName teacher={teacher} my={1} />
+      <Divider />
+      <TeacherFirstNameKana teacher={teacher} my={1} />
+      <Divider />
+      <TeacherStatus teacher={teacher} my={1} />
+      <Divider />
+      <TeacherSubjects teacher={teacher} my={1} />
+      <Divider />
+      <ChatworkAccountId teacher={teacher} my={1} />
     </>
   );
 };

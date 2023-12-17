@@ -4,6 +4,7 @@ import { HeadlineTypography } from "../../components/Element/Typography/Headline
 import { JaDateTimeTypography } from "../../components/Element/Typography/JaDateTimeTypography";
 import { DetailTypography } from "../../components/Element/Typography/DetailTyporagphy";
 import { CheckUserWebhookButton } from "./CheckUserWebhookButton";
+import { UserId } from "./components/UserId";
 
 type UserDetailProps = {
   user: User;
@@ -23,8 +24,7 @@ export const UserDetail = ({ user }: UserDetailProps) => {
 
   return (
     <>
-      <HeadlineTypography>ユーザーID</HeadlineTypography>
-      <DetailTypography>{id}</DetailTypography>
+      <UserId id={id} />
       <HeadlineTypography>作成日時</HeadlineTypography>
       <JaDateTimeTypography textAlign="right" date={createdAt} />
       <HeadlineTypography>更新日時</HeadlineTypography>

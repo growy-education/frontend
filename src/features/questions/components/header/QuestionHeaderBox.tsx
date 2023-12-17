@@ -25,6 +25,7 @@ import { ConfirmQuestionMenuItem } from "./menu/ConfirmQuestionMenuItem";
 import { AddTaskToQuestionMenuItem } from "./menu/AddTaskToQuestionMenuItem";
 import { AuthContext } from "../../../../providers/auth.provider";
 import { BackButton } from "../../../../components/Element/Button/BackButton";
+import { HeaderBox } from "../../../../components/Layout/HeaderBox";
 
 type QuestionHeaderBoxProps = {
   question: Question;
@@ -46,14 +47,7 @@ export const QuestionHeaderBox = ({
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-      }}
-      {...props}
-    >
+    <HeaderBox>
       <BackButton />
       <QuestionActionButton
         aria-controls={open ? "demo-customized-menu" : undefined}
@@ -112,6 +106,6 @@ export const QuestionHeaderBox = ({
           />
         </RolesGuard>
       </QuestionActionMenu>
-    </Box>
+    </HeaderBox>
   );
 };

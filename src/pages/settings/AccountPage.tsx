@@ -3,12 +3,12 @@ import { UserDetail } from "../../features/users/UserDetail";
 import { AuthContext } from "../../providers/auth.provider";
 import { PageTitleTypography } from "../../components/Element/Typography/PageTitleTypography";
 
-export const ProfilePage = () => {
+export const AccountPage = () => {
   const { user } = useContext(AuthContext);
 
   return (
     <>
-      <PageTitleTypography>アカウント</PageTitleTypography>
+      <PageTitleTypography>アカウント情報</PageTitleTypography>
       <UserDetail user={user} />
     </>
   );

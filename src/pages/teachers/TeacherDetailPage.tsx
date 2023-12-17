@@ -3,13 +3,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AxiosError } from "axios";
 import { HeadlineTypography } from "../../components/Element/Typography/HeadlineTypography";
 import { TeacherDetail } from "../../features/teachers/TeacherDetail";
-import { HeadEditBox } from "../../features/HeadEditBox";
+import { HeaderBox } from "../../components/Layout/HeaderBox";
 import { EditButton } from "../../components/Element/Button/EditButton";
 import { LoadingBox } from "../../features/LoadingData";
 import { useTeacher } from "../../features/teachers/api/getTeacher";
 import { NotFound } from "../../features/NotFound";
 import { AlertBox } from "../../features/AlertBox";
 import { BackButton } from "../../components/Element/Button/BackButton";
+import { PageTitleTypography } from "../../components/Element/Typography/PageTitleTypography";
+import { TeacherActionMenuButton } from "../../features/teachers/components/TeacherActionMenuButton";
 
 export const TeacherDetailProps = () => {
   const navigate = useNavigate();
@@ -29,7 +31,7 @@ export const TeacherDetailProps = () => {
   });
 
   if (isLoading) {
-    return <LoadingBox message="生徒情報を取得中" />;
+    return <LoadingBox message="講師情報を取得中" />;
   }
 
   if (isError && error instanceof AxiosError && error.response.status === 404) {
@@ -48,10 +50,11 @@ export const TeacherDetailProps = () => {
 
   return (
     <>
-      <HeadEditBox>
+      <PageTitleTypography>講師情報</PageTitleTypography>
+      <HeaderBox>
         <BackButton />
-        <EditButton />
-      </HeadEditBox>
+        <TeacherActionMenuButton disabled />
+      </HeaderBox>
       <TeacherDetail teacher={teacher} />
       {!!teacher?.user && (
         <>

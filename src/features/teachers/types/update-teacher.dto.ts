@@ -7,6 +7,7 @@ import {
   Matches,
 } from "class-validator";
 import { TeacherStatus } from "./teacher-status.enum";
+import { Subject } from "../../../domains/subject.enum";
 
 export class UpdateTeacherDto {
   @IsOptional()
@@ -41,6 +42,10 @@ export class UpdateTeacherDto {
   @IsNotEmpty({ message: "ChatworkIDを入力してください" })
   @IsNumberString({}, { message: "ChatworkIDは数字で入力してください" })
   chatworkAccountId?: string;
+
+  @IsOptional()
+  @IsEnum(Subject, { each: true })
+  subjects?: Subject[];
 
   @IsOptional()
   @IsEnum(TeacherStatus, { message: "ステータスを選択してください" })

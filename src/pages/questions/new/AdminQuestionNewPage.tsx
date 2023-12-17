@@ -13,6 +13,7 @@ import { CreateQuestionForTeacherDto } from "../../../features/questions/types/c
 import { TeacherSelect } from "../../../features/questions/components/teacher/TeacherSelect";
 import { QuestionImagesInput } from "../../../features/questions/components/images/QuestionImagesInput";
 import { useCreateQuestionForTeacher } from "../../../features/questions/api/createQuestionForTeacher";
+import { UserSelect } from "../../../features/users/components/UserSelect";
 
 export const AdminQuestionNewPage = () => {
   const {
@@ -51,6 +52,9 @@ export const AdminQuestionNewPage = () => {
       <Box component="form" onSubmit={handleSubmit(handleQuestionUpload)}>
         <HeadlineTypography>講師</HeadlineTypography>
         <TeacherSelect errors={errors} {...register("teacherId")} />
+
+        <HeadlineTypography>生徒</HeadlineTypography>
+        <UserSelect errors={errors} required={false} {...register("userId")} />
 
         <HeadlineTypography>科目</HeadlineTypography>
         <QuestionSubjectSelect errors={errors} {...register("subject")} />

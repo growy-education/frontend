@@ -12,7 +12,7 @@ import { TaskType } from "./types/task-type.enum";
 import { TaskTitle } from "./components/title/TaskTitle";
 import { CompleteQuestionTaskButton } from "./CompleteQuestionTaskButton";
 import { RetryQuestionTaskButton } from "./RetryQuestionTaskButton";
-import { HeadEditBox } from "../HeadEditBox";
+import { HeaderBox } from "../../components/Layout/HeaderBox";
 import { AuthContext } from "../../providers/auth.provider";
 
 type TaskDetailProps = {
@@ -60,10 +60,10 @@ export const TaskDetail = ({ task, ...props }: TaskDetailProps) => {
             </>
           )}
         {user.role === Role.ADMIN && status === TaskStatus.REVIEWING && (
-          <HeadEditBox>
+          <HeaderBox>
             <RetryQuestionTaskButton task={task} />
             <CompleteQuestionTaskButton task={task} />
-          </HeadEditBox>
+          </HeaderBox>
         )}
       </Box>
     </>

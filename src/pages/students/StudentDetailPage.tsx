@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { HeadlineTypography } from "../../components/Element/Typography/HeadlineTypography";
 import { StudentDetail } from "../../features/students/StudentDetail";
-import { HeadEditBox } from "../../features/HeadEditBox";
+import { HeaderBox } from "../../components/Layout/HeaderBox";
 import { EditButton } from "../../components/Element/Button/EditButton";
 import { LoadingBox } from "../../features/LoadingData";
 import { AlertBox } from "../../features/AlertBox";
@@ -31,10 +31,10 @@ export const StudentDetailProps = () => {
 
   return (
     <>
-      <HeadEditBox>
+      <HeaderBox>
         <BackButton />
         <EditButton />
-      </HeadEditBox>
+      </HeaderBox>
       <StudentDetail student={student} />
       {!!student?.user && (
         <>

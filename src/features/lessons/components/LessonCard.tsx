@@ -1,5 +1,5 @@
 import { Card, CardProps, Typography } from "@mui/material";
-import { HeadEditBox } from "../../HeadEditBox";
+import { HeaderBox } from "../../../components/Layout/HeaderBox";
 import { HeadlineTypography } from "../../../components/Element/Typography/HeadlineTypography";
 import { Lesson } from "../types/lesson.class";
 import { JaDateTimeTypography } from "../../../components/Element/Typography/JaDateTimeTypography";
@@ -14,9 +14,9 @@ export const LessonCard = ({ lesson }: LessonCardProps) => {
   const { title, status, startAt } = lesson;
   return (
     <Card sx={{ m: 2 }}>
-      <HeadEditBox>
+      <HeaderBox>
         <ConfirmLessonButton lesson={lesson} />
-      </HeadEditBox>
+      </HeaderBox>
       <HeadlineTypography>授業タイトル</HeadlineTypography>
       <Typography>{title}</Typography>
       <HeadlineTypography>開始時刻</HeadlineTypography>

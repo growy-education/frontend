@@ -25,7 +25,7 @@ export function getSubjectColor(subject: Subject): string {
     case Subject.MATHEMATICS:
       return "#0000FF";
     case Subject.SCIENCE:
-      return "#FFA500";
+      return "#FF8C00";
     case Subject.SOCIALSTUDIES:
       return "#008000";
   }
