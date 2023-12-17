@@ -4,6 +4,9 @@ import { Task } from "../../tasks/types/task.class";
 import { Question } from "../types/question.class";
 import { AnswerComment } from "./AnswerComment";
 import { ReportAnswerIconButton } from "./ReportAnswerIconButton";
+import { useContext } from "react";
+import { AuthContext } from "../../../providers/auth.provider";
+import { Role } from "../../users/types/role.enum";
 
 type AnswerRatingProps = {
   question: Question;
@@ -11,6 +14,10 @@ type AnswerRatingProps = {
 };
 
 export const AnswerHeader = ({ question, task }: AnswerRatingProps) => {
+  const { user } = useContext(AuthContext);
+  if (user.role !== Role.CUSTOMER && user.role !== Role.ADMIN) {
+    return <></>;
+  }
   return (
     <Box>
       <Box
