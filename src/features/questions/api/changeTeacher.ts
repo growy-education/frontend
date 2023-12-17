@@ -16,7 +16,7 @@ export const changeTeacher = async ({
   teacherId,
 }: ChangeTeacherVariables): Promise<Question> => {
   return axios
-    .put(`questions/${questionId}`, { teacher: { id: teacherId } })
+    .patch(`questions/${questionId}`, { teacher: { id: teacherId } })
     .then((response) => {
       return plainToInstance(Question, response.data);
     });
