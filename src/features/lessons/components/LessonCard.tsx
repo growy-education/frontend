@@ -5,6 +5,8 @@ import { Lesson } from "../types/lesson.class";
 import { JaDateTimeTypography } from "../../../components/Element/Typography/JaDateTimeTypography";
 import { LessonStatus } from "../types/lesson-status.enum";
 import { ConfirmLessonButton } from "./ConfirmLessonButton";
+import { RolesGuard } from "../../../tools/RolesGuard";
+import { Role } from "../../users/types/role.enum";
 
 type LessonCardProps = {
   lesson: Lesson;
@@ -14,9 +16,11 @@ export const LessonCard = ({ lesson }: LessonCardProps) => {
   const { title, status, startAt } = lesson;
   return (
     <Card sx={{ m: 2 }}>
-      <HeaderBox>
-        <ConfirmLessonButton lesson={lesson} />
-      </HeaderBox>
+      <RolesGuard roles={[Role.TEACHER]}>
+        <HeaderBox>
+          <ConfirmLessonButton lesson={lesson} />
+        </HeaderBox>
+      </RolesGuard>
       <HeadlineTypography>授業タイトル</HeadlineTypography>
       <Typography>{title}</Typography>
       <HeadlineTypography>開始時刻</HeadlineTypography>
