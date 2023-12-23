@@ -1,10 +1,9 @@
-import { useTheme } from "@mui/material";
+import { alpha, useTheme } from "@mui/material";
 import styled from "@emotion/styled";
 import Calendar, { CalendarProps } from "react-calendar";
 import { NavigationLabel } from "./NavigationLabel";
 
 // ReactCalendar用
-import "react-calendar/dist/Calendar.css";
 import dayjs from "dayjs";
 import "dayjs/locale/ja";
 
@@ -28,13 +27,17 @@ export const StyledCalendar = (props: StyledCalendarProps) => {
       line-height: 16px;
     }
 
-    .react-calendar__month-view__days__day--weekend span {
+    .react-calendar__month-view__days__day--weekend {
       color: black;
     }
 
     .react-calendar__tile--now {
-      background: ${theme.palette.primary.main};
+      background: ${alpha(theme.palette.primary.main, 0.8)};
       color: white;
+    }
+
+    .react-calendar__tile--now span {
+      color: white !important;
     }
 
     .react-calendar__tile--now:enabled:hover,
