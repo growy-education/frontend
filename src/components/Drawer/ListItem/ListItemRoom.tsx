@@ -1,67 +1,71 @@
-import { Laptop, OpenInNew } from "@mui/icons-material";
+import { useContext, useState } from "react";
+import { EditNote, Laptop, ListAlt } from "@mui/icons-material";
 import {
+  Collapse,
+  List,
+  ListItem,
   ListItemButton,
   ListItemIcon,
-  ListItemProps,
   ListItemText,
-  Typography,
 } from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Role } from "../../../features/users/types/role.enum";
+import { AuthContext } from "../../../providers/auth.provider";
 
-export const ListItemRoom = (props: ListItemProps) => {
-  // const handleRoomListToggle = () => {
-  //   setRoomListOpen(!roomListOpen);
-  // };
+export const ListItemRoom = () => {
+  const [listOpen, setListOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const { user } = useContext(AuthContext);
+
+  const handleRoomListToggle = () => {
+    setListOpen(!listOpen);
+  };
 
   return (
     <>
       <ListItemButton
-        target="_blank"
-        href="https://forms.gle/X4bSytAtYh1vyMZe6"
-        rel="noreferrer"
-        // onClick={handleRoomListToggle}
-        // selected={location.pathname.includes("rooms")}
+        onClick={handleRoomListToggle}
+        selected={location.pathname.includes("rooms")}
       >
         <ListItemIcon>
           <Laptop />
         </ListItemIcon>
-        <ListItemText
-          primary={
-            <Typography
-              sx={{
-                verticalAlign: "bottom",
-                display: "inline-flex",
-                alignItems: "center",
-              }}
-              {...props}
-            >
-              オンライン自習室
-              <OpenInNew fontSize="small" sx={{ ml: 0.25 }} />
-            </Typography>
-          }
-        />
+        <ListItemText primary="オンライン自習室" />
       </ListItemButton>
-      {/* <Collapse in={roomListOpen} timeout="auto" unmountOnExit>
+      <Collapse in={listOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem onClick={() => navigate("/rooms")}>
+          <ListItem onClick={() => navigate("/rooms/")}>
             <ListItemButton>
               <ListItemIcon>
                 <ListAlt />
               </ListItemIcon>
-              <ListItemText primary="自習室リスト" />
+              <ListItemText primary="リスト" />
             </ListItemButton>
           </ListItem>
+          {user.role === Role.CUSTOMER && (
+            <ListItem onClick={() => navigate("/rooms/reserve")}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <EditNote />
+                </ListItemIcon>
+                <ListItemText primary="まとめて予約する" />
+              </ListItemButton>
+            </ListItem>
+          )}
           {user.role === Role.ADMIN && (
             <ListItem onClick={() => navigate("/rooms/new")}>
               <ListItemButton>
                 <ListItemIcon>
-                  <AddCircle />
+                  <EditNote />
                 </ListItemIcon>
-                <ListItemText primary="オンライン自習室を作成" />
+                <ListItemText primary="作成する" />
               </ListItemButton>
             </ListItem>
           )}
         </List>
-      </Collapse> */}
+      </Collapse>
     </>
   );
 };

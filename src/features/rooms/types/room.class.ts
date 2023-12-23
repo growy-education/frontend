@@ -26,5 +26,5 @@ export class Room {
   students?: Student[];
 
   @Type(() => Teacher)
-  teachers?: Teacher[];
+  teacher?: Teacher;
 }

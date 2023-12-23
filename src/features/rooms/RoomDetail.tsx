@@ -1,45 +1,36 @@
-import { Button, Typography } from "@mui/material";
-import { HeadlineTypography } from "../../components/Element/Typography/HeadlineTypography";
+import { Divider, Typography } from "@mui/material";
 import { Room } from "./types/room.class";
-import { JaDateTimeTypography } from "../../components/Element/Typography/JaDateTimeTypography";
-import { OpenInNew } from "@mui/icons-material";
-import { RoomStatusTypography } from "./RoomStatus";
+import { RoomUrl } from "./RoomUrl";
+import { RoomStartAt } from "./components/startAt/RoomStartAt";
+import { RoomEndAt } from "./components/endAt/RoomEndAt";
+import { RoomStudents } from "./components/students/RoomStudents";
+import { RoomStatus } from "./components/RoomStatus";
+import { HeadlineTypography } from "../../components/Element/Typography/HeadlineTypography";
+import { RolesGuard } from "../../tools/RolesGuard";
+import { RoomTeacher } from "./components/teacher/RoomTeacher";
 
 type RoomDetailProps = {
   room: Room;
 };
 
 export const RoomDetail = ({ room }: RoomDetailProps) => {
-  const {
-    id,
-    createdAt,
-    updatedAt,
-    startAt,
-    endAt,
-    url,
-    status,
-    students,
-    teachers,
-  } = room;
+  const { id } = room;
   return (
     <>
       <HeadlineTypography>自習室ID</HeadlineTypography>
       <Typography>{id}</Typography>
-      <HeadlineTypography>開始日時</HeadlineTypography>
-      <JaDateTimeTypography date={startAt} />
-      <HeadlineTypography>終了日時</HeadlineTypography>
-      <JaDateTimeTypography date={endAt} />
-      <HeadlineTypography>GoogleMeet URL</HeadlineTypography>
-      <Typography>
-        <Button
-          endIcon={<OpenInNew />}
-          onClick={() => window.open(url, "_blank")}
-        >
-          自習室に参加する
-        </Button>
-      </Typography>
-      <HeadlineTypography>ステータス</HeadlineTypography>
-      <RoomStatusTypography status={status} />
+      <Divider />
+      <RoomStartAt room={room} />
+      <Divider />
+      <RoomEndAt room={room} />
+      <Divider />
+      <RoomUrl room={room} />
+      <Divider />
+      <RoomStatus room={room} />
+      <Divider />
+      <RoomStudents room={room} />
+      <Divider />
+      <RoomTeacher room={room} />
     </>
   );
 };

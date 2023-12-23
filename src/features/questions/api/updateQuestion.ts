@@ -17,7 +17,7 @@ export const updateQuestion = async ({
   id,
   dto,
 }: UpdateQuestionVariables): Promise<Question> => {
-  return axios.put(`questions/${id}`, dto).then((response) => {
+  return axios.patch(`questions/${id}`, dto).then((response) => {
     return plainToInstance(Question, response.data);
   });
 };

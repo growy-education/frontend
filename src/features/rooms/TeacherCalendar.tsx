@@ -97,9 +97,7 @@ export const TeacherCalendar = ({ events, ...props }: TeacherCalendarProps) => {
             sortedScheduleEvents.length !== 0 &&
             sortedScheduleEvents.map(
               (event) =>
-                event.teachers.some(
-                  (teacher) => teacher.id === user.teacher.id
-                ) && (
+                event.teacher.id === user.teacher.id && (
                   <Box key={event.id} textAlign="left">
                     <Typography variant="caption">
                       {`${dayjs(event.startAt).format("HH:mm")}`}

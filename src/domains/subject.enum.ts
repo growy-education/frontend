@@ -15,6 +15,9 @@ export function getSubjectText(subject: Subject): string {
       return "理科";
     case Subject.SOCIALSTUDIES:
       return "社会";
+    default:
+      const _subject: never = subject;
+      return _subject;
   }
 }
 
@@ -28,5 +31,8 @@ export function getSubjectColor(subject: Subject): string {
       return "#FF8C00";
     case Subject.SOCIALSTUDIES:
       return "#008000";
+    default:
+      const _subject: never = subject;
+      return _subject;
   }
 }

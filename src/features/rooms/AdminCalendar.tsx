@@ -1,5 +1,4 @@
 import { CalendarProps } from "react-calendar";
-import { CustomerCalendar } from "./CustomerCalendar";
 import { Room } from "./types/room.class";
 import {
   OnChangeFunc,
@@ -7,27 +6,18 @@ import {
 } from "react-calendar/dist/cjs/shared/types";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import { StyledCalendar } from "../../components/Element/Calendar/StyledCalendar";
 
 type ScheduledEvents = {
-  [key: string]: AdminCalendarProps["events"];
+  [key: string]: AdminCalendarProps["rooms"];
 };
 
 type AdminCalendarProps = CalendarProps & {
-  events: Room[];
+  rooms: Room[];
 };
 
-export const AdminCalendar = ({ events, ...props }: AdminCalendarProps) => {
+export const AdminCalendar = ({ rooms, ...props }: AdminCalendarProps) => {
   const navigate = useNavigate();
-
-  let scheduledEvents: ScheduledEvents = {};
-  for (const event of events) {
-    // プロパティがなければ、配列をプロパティに追加する
-    if (!scheduledEvents[dayjs(event.startAt).format("YYYY-MM-DD")]) {
-      scheduledEvents[dayjs(event.startAt).format("YYYY-MM-DD")] = [];
-    }
-    // プロパティにeventを追加する
-    scheduledEvents[dayjs(event.startAt).format("YYYY-MM-DD")].push(event);
-  }
 
   // 常に選択できる
   const tileDisabled: TileDisabledFunc = () => {
@@ -35,26 +25,23 @@ export const AdminCalendar = ({ events, ...props }: AdminCalendarProps) => {
   };
 
   const onClickDay: OnChangeFunc = (date) => {
-    const formattedDate = dayjs(date).format("YYYY-MM-DD");
-    if (
-      formattedDate in scheduledEvents &&
-      Array.isArray(scheduledEvents[formattedDate]) &&
-      scheduledEvents[formattedDate].length > 0
-    ) {
-      return navigate(`/rooms/${scheduledEvents[formattedDate]}`);
+    const room = rooms.find(
+      (room) =>
+        date.getTime() < room.startAt.getTime() &&
+        room.startAt.getTime() < date.getTime() + 24 * 60 * 60 * 1000
+    );
+    if (room) {
+      return navigate(`/rooms/${room.id}`);
+    } else {
+      return navigate(`/rooms/new`, {
+        state: {
+          date,
+        },
+      });
     }
-
-    return navigate({
-      pathname: "/rooms/new",
-      search: createSearchParams({
-        startAt: date.toString(),
-        endAt: date.toString(),
-      }).toString(),
-    });
   };
   return (
-    <CustomerCalendar
-      events={events}
+    <StyledCalendar
       tileDisabled={tileDisabled}
       onClickDay={onClickDay}
       {...props}

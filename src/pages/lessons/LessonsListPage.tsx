@@ -36,7 +36,7 @@ export const LessonsListPage = (props: LessonsListPageProps) => {
           {lessons
             .sort((a, b) => a.startAt.getTime() - b.startAt.getTime())
             .map((lesson) => (
-              <LessonCard lesson={lesson} />
+              <LessonCard key={lesson.id} lesson={lesson} />
             ))}
         </Box>
       )}

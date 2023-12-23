@@ -77,10 +77,12 @@ del {
     text-decoration: line-through;
 }
 
-abbr[title], dfn[title] {
+/*
+  Calendarのため。
+  abbr[title], dfn[title] {
     border-bottom:1px dotted;
     cursor:help;
-}
+} */
 
 table {
     border-collapse:collapse;

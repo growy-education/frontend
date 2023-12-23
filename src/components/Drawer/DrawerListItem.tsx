@@ -22,18 +22,15 @@ export const DrawerListItem = () => {
       <ListItemHome />
       <ListItemQuestion />
       <LIstItemLesson />
+      <ListItemGoogleChat />
+
       {user.role === Role.ADMIN && (
         <>
           <ListItemUser />
           <ListItemCustomer />
           <ListItemStudent />
           <ListItemTeacher />
-        </>
-      )}
-      {user.role === Role.CUSTOMER && (
-        <>
           <ListItemRoom />
-          <ListItemGoogleChat />
         </>
       )}
       <ListItemSettings />

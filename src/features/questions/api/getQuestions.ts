@@ -31,7 +31,7 @@ export const useQuestions = ({
   options,
 }: UseQuestionsOptions = {}) => {
   return useQuery({
-    queryKey: ["questions", filterDto],
+    queryKey: ["questions"],
     queryFn: () => getQuestions({ filterDto }),
     initialData: [],
     ...options,

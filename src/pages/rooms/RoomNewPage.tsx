@@ -1,201 +1,116 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { Type, plainToInstance } from "class-transformer";
-import { IsDate, IsNotEmpty, IsString } from "class-validator";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
-import { DateTimePicker } from "@mui/x-date-pickers";
+import { Box, MenuItem, Select } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
+
 import dayjs from "dayjs";
-import SendIcon from "@mui/icons-material/Send";
 
-import { Box, Button, MenuItem, Select, Typography } from "@mui/material";
 import { HeadlineTypography } from "../../components/Element/Typography/HeadlineTypography";
-import { Teacher } from "../../features/teachers/types/teacher.class";
-import { axios } from "../../tools/axios";
+import { PageTitleTypography } from "../../components/Element/Typography/PageTitleTypography";
+import { CreateRoomDto } from "../../features/rooms/types/create-room.dto";
+import { useCreateRoom } from "../../features/rooms/api/createRoom";
+import { TeacherSelectOptional } from "../../features/teachers/components/TeacherSelectOptional";
+import { ScheduleType } from "../../features/rooms/types/schedule-type.enum";
+import { EndAtDateTimePicker } from "../../components/Element/DateTimePicker/EndAtDateTimePicker";
+import { StartAtDateTimePicker } from "../../components/Element/DateTimePicker/StartAtDateTimePicker";
+import { SubmitButton } from "../../features/SubmitButton";
+import { Room } from "../../features/rooms/types/room.class";
 
-class CreateRoomDto {
-  @IsNotEmpty()
-  @Type(() => Date)
-  @IsDate({ message: "開始時刻を入力してください" })
-  startAt: dayjs.Dayjs;
-
-  @IsNotEmpty()
-  @Type(() => Date)
-  @IsDate({ message: "終了時刻を入力してください" })
-  endAt: dayjs.Dayjs;
-
-  @IsNotEmpty({ message: "講師を選択してください" })
-  @IsString()
-  teacherId: string;
-}
-
-export const mockTeachers = [
-  {
-    id: "1",
-    firstName: "友伸",
-    lastName: "桶谷",
-  },
-  {
-    id: "2",
-    firstName: "宏輝",
-    lastName: "竹熊",
-  },
-] as Teacher[];
-
-export const RoomNew = () => {
+export const RoomNewPage = () => {
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const [teachers, setTeachers] = useState<Teacher[]>([]);
-  useEffect(() => {
-    axios
-      .get("/teachers")
-      .then((response) => {
-        const teachers = response.data.map((teacherJson) =>
-          plainToInstance(Teacher, teacherJson)
-        );
-        setTeachers(teachers);
-      })
-      .catch((error) => console.log(`error occured at ${__dirname}, ${error}`));
-  }, []);
+  const { state } = useLocation();
 
   const resolver = classValidatorResolver(CreateRoomDto);
   const {
+    control,
     register,
     handleSubmit,
-    control,
-    setValue,
     getValues,
+    watch,
     formState: { errors },
   } = useForm<CreateRoomDto>({
     resolver,
     defaultValues: {
-      startAt: dayjs(new Date(searchParams.get("startAt")))
-        .hour(17)
-        .minute(0)
-        .second(0)
-        .millisecond(0),
-      endAt: dayjs(new Date(searchParams.get("endAt")))
-        .hour(19)
-        .minute(0)
-        .second(0)
-        .millisecond(0),
-      teacherId: "",
+      scheduleType: ScheduleType.REGULAR,
+      date: dayjs(state?.date instanceof Date ? state?.date : new Date()),
+      teacher: undefined,
     },
   });
 
-  // 結果を示すオブジェクトを作成する
-  const [result, setResult] = useState({
-    open: false,
-    success: false,
-    title: "",
-    message: "",
+  const mutation = useCreateRoom({
+    options: {
+      onSettled: (room) => {
+        if (room instanceof Room) {
+          navigate(`/rooms/${room.id}`);
+        }
+      },
+    },
   });
 
-  const onSubmit: SubmitHandler<CreateRoomDto> = (data) => {};
-
-  // ダイアログの確認ボタンを押すと、オンライン自習室の一覧画面へと遷移する
-  const handleConfirm = () => {
-    setResult({ open: false, success: false, title: "", message: "" });
-    navigate("/rooms"); // 詳細画面への遷移
-  };
-
-  const handleCancel = () => {
-    setResult({ open: false, success: false, title: "", message: "" });
-  };
-
-  // スイッチが変更されたら、時刻を調節する
-  const handleSwitchChange = (event: any) => {
-    const value = event.target.value;
-    if (value === "weekday") {
-      setValue("startAt", getValues("startAt").hour(17).minute(0));
-      setValue("endAt", getValues("endAt").hour(19).minute(0));
+  const onSubmit: SubmitHandler<CreateRoomDto> = async (data) => {
+    if (mutation.isPending) {
+      return;
     }
-    if (value === "holiday") {
-      setValue("startAt", getValues("startAt").hour(10).minute(0));
-      setValue("endAt", getValues("endAt").hour(12).minute(0));
-    }
+    mutation.mutate(data);
   };
+
+  watch("scheduleType");
 
   return (
     <>
-      <Typography variant="h4">オンライン自習室を新規作成する</Typography>
-      <HeadlineTypography>時間帯</HeadlineTypography>
-      <Select fullWidth defaultValue="weekday" onChange={handleSwitchChange}>
-        <MenuItem key="weekday" value="weekday">
-          平日（17:00〜19:00）
-        </MenuItem>
-        <MenuItem key="holiday" value="holiday">
-          休日（10:00〜12:00）
-        </MenuItem>
-      </Select>
+      <PageTitleTypography>オンライン自習室を作成する</PageTitleTypography>
+      <HeadlineTypography>スケジュール</HeadlineTypography>
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        <HeadlineTypography>開始時刻</HeadlineTypography>
-        <Controller
-          name="startAt"
-          control={control}
-          render={({ field }) => (
-            <DateTimePicker
-              {...field}
-              label="開始時刻"
-              ampm={false}
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                  variant: "outlined",
-                  error: !!errors.startAt,
-                  helperText: !!errors.startAt && errors.startAt.message,
-                },
-              }}
-            />
-          )}
-        />
+        <Select fullWidth {...register("scheduleType")}>
+          <MenuItem key={ScheduleType.REGULAR} value={ScheduleType.REGULAR}>
+            通常時刻（平日17~19時, 休日9~11時）
+          </MenuItem>
+          <MenuItem key={ScheduleType.SPECIAL} value={ScheduleType.SPECIAL}>
+            特別時刻（任意指定）
+          </MenuItem>
+        </Select>
 
-        <HeadlineTypography>終了時刻</HeadlineTypography>
-        <Controller
-          name="endAt"
-          control={control}
-          render={({ field }) => (
-            <DateTimePicker
-              {...field}
-              label="終了時刻"
-              ampm={false}
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                  variant: "outlined",
-                  error: !!errors.endAt,
-                  helperText: !!errors.endAt && errors.endAt.message,
-                },
-              }}
+        {getValues("scheduleType") === ScheduleType.REGULAR ? (
+          <>
+            <HeadlineTypography>日付</HeadlineTypography>
+            <Controller
+              name="date"
+              control={control}
+              render={({ field }) => (
+                <DatePicker
+                  {...field}
+                  label={"日付を選択する"}
+                  views={["year", "month", "day"]}
+                  slotProps={{
+                    textField: {
+                      fullWidth: true,
+                      variant: "outlined",
+                      error: !!errors.startAt,
+                      helperText: !!errors.startAt && errors.startAt.message,
+                    },
+                  }}
+                />
+              )}
             />
-          )}
-        />
+          </>
+        ) : (
+          <>
+            <HeadlineTypography>開始時間</HeadlineTypography>
+            <StartAtDateTimePicker control={control} errors={errors} />
+
+            <HeadlineTypography>終了時刻</HeadlineTypography>
+            <EndAtDateTimePicker control={control} errors={errors} />
+          </>
+        )}
 
         <HeadlineTypography>講師を選択する</HeadlineTypography>
-        <Select
-          required
-          fullWidth
-          id="teacherId"
-          defaultValue=""
-          error={!!errors.teacherId}
-          {...register("teacherId")}
-        >
-          {mockTeachers.map((teacher) => (
-            <MenuItem key={teacher.id} value={teacher.id}>
-              {teacher.lastName + teacher.firstName}
-            </MenuItem>
-          ))}
-        </Select>
-        <Box margin="0.5em">
-          <Button
-            type="submit"
-            color="primary"
-            variant="contained"
-            endIcon={<SendIcon />}
-          >
-            送信
-          </Button>
+        <TeacherSelectOptional control={control} />
+
+        <Box m={1} mt={3}>
+          <SubmitButton disabled={mutation.isPending}>
+            {mutation.isPending ? "送信中..." : "送信する"}
+          </SubmitButton>
         </Box>
       </Box>
     </>

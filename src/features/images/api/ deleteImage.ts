@@ -4,12 +4,12 @@ import { axios } from "../../../tools/axios";
 import { useToastStore } from "../../../stores/toast.store";
 import { MutationOptions } from "../../../tools/react-query";
 
-export const reportQuestion = async (id: string): Promise<void> => {
+export const deleteQuestion = async (id: string): Promise<void> => {
   return axios.delete(`/images/${id}`);
 };
 
 type UseDeleteImageOptions = {
-  options?: MutationOptions<typeof reportQuestion>;
+  options?: MutationOptions<typeof deleteQuestion>;
 };
 
 export const useDeleteImage = ({ options }: UseDeleteImageOptions = {}) => {
@@ -29,7 +29,7 @@ export const useDeleteImage = ({ options }: UseDeleteImageOptions = {}) => {
         title: "画像の削除に失敗しました",
       });
     },
-    mutationFn: reportQuestion,
+    mutationFn: deleteQuestion,
     ...options,
   });
 };
