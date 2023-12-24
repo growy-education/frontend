@@ -6,6 +6,7 @@ import { NavigationLabel } from "./NavigationLabel";
 // ReactCalendar用
 import dayjs from "dayjs";
 import "dayjs/locale/ja";
+import { useSearchParams } from "react-router-dom";
 
 type StyledCalendarProps = Omit<CalendarProps, "locale" | "navigationLabel">;
 
@@ -13,7 +14,6 @@ dayjs.locale("ja"); // 日本語ロケールを設定
 
 export const StyledCalendar = (props: StyledCalendarProps) => {
   const theme = useTheme();
-
   const StyledCalendar = styled(Calendar)`
     width: 100% !important;
     border: 1px solid #ccc;
@@ -47,10 +47,18 @@ export const StyledCalendar = (props: StyledCalendarProps) => {
     }
   `;
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
   return (
     <StyledCalendar
       locale="ja"
       navigationLabel={({ date }) => <NavigationLabel date={date} />}
+      activeStartDate={dayjs(
+        searchParams.get("calendar") || new Date()
+      ).toDate()}
+      onActiveStartDateChange={({ activeStartDate }) => {
+        setSearchParams({ calendar: dayjs(activeStartDate).format("YYYY-MM") });
+      }}
       {...props}
     />
   );
