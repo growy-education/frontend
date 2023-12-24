@@ -70,8 +70,8 @@ export const RoomTeacher = ({ room, ...props }: RoomTeacherProps) => {
           <TeacherSelect control={control} errors={errors} />
         ) : room?.teacher ? (
           <TeacherChip
-            teacher={room.teacher}
-            onClick={() => navigate(`/teachers/${room?.teacher.id}`)}
+            teacher={room?.teacher}
+            onClick={() => navigate(`/teachers/${room?.teacher?.id}`)}
           />
         ) : (
           <Typography>講師が選択されていません</Typography>

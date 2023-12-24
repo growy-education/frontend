@@ -85,6 +85,7 @@ export const RoomStudents = ({ room, ...props }: RoomStudentsProps) => {
             <>
               {getValues("students")?.map((student) => (
                 <StudentChip
+                  key={"editing-" + student.id}
                   student={student}
                   sx={{ mx: 0.5, mb: 1 }}
                   onDelete={() => handleDelete(student.id)}
@@ -101,7 +102,11 @@ export const RoomStudents = ({ room, ...props }: RoomStudentsProps) => {
                 <Typography>参加する生徒がいません</Typography>
               )}
               {room.students.map((student) => (
-                <StudentChip student={student} sx={{ mx: 0.5, mb: 1 }} />
+                <StudentChip
+                  key={student.id}
+                  student={student}
+                  sx={{ mx: 0.5, mb: 1 }}
+                />
               ))}
             </>
           )}

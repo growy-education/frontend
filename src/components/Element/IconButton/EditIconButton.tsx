@@ -6,7 +6,10 @@ type EditIconButtonProps = {
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const EditIconButton = ({ isEditing, setIsEditing }) => {
+export const EditIconButton = ({
+  isEditing,
+  setIsEditing,
+}: EditIconButtonProps) => {
   return (
     <>
       {isEditing && (
@@ -14,16 +17,11 @@ export const EditIconButton = ({ isEditing, setIsEditing }) => {
           <Save color="primary" fontSize="large" />
         </IconButton>
       )}
-      <IconButton aria-label="edit-button">
-        {isEditing ? (
-          <Cancel
-            color="warning"
-            fontSize="large"
-            onClick={() => setIsEditing(false)}
-          />
-        ) : (
-          <Edit onClick={() => setIsEditing(true)} />
-        )}
+      <IconButton
+        aria-label="edit-button"
+        onClick={() => setIsEditing(!isEditing)}
+      >
+        {isEditing ? <Cancel color="warning" fontSize="large" /> : <Edit />}
       </IconButton>
     </>
   );

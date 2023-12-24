@@ -11,9 +11,9 @@ type TeacherSelectProps = {
 };
 
 export const TeacherSelect = ({ control, errors }: TeacherSelectProps) => {
-  const { isLoading, isError, data: teachers } = useTeachers();
+  const { isPending, isError, data: teachers } = useTeachers();
 
-  if (isLoading) {
+  if (isPending) {
     return <LoadingBox message="講師を取得中..." />;
   }
 
@@ -37,7 +37,7 @@ export const TeacherSelect = ({ control, errors }: TeacherSelectProps) => {
             {...field}
             fullWidth
             labelId="teacher-select-label"
-            value={field.value.id}
+            value={field?.value?.id}
             onChange={(e) =>
               field.onChange(
                 teachers.find((teacher) => teacher.id === e.target.value)
