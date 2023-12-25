@@ -23,6 +23,9 @@ export const ReserveRoomMenuItem = ({
     mutation.mutate({ roomId: room.id });
   };
 
+  const disabled =
+    room.startAt.getTime() - 2 * 24 * 60 * 60 * 1000 < new Date().getTime();
+
   if (room.students.some((student) => student.id === user?.student?.id)) {
     return <></>;
   }
@@ -33,7 +36,7 @@ export const ReserveRoomMenuItem = ({
         onClick={handleClick}
         disableRipple
         color="primary.main"
-        disabled={mutation.isPending}
+        disabled={mutation.isPending || disabled}
         {...props}
       >
         <EventAvailable color="primary" />

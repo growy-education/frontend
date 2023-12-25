@@ -4,6 +4,7 @@ import { ScheduleType } from "./schedule-type.enum";
 import { Teacher } from "../../teachers/types/teacher.class";
 import { Student } from "../../students/types/student.class";
 import { Dayjs } from "dayjs";
+import { IsAfter } from "../../../tools/decorators/is-after.decorator";
 
 export class CreateRoomDto {
   @IsEnum(ScheduleType)
@@ -22,6 +23,7 @@ export class CreateRoomDto {
   @ValidateIf((o) => o.scheduleType === ScheduleType.SPECIAL)
   @Type(() => Date)
   @IsDate()
+  @IsAfter("startAt")
   endAt?: Dayjs;
 
   @IsOptional()

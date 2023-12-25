@@ -27,9 +27,8 @@ export const LessonsListPage = (props: LessonsListPageProps) => {
   return (
     <Box my={3}>
       <PageTitleTypography>今日の授業</PageTitleTypography>
-      <Typography color="error">現在、こちらのページを準備中です🙇‍♂️</Typography>
       {(!Array.isArray(lessons) || lessons.length === 0) && (
-        <Typography>登録されている授業がありません</Typography>
+        <Typography>登録されている授業がありません。</Typography>
       )}
       {lessons && (
         <Box m={2}>

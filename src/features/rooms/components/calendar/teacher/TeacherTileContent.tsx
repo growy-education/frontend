@@ -27,7 +27,10 @@ export const TeacherCalendarTileContent = ({
     const isInCharge = user?.teacher?.id === room?.teacher?.id;
 
     return (
-      <Tooltip title={!!room ? "詳細を確認する" : "自習室が開催されません"}>
+      <Tooltip
+        title={!!room ? "詳細を確認する" : "自習室が開催されません"}
+        placement="top"
+      >
         <Box
           width="100%"
           overflow="hidden"

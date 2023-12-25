@@ -21,7 +21,10 @@ export const AdminTileContent = ({
     );
 
     return (
-      <Tooltip title={!!room ? "詳細を確認する" : "自習室を作成する"}>
+      <Tooltip
+        title={!!room ? "詳細を確認する" : "自習室を作成する"}
+        placement="top"
+      >
         <Box
           minHeight="60px"
           width="100%"
