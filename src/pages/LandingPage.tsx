@@ -34,7 +34,7 @@ export const LandingPage = () => {
       >
         <Offset />
 
-        {/* コーチング募集予約待ちのお知らせ */}
+        {/* 2024年度募集のお知らせ */}
         <Snackbar
           open={open}
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
@@ -45,9 +45,11 @@ export const LandingPage = () => {
             severity="info"
             sx={{ width: "100%" }}
           >
-            コーチングサービスは現在満員となっておりますので
+            2024年度の生徒様の募集開始いたしました！
             <br />
-            2023年度につきましては予約待ちという形になります🙇‍♂️
+            コーチング、ティーチング共に、枠に限りがございますので、
+            <br />
+            ご興味ある方はお早めにお問い合わせください🙇‍♂️
           </Alert>
         </Snackbar>
 
