@@ -52,13 +52,6 @@ export const Price = () => {
           <br />
           6年生：8,800円/コマ(80分)
         </SubtitleDescriptionTypography>
-
-        <SubtitleBox>
-          <SubtitleTypography>過去問・模試動画添削</SubtitleTypography>
-        </SubtitleBox>
-        <SubtitleDescriptionTypography>
-          5,000円/教材
-        </SubtitleDescriptionTypography>
       </DescriptionBox>
 
       <DescriptionBox>
