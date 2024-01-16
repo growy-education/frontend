@@ -24,25 +24,33 @@ export const Price = () => {
           塾業界ではホームページに料金を記載しない塾が多いですが、私たちは納得のいくサービスを提供するために掲示しています。
           <br />
           ここに記載のある料金以外は一切かかりません。
+          <br />
+          以下の料金は全て税込になります。
         </Typography>
 
         <SubtitleBox>
           <SubtitleTypography>入会料金</SubtitleTypography>
         </SubtitleBox>
-        <SubtitleDescriptionTypography>10,000円</SubtitleDescriptionTypography>
+        <SubtitleDescriptionTypography>11,000円</SubtitleDescriptionTypography>
 
         <SubtitleBox>
           <SubtitleTypography>コーチング料金</SubtitleTypography>
         </SubtitleBox>
         <SubtitleDescriptionTypography>
-          50,000円/月
+          4年生：44,000円/月
+          <br />
+          5年生：55,000円/月
+          <br />
+          6年生：66,000円/月
         </SubtitleDescriptionTypography>
 
         <SubtitleBox>
           <SubtitleTypography>ティーチング料金</SubtitleTypography>
         </SubtitleBox>
         <SubtitleDescriptionTypography>
-          8,000円/コマ(80分)
+          4・5年生：7,700円/コマ(80分)
+          <br />
+          6年生：8,800円/コマ(80分)
         </SubtitleDescriptionTypography>
 
         <SubtitleBox>
