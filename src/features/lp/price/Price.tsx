@@ -59,6 +59,13 @@ export const Price = () => {
           <AttentionTitleTypography>！注意事項！</AttentionTitleTypography>
 
           <AttentionDescriptionBox>
+            <AsteriskTypography color="red" />
+            <AttentionDescriptionTypography color="red">
+              上記の金額は、2024年2月1日以降にご入会される方の料金です。
+            </AttentionDescriptionTypography>
+          </AttentionDescriptionBox>
+
+          <AttentionDescriptionBox>
             <AsteriskTypography />
             <AttentionDescriptionTypography>
               入会料金は、他のお客様からの紹介でご入会する際には無料となります。
@@ -76,13 +83,6 @@ export const Price = () => {
             <AsteriskTypography />
             <AttentionDescriptionTypography>
               ティーチングは月4コマ以上を受講していただきます。
-            </AttentionDescriptionTypography>
-          </AttentionDescriptionBox>
-
-          <AttentionDescriptionBox>
-            <AsteriskTypography />
-            <AttentionDescriptionTypography>
-              過去問・模試動画添削では、1年度1科目分(例:「〇〇中2023年度国語」)で１教材とさせていただきます。
             </AttentionDescriptionTypography>
           </AttentionDescriptionBox>
         </AttentionBox>
