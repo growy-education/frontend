@@ -24,6 +24,8 @@ export class Question {
 
   memo: string;
 
+  deadline: Date;
+
   status: QuestionStatus;
 
   @Type(() => ImageEntity)

@@ -15,6 +15,7 @@ import { SubjectTypography } from "../SubjectTypography";
 import { AuthContext } from "../../providers/auth.provider";
 import { AnswerHeader } from "./components/AnswerHeader";
 import { TaskStatus } from "../tasks/types/task-status.enum";
+import { RolesGuard } from "../../tools/RolesGuard";
 
 type QuestionDetailProps = {
   question: Question;
@@ -26,6 +27,7 @@ export const QuestionDetail = ({ question, ...props }: QuestionDetailProps) => {
     id,
     createdAt,
     updatedAt,
+    deadline,
     subject,
     title,
     content,
@@ -47,6 +49,10 @@ export const QuestionDetail = ({ question, ...props }: QuestionDetailProps) => {
         <Typography>{id}</Typography>
         <HeadlineTypography>質問日時</HeadlineTypography>
         <JaDateTimeTypography date={createdAt} />
+        <RolesGuard roles={[Role.ADMIN, Role.TEACHER]}>
+          <HeadlineTypography>回答期限</HeadlineTypography>
+          <JaDateTimeTypography date={deadline} />
+        </RolesGuard>
         <HeadlineTypography>科目</HeadlineTypography>
         <Box p={2}>
           <SubjectTypography subject={subject} />
