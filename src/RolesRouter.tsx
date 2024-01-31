@@ -75,6 +75,9 @@ export const RolesRouter: React.FC = () => {
 
           <Route path="/lessons" element={<LessonsListPage />} />
 
+          <Route path="/rooms" element={<RoomListPage />} />
+          <Route path="/rooms/:roomId" element={<RoomDetailPage />} />
+
           {user.role === Role.ADMIN && (
             <>
               <Route path="/questions" element={<QuestionListPage />} />
@@ -89,7 +92,6 @@ export const RolesRouter: React.FC = () => {
               />
 
               <Route path="/rooms/new" element={<RoomNewPage />} />
-              <Route path="/rooms/:roomId" element={<RoomDetailPage />} />
 
               <Route path="/users" element={<UsersList />} />
               <Route path="/users/new" element={<UserNew />} />
@@ -125,8 +127,7 @@ export const RolesRouter: React.FC = () => {
                 element={<StudentEdit />}
               />
 
-              <Route path="/rooms" element={<RoomListPage />} />
-              <Route path="/rooms/:roomId" element={<RoomDetailPage />} />
+              <Route path="/rooms/new" element={<RoomNewPage />} />
             </>
           )}
           {user.role === Role.CUSTOMER && (
