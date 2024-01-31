@@ -44,7 +44,7 @@ export const ListItemRoom = () => {
               <ListItemText primary="リスト" />
             </ListItemButton>
           </ListItem>
-          {user.role === Role.CUSTOMER && (
+          {/* {user.role === Role.CUSTOMER && (
             <ListItem onClick={() => navigate("/rooms/reserve")}>
               <ListItemButton>
                 <ListItemIcon>
@@ -53,7 +53,7 @@ export const ListItemRoom = () => {
                 <ListItemText primary="まとめて予約する" />
               </ListItemButton>
             </ListItem>
-          )}
+          )} */}
           {user.role === Role.ADMIN && (
             <ListItem onClick={() => navigate("/rooms/new")}>
               <ListItemButton>

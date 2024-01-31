@@ -126,8 +126,6 @@ export const RolesRouter: React.FC = () => {
                 path="/students/:studentId/edit"
                 element={<StudentEdit />}
               />
-
-              <Route path="/rooms/new" element={<RoomNewPage />} />
             </>
           )}
           {user.role === Role.CUSTOMER && (

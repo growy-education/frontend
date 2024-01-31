@@ -21,6 +21,7 @@ export const DrawerListItem = () => {
     <List>
       <ListItemHome />
       <ListItemQuestion />
+      <ListItemRoom />
       <LIstItemLesson />
       <ListItemGoogleChat />
 
@@ -30,7 +31,6 @@ export const DrawerListItem = () => {
           <ListItemCustomer />
           <ListItemStudent />
           <ListItemTeacher />
-          <ListItemRoom />
         </>
       )}
       <ListItemSettings />

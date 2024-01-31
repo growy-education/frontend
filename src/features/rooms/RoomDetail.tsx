@@ -6,7 +6,6 @@ import { RoomEndAt } from "./components/endAt/RoomEndAt";
 import { RoomStudents } from "./components/students/RoomStudents";
 import { RoomStatus } from "./components/RoomStatus";
 import { HeadlineTypography } from "../../components/Element/Typography/HeadlineTypography";
-import { RolesGuard } from "../../tools/RolesGuard";
 import { RoomTeacher } from "./components/teacher/RoomTeacher";
 
 type RoomDetailProps = {
