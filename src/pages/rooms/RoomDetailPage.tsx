@@ -1,17 +1,14 @@
-import { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 
-import { Room } from "../../features/rooms/types/room.class";
-import { plainToInstance } from "class-transformer";
 import { Box, Container } from "@mui/material";
 import { LoadingBox } from "../../features/LoadingData";
-import { axios } from "../../tools/axios";
 import { HeaderBox } from "../../components/Layout/HeaderBox";
 import { BackButton } from "../../components/Element/Button/BackButton";
 import { RoomActionMenuButton } from "../../features/rooms/components/header/RoomActionMenuButton";
 import { useRoom } from "../../features/rooms/api/getRoom";
 import { AlertBox } from "../../features/AlertBox";
 import { RoomDetail } from "../../features/rooms/RoomDetail";
+import { RoomReservableAlert } from "../../features/rooms/components/RoomReservableAlert";
 
 export const RoomDetailPage = () => {
   const { roomId } = useParams();
@@ -48,6 +45,7 @@ export const RoomDetailPage = () => {
         <BackButton />
         <RoomActionMenuButton room={room} />
       </HeaderBox>
+      <RoomReservableAlert room={room} />
       <Box my={3}>
         <RoomDetail room={room} />
       </Box>
