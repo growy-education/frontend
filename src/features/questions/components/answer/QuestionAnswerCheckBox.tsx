@@ -18,11 +18,6 @@ export const QuestionAnswerCheckBox = (props: BoxProps) => {
         control={<Checkbox />}
         label="動画を限定公開に設定しましたか？"
       />
-      <FormControlLabel
-        required
-        control={<Checkbox />}
-        label="動画を再生リストに追加しましたか？"
-      />
     </Box>
   );
 };

@@ -12,9 +12,6 @@ import { CreateQuestionDto } from "../../../features/questions/types/create-ques
 import { QuestionSubjectSelect } from "../../../features/questions/components/subject/QuestionSubjectSelect";
 import { useCreateQuestion } from "../../../features/questions/api/createQuestion";
 import { QuestionImagesInput } from "../../../features/questions/components/images/QuestionImagesInput";
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
-import { Subject } from "../../../domains/subject.enum";
 
 export const CustomerQuestionNewPage = () => {
   const mutation = useCreateQuestion();
