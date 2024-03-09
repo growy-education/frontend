@@ -38,8 +38,8 @@ export const useSendRatingToAnswer = ({
         type: "success",
         title:
           typeof variables.dto?.rating === "number"
-            ? "評価しました"
-            : "コメントしました",
+            ? "評価しました。講師の励みになりますので、今後もお願いいたします。"
+            : "動画にコメントしました。講師の励みになりますので、今後もお願いいたします。",
       });
     },
     onError: async (_error, variables) => {
