@@ -1,6 +1,5 @@
 import { useContext, useState } from "react";
-import { Box, BoxProps, Divider } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { BoxProps, Divider } from "@mui/material";
 
 // ドメイン
 import { Role } from "../../../users/types/role.enum";
@@ -26,6 +25,7 @@ import { AddTaskToQuestionMenuItem } from "./menu/AddTaskToQuestionMenuItem";
 import { AuthContext } from "../../../../providers/auth.provider";
 import { BackButton } from "../../../../components/Element/Button/BackButton";
 import { HeaderBox } from "../../../../components/Layout/HeaderBox";
+import { RemindQuestionMenuItem } from "./menu/RemindQuestionMenuItem";
 
 type QuestionHeaderBoxProps = {
   question: Question;
@@ -35,7 +35,6 @@ export const QuestionHeaderBox = ({
   question,
   ...props
 }: QuestionHeaderBoxProps) => {
-  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -47,7 +46,7 @@ export const QuestionHeaderBox = ({
   };
 
   return (
-    <HeaderBox>
+    <HeaderBox {...props}>
       <BackButton />
       <QuestionActionButton
         aria-controls={open ? "demo-customized-menu" : undefined}
@@ -61,6 +60,9 @@ export const QuestionHeaderBox = ({
       <QuestionActionMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <RolesGuard roles={[Role.ADMIN, Role.CUSTOMER]}>
           <EditQuestionMenuItem question={question} onClick={handleClose} />
+        </RolesGuard>
+        <RolesGuard roles={[Role.ADMIN]}>
+          <RemindQuestionMenuItem question={question} onClick={handleClose} />
         </RolesGuard>
         <RolesGuard roles={[Role.ADMIN, Role.CUSTOMER]}>
           <CancelQuestionMenuItem question={question} onClick={handleClose} />

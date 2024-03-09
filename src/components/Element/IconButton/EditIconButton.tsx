@@ -1,5 +1,5 @@
 import { Cancel, Edit, Save } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 
 type EditIconButtonProps = {
   isEditing: boolean;
@@ -17,12 +17,14 @@ export const EditIconButton = ({
           <Save color="primary" fontSize="large" />
         </IconButton>
       )}
-      <IconButton
-        aria-label="edit-button"
-        onClick={() => setIsEditing(!isEditing)}
-      >
-        {isEditing ? <Cancel color="warning" fontSize="large" /> : <Edit />}
-      </IconButton>
+      <Tooltip title="編集する">
+        <IconButton
+          aria-label="edit-button"
+          onClick={() => setIsEditing(!isEditing)}
+        >
+          {isEditing ? <Cancel color="warning" fontSize="large" /> : <Edit />}
+        </IconButton>
+      </Tooltip>
     </>
   );
 };

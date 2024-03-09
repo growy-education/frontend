@@ -1,49 +1,40 @@
-import { Box } from "@mui/material";
+import { Divider } from "@mui/material";
 import { User } from "./types/user.class";
 import { HeadlineTypography } from "../../components/Element/Typography/HeadlineTypography";
-import { JaDateTimeTypography } from "../../components/Element/Typography/JaDateTimeTypography";
 import { DetailTypography } from "../../components/Element/Typography/DetailTyporagphy";
-import { CheckUserWebhookButton } from "./CheckUserWebhookButton";
 import { UserId } from "./components/UserId";
+import { CreatedAt } from "../../components/shared/CreatedAt";
+import { UpdatedAt } from "../../components/shared/UpdatedAt";
+import { UserEmail } from "./components/UserEmail";
+import { UserPhone } from "./components/UserPhone";
+import { UserChatWebhookUrl } from "./components/UserChatWebhookUrl";
 
 type UserDetailProps = {
   user: User;
 };
 
 export const UserDetail = ({ user }: UserDetailProps) => {
-  const {
-    id,
-    createdAt,
-    updatedAt,
-    username,
-    email,
-    phone,
-    role,
-    chatWebhookUrl,
-  } = user;
+  const { id, createdAt, updatedAt, username, role } = user;
 
   return (
     <>
       <UserId id={id} />
-      <HeadlineTypography>作成日時</HeadlineTypography>
-      <JaDateTimeTypography textAlign="right" date={createdAt} />
-      <HeadlineTypography>更新日時</HeadlineTypography>
-      <JaDateTimeTypography textAlign="right" date={updatedAt} />
+      <Divider />
+      <CreatedAt createdAt={createdAt} />
+      <Divider />
+      <UpdatedAt updatedAt={updatedAt} />
+      <Divider />
       <HeadlineTypography>ユーザータイプ</HeadlineTypography>
       <DetailTypography>{role}</DetailTypography>
+      <Divider />
       <HeadlineTypography>ユーザー名</HeadlineTypography>
       <DetailTypography>{username}</DetailTypography>
-      <HeadlineTypography>メールアドレス</HeadlineTypography>
-      <DetailTypography>{email}</DetailTypography>
-      <HeadlineTypography>電話番号</HeadlineTypography>
-      <DetailTypography>{phone}</DetailTypography>
-      <HeadlineTypography>GoogleChat WebhookURL(DM)</HeadlineTypography>
-      <Box display="flex" justifyContent="flex-end">
-        <CheckUserWebhookButton user={user} />
-      </Box>
-      <DetailTypography sx={{ wordBreak: "break-all" }}>
-        {chatWebhookUrl}
-      </DetailTypography>
+      <Divider />
+      <UserEmail user={user} />
+      <Divider />
+      <UserPhone user={user} />
+      <Divider />
+      <UserChatWebhookUrl user={user} />
     </>
   );
 };

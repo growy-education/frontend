@@ -1,4 +1,4 @@
-import { BoxProps, Chip, CircularProgress } from "@mui/material";
+import { BoxProps, Chip } from "@mui/material";
 import { Done, SyncProblem } from "@mui/icons-material";
 import { ImageEntity } from "./types/image.class";
 

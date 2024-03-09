@@ -14,6 +14,7 @@ import { CompleteQuestionTaskButton } from "./CompleteQuestionTaskButton";
 import { RetryQuestionTaskButton } from "./RetryQuestionTaskButton";
 import { HeaderBox } from "../../components/Layout/HeaderBox";
 import { AuthContext } from "../../providers/auth.provider";
+import { CreatedAt } from "../../components/shared/CreatedAt";
 
 type TaskDetailProps = {
   task: Task;
@@ -40,8 +41,7 @@ export const TaskDetail = ({ task, ...props }: TaskDetailProps) => {
         <TaskTitle task={task} />
         <HeadlineTypography>ID</HeadlineTypography>
         <Typography>{id}</Typography>
-        <HeadlineTypography>作成日時</HeadlineTypography>
-        <JaDateTimeTypography date={createdAt} />
+        <CreatedAt createdAt={createdAt} />
         <HeadlineTypography>種類</HeadlineTypography>
         <Typography>質問回答</Typography>
         <HeadlineTypography>ステータス</HeadlineTypography>
