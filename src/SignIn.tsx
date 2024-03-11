@@ -26,7 +26,6 @@ import { AsteriskTypography } from "./features/lp/price/AsteriskTypography";
 import { LineLinkTypography } from "./components/Element/Typography/LineLinkTypography";
 import { GoogleChatLinkTypography } from "./components/Element/Typography/GoogleChatLinkTypography";
 import { ArrowBack } from "@mui/icons-material";
-import { AuthContext } from "./providers/auth.provider";
 import { useNavigate } from "react-router-dom";
 import { useLoginWithPassword } from "./features/auth/api/loginWithPassword";
 import { useLoginWithGoogle } from "./features/auth/api/loginWithGoogle";
@@ -50,6 +49,8 @@ export const SignInScreen = () => {
   const mutationPasswordLogin = useLoginWithPassword();
   const mutationGoogleLogin = useLoginWithGoogle();
 
+  const [errorText, setErrorText] = useState("");
+
   const resolver = classValidatorResolver(SigninWithPasswordDto);
   const {
     register,
@@ -65,7 +66,16 @@ export const SignInScreen = () => {
   };
 
   const handleGoogleLogin = (response: GoogleCredentialResponse) => {
-    mutationGoogleLogin.mutate({ response });
+    mutationGoogleLogin.mutate(
+      { response },
+      {
+        onError: () => {
+          setErrorText(
+            "Googleログインに失敗しました。運営までお問い合わせください。"
+          );
+        },
+      }
+    );
   };
 
   const handleGoogleLoginError = () => {};
@@ -102,6 +112,17 @@ export const SignInScreen = () => {
             size="large"
           />
         </Box>
+
+        {errorText === "" && (
+          <Box mx={3}>
+            <Typography color={"error"}>
+              Googleログインに失敗しました。
+              <br />
+              運営までお問い合わせください。
+              {errorText}
+            </Typography>
+          </Box>
+        )}
 
         <AttentionBox>
           <AttentionTitleTypography width="12rem">
