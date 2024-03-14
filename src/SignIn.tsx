@@ -113,14 +113,9 @@ export const SignInScreen = () => {
           />
         </Box>
 
-        {errorText === "" && (
+        {errorText !== "" && (
           <Box mx={3}>
-            <Typography color={"error"}>
-              Googleログインに失敗しました。
-              <br />
-              運営までお問い合わせください。
-              {errorText}
-            </Typography>
+            <Typography color={"error"}>{errorText}</Typography>
           </Box>
         )}
 

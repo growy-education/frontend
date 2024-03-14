@@ -45,39 +45,46 @@ export const AdminQuestionInfo = () => {
   };
 
   const getReactionRequired = (questions: Question[]) => {
-    return questions.reduce((result, question) => {
-      if (
-        question.status === QuestionStatus.PENDING &&
-        question?.teacher === null
-      ) {
-        const customQuestion = plainToInstance(CustomQuestion, question);
-        customQuestion.reaction = "講師を割り当ててください";
-        result.push(customQuestion);
-      }
-      if (
-        question.status === QuestionStatus.PENDING &&
-        question?.teacher &&
-        Date.now() - question.createdAt.getTime() > 12 * 60 * 60 * 1000
-      ) {
-        const customQuestion = plainToInstance(CustomQuestion, question);
-        customQuestion.reaction = "質問の確認がされていません";
-        result.push(customQuestion);
-      }
-      if (
-        question.status === QuestionStatus.ASSIGNED &&
-        Date.now() - question.createdAt.getTime() > 24 * 60 * 60 * 1000
-      ) {
-        const customQuestion = plainToInstance(CustomQuestion, question);
-        customQuestion.reaction = "質問の回答期限を過ぎています";
-        result.push(customQuestion);
-      }
-      if (question.status === QuestionStatus.CHECKING) {
-        const customQuestion = plainToInstance(CustomQuestion, question);
-        customQuestion.reaction = "回答動画のチェックをしてください";
-        result.push(customQuestion);
-      }
-      return result;
-    }, [] as CustomQuestion[]);
+    return questions
+      .reduce((result, question) => {
+        if (
+          question.status === QuestionStatus.PENDING &&
+          question?.teacher === null
+        ) {
+          const customQuestion = plainToInstance(CustomQuestion, question);
+          customQuestion.reaction = "講師を割り当ててください";
+          result.push(customQuestion);
+        }
+        if (
+          question.status === QuestionStatus.PENDING &&
+          question?.teacher &&
+          Date.now() - question.createdAt.getTime() > 12 * 60 * 60 * 1000
+        ) {
+          const customQuestion = plainToInstance(CustomQuestion, question);
+          customQuestion.reaction = "質問の確認がされていません";
+          result.push(customQuestion);
+        }
+        if (
+          question.status === QuestionStatus.ASSIGNED &&
+          Date.now() - question.createdAt.getTime() > 24 * 60 * 60 * 1000
+        ) {
+          const customQuestion = plainToInstance(CustomQuestion, question);
+          customQuestion.reaction = "質問の回答期限を過ぎています";
+          result.push(customQuestion);
+        }
+        if (question.status === QuestionStatus.CHECKING) {
+          const customQuestion = plainToInstance(CustomQuestion, question);
+          customQuestion.reaction = "回答動画のチェックをしてください";
+          result.push(customQuestion);
+        }
+        return result;
+      }, [] as CustomQuestion[])
+      .map((value) => {
+        if (value.isTrainingForTeacher) {
+          value.reaction = "*" + value.reaction;
+        }
+        return value;
+      });
   };
 
   if (isLoading) {

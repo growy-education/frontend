@@ -70,6 +70,8 @@ export const QuestionListPage = () => {
     );
   }
 
+  console.log(JSON.stringify(data));
+
   return (
     <Box sx={{ width: "100%" }}>
       <PageTitleTypography>質問リスト</PageTitleTypography>

@@ -6,7 +6,7 @@ import { useSendRatingToAnswer } from "../api/sendRatingToAnswer";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { QuestionAnswerRatingDto } from "../types/answer-rating.dto";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
-import { Cancel, Edit, Save } from "@mui/icons-material";
+import { Cancel, Edit, Send } from "@mui/icons-material";
 
 type AnswerCommentProps = {
   question: Question;
@@ -52,56 +52,91 @@ export const AnswerComment = ({ question, task }: AnswerCommentProps) => {
 
   return (
     <Box component="form" onSubmit={handleSubmit(handleConfirm)}>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Typography textAlign={"left"}>動画へのコメント：</Typography>
-
-        <Box>
-          {isEditing && (
-            <IconButton type="submit" arial-label="save-button">
-              <Save color="primary" fontSize="large" />
+      {typeof task?.comment === "string" && !!task?.comment ? (
+        <Box my={1}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography textAlign={"left"}>動画へのコメント：</Typography>
+            <IconButton aria-label="edit-button">
+              {isEditing ? (
+                <Cancel
+                  color="warning"
+                  fontSize="large"
+                  onClick={() => setIsEditing(false)}
+                />
+              ) : (
+                <Tooltip title="コメントを編集する" placement="left-end">
+                  <Edit onClick={() => setIsEditing(true)} />
+                </Tooltip>
+              )}
             </IconButton>
-          )}
-          <IconButton aria-label="edit-button">
-            {isEditing ? (
-              <Cancel
-                color="warning"
-                fontSize="large"
-                onClick={() => setIsEditing(false)}
+          </Box>
+          {isEditing ? (
+            <Box
+              my={1}
+              sx={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <TextField
+                fullWidth
+                id="comment"
+                label="動画へコメントしてみよう"
+                multiline
+                error={!!errors.comment}
+                helperText={
+                  !!errors.comment
+                    ? errors.comment.message
+                    : "例)わかりやすい解説をありがとうございます。"
+                }
+                {...register("comment")}
               />
-            ) : (
-              <Tooltip title="動画にコメントしてみよう" placement="left-end">
-                <Edit onClick={() => setIsEditing(true)} />
-              </Tooltip>
-            )}
+              <IconButton
+                type="submit"
+                arial-label="save-button"
+                sx={{ mb: 3 }}
+              >
+                <Send color="primary" fontSize="large" />
+              </IconButton>
+            </Box>
+          ) : (
+            <Typography>{task.comment}</Typography>
+          )}
+        </Box>
+      ) : (
+        <Box
+          my={1}
+          sx={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <TextField
+            fullWidth
+            id="comment"
+            label="動画へコメントしてみよう"
+            multiline
+            error={!!errors.comment}
+            helperText={
+              !!errors.comment
+                ? errors.comment.message
+                : "例)わかりやすい解説をありがとうございます。"
+            }
+            {...register("comment")}
+          />
+          <IconButton type="submit" arial-label="save-button" sx={{ mb: 3 }}>
+            <Send color="primary" fontSize="large" />
           </IconButton>
         </Box>
-      </Box>
-      <Box>
-        {isEditing ? (
-          <>
-            <TextField
-              fullWidth
-              id="comment"
-              label="コメント"
-              error={!!errors.comment}
-              helperText={
-                !!errors.comment
-                  ? errors.comment.message
-                  : "例)わかりやすい解説をありがとうございます。"
-              }
-              {...register("comment")}
-            />
-          </>
-        ) : (
-          <Typography>{task.comment}</Typography>
-        )}
-      </Box>
+      )}
     </Box>
   );
 };

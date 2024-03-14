@@ -87,6 +87,9 @@ export const QuestionDetail = ({ question, ...props }: QuestionDetailProps) => {
             .filter((task) => {
               return task.status === TaskStatus.COMPLETED;
             })
+            .sort((a, b) =>
+              a.answer.toLowerCase().localeCompare(b.answer.toLowerCase())
+            )
             .map((task) => (
               <Box p={2}>
                 <AnswerHeader question={question} task={task} />

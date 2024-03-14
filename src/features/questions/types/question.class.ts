@@ -26,6 +26,8 @@ export class Question {
 
   deadline: Date;
 
+  isTrainingForTeacher: boolean;
+
   status: QuestionStatus;
 
   @Type(() => ImageEntity)

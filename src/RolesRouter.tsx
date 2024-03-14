@@ -7,7 +7,7 @@ import { Role } from "./features/users/types/role.enum";
 import { General } from "./General";
 
 import { NotFound } from "./features/NotFound";
-import { HomePage } from "./pages/InformationPage";
+import { HomePage } from "./pages/HomePage";
 
 // Profiles
 import { AccountPage } from "./pages/settings/AccountPage";
