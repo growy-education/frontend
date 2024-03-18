@@ -22,7 +22,7 @@ export const QuestionListPage = () => {
     isPending,
     isError,
   } = useInfiniteQuery({
-    queryKey: ["questions"],
+    queryKey: ["questions", "all"],
     queryFn: async ({ pageParam }) => {
       const response = await axios.get("/questions", { params: pageParam });
       if (!Array.isArray(response.data)) {
@@ -32,16 +32,16 @@ export const QuestionListPage = () => {
     },
     initialPageParam: { take: 10, skip: 0 },
     getNextPageParam: (lastPage, allPages) => {
-      if (!!!lastPage || !!!allPages) {
+      if (!Array.isArray(lastPage) || !Array.isArray(allPages)) {
         return;
       }
       if (lastPage.length < 10) {
         return;
       }
-      const length = allPages.reduce((sum, questions) => {
-        sum += questions.length;
-        return sum;
-      }, 0);
+      const length = allPages.reduce(
+        (sum, questions) => sum + (questions?.length || 0),
+        0
+      );
       return {
         take: 10,
         skip: length,
@@ -70,14 +70,12 @@ export const QuestionListPage = () => {
     );
   }
 
-  console.log(JSON.stringify(data));
-
   return (
     <Box sx={{ width: "100%" }}>
       <PageTitleTypography>質問リスト</PageTitleTypography>
       <Box p={2}>
-        {data?.pages.length === 0 && <YetNoQuestionBox />}
-        {data?.pages.map((page, i) => (
+        {data?.pages?.length === 0 && <YetNoQuestionBox />}
+        {data?.pages?.map((page, i) => (
           <Fragment key={i}>
             {page.map((question) => (
               <QuestionCard
