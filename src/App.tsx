@@ -13,31 +13,37 @@ import { AlertSnackbarContextProvider } from "./providers/alert-snackbar.provide
 import dayjs from "dayjs";
 import "dayjs/locale/ja";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Fallback } from "./components/Fallback";
+import { ErrorBoundary } from "react-error-boundary";
 dayjs.locale("ja");
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
-    <div className="App">
-      <QueryClientProvider client={queryClient}>
-        <CustomThemeProvider>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <GoogleOAuthProvider
-              clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID as string}
-            >
-              <AlertSnackbarContextProvider>
-                <NotificationContextProvider>
-                  <AuthContextProvider>
-                    <RolesRouter />
-                  </AuthContextProvider>
-                </NotificationContextProvider>
-              </AlertSnackbarContextProvider>
-            </GoogleOAuthProvider>
-          </LocalizationProvider>
-        </CustomThemeProvider>
-      </QueryClientProvider>
-    </div>
+    <ErrorBoundary FallbackComponent={Fallback}>
+      <div className="App">
+        <QueryClientProvider client={queryClient}>
+          <CustomThemeProvider>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <GoogleOAuthProvider
+                clientId={
+                  process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID as string
+                }
+              >
+                <AlertSnackbarContextProvider>
+                  <NotificationContextProvider>
+                    <AuthContextProvider>
+                      <RolesRouter />
+                    </AuthContextProvider>
+                  </NotificationContextProvider>
+                </AlertSnackbarContextProvider>
+              </GoogleOAuthProvider>
+            </LocalizationProvider>
+          </CustomThemeProvider>
+        </QueryClientProvider>
+      </div>
+    </ErrorBoundary>
   );
 }
 

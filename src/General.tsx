@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Box } from "@mui/material";
 
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { AlertSnackbarContext } from "./providers/alert-snackbar.provider";
 import { AlertSnackbar } from "./features/AlertSnackbar";
 import { PageWrapperBox } from "./features/PageWrapperBox";
