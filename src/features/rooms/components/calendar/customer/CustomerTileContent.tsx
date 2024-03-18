@@ -30,7 +30,9 @@ export const CustomerCalendarTileContent = ({
 
     return (
       <Tooltip
-        title={!!room ? "詳細を確認する" : "自習室が開催されません"}
+        title={
+          room instanceof Room ? "詳細を確認する" : "自習室が開催されません"
+        }
         placement="top"
       >
         <Box

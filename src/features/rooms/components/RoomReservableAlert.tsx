@@ -18,14 +18,14 @@ export const RoomReservableAlert = ({ room }: { room: Room }) => {
         開催済みのため、こちらの自習室は予約できません。
       </Alert>
     );
-  } else if (
-    room.startAt.getTime() - 2 * 24 * 60 * 60 * 1000 <= now.getTime() ||
-    now.getTime() <= room.startAt.getTime()
-  ) {
+  }
+  if (room.startAt.getTime() - 2 * 24 * 60 * 60 * 1000 < now.getTime()) {
     return (
       <Alert severity="error">
         開催直前のため、こちらの自習室は予約できません。
       </Alert>
     );
   }
+
+  return null;
 };

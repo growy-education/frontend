@@ -45,6 +45,9 @@ export const AdminQuestionInfo = () => {
   };
 
   const getReactionRequired = (questions: Question[]) => {
+    if (!Array.isArray(questions)) {
+      return [];
+    }
     return questions
       .reduce((result, question) => {
         if (
