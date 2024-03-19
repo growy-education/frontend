@@ -1,9 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
+import Fuse from "fuse.js";
+
 import { LoadingBox } from "../../features/LoadingData";
 import { AlertBox } from "../../features/AlertBox";
 import { useStudents } from "../../features/students/api/getStudents";
+import { useState } from "react";
+import { SearchTextField } from "../../components/Element/TextField/SearchTextField";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", flex: 1 },
@@ -17,6 +21,7 @@ const columns: GridColDef[] = [
 
 export const StudentsList = () => {
   const navigate = useNavigate();
+  const [searchText, setSearchText] = useState<string>("");
 
   const { isLoading, isError, data: students } = useStudents();
 
@@ -39,15 +44,32 @@ export const StudentsList = () => {
     );
   }
 
+  const fuse = new Fuse(students, {
+    keys: ["id", "fistName", "firstNameKana", "lastName", "lastNameKana"],
+  });
+  const results = fuse.search(searchText);
+
   return (
     <Box sx={{ width: "100%" }}>
-      <DataGrid
-        onRowClick={handleRowClick}
-        autoHeight
-        hideFooter
-        rows={students}
-        columns={columns}
-      />
+      <Box mt={2}>
+        <SearchTextField
+          fullWidth
+          value={searchText}
+          onChange={(event) => setSearchText(event.target.value)}
+        />
+      </Box>
+
+      <Box mt={2}>
+        <DataGrid
+          onRowClick={handleRowClick}
+          autoHeight
+          hideFooter
+          columns={columns}
+          rows={
+            searchText === "" ? students : results.map((result) => result.item)
+          }
+        />
+      </Box>
     </Box>
   );
 };

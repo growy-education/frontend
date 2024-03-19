@@ -1,32 +1,28 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
-import { GridColDef, GridRowParams } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
+import * as Fuse from "fuse.js";
 
-import { CustomDataGrid } from "../../components/Element/DataGrid/CustomDataGrid";
-import { SearchDataGrid } from "../../components/Element/DataGrid/SearchDataGrid";
-import { EditDataGrid } from "../../components/Element/DataGrid/EditDataGrid";
 import { LoadingBox } from "../../features/LoadingData";
 import { AlertBox } from "../../features/AlertBox";
 import { useUsers } from "../../features/users/api/getUsers";
+import { User } from "../../features/users/types/user.class";
+import { SearchTextField } from "../../components/Element/TextField/SearchTextField";
 
-type CustomGridColDef = GridColDef & { order: number };
-
-const UserColumns: CustomGridColDef[] = [
-  { field: "id", headerName: "ID", flex: 1, order: 1 },
-  { field: "createdAt", headerName: "作成日時", flex: 1, order: 2 },
-  { field: "updatedAt", headerName: "更新日時", flex: 1, order: 3 },
-  { field: "role", headerName: "アカウントタイプ", flex: 1, order: 4 },
-  { field: "username", headerName: "ユーザー名", flex: 1, order: 5 },
-  { field: "email", headerName: "メールアドレス", flex: 1, order: 6 },
-  { field: "phone", headerName: "電話番号", flex: 1, order: 7 },
+const columns: GridColDef[] = [
+  { field: "id", headerName: "ID", flex: 1 },
+  { field: "createdAt", headerName: "作成日時", flex: 1 },
+  { field: "updatedAt", headerName: "更新日時", flex: 1 },
+  { field: "role", headerName: "アカウントタイプ", flex: 1 },
+  { field: "username", headerName: "ユーザー名", flex: 1 },
+  { field: "email", headerName: "メールアドレス", flex: 1 },
+  { field: "phone", headerName: "電話番号", flex: 1 },
 ];
 
 export const UsersList = () => {
   const navigate = useNavigate();
 
-  const [columns, setColumns] = useState(UserColumns);
-  const [selectedColumn, setSelectedColumn] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
 
   const { isLoading, isError, data: users } = useUsers({});
@@ -34,14 +30,6 @@ export const UsersList = () => {
   const handleRowClick = (params: GridRowParams) => {
     const rowId = params.id as string;
     navigate(`./${rowId}`);
-  };
-
-  const handleSearch = () => {
-    // Search logic
-    // Implement your search logic based on the selectedColumn and searchText
-    // For example, filter the users array based on the selected column and search text
-    // Update the filtered users in state
-    console.log("いま!");
   };
 
   if (isLoading) {
@@ -58,27 +46,30 @@ export const UsersList = () => {
     );
   }
 
+  const options: Fuse.IFuseOptions<User> = {
+    keys: ["id", "username", "email", "phone"],
+  };
+  const fuse = new Fuse.default(users, options);
+  const results = fuse.search(searchText);
+
   return (
     <Box sx={{ width: "100%" }}>
-      <EditDataGrid
-        defaultColumns={UserColumns}
-        columns={columns}
-        setColumns={setColumns}
-      />
-
-      <SearchDataGrid
-        defaultColumns={UserColumns}
-        selectedColumn={selectedColumn}
-        setSelectedColumn={setSelectedColumn}
-        searchText={searchText}
-        setSearchText={setSearchText}
-        handleSearch={handleSearch}
-      />
+      <Box mt={2}>
+        <SearchTextField
+          fullWidth
+          value={searchText}
+          onChange={(event) => setSearchText(event.target.value)}
+        />
+      </Box>
 
       <Box mt={2}>
-        <CustomDataGrid
+        <DataGrid
           onRowClick={handleRowClick}
-          rows={users}
+          autoHeight
+          hideFooter
+          rows={
+            searchText === "" ? users : results.map((result) => result.item)
+          }
           columns={columns}
         />
       </Box>
