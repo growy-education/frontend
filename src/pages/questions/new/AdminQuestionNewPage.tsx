@@ -47,14 +47,11 @@ export const AdminQuestionNewPage = () => {
 
   return (
     <>
-      <PageTitleTypography>新しく質問する</PageTitleTypography>
+      <PageTitleTypography>質問回答 講師研修</PageTitleTypography>
 
       <Box component="form" onSubmit={handleSubmit(handleQuestionUpload)}>
         <HeadlineTypography>講師</HeadlineTypography>
         <TeacherSelect errors={errors} {...register("teacherId")} />
-
-        <HeadlineTypography>生徒</HeadlineTypography>
-        <UserSelect errors={errors} required={false} {...register("userId")} />
 
         <HeadlineTypography>科目</HeadlineTypography>
         <QuestionSubjectSelect errors={errors} {...register("subject")} />
