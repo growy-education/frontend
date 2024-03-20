@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-import { HeadlineTypography } from "../../components/Element/Typography/HeadlineTypography";
-
-import { Gender } from "../../features/students/types/gender.enum";
+import dayjs from "dayjs";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
+
+import { HeadlineTypography } from "../../components/Element/Typography/HeadlineTypography";
+import { Gender } from "../../features/students/types/gender.enum";
 import { LoadingBox } from "../../features/LoadingData";
 import { FirstNameTextField } from "../../components/Element/TextField/FirstNameTextField";
 import { FirstNameKanaTextField } from "../../components/Element/TextField/FirstNameKanaTextField";
@@ -18,7 +19,6 @@ import { PageTitleTypography } from "../../components/Element/Typography/PageTit
 import { HeaderBox } from "../../components/Layout/HeaderBox";
 import { CancelEditButton } from "../../components/Element/Button/CancelEditButton";
 import { SaveEditButton } from "../../components/Element/Button/SaveEditButton";
-import dayjs from "dayjs";
 import { AlertBox } from "../../features/AlertBox";
 import { useStudent } from "../../features/students/api/getStudent";
 import { useUpdateStudent } from "../../features/students/api/updateStudent";
