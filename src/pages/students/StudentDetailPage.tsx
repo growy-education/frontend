@@ -9,7 +9,7 @@ import { AlertBox } from "../../features/AlertBox";
 import { useStudent } from "../../features/students/api/getStudent";
 import { BackButton } from "../../components/Element/Button/BackButton";
 
-export const StudentDetailProps = () => {
+export const StudentDetailPage = () => {
   const { studentId } = useParams();
   const navigate = useNavigate();
 

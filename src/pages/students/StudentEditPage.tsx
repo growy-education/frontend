@@ -3,7 +3,7 @@ import { HeadlineTypography } from "../../components/Element/Typography/Headline
 
 import { Gender } from "../../features/students/types/gender.enum";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { LoadingBox } from "../../features/LoadingData";
 import { FirstNameTextField } from "../../components/Element/TextField/FirstNameTextField";
@@ -27,7 +27,6 @@ import { GenderRadioGroup } from "../../features/students/GenderRadioGroup";
 import { BirthdayDatePicker } from "../../features/students/BirthdayDatePicker";
 
 export const StudentEdit = () => {
-  const navigate = useNavigate();
   const { studentId } = useParams();
 
   const { data: student, isError, isPending } = useStudent({ studentId });

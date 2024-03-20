@@ -16,7 +16,7 @@ export const updateTeacher = async ({
   id,
   dto,
 }: UpdateTeacherVariables): Promise<Teacher> => {
-  return axios.patch(`teachers/${id}`, dto).then((response) => {
+  return axios.put(`teachers/${id}`, dto).then((response) => {
     return plainToInstance(Teacher, response.data);
   });
 };

@@ -50,7 +50,7 @@ import { TeacherDetailProps } from "./pages/teachers/TeacherDetailPage";
 // Students
 import { StudentsList } from "./pages/students/StudentsListPage";
 import { StudentNew } from "./pages/students/StudentNewPage";
-import { StudentDetailProps } from "./pages/students/StudentDetailPage";
+import { StudentDetailPage } from "./pages/students/StudentDetailPage";
 import { StudentEdit } from "./pages/students/StudentEditPage";
 import { LessonsListPage } from "./pages/lessons/LessonsListPage";
 import { TeacherSettingsPage } from "./pages/settings/TeacherSettingsPage";
@@ -120,7 +120,7 @@ export const RolesRouter: React.FC = () => {
               <Route path="/students/new" element={<StudentNew />} />
               <Route
                 path="/students/:studentId"
-                element={<StudentDetailProps />}
+                element={<StudentDetailPage />}
               />
               <Route
                 path="/students/:studentId/edit"

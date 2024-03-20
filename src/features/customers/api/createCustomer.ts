@@ -28,8 +28,8 @@ export const useCreateCustomer = ({
   const { set } = useToastStore();
 
   return useMutation({
-    onSuccess: async (_data, dto) => {
-      navigate(`/users/${dto.userId}`);
+    onSuccess: async (data, dto) => {
+      navigate(`/customers/${data.id}`);
       set({
         type: "success",
         title: "保護者情報を追加しました",
