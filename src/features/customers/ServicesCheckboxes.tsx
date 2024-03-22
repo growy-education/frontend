@@ -1,11 +1,17 @@
-import { Control, Controller, FieldErrors } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  ControllerProps,
+  FieldError,
+  Merge,
+} from "react-hook-form";
 import { CustomerService } from "./types/customer-service.enum";
 import { Checkbox, FormControlLabel, FormHelperText } from "@mui/material";
 
 type CustomerServicesCheckBoxes = {
-  errors: FieldErrors<{ services: CustomerService[] }>;
+  error: Merge<FieldError, FieldError[]>;
   control: Control<any>;
-};
+} & Partial<Omit<ControllerProps, "control">>;
 
 const CustomerServices = [
   { id: CustomerService.QUESTION_ANSWER, name: "質問回答" },
@@ -16,8 +22,9 @@ const CustomerServices = [
 ];
 
 export const CustomerServicesCheckboxes = ({
-  errors,
+  error,
   control,
+  ...props
 }: CustomerServicesCheckBoxes) => {
   return (
     <Controller
@@ -28,6 +35,7 @@ export const CustomerServicesCheckboxes = ({
         <>
           {CustomerServices.map((item) => (
             <FormControlLabel
+              key={item.id}
               label={item.name}
               control={
                 <Checkbox
@@ -47,11 +55,10 @@ export const CustomerServicesCheckboxes = ({
               }
             />
           ))}
-          <FormHelperText error={!!errors.services}>
-            {errors.services?.message}
-          </FormHelperText>
+          <FormHelperText error={!!error}>{error?.message}</FormHelperText>
         </>
       )}
+      {...props}
     />
   );
 };

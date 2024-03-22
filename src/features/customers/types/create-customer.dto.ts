@@ -1,7 +1,9 @@
 import {
+  ArrayMinSize,
   IsArray,
   IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsString,
   IsUrl,
   Matches,
@@ -10,6 +12,7 @@ import { Relationship } from "./relationship.enum";
 import { CustomerService } from "./customer-service.enum";
 
 export class CreateCustomerDto {
+  @IsOptional()
   @IsString()
   @IsNotEmpty({ message: "ユーザーを選択してください" })
   userId: string;
@@ -38,16 +41,21 @@ export class CreateCustomerDto {
   @Matches(/^[ァ-ヶー]*$/, { message: "カタカナで入力してください" })
   lastNameKana: string;
 
-  @IsEnum(Relationship)
+  @IsEnum(Relationship, { message: "続柄を選択してください" })
   relationship: Relationship;
 
   @IsArray()
-  @IsEnum(CustomerService, { each: true })
+  @ArrayMinSize(1, { message: "サービスは1つ以上選択してください" })
+  @IsEnum(CustomerService, {
+    each: true,
+  })
   services: CustomerService[];
 
   @IsUrl(
     { protocols: ["https"], host_whitelist: ["chat.googleapis.com"] },
-    { message: "Invalid host URL" }
+    {
+      message: "有効なURLを入力してください 例）https://chat.googleapis.com/~~",
+    }
   )
   spaceWebhookUrl: string;
 }

@@ -1,15 +1,23 @@
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import { Control, Controller, FieldErrors } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  ControllerProps,
+  FieldError,
+  FieldErrorsImpl,
+  Merge,
+} from "react-hook-form";
 
 type BirthdayDatePickerProps = {
-  errors: FieldErrors<{ birthday: dayjs.Dayjs }>;
+  error: Merge<FieldError, FieldErrorsImpl<dayjs.Dayjs>>;
   control: Control<any>;
-};
+} & Partial<Omit<ControllerProps, "control">>;
 
 export const BirthdayDatePicker = ({
-  errors,
+  error,
   control,
+  ...props
 }: BirthdayDatePickerProps) => {
   return (
     <Controller
@@ -25,12 +33,16 @@ export const BirthdayDatePicker = ({
             textField: {
               fullWidth: true,
               variant: "outlined",
-              error: !!errors.birthday,
-              helperText: !!errors.birthday && errors.birthday.message,
+              error: !!error,
+              helperText:
+                typeof error?.message === "string"
+                  ? error.message
+                  : "誕生日を入力してください",
             },
           }}
         />
       )}
+      {...props}
     />
   );
 };

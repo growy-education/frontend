@@ -8,16 +8,14 @@ export const ListItemHome = () => {
   const location = useLocation();
 
   return (
-    <>
-      <ListItemButton
-        selected={location.pathname.includes("home")}
-        onClick={() => navigate("/home")}
-      >
-        <ListItemIcon>
-          <Home />
-        </ListItemIcon>
-        <ListItemText primary="ホーム" />
-      </ListItemButton>
-    </>
+    <ListItemButton
+      selected={location.pathname.includes("home")}
+      onClick={() => navigate("/home")}
+    >
+      <ListItemIcon>
+        <Home />
+      </ListItemIcon>
+      <ListItemText primary="ホーム" />
+    </ListItemButton>
   );
 };

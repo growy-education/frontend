@@ -4,13 +4,8 @@ import {
   OnChangeFunc,
   TileDisabledFunc,
 } from "react-calendar/dist/cjs/shared/types";
-import { createSearchParams, useNavigate } from "react-router-dom";
-import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 import { StyledCalendar } from "../../components/Element/Calendar/StyledCalendar";
-
-type ScheduledEvents = {
-  [key: string]: AdminCalendarProps["rooms"];
-};
 
 type AdminCalendarProps = CalendarProps & {
   rooms: Room[];

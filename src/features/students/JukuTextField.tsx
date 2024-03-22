@@ -1,22 +1,22 @@
 import { TextField, TextFieldProps } from "@mui/material";
 import { FC, forwardRef } from "react";
-import { FieldErrors } from "react-hook-form";
+import { FieldError } from "react-hook-form";
 
 type JukuTextFieldProps = {
-  errors: FieldErrors<{ juku: string }>;
-} & TextFieldProps;
+  error: FieldError;
+} & Omit<TextFieldProps, "error">;
 
 export const JukuTextField: FC<JukuTextFieldProps> = forwardRef(
-  ({ errors, ...props }, ref) => {
+  ({ error, ...props }, ref) => {
     return (
       <TextField
         fullWidth
         id="juku"
         label="塾名"
-        error={!!errors.juku}
+        error={!!error}
         helperText={
-          errors.juku
-            ? errors.juku.message
+          typeof error?.message === "string"
+            ? error.message
             : "通っている塾の名前を入力してください"
         }
         ref={ref}

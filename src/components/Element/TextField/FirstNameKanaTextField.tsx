@@ -1,22 +1,22 @@
 import { TextField, TextFieldProps } from "@mui/material";
 import { FC, forwardRef } from "react";
-import { FieldErrors } from "react-hook-form";
+import { FieldError } from "react-hook-form";
 
 type FirstNameKanaTextFieldProps = {
-  errors: FieldErrors<{ firstNameKana: string }>;
-} & TextFieldProps;
+  error: FieldError;
+} & Omit<TextFieldProps, "error">;
 
 export const FirstNameKanaTextField: FC<FirstNameKanaTextFieldProps> =
-  forwardRef(({ errors, ...props }, ref) => {
+  forwardRef(({ error, ...props }, ref) => {
     return (
       <TextField
         fullWidth
         id="firstNameKana"
         label="名前（フリガナ）"
-        error={!!errors.firstNameKana}
+        error={!!error}
         helperText={
-          !!errors.firstNameKana
-            ? errors.firstNameKana.message
+          typeof error?.message === "string"
+            ? error.message
             : "カタカナで入力してください"
         }
         ref={ref}

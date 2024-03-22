@@ -101,34 +101,43 @@ export const StudentEdit = () => {
       </HeaderBox>
 
       <HeadlineTypography>苗字</HeadlineTypography>
-      <LastNameTextField errors={errors} {...register("lastName")} />
+      <LastNameTextField error={errors.lastName} {...register("lastName")} />
 
       <HeadlineTypography>苗字（フリガナ）</HeadlineTypography>
-      <LastNameKanaTextField errors={errors} {...register("lastNameKana")} />
+      <LastNameKanaTextField
+        error={errors.lastNameKana}
+        {...register("lastNameKana")}
+      />
 
       <HeadlineTypography>名前</HeadlineTypography>
-      <FirstNameTextField errors={errors} {...register("firstName")} />
+      <FirstNameTextField error={errors.firstName} {...register("firstName")} />
 
       <HeadlineTypography>名前（フリガナ）</HeadlineTypography>
-      <FirstNameKanaTextField errors={errors} {...register("firstNameKana")} />
+      <FirstNameKanaTextField
+        error={errors.firstNameKana}
+        {...register("firstNameKana")}
+      />
 
       <HeadlineTypography>性別</HeadlineTypography>
-      <GenderRadioGroup errors={errors} control={control} />
+      <GenderRadioGroup error={errors.gender} control={control} />
 
       <HeadlineTypography>小学校名</HeadlineTypography>
-      <SchoolTextField errors={errors} {...register("school")} />
+      <SchoolTextField error={errors.school} {...register("school")} />
 
       <HeadlineTypography>塾名</HeadlineTypography>
-      <JukuTextField errors={errors} {...register("juku")} />
+      <JukuTextField error={errors.juku} {...register("juku")} />
 
       <HeadlineTypography>塾の校舎</HeadlineTypography>
-      <JukuBuildingTextField errors={errors} {...register("juku")} />
+      <JukuBuildingTextField
+        error={errors.jukuBuilding}
+        {...register("jukuBuilding")}
+      />
 
       <HeadlineTypography>学年</HeadlineTypography>
-      <GradeTextField errors={errors} {...register("jukuBuilding")} />
+      <GradeTextField error={errors.grade} {...register("grade")} />
 
       <HeadlineTypography>誕生日</HeadlineTypography>
-      <BirthdayDatePicker errors={errors} control={control} />
+      <BirthdayDatePicker error={errors.birthday} control={control} />
     </>
   );
 };

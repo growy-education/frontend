@@ -27,7 +27,6 @@ import { QuestionEdit } from "./pages/questions/edit/QuestionEditPage";
 
 // Customers
 import { CustomersListPage } from "./pages/customers/CustomersListPage";
-import { CustomerNewPage } from "./pages/customers/CustomerNewPage";
 import { CustomerEditPage } from "./pages/customers/CustomerEditPage";
 import { CustomerDetailPage } from "./pages/customers/CustomerDetailPage";
 
@@ -38,22 +37,20 @@ import { RoomDetailPage } from "./pages/rooms/RoomDetailPage";
 
 // Users
 import { UsersList } from "./pages/users/UsersListPage";
-import { UserNew } from "./pages/users/UserNewPage";
 import { UserDetailPage } from "./pages/users/UserDetailPage";
 import { UserEditPage } from "./pages/users/UserEditPage";
 
 // Teachers
 import { TeachersList } from "./pages/teachers/TeachersListPage";
-import { TeacherNew } from "./pages/teachers/TeacherNewPage";
 import { TeacherDetailProps } from "./pages/teachers/TeacherDetailPage";
 
 // Students
 import { StudentsList } from "./pages/students/StudentsListPage";
-import { StudentNew } from "./pages/students/StudentNewPage";
 import { StudentDetailPage } from "./pages/students/StudentDetailPage";
 import { StudentEdit } from "./pages/students/StudentEditPage";
 import { LessonsListPage } from "./pages/lessons/LessonsListPage";
 import { TeacherSettingsPage } from "./pages/settings/TeacherSettingsPage";
+import { UserNewPage } from "./pages/users/UserNewPage";
 
 export const RolesRouter: React.FC = () => {
   const { user } = useContext(AuthContext);
@@ -94,12 +91,11 @@ export const RolesRouter: React.FC = () => {
               <Route path="/rooms/new" element={<RoomNewPage />} />
 
               <Route path="/users" element={<UsersList />} />
-              <Route path="/users/new" element={<UserNew />} />
+              <Route path="/users/new" element={<UserNewPage />} />
               <Route path="/users/:userId/" element={<UserDetailPage />} />
               <Route path="/users/:userId/edit" element={<UserEditPage />} />
 
               <Route path="/customers" element={<CustomersListPage />} />
-              <Route path="/customers/new" element={<CustomerNewPage />} />
               <Route
                 path="/customers/:customerId"
                 element={<CustomerDetailPage />}
@@ -110,14 +106,12 @@ export const RolesRouter: React.FC = () => {
               />
 
               <Route path="/teachers" element={<TeachersList />} />
-              <Route path="/teachers/new" element={<TeacherNew />} />
               <Route
                 path="/teachers/:teacherId/"
                 element={<TeacherDetailProps />}
               />
 
               <Route path="/students/" element={<StudentsList />} />
-              <Route path="/students/new" element={<StudentNew />} />
               <Route
                 path="/students/:studentId"
                 element={<StudentDetailPage />}

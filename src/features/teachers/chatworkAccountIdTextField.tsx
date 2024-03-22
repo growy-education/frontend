@@ -1,22 +1,22 @@
 import { TextField, TextFieldProps } from "@mui/material";
 import { FC, forwardRef } from "react";
-import { FieldErrors } from "react-hook-form";
+import { FieldError } from "react-hook-form";
 
 type ChatworkAccountIdTextFieldProps = {
-  errors: FieldErrors<{ chatworkAccountId: string }>;
-} & TextFieldProps;
+  error: FieldError;
+} & Omit<TextFieldProps, "error">;
 
 export const ChatworkAccountIdTextField: FC<ChatworkAccountIdTextFieldProps> =
-  forwardRef(({ errors, ...props }, ref) => {
+  forwardRef(({ error, ...props }, ref) => {
     return (
       <TextField
         fullWidth
         id="chatworkAccountId"
         label="ChatworkAccountID"
-        error={!!errors.chatworkAccountId}
+        error={!!error}
         helperText={
-          !!errors.chatworkAccountId
-            ? errors.chatworkAccountId.message
+          typeof error?.message === "string"
+            ? error.message
             : "ChatworkAccountIDを入力してください"
         }
         ref={ref}

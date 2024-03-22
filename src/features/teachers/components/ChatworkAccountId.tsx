@@ -65,7 +65,7 @@ export const ChatworkAccountId = ({
       <Box>
         {isEditing ? (
           <ChatworkAccountIdTextField
-            errors={errors}
+            error={errors.chatworkAccountId}
             {...register("chatworkAccountId")}
           />
         ) : (

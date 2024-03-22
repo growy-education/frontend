@@ -69,7 +69,10 @@ export const TeacherFirstName = ({
       </Box>
       <Box>
         {isEditing ? (
-          <FirstNameTextField errors={errors} {...register("firstName")} />
+          <FirstNameTextField
+            error={errors.firstName}
+            {...register("firstName")}
+          />
         ) : (
           <DetailTypography>{teacher.firstName}</DetailTypography>
         )}

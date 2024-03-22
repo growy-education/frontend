@@ -4,17 +4,23 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
-import { Control, Controller, FieldErrors } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  ControllerProps,
+  FieldError,
+} from "react-hook-form";
 import { Gender } from "./types/gender.enum";
 
 type GenderRadioGroupProps = {
-  errors: FieldErrors<{ gender: Gender }>;
+  error: FieldError;
   control: Control<any>;
-};
+} & Partial<Omit<ControllerProps, "control">>;
 
 export const GenderRadioGroup = ({
-  errors,
+  error,
   control,
+  ...props
 }: GenderRadioGroupProps) => {
   return (
     <Controller
@@ -39,11 +45,14 @@ export const GenderRadioGroup = ({
               label="その他"
             />
           </RadioGroup>
-          <FormHelperText error={!!errors.gender}>
-            {errors.gender?.message}
+          <FormHelperText error={!!error}>
+            {typeof error?.message === "string"
+              ? error.message
+              : "性別を入力してください"}
           </FormHelperText>
         </>
       )}
+      {...props}
     />
   );
 };

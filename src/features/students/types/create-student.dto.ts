@@ -3,6 +3,7 @@ import {
   IsEnum,
   IsIn,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Matches,
 } from "class-validator";
@@ -11,6 +12,7 @@ import { Type } from "class-transformer";
 import dayjs from "dayjs";
 
 export class CreateStudentDto {
+  @IsOptional()
   @IsString()
   @IsNotEmpty({ message: "ユーザーを選択してください" })
   userId: string;
@@ -39,7 +41,7 @@ export class CreateStudentDto {
   @Matches(/^[ァ-ヶー]*$/, { message: "カタカナで入力してください" })
   lastNameKana: string;
 
-  @IsEnum(Gender)
+  @IsEnum(Gender, { message: "性別を選択してください" })
   gender: Gender;
 
   @IsString()

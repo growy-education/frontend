@@ -1,22 +1,22 @@
 import { TextField, TextFieldProps } from "@mui/material";
 import { FC, forwardRef } from "react";
-import { FieldErrors } from "react-hook-form";
+import { FieldError } from "react-hook-form";
 
 type SpaceWebhookUrlTextFieldProps = {
-  errors: FieldErrors<{ spaceWebhookUrl: string }>;
-} & TextFieldProps;
+  error: FieldError;
+} & Omit<TextFieldProps, "error">;
 
 export const SpaceWebhookUrlTextField: FC<SpaceWebhookUrlTextFieldProps> =
-  forwardRef(({ errors, ...props }, ref) => {
+  forwardRef(({ error, ...props }, ref) => {
     return (
       <TextField
         fullWidth
         id="spaceWebhookUrl"
         label="GoogleChat WebhookURL(Space)"
-        error={!!errors.spaceWebhookUrl}
+        error={!!error}
         helperText={
-          errors.spaceWebhookUrl
-            ? errors.spaceWebhookUrl.message
+          typeof error?.message === "string"
+            ? error.message
             : "GoogleChatのWebhookURL(Space)を入力してください."
         }
         ref={ref}

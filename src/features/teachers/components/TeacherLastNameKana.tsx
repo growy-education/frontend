@@ -70,7 +70,7 @@ export const TeacherLastNameKana = ({
       <Box>
         {isEditing ? (
           <LastNameKanaTextField
-            errors={errors}
+            error={errors.lastNameKana}
             {...register("lastNameKana")}
           />
         ) : (

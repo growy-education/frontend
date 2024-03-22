@@ -33,6 +33,7 @@ export const useCreateUser = ({ options }: UseCreateUserOptions = {}) => {
       await queryClient.invalidateQueries({ queryKey: ["users"] });
     },
     onError: async (error) => {
+      console.error(error);
       set({
         type: "error",
         title: "ユーザーの作成に失敗しました",

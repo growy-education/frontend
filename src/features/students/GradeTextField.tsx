@@ -1,22 +1,22 @@
 import { TextField, TextFieldProps } from "@mui/material";
 import { FC, forwardRef } from "react";
-import { FieldErrors } from "react-hook-form";
+import { FieldError } from "react-hook-form";
 
 type GradeTextFieldProps = {
-  errors: FieldErrors<{ grade: string }>;
-} & TextFieldProps;
+  error: FieldError;
+} & Omit<TextFieldProps, "error">;
 
 export const GradeTextField: FC<GradeTextFieldProps> = forwardRef(
-  ({ errors, ...props }, ref) => {
+  ({ error: errors, ...props }, ref) => {
     return (
       <TextField
         fullWidth
         id="grade"
         label="学年"
-        error={!!errors.grade}
+        error={!!errors}
         helperText={
-          errors.grade
-            ? errors.grade.message
+          typeof errors?.message === "string"
+            ? errors.message
             : "学年を半角英数字で入力してください"
         }
         ref={ref}

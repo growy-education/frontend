@@ -79,26 +79,32 @@ export const CustomerEditPage = () => {
       </HeaderBox>
 
       <HeadlineTypography>苗字</HeadlineTypography>
-      <LastNameTextField errors={errors} {...register("lastName")} />
+      <LastNameTextField error={errors.lastName} {...register("lastName")} />
 
       <HeadlineTypography>苗字（フリガナ）</HeadlineTypography>
-      <LastNameKanaTextField errors={errors} {...register("lastNameKana")} />
+      <LastNameKanaTextField
+        error={errors.lastNameKana}
+        {...register("lastNameKana")}
+      />
 
       <HeadlineTypography>名前</HeadlineTypography>
-      <FirstNameTextField errors={errors} {...register("firstName")} />
+      <FirstNameTextField error={errors.firstName} {...register("firstName")} />
 
       <HeadlineTypography>名前（フリガナ）</HeadlineTypography>
-      <FirstNameKanaTextField errors={errors} {...register("firstNameKana")} />
+      <FirstNameKanaTextField
+        error={errors.firstNameKana}
+        {...register("firstNameKana")}
+      />
 
       <HeadlineTypography>続柄</HeadlineTypography>
-      <RelationshipRadioGroup errors={errors} control={control} />
+      <RelationshipRadioGroup error={errors.relationship} control={control} />
 
       <HeadlineTypography>利用可能サービス</HeadlineTypography>
-      <CustomerServicesCheckboxes errors={errors} control={control} />
+      <CustomerServicesCheckboxes error={errors.services} control={control} />
 
       <HeadlineTypography>GoogleChatのWebhookURL(Space)</HeadlineTypography>
       <SpaceWebhookUrlTextField
-        errors={errors}
+        error={errors.spaceWebhookUrl}
         {...register("spaceWebhookUrl")}
       />
     </>

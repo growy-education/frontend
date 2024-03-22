@@ -46,7 +46,7 @@ export class UpdateCustomerDto {
   @IsOptional()
   @IsArray()
   @IsEnum(CustomerService, { each: true })
-  services: CustomerService[];
+  services?: CustomerService[];
 
   @IsOptional()
   @IsUrl(
