@@ -32,12 +32,12 @@ export const GenderRadioGroup = ({
             <FormControlLabel
               value={Gender.MALE}
               control={<Radio />}
-              label="男の子"
+              label="男子"
             />
             <FormControlLabel
               value={Gender.FEMALE}
               control={<Radio />}
-              label="女の子"
+              label="女子"
             />
             <FormControlLabel
               value={Gender.OTHER}

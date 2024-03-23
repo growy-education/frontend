@@ -34,6 +34,9 @@ export class CreateUserDto {
   password: string;
 
   @IsEmail({}, { message: "有効なメールアドレスを入力してください" })
+  @Matches(/^[^@]+@growy\.education$/, {
+    message: "@growy.educationのアドレスのみ許可されています",
+  })
   email: string;
 
   @IsPhoneNumber("JP", { message: "電話番号を入力してください" })

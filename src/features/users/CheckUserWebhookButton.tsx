@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { User } from "./types/user.class";
 import { ConfirmationDialog } from "../../components/Element/Dialog/ConfirmationDialog";
 import { useSendMessageToUser } from "./api/sendMessageToUser";
-import { Announcement } from "@mui/icons-material";
+import { Send } from "@mui/icons-material";
 
 type CheckUserWebhookButtonProps = {
   user: User;
@@ -38,11 +38,12 @@ export const CheckUserWebhookButton = ({
     <>
       <Tooltip title="確認メッセージを送信する">
         <IconButton
+          color="primary"
           {...props}
           disabled={mutation.isPending && props.disabled}
           onClick={handleClick}
         >
-          <Announcement />
+          <Send />
         </IconButton>
       </Tooltip>
       <ConfirmationDialog

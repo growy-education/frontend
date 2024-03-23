@@ -46,6 +46,9 @@ export const UserNewPage = () => {
     watch,
   } = useForm<CreateUserDto>({
     resolver,
+    defaultValues: {
+      password: "Test123!",
+    },
   });
 
   React.useEffect(() => {

@@ -43,8 +43,14 @@ export const CustomerDetail = ({ customer }: CustomerDetailProps) => {
       <DetailTypography>{relationship}</DetailTypography>
       <HeadlineTypography>利用可能サービス</HeadlineTypography>
       <CustomerServiceChips services={services} />
-      <HeadlineTypography>GoogleChatのWebhookURL(Space)</HeadlineTypography>
-      <Box display="flex" justifyContent="flex-end">
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <HeadlineTypography>GoogleChatのWebhookURL(Space)</HeadlineTypography>
         <CheckCustomerWebhookButton customer={customer} />
       </Box>
       <DetailTypography>{spaceWebhookUrl}</DetailTypography>

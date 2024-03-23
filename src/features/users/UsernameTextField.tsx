@@ -17,7 +17,7 @@ export const UsernameTextField: FC<UsernameTextFieldProps> = forwardRef(
         helperText={
           !!errors.username
             ? errors.username.message
-            : "英数小文字・大文字、そして記号を含む8文字以上。"
+            : "例)test@growy.educationなら'test'にする"
         }
         ref={ref}
         {...props}

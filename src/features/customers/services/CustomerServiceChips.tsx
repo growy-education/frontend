@@ -1,4 +1,4 @@
-import { Box, BoxProps, Typography } from "@mui/material";
+import { Box, BoxProps } from "@mui/material";
 import { CustomerService } from "../types/customer-service.enum";
 import { RoomChip } from "./RoomChip";
 import { QuestionChip } from "./QuestionChip";
@@ -15,37 +15,37 @@ export const CustomerServiceChips = ({
   ...props
 }: CustomerServiceChipsProps) => {
   return (
-    <Box {...props}>
-      {services.length === 0 && (
-        <Typography fontWeight="bold">
-          利用可能なサービスがありません.
-        </Typography>
-      )}
-      {services.includes(CustomerService.SELF_STUDY_ROOM) && (
-        <Box m={0.5} display="inline-flex">
-          <RoomChip color="info" />
-        </Box>
-      )}
-      {services.includes(CustomerService.QUESTION_ANSWER) && (
-        <Box m={0.5} display="inline-flex">
-          <QuestionChip color="info" />
-        </Box>
-      )}
-      {services.includes(CustomerService.TEST_CORRECTION) && (
-        <Box m={0.5} display="inline-flex">
-          <CorrectionChip color="info" />
-        </Box>
-      )}
-      {services.includes(CustomerService.TEACHING) && (
-        <Box m={0.5} display="inline-flex">
-          <TeachingChip color="info" />
-        </Box>
-      )}
-      {services.includes(CustomerService.COACHING) && (
-        <Box m={0.5} display="inline-flex">
-          <CoachingChip color="info" />
-        </Box>
-      )}
+    <Box sx={{ display: "flex", flexWrap: "wrap" }} {...props}>
+      <Box m={0.5}>
+        <RoomChip
+          color="primary"
+          disabled={!services.includes(CustomerService.SELF_STUDY_ROOM)}
+        />
+      </Box>
+      <Box m={0.5}>
+        <QuestionChip
+          color="primary"
+          disabled={!services.includes(CustomerService.QUESTION_ANSWER)}
+        />
+      </Box>
+      <Box m={0.5}>
+        <CorrectionChip
+          color="primary"
+          disabled={!services.includes(CustomerService.TEST_CORRECTION)}
+        />
+      </Box>
+      <Box m={0.5}>
+        <TeachingChip
+          color="primary"
+          disabled={!services.includes(CustomerService.TEACHING)}
+        />
+      </Box>
+      <Box m={0.5}>
+        <CoachingChip
+          color="primary"
+          disabled={!services.includes(CustomerService.COACHING)}
+        />
+      </Box>
     </Box>
   );
 };

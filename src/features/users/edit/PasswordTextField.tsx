@@ -17,7 +17,7 @@ export const PasswordTextField: FC<PasswordTextFieldProps> = forwardRef(
         helperText={
           errors.password
             ? errors.password.message
-            : "英数小文字・大文字、そして記号を含む8文字以上。"
+            : "英数小文字・大文字、そして記号を含む8文字以上。使わないので適当でよい。"
         }
         ref={ref}
         {...props}

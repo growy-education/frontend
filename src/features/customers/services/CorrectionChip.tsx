@@ -3,6 +3,11 @@ import { ChecklistRtl } from "@mui/icons-material";
 
 export const CorrectionChip = (props: ChipProps) => {
   return (
-    <Chip label="過去問・模試動画添削" icon={<ChecklistRtl />} {...props} />
+    <Chip
+      variant="outlined"
+      label="過去問・模試動画添削"
+      icon={<ChecklistRtl />}
+      {...props}
+    />
   );
 };

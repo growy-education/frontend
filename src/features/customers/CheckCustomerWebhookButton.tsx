@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { Send } from "@mui/icons-material";
-import { Button, ButtonProps } from "@mui/material";
+import { ButtonProps, IconButton, Tooltip } from "@mui/material";
 
 import { Customer } from "./types/customer.class";
 import { useSendMessageToCustomer } from "./api/sendMessageToCustomer";
@@ -40,22 +40,16 @@ export const CheckCustomerWebhookButton = ({
 
   return (
     <>
-      <Button
-        variant="outlined"
-        color="primary"
-        endIcon={
-          <Send
-            sx={{
-              color: !mutation.isPending && !!!props.disabled && "primary.main",
-            }}
-          />
-        }
-        disabled={mutation.isPending && props.disabled}
-        onClick={handleClick}
-        {...props}
-      >
-        確認メッセージを送信する
-      </Button>
+      <Tooltip title="確認メッセージを送信する">
+        <IconButton
+          color="primary"
+          {...props}
+          disabled={mutation.isPending && props.disabled}
+          onClick={handleClick}
+        >
+          <Send />
+        </IconButton>
+      </Tooltip>
       <ConfirmationDialog
         open={open}
         labelName="send-test-message-to-customer"
