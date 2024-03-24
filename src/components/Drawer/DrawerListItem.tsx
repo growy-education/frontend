@@ -9,7 +9,6 @@ import { ListItemCustomer } from "./ListItem/ListItemCustomer";
 import { ListItemStudent } from "./ListItem/ListItemStudent";
 import { ListItemHome } from "./ListItem/ListItemHome";
 import { ListItemGoogleChat } from "./ListItem/ListItemGoogleChat";
-import { ListItemCorrection } from "./ListItem/ListItemCorrection";
 import { AuthContext } from "../../providers/auth.provider";
 import { ListItemSettings } from "./ListItem/ListItemSettings";
 import { LIstItemLesson } from "./ListItem/ListItemLesson";
@@ -23,7 +22,6 @@ export const DrawerListItem = () => {
       <ListItemQuestion />
       <ListItemRoom />
       <LIstItemLesson />
-      <ListItemGoogleChat />
 
       {user.role === Role.ADMIN && (
         <>

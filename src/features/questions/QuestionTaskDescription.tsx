@@ -37,7 +37,7 @@ export const QuestionTaskDescription = () => {
           </AccordionSummary>
           <AccordionDetails>
             <Box mb={1}>
-              <Typography textAlign="left">
+              <Box textAlign="left">
                 　質問が割り当てられると、GoogleChatにメッセージがきます。
                 <br />
                 <br />
@@ -54,7 +54,7 @@ export const QuestionTaskDescription = () => {
                 </Box>
                 <br />
                 　質問への回答が可能であれば確認ボタンを、難しければ拒否ボタンを押します。
-              </Typography>
+              </Box>
             </Box>
           </AccordionDetails>
         </Accordion>
@@ -77,7 +77,7 @@ export const QuestionTaskDescription = () => {
           </AccordionSummary>
           <AccordionDetails>
             <Box mb={1} pl={2} pr={2}>
-              <Typography textAlign="left">
+              <Box textAlign="left">
                 YouTubeに投稿する際には、以下の点に注意してください。
                 <br />
                 <List>
@@ -108,7 +108,7 @@ export const QuestionTaskDescription = () => {
                     <ListItemText primary={"動画を再生リストに追加する"} />
                   </ListItem>
                 </List>
-              </Typography>
+              </Box>
             </Box>
           </AccordionDetails>
         </Accordion>

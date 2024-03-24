@@ -4,6 +4,7 @@ import {
   Button,
   Container,
   Grid,
+  Link,
   TextField,
   Typography,
 } from "@mui/material";
@@ -23,10 +24,7 @@ import { AttentionTitleTypography } from "./features/lp/price/AttentionTitleTypo
 import { AttentionDescriptionBox } from "./features/lp/price/AttentionDescriptionBox";
 import { AttentionDescriptionTypography } from "./features/lp/price/AttentionDescriptionTypography";
 import { AsteriskTypography } from "./features/lp/price/AsteriskTypography";
-import { LineLinkTypography } from "./components/Element/Typography/LineLinkTypography";
-import { GoogleChatLinkTypography } from "./components/Element/Typography/GoogleChatLinkTypography";
-import { ArrowBack } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { OpenInNew } from "@mui/icons-material";
 import { useLoginWithPassword } from "./features/auth/api/loginWithPassword";
 import { useLoginWithGoogle } from "./features/auth/api/loginWithGoogle";
 import { SubmitButton } from "./features/SubmitButton";
@@ -45,7 +43,6 @@ export class SigninWithPasswordDto {
 }
 
 export const SignInScreen = () => {
-  const navigate = useNavigate();
   const mutationPasswordLogin = useLoginWithPassword();
   const mutationGoogleLogin = useLoginWithGoogle();
 
@@ -102,7 +99,7 @@ export const SignInScreen = () => {
         </Box>
 
         <Typography align="center" fontSize="1.5rem" fontWeight="bold">
-          Growyにログインする
+          Growyメンバーズサイトにログインする
         </Typography>
 
         <Box p={2} display="flex" justifyContent="center">
@@ -126,36 +123,26 @@ export const SignInScreen = () => {
           <AttentionDescriptionBox>
             <AsteriskTypography />
             <AttentionDescriptionTypography>
-              「Growyでログイン」と表示される方も、表示されているボタンを押してください。
-            </AttentionDescriptionTypography>
-          </AttentionDescriptionBox>
-          <AttentionDescriptionBox>
-            <AsteriskTypography />
-            <AttentionDescriptionTypography>
               GrowyのGoogleアカウント（@growy.education）でログインしてください。
             </AttentionDescriptionTypography>
           </AttentionDescriptionBox>
           <AttentionDescriptionBox>
             <AsteriskTypography />
             <AttentionDescriptionTypography>
-              お困りの方は
-              <LineLinkTypography />
-              または
-              <GoogleChatLinkTypography />
-              でスタッフまでお問合せください。
+              お困りの方は公式ライン、GoogleChatでお問合せください。
             </AttentionDescriptionTypography>
           </AttentionDescriptionBox>
         </AttentionBox>
         <Box mt={1} sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button
-            variant="outlined"
-            startIcon={<ArrowBack />}
-            onClick={() => {
-              navigate("/");
-            }}
+          <Link
+            href="https://www.growy.education"
+            target="_blank"
+            rel="noreferrer"
           >
-            <Typography>ホームページに戻る</Typography>
-          </Button>
+            <Button variant="outlined" endIcon={<OpenInNew />}>
+              <Typography>公式サイトはこちら</Typography>
+            </Button>
+          </Link>
         </Box>
 
         {process.env.REACT_APP_STAGE === "dev" && (

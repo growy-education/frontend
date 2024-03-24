@@ -2,9 +2,7 @@ import { ButtonProps } from "@mui/material";
 import { useState } from "react";
 import { UserActionButton } from "./UserActionButton";
 import { UserActionMenu } from "./UserActionMenu";
-import { ActivateUserMenuItem } from "./ActivateUserMenuItem";
 import { User } from "../types/user.class";
-import { Role } from "../types/role.enum";
 import { EditUserMenuItem } from "./EditUserMenuItem";
 import { DebugUserMenuItem } from "./DebugUserMenuItem";
 
@@ -35,7 +33,6 @@ export const UserActionMenuButton = ({
       />
       <UserActionMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <EditUserMenuItem />
-        <ActivateUserMenuItem user={user} />
         <DebugUserMenuItem user={user} />
       </UserActionMenu>
     </>

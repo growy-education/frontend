@@ -4,6 +4,7 @@ import { PendingContextPage } from "../pages/PendingContextPage";
 import { useAuth } from "../features/auth/api/getAuth";
 import { User } from "../features/users/types/user.class";
 import { LPContextProvider } from "./lp.provider";
+import { SignInScreen } from "../SignIn";
 
 type AuthContextProps = {
   user: User;
@@ -27,7 +28,7 @@ export const AuthContextProvider = ({ children }: Props) => {
   }
 
   if (isError) {
-    return <LPContextProvider>{children}</LPContextProvider>;
+    return <SignInScreen />;
   }
 
   return (
