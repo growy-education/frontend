@@ -14,13 +14,13 @@ export const remindQuestion = async ({
   return axios.post(`questions/${questionId}/reminder`);
 };
 
-type UseCancelQuestionOptions = {
+type UseRemindQuestionOptions = {
   options?: MutationOptions<typeof remindQuestion>;
 };
 
 export const useRemindQuestion = ({
   options,
-}: UseCancelQuestionOptions = {}) => {
+}: UseRemindQuestionOptions = {}) => {
   const { set } = useToastStore();
 
   return useMutation({

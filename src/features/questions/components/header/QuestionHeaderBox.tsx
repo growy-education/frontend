@@ -26,6 +26,7 @@ import { AuthContext } from "../../../../providers/auth.provider";
 import { BackButton } from "../../../../components/Element/Button/BackButton";
 import { HeaderBox } from "../../../../components/Layout/HeaderBox";
 import { RemindQuestionMenuItem } from "./menu/RemindQuestionMenuItem";
+import { SendNotificationQuestionMenuItem } from "./menu/SendNotificationQuestionMenuItem";
 
 type QuestionHeaderBoxProps = {
   question: Question;
@@ -60,6 +61,12 @@ export const QuestionHeaderBox = ({
       <QuestionActionMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <RolesGuard roles={[Role.ADMIN, Role.CUSTOMER]}>
           <EditQuestionMenuItem question={question} onClick={handleClose} />
+        </RolesGuard>
+        <RolesGuard roles={[Role.ADMIN]}>
+          <SendNotificationQuestionMenuItem
+            question={question}
+            onClick={handleClose}
+          />
         </RolesGuard>
         <RolesGuard roles={[Role.ADMIN]}>
           <RemindQuestionMenuItem question={question} onClick={handleClose} />
