@@ -1,22 +1,14 @@
 import { Box, Typography } from "@mui/material";
 import { HeadlineTypography } from "../../components/Element/Typography/HeadlineTypography";
 import { CreateCustomerDto } from "./types/create-customer.dto";
-import { CustomerServiceChips } from "./services/CustomerServiceChips";
 
 export const CustomerNewConfirmation = ({
   dto,
 }: {
   dto: CreateCustomerDto;
 }) => {
-  const {
-    firstName,
-    firstNameKana,
-    lastName,
-    lastNameKana,
-    relationship,
-    services,
-    spaceWebhookUrl,
-  } = dto;
+  const { firstName, firstNameKana, lastName, lastNameKana, relationship } =
+    dto;
 
   return (
     <>
@@ -30,12 +22,6 @@ export const CustomerNewConfirmation = ({
 
         <HeadlineTypography>続柄</HeadlineTypography>
         <Typography>{relationship}</Typography>
-
-        <HeadlineTypography>サービス</HeadlineTypography>
-        <CustomerServiceChips services={services} />
-
-        <HeadlineTypography>GoogleChat Webhook(スペース)</HeadlineTypography>
-        <Typography>{spaceWebhookUrl}</Typography>
       </Box>
     </>
   );

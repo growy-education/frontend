@@ -5,11 +5,20 @@ import { Role } from "./types/role.enum";
 import { CustomerNewConfirmation } from "../customers/CustomerNewConfirmation";
 import { StudentNewConfirmation } from "../students/StudentNewConfirmation";
 import { TeacherNewConfirmation } from "../teachers/TeacherNewConfirmation";
+import { ServiceChips } from "../customers/services/CustomerServiceChips";
 
 export const UserNewConfirmation = ({ dto }: { dto: CreateUserDto }) => {
   const { customerDto, studentDto, teacherDto, ...leftCreateUserDto } = dto;
-  const { role, username, password, email, phone, chatWebhookUrl } =
-    leftCreateUserDto;
+  const {
+    role,
+    username,
+    password,
+    email,
+    phone,
+    chatWebhookUrl,
+    spaceWebhookUrl,
+    services,
+  } = leftCreateUserDto;
 
   return (
     <>
@@ -32,6 +41,18 @@ export const UserNewConfirmation = ({ dto }: { dto: CreateUserDto }) => {
 
         <HeadlineTypography>GoogleChat Webhook(DM)</HeadlineTypography>
         <Typography>{chatWebhookUrl}</Typography>
+
+        {role === Role.CUSTOMER && (
+          <>
+            <HeadlineTypography>
+              GoogleChat Webhook(スペース)
+            </HeadlineTypography>
+            <Typography>{spaceWebhookUrl}</Typography>
+
+            <HeadlineTypography>サービス</HeadlineTypography>
+            <ServiceChips services={services} />
+          </>
+        )}
       </Box>
 
       {role === Role.CUSTOMER && (

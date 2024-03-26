@@ -1,6 +1,9 @@
 import {
+  ArrayMinSize,
+  IsArray,
   IsEmail,
   IsEnum,
+  IsNotEmpty,
   IsPhoneNumber,
   IsString,
   IsUrl,
@@ -15,10 +18,11 @@ import { CreateCustomerDto } from "../../customers/types/create-customer.dto";
 import { CreateStudentDto } from "../../students/types/create-student.dto";
 import { CreateTeacherDto } from "../../teachers/types/create-teacher.dto";
 import { Type } from "class-transformer";
+import { Service } from "./service.enum";
 
 export class CreateUserDto {
   @IsEnum(Role, { message: "ロールを選択してください" })
-  role: Role;
+  role: Role.CUSTOMER | Role.TEACHER;
 
   @IsString()
   @MinLength(4, { message: "ユーザー名は4文字以上にしてください" })
@@ -42,11 +46,28 @@ export class CreateUserDto {
   @IsPhoneNumber("JP", { message: "電話番号を入力してください" })
   phone: string;
 
+  @IsNotEmpty()
   @IsUrl(
     { protocols: ["https"], host_whitelist: ["chat.googleapis.com"] },
     { message: "例)https://chat.googleapis.com/***" }
   )
   chatWebhookUrl: string;
+
+  @ValidateIf((o) => o?.role === Role.CUSTOMER)
+  @IsNotEmpty()
+  @IsUrl(
+    { protocols: ["https"], host_whitelist: ["chat.googleapis.com"] },
+    { message: "例)https://chat.googleapis.com/***" }
+  )
+  spaceWebhookUrl: string;
+
+  @ValidateIf((o) => o?.role === Role.CUSTOMER)
+  @IsArray()
+  @ArrayMinSize(1, { message: "サービスは1つ以上選択してください" })
+  @IsEnum(Service, {
+    each: true,
+  })
+  services: Service[];
 
   @ValidateIf((o) => o.role === Role.CUSTOMER)
   @ValidateNested()

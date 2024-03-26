@@ -1,14 +1,11 @@
 import {
-  IsArray,
   IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
-  IsUrl,
   Matches,
 } from "class-validator";
 import { Relationship } from "./relationship.enum";
-import { CustomerService } from "./customer-service.enum";
 
 export class UpdateCustomerDto {
   @IsOptional()
@@ -42,16 +39,4 @@ export class UpdateCustomerDto {
   @IsOptional()
   @IsEnum(Relationship)
   relationship?: Relationship;
-
-  @IsOptional()
-  @IsArray()
-  @IsEnum(CustomerService, { each: true })
-  services?: CustomerService[];
-
-  @IsOptional()
-  @IsUrl(
-    { protocols: ["https"], host_whitelist: ["chat.googleapis.com"] },
-    { message: "Invalid host URL" }
-  )
-  spaceWebhookUrl: string;
 }

@@ -13,13 +13,11 @@ import { LastNameTextField } from "../../components/Element/TextField/LastNameTe
 import { LastNameKanaTextField } from "../../components/Element/TextField/LastNameKanaTextField";
 import { PageTitleTypography } from "../../components/Element/Typography/PageTitleTypography";
 import { CancelEditButton } from "../../components/Element/Button/CancelEditButton";
-import { SpaceWebhookUrlTextField } from "../../features/customers/SpaceWebhookUrlTextField";
 import { SaveEditButton } from "../../components/Element/Button/SaveEditButton";
 import { UpdateCustomerDto } from "../../features/customers/types/update-customer.dto";
 import { useUpdateCustomer } from "../../features/customers/api/updateCustomer";
 import { useCustomer } from "../../features/customers/api/getCustomer";
 import { RelationshipRadioGroup } from "../../features/customers/RelationshipRadioGroup";
-import { CustomerServicesCheckboxes } from "../../features/customers/ServicesCheckboxes";
 
 export const CustomerEditPage = () => {
   const { customerId } = useParams();
@@ -42,7 +40,6 @@ export const CustomerEditPage = () => {
       lastName: customer?.lastName || "",
       lastNameKana: customer?.lastNameKana || "",
       relationship: customer?.relationship || Relationship.FATHER,
-      services: customer?.services || [],
     },
   });
 
@@ -53,8 +50,6 @@ export const CustomerEditPage = () => {
       setValue("lastName", customer?.lastName);
       setValue("lastNameKana", customer?.lastNameKana);
       setValue("relationship", customer?.relationship);
-      setValue("spaceWebhookUrl", customer?.spaceWebhookUrl);
-      setValue("services", customer?.services);
     }
   }, [setValue, customer]);
 
@@ -98,15 +93,6 @@ export const CustomerEditPage = () => {
 
       <HeadlineTypography>続柄</HeadlineTypography>
       <RelationshipRadioGroup error={errors.relationship} control={control} />
-
-      <HeadlineTypography>利用可能サービス</HeadlineTypography>
-      <CustomerServicesCheckboxes error={errors.services} control={control} />
-
-      <HeadlineTypography>GoogleChatのWebhookURL(Space)</HeadlineTypography>
-      <SpaceWebhookUrlTextField
-        error={errors.spaceWebhookUrl}
-        {...register("spaceWebhookUrl")}
-      />
     </>
   );
 };

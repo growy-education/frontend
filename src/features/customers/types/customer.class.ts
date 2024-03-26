@@ -1,6 +1,5 @@
 import { Type } from "class-transformer";
 import { User } from "../../users/types/user.class";
-import { CustomerService } from "./customer-service.enum";
 import { Relationship } from "./relationship.enum";
 
 export class Customer {
@@ -20,11 +19,7 @@ export class Customer {
 
   lastNameKana: string;
 
-  services: CustomerService[];
-
   relationship: Relationship;
-
-  spaceWebhookUrl: string;
 
   @Type(() => User)
   user?: User;

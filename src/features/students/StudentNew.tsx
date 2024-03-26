@@ -12,6 +12,7 @@ import { JukuTextField } from "./JukuTextField";
 import { JukuBuildingTextField } from "./JukuBuildingTextField";
 import { GradeTextField } from "./GradeTextField";
 import { BirthdayDatePicker } from "./BirthdayDatePicker";
+import { GenderSelect } from "../../components/Element/Select/GenderSelect";
 
 type StudentNewProps = {
   register: UseFormRegister<CreateUserDto>;
@@ -47,7 +48,7 @@ export const StudentNew = ({ register, control, errors }: StudentNewProps) => {
       />
 
       <HeadlineTypography>性別</HeadlineTypography>
-      <GenderRadioGroup
+      <GenderSelect
         name={"studentDto.gender"}
         error={errors.studentDto?.gender}
         control={control}

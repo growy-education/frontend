@@ -12,11 +12,6 @@ import { Type } from "class-transformer";
 import dayjs from "dayjs";
 
 export class CreateStudentDto {
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty({ message: "ユーザーを選択してください" })
-  userId: string;
-
   @IsString()
   @IsNotEmpty({ message: "お名前を入力してください" })
   @Matches(/^[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}ー－]+$/u, {

@@ -1,4 +1,4 @@
-export enum CustomerService {
+export enum Service {
   // 質問回答
   QUESTION_ANSWER = "QUESTION_ANSWER",
   // オンライン自習室

@@ -79,15 +79,16 @@ export const UserNewPage = () => {
 
     let result: boolean;
     if (activeStep === 0) {
-      result = await trigger([
-        "role",
-        "username",
-        "password",
-        "email",
-        "phone",
-        "chatWebhookUrl",
-        "role",
-      ]);
+      result = await trigger(
+        Object.entries(getValues())
+          .filter(
+            ([key, value]) =>
+              key !== "customerDto" &&
+              key !== "studentDto" &&
+              key !== "teacherDto"
+          )
+          .map(([key, value]) => key) as any
+      );
     }
     if (activeStep === 1) {
       result = await trigger("customerDto");
@@ -100,8 +101,9 @@ export const UserNewPage = () => {
     }
   };
 
+  console.log(errors);
+
   const handleBack = () => {
-    console.log(errors);
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
@@ -127,7 +129,12 @@ export const UserNewPage = () => {
         </Stepper>
         <Box my={4}>
           {activeStep === 0 && (
-            <UserNew register={register} control={control} errors={errors} />
+            <UserNew
+              role={getValues("role")}
+              register={register}
+              control={control}
+              errors={errors}
+            />
           )}
           {getValues("role") === Role.CUSTOMER && (
             <>

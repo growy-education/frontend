@@ -8,6 +8,9 @@ import { UpdatedAt } from "../../components/shared/UpdatedAt";
 import { UserEmail } from "./components/UserEmail";
 import { UserPhone } from "./components/UserPhone";
 import { UserChatWebhookUrl } from "./components/UserChatWebhookUrl";
+import { Role } from "./types/role.enum";
+import { UserSpaceWebhookUrl } from "./components/UserSpaceWebhookUrl";
+import { ServiceChips } from "../customers/services/CustomerServiceChips";
 
 type UserDetailProps = {
   user: User;
@@ -35,6 +38,14 @@ export const UserDetail = ({ user }: UserDetailProps) => {
       <UserPhone user={user} />
       <Divider />
       <UserChatWebhookUrl user={user} />
+      {role === Role.CUSTOMER && (
+        <>
+          <Divider />
+          <UserSpaceWebhookUrl user={user} />
+          <Divider />
+          <ServiceChips services={user.services} />
+        </>
+      )}
     </>
   );
 };

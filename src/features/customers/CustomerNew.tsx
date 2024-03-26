@@ -5,9 +5,8 @@ import { LastNameKanaTextField } from "../../components/Element/TextField/LastNa
 import { LastNameTextField } from "../../components/Element/TextField/LastNameTextField";
 import { HeadlineTypography } from "../../components/Element/Typography/HeadlineTypography";
 import { RelationshipRadioGroup } from "./RelationshipRadioGroup";
-import { CustomerServicesCheckboxes } from "./ServicesCheckboxes";
-import { SpaceWebhookUrlTextField } from "./SpaceWebhookUrlTextField";
 import { CreateUserDto } from "../users/types/create-user.dto";
+import { RelationshipSelect } from "./RelationshipSelect";
 
 type CustomerNewProps = {
   register: UseFormRegister<CreateUserDto>;
@@ -47,23 +46,10 @@ export const CustomerNew = ({
       />
 
       <HeadlineTypography>続柄</HeadlineTypography>
-      <RelationshipRadioGroup
+      <RelationshipSelect
         name={"customerDto.relationship"}
         error={errors.customerDto?.relationship}
         control={control}
-      />
-
-      <HeadlineTypography>利用可能サービス</HeadlineTypography>
-      <CustomerServicesCheckboxes
-        name={"customerDto.services"}
-        error={errors.customerDto?.services}
-        control={control}
-      />
-
-      <HeadlineTypography>GoogleChatのWebhookURL(Space)</HeadlineTypography>
-      <SpaceWebhookUrlTextField
-        error={errors.customerDto?.spaceWebhookUrl}
-        {...register("customerDto.spaceWebhookUrl")}
       />
     </>
   );

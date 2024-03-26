@@ -5,27 +5,27 @@ import {
   FieldError,
   Merge,
 } from "react-hook-form";
-import { CustomerService } from "./types/customer-service.enum";
+import { Service } from "../users/types/service.enum";
 import { Checkbox, FormControlLabel, FormHelperText } from "@mui/material";
 
-type CustomerServicesCheckBoxes = {
+type ServicesCheckBoxes = {
   error: Merge<FieldError, FieldError[]>;
   control: Control<any>;
 } & Partial<Omit<ControllerProps, "control">>;
 
-const CustomerServices = [
-  { id: CustomerService.QUESTION_ANSWER, name: "質問回答" },
-  { id: CustomerService.SELF_STUDY_ROOM, name: "オンライン自習室" },
-  { id: CustomerService.TEST_CORRECTION, name: "模試・過去問添削" },
-  { id: CustomerService.TEACHING, name: "ティーチング" },
-  { id: CustomerService.COACHING, name: "コーチング" },
+const Services = [
+  { id: Service.QUESTION_ANSWER, name: "質問回答" },
+  { id: Service.SELF_STUDY_ROOM, name: "オンライン自習室" },
+  { id: Service.TEST_CORRECTION, name: "模試・過去問添削" },
+  { id: Service.TEACHING, name: "ティーチング" },
+  { id: Service.COACHING, name: "コーチング" },
 ];
 
-export const CustomerServicesCheckboxes = ({
+export const ServicesCheckboxes = ({
   error,
   control,
   ...props
-}: CustomerServicesCheckBoxes) => {
+}: ServicesCheckBoxes) => {
   return (
     <Controller
       name="services"
@@ -33,7 +33,7 @@ export const CustomerServicesCheckboxes = ({
       defaultValue={[]}
       render={({ field: props }) => (
         <>
-          {CustomerServices.map((item) => (
+          {Services.map((item) => (
             <FormControlLabel
               key={item.id}
               label={item.name}

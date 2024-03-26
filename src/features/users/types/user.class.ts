@@ -3,6 +3,7 @@ import { Teacher } from "../../teachers/types/teacher.class";
 import { Student } from "../../students/types/student.class";
 import { Customer } from "../../customers/types/customer.class";
 import { Role } from "./role.enum";
+import { Service } from "./service.enum";
 
 export class User {
   id: string;
@@ -21,7 +22,13 @@ export class User {
 
   role: Role;
 
+  isArchived: boolean;
+
   chatWebhookUrl: string;
+
+  spaceWebhookUrl: string;
+
+  services: Service[];
 
   @Type(() => Customer)
   customer?: Customer;

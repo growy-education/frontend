@@ -1,10 +1,5 @@
 import React, { FC } from "react";
-import {
-  Controller,
-  useFormContext,
-  FieldErrors,
-  Control,
-} from "react-hook-form";
+import { Controller, FieldErrors, Control } from "react-hook-form";
 import { Role } from "./types/role.enum";
 import { FormHelperText, MenuItem, Select, Typography } from "@mui/material";
 

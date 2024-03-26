@@ -1,7 +1,6 @@
 import { Customer } from "./types/customer.class";
 import { HeadlineTypography } from "../../components/Element/Typography/HeadlineTypography";
 import { JaDateTimeTypography } from "../../components/Element/Typography/JaDateTimeTypography";
-import { CustomerServiceChips } from "./services/CustomerServiceChips";
 import { DetailTypography } from "../../components/Element/Typography/DetailTyporagphy";
 import { CheckCustomerWebhookButton } from "./CheckCustomerWebhookButton";
 import { Box } from "@mui/material";
@@ -20,8 +19,6 @@ export const CustomerDetail = ({ customer }: CustomerDetailProps) => {
     lastName,
     lastNameKana,
     relationship,
-    services,
-    spaceWebhookUrl,
   } = customer;
   return (
     <>
@@ -41,19 +38,6 @@ export const CustomerDetail = ({ customer }: CustomerDetailProps) => {
       <DetailTypography>{firstNameKana}</DetailTypography>
       <HeadlineTypography>続柄</HeadlineTypography>
       <DetailTypography>{relationship}</DetailTypography>
-      <HeadlineTypography>利用可能サービス</HeadlineTypography>
-      <CustomerServiceChips services={services} />
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <HeadlineTypography>GoogleChatのWebhookURL(Space)</HeadlineTypography>
-        <CheckCustomerWebhookButton customer={customer} />
-      </Box>
-      <DetailTypography>{spaceWebhookUrl}</DetailTypography>
     </>
   );
 };

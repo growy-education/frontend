@@ -1,12 +1,18 @@
 import {
+  ArrayMinSize,
+  IsArray,
   IsEmail,
+  IsEnum,
+  IsNotEmpty,
   IsOptional,
   IsPhoneNumber,
   IsString,
   IsUrl,
   MaxLength,
   MinLength,
+  ValidateIf,
 } from "class-validator";
+import { Service } from "./service.enum";
 
 export class UpdateUserDto {
   @IsOptional()
@@ -29,4 +35,20 @@ export class UpdateUserDto {
     { message: "例)https://chat.googleapis.com/***" }
   )
   chatWebhookUrl: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsUrl(
+    { protocols: ["https"], host_whitelist: ["chat.googleapis.com"] },
+    { message: "例)https://chat.googleapis.com/***" }
+  )
+  spaceWebhookUrl: string;
+
+  @IsOptional()
+  @IsArray()
+  @ArrayMinSize(1, { message: "サービスは1つ以上選択してください" })
+  @IsEnum(Service, {
+    each: true,
+  })
+  services: Service[];
 }
